@@ -1,121 +1,139 @@
 'use client';
 
 import { useState } from 'react';
-import { Technology } from '@/types';
+import { useRouter } from 'next/navigation';
+import { Technology, Sector } from '@/types';
 import TechnologyCard from '@/components/ui/TechnologyCard';
-import { Rocket, ChevronRight } from 'lucide-react';
-import clsx from 'clsx';
-
-interface Category {
-  label: string;
-  slug: string;
-  icon: string;
-  description: string;
-}
+import Link from 'next/link';
+import { Rocket, ArrowRight, Zap, Search } from 'lucide-react';
 
 interface Props {
-  categories: Category[];
-  techsByCategory: Record<string, Technology[]>;
-  initialSlug?: string;
+  sectors: Sector[];
+  initialTechs: Technology[];
+  initialSectorSlug: string;
+  activeSector: Sector | null;
 }
 
-export default function StartupDiscoveryClient({ categories, techsByCategory, initialSlug }: Props) {
-  const [selected, setSelected] = useState<string>(initialSlug || categories[0]?.slug || '');
+export default function StartupDiscoveryClient({
+  sectors, initialTechs, initialSectorSlug, activeSector
+}: Props) {
+  const router = useRouter();
+  const [activeSectorSlug, setActiveSectorSlug] = useState(initialSectorSlug);
+  const [displayedTechs, setDisplayedTechs] = useState(initialTechs);
+  const [displayedSector, setDisplayedSector] = useState(activeSector);
 
-  const currentCat = categories.find((c) => c.slug === selected);
-  const currentTechs = techsByCategory[selected] ?? [];
+  function handleSectorClick(sector: Sector) {
+    setActiveSectorSlug(sector.slug);
+    setDisplayedSector(sector);
+    router.push(`/startup-discovery?sector=${sector.slug}`, { scroll: false });
+  }
 
   return (
-    <div>
-      {/* Category Tabs */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
-        {categories.map((cat) => {
-          const count = (techsByCategory[cat.slug] ?? []).length;
-          return (
-            <button
-              key={cat.slug}
-              onClick={() => setSelected(cat.slug)}
-              className={clsx(
-                'relative flex flex-col items-start text-left p-4 rounded-xl border-2 transition-all duration-200',
-                selected === cat.slug
-                  ? 'border-[#003F8A] bg-[#E8F0FE] shadow-md'
-                  : 'border-gray-200 bg-white hover:border-[#003F8A]/30 hover:shadow-sm'
-              )}
-            >
-              <div className="text-2xl mb-2">{cat.icon}</div>
-              <div className={clsx('font-heading font-bold text-sm', selected === cat.slug ? 'text-[#003F8A]' : 'text-gray-900')}>
-                {cat.label}
-              </div>
-              <div className={clsx('text-xs mt-0.5', selected === cat.slug ? 'text-[#003F8A]/70' : 'text-gray-400')}>
-                {count} {count === 1 ? 'technology' : 'technologies'}
-              </div>
-              {selected === cat.slug && (
-                <div className="absolute top-3 right-3 w-2 h-2 bg-[#003F8A] rounded-full" />
-              )}
-            </button>
-          );
-        })}
-      </div>
+    <div className="min-h-screen bg-[#F8FAFF]">
 
-      {/* Selected category info */}
-      {currentCat && (
-        <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-[#E8F0FE] to-white rounded-xl border border-blue-100 mb-6">
-          <div className="text-3xl">{currentCat.icon}</div>
-          <div>
-            <h2 className="font-heading font-bold text-[#003F8A] text-lg">
-              Building a Startup in {currentCat.label}
-            </h2>
-            <p className="text-sm text-gray-600">{currentCat.description}</p>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-[#003F8A] to-[#002D6B] py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-xs font-semibold text-blue-200 mb-6">
+            <Zap className="w-3.5 h-3.5" />
+            Startup Discovery Tool
           </div>
-          <div className="ml-auto hidden md:flex items-center gap-1.5 text-sm text-[#003F8A] font-semibold">
-            <Rocket className="w-4 h-4" />
-            {currentTechs.length} options
-          </div>
-        </div>
-      )}
+          <h1 className="text-3xl md:text-4xl font-heading font-black text-white mb-4">
+            I Want To Build A Startup In...
+          </h1>
+          <p className="text-blue-200 max-w-xl mx-auto text-sm mb-8">
+            Select your domain below to instantly discover commercializable technologies
+            from Kerala&apos;s leading research institutions.
+          </p>
 
-      {/* Technologies */}
-      {currentTechs.length === 0 ? (
-        <div className="text-center py-16">
-          <div className="text-5xl mb-4">🔬</div>
-          <p className="text-gray-500">No technologies listed for this category yet.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {currentTechs.map((tech) => (
-            <TechnologyCard key={tech.id} technology={tech} />
-          ))}
-        </div>
-      )}
-
-      {/* List view - startup journey */}
-      {currentTechs.length > 0 && (
-        <div className="mt-8 p-6 bg-[#F8FAFF] rounded-2xl border border-blue-100">
-          <h3 className="font-heading font-bold text-gray-900 mb-4 text-sm">
-            🚀 Startup ideas in {currentCat?.label}
-          </h3>
-          <div className="space-y-2">
-            {currentTechs.map((tech) => (
-              <a
-                key={tech.id}
-                href={`/technologies/${tech.id}`}
-                className="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-100 hover:border-[#003F8A]/20 hover:shadow-sm transition-all group"
+          {/* Sector Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-5xl mx-auto">
+            {sectors.map((sector) => (
+              <button
+                key={sector.slug}
+                id={`sector-btn-${sector.slug}`}
+                onClick={() => handleSectorClick(sector)}
+                className={`group p-4 rounded-xl border transition-all duration-200 text-center ${
+                  activeSectorSlug === sector.slug
+                    ? 'bg-white border-white shadow-lg scale-105'
+                    : 'bg-white/10 border-white/20 hover:bg-white/20 hover:border-white/40'
+                }`}
               >
-                <div className="flex items-center gap-3">
-                  <ChevronRight className="w-4 h-4 text-[#003F8A] group-hover:translate-x-0.5 transition-transform" />
-                  <div>
-                    <div className="text-sm font-semibold text-gray-900 group-hover:text-[#003F8A] transition-colors">{tech.name}</div>
-                    <div className="text-xs text-gray-400">{tech.institution} · {tech.commercialization_status}</div>
-                  </div>
+                <div className="text-2xl mb-2">{sector.icon}</div>
+                <div className={`font-heading font-semibold text-xs leading-snug ${
+                  activeSectorSlug === sector.slug ? 'text-[#003F8A]' : 'text-white'
+                }`}>
+                  {sector.name}
                 </div>
-                <div className="flex-shrink-0">
-                  {'⭐'.repeat(tech.startup_potential)}
+                <div className={`text-xs mt-1 ${
+                  activeSectorSlug === sector.slug ? 'text-gray-500' : 'text-blue-300'
+                }`}>
+                  {sector.tech_count} tech{sector.tech_count !== 1 ? 's' : ''}
                 </div>
-              </a>
+              </button>
             ))}
           </div>
         </div>
-      )}
+      </section>
+
+      {/* Results */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        {displayedSector && (
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+                style={{ background: `${displayedSector.color}15` }}
+              >
+                {displayedSector.icon}
+              </div>
+              <div>
+                <h2 className="font-heading font-bold text-gray-900">
+                  {displayedSector.name} Technologies
+                </h2>
+                <p className="text-sm text-gray-500">
+                  {displayedTechs.length} technologies available for commercialization
+                </p>
+              </div>
+            </div>
+            <Link
+              href={`/sectors/${displayedSector.slug}`}
+              className="hidden md:flex items-center gap-1.5 text-sm font-semibold text-[#003F8A] hover:underline"
+            >
+              View All <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        )}
+
+        {!displayedSector && (
+          <div className="mb-6">
+            <h2 className="text-xl font-heading font-bold text-gray-900 mb-1">
+              High-Potential Technologies
+            </h2>
+            <p className="text-sm text-gray-500">
+              Select a sector above to filter, or explore these high-startup-potential technologies
+            </p>
+          </div>
+        )}
+
+        {displayedTechs.length === 0 ? (
+          <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">
+            <Rocket className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+            <h3 className="font-heading font-bold text-gray-900 mb-2">No technologies in this sector yet</h3>
+            <p className="text-gray-500 text-sm mb-4">Try another sector or browse all technologies</p>
+            <Link href="/technologies" className="btn-primary">
+              <Search className="w-4 h-4" />
+              Browse All Technologies
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {displayedTechs.map(tech => (
+              <TechnologyCard key={tech.id} technology={tech} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

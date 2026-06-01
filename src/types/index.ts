@@ -1,110 +1,61 @@
 // ============================================================
 // RINK Technology Explorer — Core Type Definitions
-// Designed to mirror Supabase schema for zero-migration swap
+// Aligned with the actual Google Sheet schema
 // ============================================================
 
 export interface Technology {
-  id: string;
-  name: string;
-  institution: string;
-  institution_slug: string;
-  inventor: string;
-  description: string;
-  problem_solved: string;
-  applications: string[];
-  sector: string;
-  sector_slug: string;
-  technology_type: TechnologyType;
-  patent_status: PatentStatus;
-  startup_potential: number; // 1-5
-  technology_readiness: number; // TRL 1-9
-  commercialization_status: CommercializationStatus;
-  contact: TechnologyContact;
-  related_technology_ids: string[];
-  downloads: TechnologyDownload[];
-  image_url: string;
-  featured: boolean;
-  tags: string[];
-  created_at: string;
-  updated_at: string;
+  id: string;               // Technology ID (e.g. CPCRI-001)
+  name: string;             // Technology Name
+  institution: string;      // Institution (display name)
+  institution_slug: string; // Derived slug for routing
+  sector: string;           // Sector (display)
+  sector_slug: string;      // Derived slug for routing
+  technology_type: string;  // Technology Type (freeform from sheet)
+  problem_solved: string;   // Problem Solved
+  description: string;      // Description
+  applications: string[];   // Applications (split from comma/semicolon)
+  startup_potential: StartupPotential; // High / Medium / Low
+  startup_potential_score: number;     // 5 / 3 / 2 for star display
+  trl: string;              // TRL (may be "Not Specified")
+  patent_status: string;    // Patent Status (freeform from sheet)
+  contact_person: string;   // Contact Person
+  phone: string;            // Phone
+  email: string;            // Email
+  keywords: string[];       // Keywords (split from comma)
+  image_url: string;        // Image URL (Google Drive or other)
+  image_embed_url: string;  // Converted embed URL for <img>
+  institution_website: string; // Institution Website
+  // Derived / computed
+  featured: boolean;        // High startup potential = featured
 }
 
-export interface TechnologyContact {
-  name: string;
-  designation: string;
-  phone: string;
-  email: string;
-  website: string;
-  institution: string;
-}
+export type StartupPotential = 'High' | 'Medium' | 'Low' | 'Not Specified';
 
-export interface TechnologyDownload {
-  label: string;
-  url: string;
-  type: 'pdf' | 'brochure' | 'report';
-}
-
-export type TechnologyType =
-  | 'Process'
-  | 'Product'
-  | 'Device'
-  | 'Software'
-  | 'Material'
-  | 'Formulation'
-  | 'Method'
-  | 'System';
-
-export type PatentStatus =
-  | 'Patented'
-  | 'Patent Applied'
-  | 'Trade Secret'
-  | 'Open Source'
-  | 'Copyright'
-  | 'Not Patented';
-
-export type CommercializationStatus =
-  | 'Commercial Ready'
-  | 'Pilot Stage'
-  | 'Lab Stage'
-  | 'Technology Transfer Available';
+// ── Derived aggregates ──────────────────────────────────────
 
 export interface Sector {
-  id: string;
   slug: string;
   name: string;
-  description: string;
+  tech_count: number;
   icon: string;
   color: string;
-  tech_count: number;
 }
 
 export interface Institution {
-  id: string;
   slug: string;
-  acronym: string;
-  full_name: string;
-  description: string;
-  location: string;
-  website: string;
-  contact_email: string;
-  contact_phone: string;
-  contact_person: string;
+  name: string;
   tech_count: number;
-  logo_url?: string;
 }
 
-// ============================================================
-// Search & Filter Types
-// ============================================================
+// ── Search & Filter Types ───────────────────────────────────
 
 export interface TechnologyFilters {
   query?: string;
   sector?: string;
   institution?: string;
-  technology_type?: TechnologyType;
-  commercialization_status?: CommercializationStatus;
-  startup_potential_min?: number;
-  patent_status?: PatentStatus;
+  technology_type?: string;
+  patent_status?: string;
+  startup_potential?: StartupPotential;
 }
 
 export interface SearchResult {
@@ -112,4 +63,14 @@ export interface SearchResult {
   total: number;
   page: number;
   per_page: number;
+}
+
+export interface SearchIndexItem {
+  id: string;
+  name: string;
+  institution: string;
+  sector: string;
+  keywords: string[];
+  applications: string[];
+  problem_solved: string;
 }

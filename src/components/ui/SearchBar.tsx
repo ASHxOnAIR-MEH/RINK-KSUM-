@@ -1,112 +1,219 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, X, ArrowRight } from 'lucide-react';
+import { Search, ArrowRight, Building2, Layers } from 'lucide-react';
 
-const PLACEHOLDER_EXAMPLES = [
-  'chips manufacturing',
-  'water purification',
-  'agriculture technology',
-  'coconut processing',
-  'biochar production',
-  'essential oils',
-  'renewable energy',
-  'biodegradable packaging',
-  'super absorbent polymer',
-];
-
-interface Props {
-  initialValue?: string;
-  onSearch?: (query: string) => void;
-  size?: 'lg' | 'md';
+interface SearchIndexItem {
+  id: string;
+  name: string;
+  institution: string;
+  sector: string;
+  keywords: string[];
+  applications: string[];
+  problem_solved: string;
 }
 
-export default function SearchBar({ initialValue = '', onSearch, size = 'lg' }: Props) {
-  const [query, setQuery] = useState(initialValue);
-  const [placeholderIdx, setPlaceholderIdx] = useState(0);
-  const [isFocused, setIsFocused] = useState(false);
-  const router = useRouter();
-  const inputRef = useRef<HTMLInputElement>(null);
+interface Props {
+  size?: 'lg' | 'md';
+  defaultValue?: string;
+  autoFocus?: boolean;
+}
 
-  // Cycle placeholder text
+function highlight(text: string, query: string) {
+  if (!query) return text;
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return (
+    <>
+      {text.slice(0, idx)}
+      <mark className="bg-yellow-100 text-yellow-900 rounded px-0.5">
+        {text.slice(idx, idx + query.length)}
+      </mark>
+      {text.slice(idx + query.length)}
+    </>
+  );
+}
+
+export default function SearchBar({ size = 'md', defaultValue = '', autoFocus = false }: Props) {
+  const router = useRouter();
+  const [query, setQuery] = useState(defaultValue);
+  const [suggestions, setSuggestions] = useState<SearchIndexItem[]>([]);
+  const [allItems, setAllItems] = useState<SearchIndexItem[]>([]);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(-1);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Fetch search index once
   useEffect(() => {
-    const timer = setInterval(() => {
-      setPlaceholderIdx((i) => (i + 1) % PLACEHOLDER_EXAMPLES.length);
-    }, 2800);
-    return () => clearInterval(timer);
+    fetch('/api/search-index')
+      .then(r => r.json())
+      .then(data => setAllItems(data))
+      .catch(() => {/* silent */});
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const trimmed = query.trim();
-    if (!trimmed) return;
-    if (onSearch) {
-      onSearch(trimmed);
-    } else {
-      router.push(`/technologies?q=${encodeURIComponent(trimmed)}`);
+  // Debounced search
+  const doSearch = useCallback((q: string) => {
+    if (!q.trim() || q.length < 2) {
+      setSuggestions([]);
+      setOpen(false);
+      return;
     }
-  };
+    const ql = q.toLowerCase();
+    const matched = allItems.filter(item =>
+      item.name.toLowerCase().includes(ql) ||
+      item.institution.toLowerCase().includes(ql) ||
+      item.sector.toLowerCase().includes(ql) ||
+      item.keywords.some(k => k.toLowerCase().includes(ql)) ||
+      item.applications.some(a => a.toLowerCase().includes(ql)) ||
+      item.problem_solved.toLowerCase().includes(ql)
+    ).slice(0, 7);
 
-  const handleClear = () => {
-    setQuery('');
-    inputRef.current?.focus();
-    if (onSearch) onSearch('');
-  };
+    setSuggestions(matched);
+    setOpen(matched.length > 0);
+    setActiveIdx(-1);
+  }, [allItems]);
 
-  const isLg = size === 'lg';
+  useEffect(() => {
+    const timer = setTimeout(() => doSearch(query), 180);
+    return () => clearTimeout(timer);
+  }, [query, doSearch]);
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (query.trim()) {
+      setOpen(false);
+      router.push(`/technologies?q=${encodeURIComponent(query.trim())}`);
+    }
+  }
+
+  function handleSelect(item: SearchIndexItem) {
+    setOpen(false);
+    router.push(`/technologies/${item.id}`);
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (!open || suggestions.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIdx(i => Math.min(i + 1, suggestions.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIdx(i => Math.max(i - 1, -1));
+    } else if (e.key === 'Enter' && activeIdx >= 0) {
+      e.preventDefault();
+      handleSelect(suggestions[activeIdx]);
+    } else if (e.key === 'Escape') {
+      setOpen(false);
+    }
+  }
+
+  const inputPadding = size === 'lg'
+    ? 'py-4 px-5 pl-14 text-base'
+    : 'py-3 px-4 pl-12 text-sm';
+  const iconSize = size === 'lg' ? 'w-5 h-5' : 'w-4 h-4';
+  const iconPos = size === 'lg' ? 'left-4 top-4' : 'left-3.5 top-3.5';
 
   return (
-    <form onSubmit={handleSubmit} className="relative w-full" role="search">
-      {/* Search icon */}
-      <Search
-        className={`absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 transition-colors ${
-          isFocused ? 'text-[#003F8A]' : ''
-        } ${isLg ? 'w-5 h-5' : 'w-4 h-4'}`}
-      />
-
-      <input
-        ref={inputRef}
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        placeholder={`Try "${PLACEHOLDER_EXAMPLES[placeholderIdx]}"...`}
-        className={`w-full bg-white border-2 rounded-xl font-sans outline-none transition-all duration-200 ${
-          isLg
-            ? 'pl-12 pr-36 py-4 text-base'
-            : 'pl-10 pr-28 py-3 text-sm'
-        } ${
-          isFocused
-            ? 'border-[#003F8A] shadow-[0_0_0_4px_rgba(0,63,138,0.1)]'
-            : 'border-gray-200 hover:border-gray-300'
-        }`}
-        aria-label="Search technologies"
-      />
-
-      {/* Clear button */}
-      {query && (
+    <div ref={containerRef} className="relative w-full">
+      <form onSubmit={handleSubmit} className="relative">
+        <Search
+          className={`absolute ${iconPos} ${iconSize} text-gray-400 pointer-events-none z-10`}
+        />
+        <input
+          ref={inputRef}
+          id="rink-search-input"
+          type="text"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onFocus={() => { if (suggestions.length > 0) setOpen(true); }}
+          placeholder="Search technologies, sectors, institutions, applications..."
+          autoFocus={autoFocus}
+          className={`search-input ${inputPadding} pr-24`}
+          autoComplete="off"
+          aria-label="Search technologies"
+          aria-expanded={open}
+          aria-autocomplete="list"
+        />
         <button
-          type="button"
-          onClick={handleClear}
-          className="absolute right-28 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-all"
-          aria-label="Clear search"
+          type="submit"
+          className="absolute right-2 top-1/2 -translate-y-1/2 btn-primary py-2 px-4 text-sm"
         >
-          <X className={isLg ? 'w-4 h-4' : 'w-3.5 h-3.5'} />
+          Search
         </button>
-      )}
+      </form>
 
-      {/* Search button */}
-      <button
-        type="submit"
-        className={`absolute right-2 top-1/2 -translate-y-1/2 btn-primary ${
-          isLg ? 'px-5 py-2.5 text-sm' : 'px-4 py-2 text-xs'
-        }`}
-      >
-        Search
-        <ArrowRight className={isLg ? 'w-4 h-4' : 'w-3.5 h-3.5'} />
-      </button>
-    </form>
+      {/* Dropdown */}
+      {open && suggestions.length > 0 && (
+        <div
+          className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden"
+          role="listbox"
+        >
+          <div className="px-3 py-2 border-b border-gray-100 flex items-center justify-between">
+            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+              Suggestions
+            </span>
+            <span className="text-xs text-gray-400">{suggestions.length} results</span>
+          </div>
+          {suggestions.map((item, idx) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => handleSelect(item)}
+              className={`w-full text-left px-4 py-3 flex items-start gap-3 transition-colors border-b border-gray-50 last:border-0 ${
+                idx === activeIdx ? 'bg-blue-50' : 'hover:bg-gray-50'
+              }`}
+              role="option"
+              aria-selected={idx === activeIdx}
+            >
+              <Search className="w-4 h-4 text-gray-300 mt-0.5 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <div className="font-medium text-sm text-gray-900 leading-snug">
+                  {highlight(item.name, query)}
+                </div>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span className="flex items-center gap-1 text-xs text-gray-400">
+                    <Building2 className="w-3 h-3" />
+                    {item.institution}
+                  </span>
+                  <span className="text-gray-200">·</span>
+                  <span className="flex items-center gap-1 text-xs text-gray-400">
+                    <Layers className="w-3 h-3" />
+                    {item.sector}
+                  </span>
+                </div>
+              </div>
+              <ArrowRight className="w-3.5 h-3.5 text-gray-300 mt-1 flex-shrink-0" />
+            </button>
+          ))}
+          <div className="px-4 py-2.5 bg-gray-50 border-t border-gray-100">
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                router.push(`/technologies?q=${encodeURIComponent(query)}`);
+              }}
+              className="text-xs text-[#003F8A] font-semibold hover:underline"
+            >
+              View all results for &quot;{query}&quot; →
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
