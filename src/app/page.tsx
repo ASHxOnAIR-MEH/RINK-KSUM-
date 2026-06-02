@@ -1,13 +1,13 @@
 import { getFeaturedTechnologies, getAllSectors, getAllInstitutions, getRecentTechnologies, getPlatformStats } from '@/lib/db';
-import SearchBar from '@/components/ui/SearchBar';
+import AIDiscoveryBar from '@/components/ui/AIDiscoveryBar';
 import StatsSection from '@/components/ui/StatsSection';
 import SectorCard from '@/components/ui/SectorCard';
 import TechnologyCard from '@/components/ui/TechnologyCard';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
-  ArrowRight, Lightbulb, Rocket, Search, Zap,
-  ChevronRight, Clock, TrendingUp, Building2, Shield
+  ArrowRight, Lightbulb, Rocket, Sparkles, Zap,
+  Clock, TrendingUp, Building2, Shield
 } from 'lucide-react';
 
 export const metadata = {
@@ -68,6 +68,10 @@ export default async function HomePage() {
 
           {/* Headline */}
           <div className="text-center max-w-4xl mx-auto mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: 'rgba(0,63,138,0.08)', color: '#003F8A' }}>
+              <Sparkles className="w-3.5 h-3.5" />
+              AI-Powered Technology Discovery
+            </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black text-[#003F8A] leading-tight mb-4">
               Discover Research.{' '}
               <span className="relative">
@@ -78,36 +82,23 @@ export default async function HomePage() {
               </span>
             </h1>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
-              Explore {stats.technology_count}+ commercializable technologies developed by Kerala&apos;s leading
-              research institutions — your next startup begins here.
+              Describe your startup idea in plain language — AI will find matching technologies
+              from {stats.technology_count}+ records across Kerala&apos;s leading research institutions.
             </p>
           </div>
 
-          {/* Search */}
-          <div className="max-w-2xl mx-auto mb-8">
-            <SearchBar size="lg" />
+          {/* AI Discovery Bar */}
+          <div className="max-w-3xl mx-auto mb-8">
+            <AIDiscoveryBar />
           </div>
 
-          {/* Popular searches */}
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
-            {['Coconut', 'Cassava', 'Aquaculture', 'Biochar', 'Jaggery', 'Seaweed', 'Ginger', 'Biodegradable'].map((tag) => (
-              <Link
-                key={tag}
-                href={`/technologies?q=${encodeURIComponent(tag)}`}
-                className="px-3 py-1.5 bg-white/70 backdrop-blur-sm border border-blue-100 rounded-full text-xs font-medium text-[#003F8A] hover:bg-white hover:shadow-sm transition-all"
-              >
-                {tag}
-              </Link>
-            ))}
-          </div>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row justify-center gap-3">
-            <Link href="/technologies" className="btn-primary text-base px-8 py-3" id="hero-explore-btn">
-              <Search className="w-4 h-4" />
-              Explore All Technologies
+          {/* Bottom CTAs */}
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6">
+            <Link href="/technologies" className="btn-secondary text-sm px-6 py-2.5" id="hero-explore-btn">
+              <ArrowRight className="w-4 h-4" />
+              Browse All Technologies
             </Link>
-            <Link href="/startup-discovery" className="btn-secondary text-base px-8 py-3" id="hero-discover-btn">
+            <Link href="/startup-discovery" className="btn-secondary text-sm px-6 py-2.5" id="hero-discover-btn">
               <Rocket className="w-4 h-4" />
               Startup Discovery
             </Link>
@@ -143,7 +134,7 @@ export default async function HomePage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { step: '01', icon: Search, title: 'Search & Discover', desc: `Browse ${stats.technology_count}+ technologies across ${stats.sector_count} sectors from ${stats.institution_count} Kerala research institutions.`, color: '#003F8A' },
+              { step: '01', icon: Sparkles, title: 'Describe & Discover', desc: `Tell the AI your startup idea. It searches ${stats.technology_count}+ technologies across ${stats.sector_count} sectors instantly — no browsing needed.`, color: '#003F8A' },
               { step: '02', icon: Lightbulb, title: 'Evaluate Potential', desc: 'Review startup potential, TRL level, patent status, and applications for each technology.', color: '#00875A' },
               { step: '03', icon: Rocket, title: 'Connect & Build', desc: 'Contact the institution directly to discuss technology transfer and licensing for your startup.', color: '#7C3AED' },
             ].map((item) => {
