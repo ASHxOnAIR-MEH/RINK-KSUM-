@@ -274,18 +274,10 @@ export default function RinkAIAssistant() {
           }}
           onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.1)')}
           onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-          title="RINK AI Discovery Assistant"
+          title="RINK Discovery Assistant"
           id="rink-ai-fab"
         >
           <Sparkles size={26} color="white" />
-          {/* Badge */}
-          <span style={{
-            position: 'absolute', top: -2, right: -2,
-            width: 16, height: 16, background: '#22c55e',
-            borderRadius: '50%', border: '2px solid white',
-            fontSize: 8, color: 'white', display: 'flex',
-            alignItems: 'center', justifyContent: 'center', fontWeight: 700,
-          }}>AI</span>
         </button>
       )}
 
@@ -327,7 +319,7 @@ export default function RinkAIAssistant() {
             {/* Title */}
             <div style={{ flex: 1 }}>
               <div style={{ color: 'white', fontWeight: 700, fontSize: 14, lineHeight: 1.2 }}>
-                RINK AI Discovery
+                RINK Discovery Assistant
               </div>
               <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, marginTop: 2, display: 'flex', alignItems: 'center', gap: 5 }}>
                 <span style={{ width: 6, height: 6, background: '#4ade80', borderRadius: '50%', display: 'inline-block' }} />
@@ -550,7 +542,7 @@ export default function RinkAIAssistant() {
 
             {/* Footer note */}
             <div style={{ textAlign: 'center', fontSize: 10.5, color: '#9ca3af', marginTop: 8 }}>
-              Searches only real technologies from the RINK database · No AI hallucination
+              Searches only real technologies from the RINK database
             </div>
           </div>
         </div>

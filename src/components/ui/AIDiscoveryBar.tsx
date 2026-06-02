@@ -3,19 +3,19 @@
 import { useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import {
-  Sparkles, ArrowRight, ExternalLink, Building2,
-  Layers, FlaskConical, Loader2, RotateCcw, Search
+  Search, ArrowRight, ExternalLink, Building2,
+  Layers, FlaskConical, Loader2, RotateCcw
 } from 'lucide-react';
 import type { AISearchResponse, AISearchResult } from '@/lib/aiSearch';
 
 // ── Quick prompt chips ────────────────────────────────────────
 const QUICK_PROMPTS = [
   { icon: '🚜', label: 'Agriculture Startup',       query: 'agriculture startup technologies' },
-  { icon: '🍽️', label: 'Food Processing Startup',  query: 'food processing and food technology startups' },
-  { icon: '💧', label: 'Water Technology Startup',  query: 'water purification and treatment technologies' },
-  { icon: '⚡', label: 'Renewable Energy Startup',  query: 'renewable energy solar wind technologies' },
-  { icon: '🌱', label: 'Climate Tech Startup',      query: 'climate tech environment sustainability' },
-  { icon: '🏭', label: 'Manufacturing Startup',     query: 'manufacturing industrial machinery technologies' },
+  { icon: '🍽️', label: 'Food Processing',           query: 'food processing and food technology' },
+  { icon: '💧', label: 'Water Technology',           query: 'water purification and treatment technologies' },
+  { icon: '⚡', label: 'Renewable Energy',           query: 'renewable energy solar wind technologies' },
+  { icon: '🌱', label: 'Climate Tech',               query: 'climate environment sustainability technologies' },
+  { icon: '🏭', label: 'Manufacturing',              query: 'manufacturing industrial machinery technologies' },
 ];
 
 // ── Startup potential badge ───────────────────────────────────
@@ -163,11 +163,11 @@ export default function AIDiscoveryBar() {
               : '0 4px 24px rgba(0,63,138,0.10)',
           }}
         >
-          {/* AI Spark Icon */}
+          {/* Search Icon */}
           <div className="pl-5 pr-3 flex-shrink-0">
             {loading
               ? <Loader2 size={20} className="text-[#003F8A] animate-spin" />
-              : <Sparkles size={20} className="text-[#003F8A]" />
+              : <Search size={20} className="text-gray-400" />
             }
           </div>
 
@@ -177,7 +177,7 @@ export default function AIDiscoveryBar() {
             type="text"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Describe your startup idea, challenge, or industry..."
+            placeholder="Describe your startup idea, industry, or challenge..."
             className="flex-1 py-4 pr-4 text-gray-800 text-[15px] bg-transparent outline-none placeholder-gray-400"
             style={{ fontFamily: 'inherit' }}
             disabled={loading}
@@ -210,8 +210,8 @@ export default function AIDiscoveryBar() {
             }}
             id="ai-discover-btn"
           >
-            <Sparkles size={15} />
-            <span className="hidden sm:inline">Discover with AI</span>
+            <Search size={15} />
+            <span className="hidden sm:inline">Find Technologies</span>
             <span className="sm:hidden">Search</span>
           </button>
         </div>
@@ -243,9 +243,9 @@ export default function AIDiscoveryBar() {
       {loading && (
         <div className="mt-8 space-y-4" ref={resultsRef}>
           <div className="text-center mb-4">
-            <div className="inline-flex items-center gap-2 text-sm text-[#003F8A] font-medium">
-              <Sparkles size={15} className="animate-pulse" />
-              Searching RINK database for <span className="font-bold">&quot;{activeQuery}&quot;</span>...
+            <div className="inline-flex items-center gap-2 text-sm text-gray-500">
+              <Loader2 size={14} className="text-[#003F8A] animate-spin" />
+              Searching for <span className="font-semibold text-gray-700">&quot;{activeQuery}&quot;</span>...
             </div>
           </div>
           {[...Array(3)].map((_, i) => (
@@ -271,7 +271,7 @@ export default function AIDiscoveryBar() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-[#EFF6FF] flex items-center justify-center">
-                <Sparkles size={14} className="text-[#003F8A]" />
+                <Search size={14} className="text-[#003F8A]" />
               </div>
               <p className="text-sm text-gray-700 font-medium">
                 <Bold text={result.responseMessage} />
