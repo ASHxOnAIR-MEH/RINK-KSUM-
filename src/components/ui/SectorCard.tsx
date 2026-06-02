@@ -1,6 +1,7 @@
 import { Sector } from '@/types';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { getSectorIcon } from './SectorIcons';
 
 interface Props {
   sector: Sector;
@@ -10,12 +11,12 @@ export default function SectorCard({ sector }: Props) {
   return (
     <Link href={`/sectors/${sector.slug}`} id={`sector-card-${sector.slug}`}>
       <div className="sector-card group h-full">
-        {/* Top color accent */}
+        {/* SVG Icon box */}
         <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 text-xl"
-          style={{ background: `${sector.color}15` }}
+          className="w-11 h-11 rounded-xl flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110"
+          style={{ background: `${sector.color}18` }}
         >
-          {sector.icon}
+          {getSectorIcon(sector.slug, sector.color, 22)}
         </div>
         <h3 className="font-heading font-bold text-gray-900 text-sm leading-snug mb-1 group-hover:text-[#003F8A] transition-colors">
           {sector.name}
