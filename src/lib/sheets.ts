@@ -228,15 +228,20 @@ export function clearCache() {
 }
 
 export async function fetchAllTechnologies(): Promise<Technology[]> {
-  // In-memory cache for server-side deduplication within a render cycle
+  // In-memory cache check (0ms TTL in dev = always bypass)
   if (_cache && Date.now() - _cache.ts < CACHE_TTL) {
     return _cache.data;
   }
 
+  // In dev: cache:'no-store' forces a fresh HTTP request every time
+  // In prod: revalidate every 5 minutes via Next.js ISR
+  const fetchOptions: RequestInit =
+    process.env.NODE_ENV === 'development'
+      ? { cache: 'no-store' }                 // always fresh in dev
+      : { next: { revalidate: 300 } } as RequestInit; // 5-min ISR in prod
+
   try {
-    const res = await fetch(SHEET_CSV_URL, {
-      next: { revalidate: 300 }, // ISR: revalidate every 5 minutes
-    });
+    const res = await fetch(SHEET_CSV_URL, fetchOptions);
 
     if (!res.ok) {
       console.error(`[RINK] Sheet fetch failed: ${res.status}`);
@@ -261,6 +266,7 @@ export async function fetchAllTechnologies(): Promise<Technology[]> {
     return _cache?.data ?? [];
   }
 }
+
 
 // ── Derived data helpers ──────────────────────────────────────
 
