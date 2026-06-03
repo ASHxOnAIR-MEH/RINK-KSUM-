@@ -232,21 +232,21 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
           />
 
           {/* ── Content ── */}
-          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-5 pb-10">
+          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-12">
 
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-xs text-white/40 flex-wrap mb-8 animate-slide-fade-in">
-              <Link href="/" className="hover:text-white/70 transition-colors">Home</Link>
-              <ChevronRight className="w-3 h-3 flex-shrink-0" />
-              <Link href="/startup-discovery" className="hover:text-white/70 transition-colors">
+            <nav className="flex items-center gap-1.5 text-xs text-white/55 flex-wrap mb-8 animate-slide-fade-in">
+              <Link href="/" className="hover:text-white transition-colors font-medium">Home</Link>
+              <ChevronRight className="w-3 h-3 flex-shrink-0 text-white/30" />
+              <Link href="/startup-discovery" className="hover:text-white transition-colors">
                 Startup Discovery
               </Link>
-              <ChevronRight className="w-3 h-3 flex-shrink-0" />
-              <Link href={`/sectors/${tech.sector_slug}`} className="hover:text-white/70 transition-colors">
+              <ChevronRight className="w-3 h-3 flex-shrink-0 text-white/30" />
+              <Link href={`/sectors/${tech.sector_slug}`} className="hover:text-white transition-colors">
                 {tech.sector}
               </Link>
-              <ChevronRight className="w-3 h-3 flex-shrink-0" />
-              <span className="text-white/60 font-medium truncate max-w-[180px] sm:max-w-xs">
+              <ChevronRight className="w-3 h-3 flex-shrink-0 text-white/30" />
+              <span className="text-white/80 font-semibold truncate max-w-[180px] sm:max-w-xs">
                 {tech.name}
               </span>
             </nav>
@@ -256,15 +256,15 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
               className="flex flex-wrap gap-2 mb-5"
               style={{ animation: 'slide-fade-in 0.5s ease-out 0.1s both' }}
             >
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-400/25 backdrop-blur-sm">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-blue-500/40 text-blue-100 border border-blue-400/50 backdrop-blur-sm shadow-sm">
                 <Layers className="w-3 h-3" /> {tech.sector}
               </span>
               {techTypes.map((t, i) => (
                 <span
                   key={i}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-white/70 border border-white/15 backdrop-blur-sm"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/15 text-white border border-white/30 backdrop-blur-sm shadow-sm"
                 >
-                  <FlaskConical className="w-3 h-3" /> {t}
+                  <FlaskConical className="w-3 h-3 text-white/70" /> {t}
                 </span>
               ))}
             </div>
@@ -274,7 +274,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
               className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-6 font-heading tracking-tight max-w-3xl"
               style={{
                 animation: 'slide-fade-in 0.6s ease-out 0.2s both',
-                textShadow: '0 0 80px rgba(99,102,241,0.25), 0 2px 20px rgba(0,0,0,0.4)',
+                textShadow: '0 0 60px rgba(99,102,241,0.4), 0 2px 24px rgba(0,0,0,0.6), 0 0 120px rgba(59,130,246,0.2)',
               }}
             >
               {tech.name}
@@ -285,18 +285,18 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
               className="flex items-center gap-3 flex-wrap"
               style={{ animation: 'slide-fade-in 0.6s ease-out 0.35s both' }}
             >
-              <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white/10 border border-white/15 backdrop-blur-sm">
-                <MapPin className="w-3.5 h-3.5 text-white/50 flex-shrink-0" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white/15 border border-white/25 backdrop-blur-sm">
+                <MapPin className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                 <Link
                   href={`/institutions/${tech.institution_slug}`}
-                  className="text-sm font-semibold text-white/85 hover:text-white transition-colors"
+                  className="text-sm font-bold text-white hover:text-emerald-300 transition-colors"
                 >
                   {tech.institution}
                 </Link>
               </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-2 rounded-md bg-white/5 border border-white/10">
-                <Atom className="w-3 h-3 text-white/30" />
-                <span className="text-xs text-white/40 font-mono tracking-wider">{tech.id}</span>
+              <div className="flex items-center gap-1.5 px-2.5 py-2 rounded-md bg-white/8 border border-white/15">
+                <Atom className="w-3 h-3 text-white/50" />
+                <span className="text-xs text-white/60 font-mono tracking-wider">{tech.id}</span>
               </div>
             </div>
 
