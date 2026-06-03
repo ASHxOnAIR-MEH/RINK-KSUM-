@@ -5,7 +5,7 @@ import SectorCard from '@/components/ui/SectorCard';
 import TechnologyCard from '@/components/ui/TechnologyCard';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Rocket, Building2 } from 'lucide-react';
+import { ArrowRight, Building2 } from 'lucide-react';
 
 export const metadata = {
   title: 'RINK Technology Explorer — Kerala Startup Mission',
@@ -83,7 +83,7 @@ export default async function HomePage() {
       {/* ── METRICS ──────────────────────────────────────────── */}
       <StatsSection />
 
-      {/* ── STARTUP DISCOVERY ────────────────────────────────── */}
+      {/* ── STARTUP DISCOVERY ────────────────────────────── */}
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="max-w-xl mb-10">
@@ -94,7 +94,7 @@ export default async function HomePage() {
               I want to build a startup in...
             </h2>
             <p className="text-gray-500 text-base">
-              Select your domain to instantly discover relevant technologies from Kerala research institutions.
+              Select a sector to explore technologies available for commercialization and startup creation.
             </p>
           </div>
 
@@ -104,15 +104,13 @@ export default async function HomePage() {
             ))}
           </div>
 
-          <div className="flex items-center gap-4">
-            <Link href="/startup-discovery" className="btn-primary text-sm" id="open-discovery-btn">
-              <Rocket className="w-4 h-4" />
-              Open Startup Discovery
-            </Link>
-            <Link href="/sectors" className="text-sm font-medium text-gray-500 hover:text-[#003F8A] transition-colors flex items-center gap-1">
-              All Sectors <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
+          <Link
+            href="/sectors"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-[#003F8A] hover:underline"
+            id="all-sectors-link"
+          >
+            Browse all {sectors.length} sectors <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </section>
 

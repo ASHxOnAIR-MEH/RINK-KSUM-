@@ -25,7 +25,7 @@ export default function StartupDiscoveryClient({
   function handleSectorClick(sector: Sector) {
     setActiveSectorSlug(sector.slug);
     setDisplayedSector(sector);
-    router.push(`/startup-discovery?sector=${sector.slug}`, { scroll: false });
+    router.push(`/sectors/${sector.slug}`);
   }
 
   return (
@@ -36,7 +36,7 @@ export default function StartupDiscoveryClient({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-xs font-semibold text-blue-200 mb-6">
             <Zap className="w-3.5 h-3.5" />
-            Startup Discovery Tool
+            Startup Discovery
           </div>
           <h1 className="text-3xl md:text-4xl font-heading font-black text-white mb-4">
             I Want To Build A Startup In...
