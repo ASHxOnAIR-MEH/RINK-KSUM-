@@ -4,7 +4,7 @@ import Link from 'next/link';
 import {
   MapPin, Shield, ChevronRight, ExternalLink,
   Mail, Phone, BookOpen, Lightbulb, Zap,
-  Globe, FlaskConical, Layers, FileText, ArrowRight
+  Globe, FlaskConical, Layers, FileText, ArrowRight, Atom
 } from 'lucide-react';
 
 const GOOGLE_FORM_URL =
@@ -38,37 +38,52 @@ function InfoMissing() {
   return <span className="text-sm text-slate-400 italic">Information being updated</span>;
 }
 
-// ── TRL Meter ────────────────────────────────────────────────
+// ── Animated TRL Meter ────────────────────────────────────────
 
 function TRLMeter({ raw }: { raw: string }) {
   const level = parseTRL(raw);
   if (level === 0) return <InfoMissing />;
   const label = getTRLLabel(level);
+  const pct = Math.round((level / 9) * 100);
 
   return (
     <div>
       <div className="flex items-center justify-between mb-2.5">
         <span className="text-sm font-semibold text-slate-700">{label}</span>
-        <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">
-          TRL {level}/9
+        <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-0.5 rounded-full">
+          TRL {level} / 9
         </span>
       </div>
-      {/* Progress segments */}
-      <div className="flex gap-1">
+
+      {/* Track */}
+      <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+        <div
+          className="h-full rounded-full animate-trl-fill"
+          style={{
+            width: `${pct}%`,
+            background: 'linear-gradient(to right, #f59e0b, #10b981, #059669)',
+          }}
+        />
+      </div>
+
+      {/* Mini segment markers */}
+      <div className="flex gap-0.5 mt-2">
         {Array.from({ length: 9 }).map((_, i) => (
           <div
             key={i}
-            className={`h-2 flex-1 rounded-full transition-all ${
+            className={`h-1 flex-1 rounded-full ${i < level ? '' : 'bg-slate-100'}`}
+            style={
               i < level
-                ? i < 3 ? 'bg-amber-400'
-                  : i < 6 ? 'bg-emerald-400'
-                  : 'bg-emerald-600'
-                : 'bg-slate-100'
-            }`}
+                ? {
+                    background: i < 3 ? '#fbbf24' : i < 6 ? '#6ee7b7' : '#059669',
+                    animation: `slide-fade-in 0.25s ease-out ${i * 0.07}s both`,
+                  }
+                : {}
+            }
           />
         ))}
       </div>
-      <div className="flex justify-between mt-1.5">
+      <div className="flex justify-between mt-1">
         <span className="text-[10px] text-slate-400 font-medium">Research</span>
         <span className="text-[10px] text-slate-400 font-medium">Market Ready</span>
       </div>
@@ -101,15 +116,13 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
   if (!tech) notFound();
 
   const techTypes = parseTechTypes(tech.technology_type);
-  const hasApps = tech.applications.length > 0 && tech.applications[0] !== 'Information being updated';
-  const hasDesc = tech.description && tech.description !== 'Information being updated';
-  const hasKeywords = tech.keywords.length > 0;
+  const hasApps   = tech.applications.length > 0 && tech.applications[0] !== 'Information being updated';
+  const hasDesc   = tech.description && tech.description !== 'Information being updated';
 
   return (
     <div className="min-h-screen bg-slate-50">
 
       {/* ── MOBILE STICKY BOTTOM CTA ─────────────────────────── */}
-      {/* Shown only on mobile (lg:hidden). Desktop CTA is inside the right column panel. */}
       <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
         <div className="bg-white/90 backdrop-blur-lg border-t border-slate-100 shadow-[0_-8px_32px_rgba(0,0,0,0.08)] px-4 pt-3 pb-5">
           <a
@@ -117,7 +130,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
             target="_blank"
             rel="noopener noreferrer"
             id="mobile-request-btn"
-            className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-emerald-600 text-white font-bold text-sm active:scale-95 transition-all duration-150"
+            className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-emerald-600 text-white font-bold text-sm active:scale-95 transition-all"
           >
             <FileText className="w-4 h-4 flex-shrink-0" />
             Request This Technology
@@ -129,84 +142,184 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
         </div>
       </div>
 
-      {/* Extra bottom padding on mobile so content isn't hidden by fixed CTA */}
       <div className="pb-36 lg:pb-0">
 
-        {/* ── BREADCRUMB ───────────────────────────────────────── */}
-        <div className="bg-white border-b border-slate-100">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3">
-            <nav className="flex items-center gap-1.5 text-xs text-slate-400 flex-wrap">
-              <Link href="/" className="hover:text-slate-700 transition-colors">Home</Link>
+        {/* ═══════════════════════════════════════════════════════
+            ANIMATED TECH HERO HEADER
+            Dark gradient background with floating orbs + dot grid
+        ═══════════════════════════════════════════════════════ */}
+        <div
+          className="relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2044 40%, #0d1a3a 70%, #071018 100%)' }}
+        >
+          {/* ── Dot grid overlay ── */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)',
+              backgroundSize: '36px 36px',
+            }}
+          />
+
+          {/* ── Floating orb 1 — large indigo ── */}
+          <div
+            className="absolute animate-float-orb pointer-events-none"
+            style={{
+              top: '-80px', right: '-60px',
+              width: 340, height: 340,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(99,102,241,0.35) 0%, transparent 70%)',
+              filter: 'blur(48px)',
+            }}
+          />
+
+          {/* ── Floating orb 2 — emerald ── */}
+          <div
+            className="absolute animate-float-orb-slow pointer-events-none"
+            style={{
+              bottom: '-60px', left: '8%',
+              width: 260, height: 260,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(16,185,129,0.28) 0%, transparent 70%)',
+              filter: 'blur(40px)',
+            }}
+          />
+
+          {/* ── Floating orb 3 — blue centre ── */}
+          <div
+            className="absolute animate-hero-glow pointer-events-none"
+            style={{
+              top: '20px', left: '38%',
+              width: 180, height: 180,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)',
+              filter: 'blur(32px)',
+            }}
+          />
+
+          {/* ── Floating orb 4 — tiny amber ── */}
+          <div
+            className="absolute animate-float-orb-xs pointer-events-none"
+            style={{
+              top: '30%', right: '18%',
+              width: 100, height: 100,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(245,158,11,0.25) 0%, transparent 70%)',
+              filter: 'blur(20px)',
+            }}
+          />
+
+          {/* ── Spinning ring decoration ── */}
+          <div
+            className="absolute animate-spin-slow pointer-events-none opacity-10"
+            style={{
+              top: '-40px', right: '5%',
+              width: 200, height: 200,
+              border: '1.5px solid rgba(255,255,255,0.5)',
+              borderRadius: '50%',
+              borderTopColor: 'transparent',
+            }}
+          />
+          <div
+            className="absolute animate-spin-slow pointer-events-none opacity-10"
+            style={{
+              top: '-20px', right: '7%',
+              width: 140, height: 140,
+              border: '1px dashed rgba(99,102,241,0.6)',
+              borderRadius: '50%',
+              animationDirection: 'reverse',
+            }}
+          />
+
+          {/* ── Content ── */}
+          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-5 pb-10">
+
+            {/* Breadcrumb */}
+            <nav className="flex items-center gap-1.5 text-xs text-white/40 flex-wrap mb-8 animate-slide-fade-in">
+              <Link href="/" className="hover:text-white/70 transition-colors">Home</Link>
               <ChevronRight className="w-3 h-3 flex-shrink-0" />
-              <Link href="/startup-discovery" className="hover:text-slate-700 transition-colors">
+              <Link href="/startup-discovery" className="hover:text-white/70 transition-colors">
                 Startup Discovery
               </Link>
               <ChevronRight className="w-3 h-3 flex-shrink-0" />
-              <Link
-                href={`/sectors/${tech.sector_slug}`}
-                className="hover:text-slate-700 transition-colors"
-              >
+              <Link href={`/sectors/${tech.sector_slug}`} className="hover:text-white/70 transition-colors">
                 {tech.sector}
               </Link>
               <ChevronRight className="w-3 h-3 flex-shrink-0" />
-              <span className="text-slate-600 font-medium truncate max-w-[180px] sm:max-w-xs">
+              <span className="text-white/60 font-medium truncate max-w-[180px] sm:max-w-xs">
                 {tech.name}
               </span>
             </nav>
+
+            {/* Sector + Type chips */}
+            <div
+              className="flex flex-wrap gap-2 mb-5"
+              style={{ animation: 'slide-fade-in 0.5s ease-out 0.1s both' }}
+            >
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-400/25 backdrop-blur-sm">
+                <Layers className="w-3 h-3" /> {tech.sector}
+              </span>
+              {techTypes.map((t, i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-white/70 border border-white/15 backdrop-blur-sm"
+                >
+                  <FlaskConical className="w-3 h-3" /> {t}
+                </span>
+              ))}
+            </div>
+
+            {/* Main title */}
+            <h1
+              className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-6 font-heading tracking-tight max-w-3xl"
+              style={{
+                animation: 'slide-fade-in 0.6s ease-out 0.2s both',
+                textShadow: '0 0 80px rgba(99,102,241,0.25), 0 2px 20px rgba(0,0,0,0.4)',
+              }}
+            >
+              {tech.name}
+            </h1>
+
+            {/* Institution strip */}
+            <div
+              className="flex items-center gap-3 flex-wrap"
+              style={{ animation: 'slide-fade-in 0.6s ease-out 0.35s both' }}
+            >
+              <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white/10 border border-white/15 backdrop-blur-sm">
+                <MapPin className="w-3.5 h-3.5 text-white/50 flex-shrink-0" />
+                <Link
+                  href={`/institutions/${tech.institution_slug}`}
+                  className="text-sm font-semibold text-white/85 hover:text-white transition-colors"
+                >
+                  {tech.institution}
+                </Link>
+              </div>
+              <div className="flex items-center gap-1.5 px-2.5 py-2 rounded-md bg-white/5 border border-white/10">
+                <Atom className="w-3 h-3 text-white/30" />
+                <span className="text-xs text-white/40 font-mono tracking-wider">{tech.id}</span>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        {/* ── MAIN LAYOUT ──────────────────────────────────────── */}
+        {/* ═══════════════════════════════════════════════════════
+            MAIN CONTENT GRID
+        ═══════════════════════════════════════════════════════ */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
           <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-start">
 
-            {/* ═══════════════════════════════════════════════════
-                LEFT COLUMN — 70% — Narrative & Value Proposition
-            ═══════════════════════════════════════════════════ */}
+            {/* ── LEFT COLUMN — Narrative ── */}
             <div className="lg:col-span-7 space-y-6">
 
-              {/* ── Title Block ── */}
-              <div>
-                {/* Sector + Technology Type chips */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100">
-                    <Layers className="w-3 h-3" /> {tech.sector}
-                  </span>
-                  {techTypes.map((t, i) => (
-                    <span
-                      key={i}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200"
-                    >
-                      <FlaskConical className="w-3 h-3" /> {t}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Main title */}
-                <h1 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight mb-5 tracking-tight font-heading">
-                  {tech.name}
-                </h1>
-
-                {/* Institution strip */}
-                <div className="flex items-center gap-3 flex-wrap">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white border border-slate-200 shadow-sm">
-                    <MapPin className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                    <Link
-                      href={`/institutions/${tech.institution_slug}`}
-                      className="text-sm font-semibold text-slate-800 hover:text-blue-700 transition-colors"
-                    >
-                      {tech.institution}
-                    </Link>
-                  </div>
-                  <span className="text-xs text-slate-400 font-mono tracking-wider bg-slate-100 px-2.5 py-1.5 rounded-md">
-                    {tech.id}
-                  </span>
-                </div>
-              </div>
-
-              {/* ── Problem Solved — Callout Card (pain point tint) ── */}
-              <div className="rounded-2xl bg-amber-50 border border-amber-100 p-6"
-                style={{ boxShadow: '0 2px 12px rgba(245,158,11,0.08)' }}>
+              {/* Problem Solved — Amber Callout */}
+              <div
+                className="rounded-2xl bg-amber-50 border border-amber-100 p-6 animate-slide-fade-in"
+                style={{
+                  boxShadow: '0 2px 12px rgba(245,158,11,0.10)',
+                  animationDelay: '0.1s',
+                }}
+              >
                 <div className="flex items-start gap-3">
                   <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Lightbulb className="w-4.5 h-4.5 text-amber-600" />
@@ -224,26 +337,34 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                 </div>
               </div>
 
-              {/* ── Technology Description ── */}
+              {/* Technology Description */}
               {hasDesc && (
-                <div className="bg-white rounded-2xl border border-slate-100 p-6"
-                  style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)' }}>
+                <div
+                  className="bg-white rounded-2xl border border-slate-100 p-6 animate-slide-fade-in"
+                  style={{
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)',
+                    animationDelay: '0.2s',
+                  }}
+                >
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
                       <BookOpen className="w-4 h-4 text-blue-600" />
                     </div>
                     <h2 className="font-bold text-slate-900 font-heading">Technology Description</h2>
                   </div>
-                  <p className="text-slate-600 leading-relaxed text-[15px]">
-                    {tech.description}
-                  </p>
+                  <p className="text-slate-600 leading-relaxed text-[15px]">{tech.description}</p>
                 </div>
               )}
 
-              {/* ── Applications — Monetization Pathways ── */}
+              {/* Applications — Monetization Pathways */}
               {hasApps && (
-                <div className="bg-white rounded-2xl border border-slate-100 p-6"
-                  style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)' }}>
+                <div
+                  className="bg-white rounded-2xl border border-slate-100 p-6 animate-slide-fade-in"
+                  style={{
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)',
+                    animationDelay: '0.3s',
+                  }}
+                >
                   <div className="flex items-start gap-3 mb-5">
                     <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
                       <Zap className="w-4 h-4 text-emerald-600" />
@@ -260,6 +381,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                       <span
                         key={i}
                         className="inline-flex items-center px-3.5 py-2 rounded-xl text-sm font-medium bg-emerald-50 text-emerald-800 border border-emerald-100 hover:bg-emerald-100 hover:border-emerald-200 transition-colors cursor-default"
+                        style={{ animation: `slide-fade-in 0.3s ease-out ${0.3 + i * 0.06}s both` }}
                       >
                         {app}
                       </span>
@@ -268,39 +390,18 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                 </div>
               )}
 
-              {/* ── Keywords ── */}
-              {hasKeywords && (
-                <div className="bg-white rounded-2xl border border-slate-100 p-6"
-                  style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)' }}>
-                  <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">
-                    Keywords
-                  </h2>
-                  <div className="flex flex-wrap gap-2">
-                    {tech.keywords.map((kw, i) => (
-                      <Link
-                        key={i}
-                        href={`/technologies?q=${encodeURIComponent(kw)}`}
-                        className="px-3 py-1.5 bg-slate-50 border border-slate-200 text-slate-600 text-xs rounded-full hover:border-blue-200 hover:text-blue-700 hover:bg-blue-50 transition-colors"
-                      >
-                        {kw}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
 
-            {/* ═══════════════════════════════════════════════════
-                RIGHT COLUMN — 30% — Sticky Glassmorphic Panel
-            ═══════════════════════════════════════════════════ */}
+            {/* ── RIGHT COLUMN — Sticky Glassmorphic Panel ── */}
             <div className="lg:col-span-3">
               <div className="lg:sticky lg:top-24 space-y-4">
 
-                {/* ── Floating Glassmorphic Action Card ── */}
+                {/* Main Action Card — Glassmorphic */}
                 <div
                   className="rounded-2xl bg-white/80 backdrop-blur-md border border-white/60 p-6"
                   style={{
-                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.04), 0 20px 50px rgba(0,0,0,0.06), 0 0 0 1px rgba(255,255,255,0.8) inset',
+                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.04), 0 20px 50px rgba(0,0,0,0.07), inset 0 0 0 1px rgba(255,255,255,0.8)',
+                    animation: 'slide-fade-in 0.7s ease-out 0.2s both',
                   }}
                 >
 
@@ -354,14 +455,14 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                     </div>
                   </div>
 
-                  {/* ── Desktop CTA (hidden on mobile — see fixed bottom bar) ── */}
+                  {/* Desktop CTA Button with glow pulse animation */}
                   <div className="hidden lg:block">
                     <a
                       href={GOOGLE_FORM_URL}
                       target="_blank"
                       rel="noopener noreferrer"
                       id="request-technology-btn"
-                      className="group flex items-center justify-center gap-2 w-full py-4 px-6 rounded-xl bg-emerald-600 text-white font-bold text-[13px] tracking-wide hover:bg-emerald-700 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(5,150,105,0.35)] active:translate-y-0 transition-all duration-200"
+                      className="animate-glow-cta group flex items-center justify-center gap-2 w-full py-4 px-6 rounded-xl bg-emerald-600 text-white font-bold text-[13px] tracking-wide hover:bg-emerald-700 hover:-translate-y-0.5 active:translate-y-0 transition-transform duration-200"
                     >
                       <FileText className="w-4 h-4 flex-shrink-0" />
                       Request This Technology
@@ -371,11 +472,17 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                       Interested in commercializing this technology? Submit a request through RINK and our team will connect you with the relevant institution.
                     </p>
                   </div>
+
                 </div>
 
-                {/* ── RINK Contact Card ── */}
-                <div className="rounded-2xl bg-white border border-slate-100 p-5"
-                  style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)' }}>
+                {/* RINK Contact Card */}
+                <div
+                  className="rounded-2xl bg-white border border-slate-100 p-5"
+                  style={{
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)',
+                    animation: 'slide-fade-in 0.7s ease-out 0.35s both',
+                  }}
+                >
                   <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">
                     RINK Contact
                   </h3>
@@ -383,31 +490,22 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                     <div className="text-sm font-semibold text-slate-700 leading-snug">
                       Research Innovation Network Kerala
                     </div>
-                    <a
-                      href="mailto:rink@startupmission.in"
-                      className="flex items-center gap-2.5 text-sm text-slate-500 hover:text-blue-700 transition-colors"
-                    >
+                    <a href="mailto:rink@startupmission.in" className="flex items-center gap-2.5 text-sm text-slate-500 hover:text-blue-700 transition-colors">
                       <Mail className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" />
                       rink@startupmission.in
                     </a>
-                    <a
-                      href="tel:08047180470"
-                      className="flex items-center gap-2.5 text-sm text-slate-500 hover:text-blue-700 transition-colors"
-                    >
+                    <a href="tel:08047180470" className="flex items-center gap-2.5 text-sm text-slate-500 hover:text-blue-700 transition-colors">
                       <Phone className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" />
                       080 4718 0470
                     </a>
-                    <a
-                      href="tel:04712700270"
-                      className="flex items-center gap-2.5 text-sm text-slate-500 hover:text-blue-700 transition-colors"
-                    >
+                    <a href="tel:04712700270" className="flex items-center gap-2.5 text-sm text-slate-500 hover:text-blue-700 transition-colors">
                       <Phone className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" />
                       0471-2700270
                     </a>
                   </div>
                 </div>
 
-                {/* ── Institution Website ── */}
+                {/* Institution Website */}
                 {tech.institution_website && tech.institution_website !== 'Not Specified' && (
                   <a
                     href={tech.institution_website}
@@ -426,7 +524,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                   </a>
                 )}
 
-                {/* ── More from Institution ── */}
+                {/* More from Institution */}
                 <Link
                   href={`/institutions/${tech.institution_slug}`}
                   className="flex items-center justify-between w-full p-4 bg-white rounded-xl border border-slate-100 hover:border-blue-200 hover:shadow-sm transition-all group"

@@ -1,26 +1,51 @@
 /**
  * Skeleton Loader for Technology Detail Page
- * ─────────────────────────────────────────────
- * This runs automatically via Next.js App Router Suspense boundary
- * for the first ~1.5s while the server component fetches data
- * from the Google Sheet. Uses animate-pulse to simulate content.
+ * Mirrors the dark hero + content layout with animate-pulse blocks.
+ * Shown automatically by Next.js App Router Suspense while data loads.
  */
 
 export default function TechnologyDetailLoading() {
   return (
     <div className="min-h-screen bg-slate-50">
 
-      {/* Breadcrumb skeleton */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3">
-          <div className="flex items-center gap-2">
-            {[48, 8, 80, 8, 60, 8, 160].map((w, i) => (
+      {/* Dark hero skeleton */}
+      <div
+        className="relative overflow-hidden py-10"
+        style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2044 40%, #0d1a3a 70%, #071018 100%)' }}
+      >
+        {/* Dot grid */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-50"
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)',
+            backgroundSize: '36px 36px',
+          }}
+        />
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+          {/* Breadcrumb skeleton */}
+          <div className="flex items-center gap-2 mb-8">
+            {[36, 8, 64, 8, 52, 8, 140].map((w, i) => (
               <div
                 key={i}
-                className={`h-3 rounded bg-slate-200 animate-pulse flex-shrink-0 ${w === 8 ? 'w-2' : ''}`}
-                style={w !== 8 ? { width: w } : {}}
+                className="h-3 rounded bg-white/10 animate-pulse flex-shrink-0"
+                style={{ width: w === 8 ? 6 : w }}
               />
             ))}
+          </div>
+          {/* Chips */}
+          <div className="flex gap-2 mb-5">
+            <div className="h-6 w-28 rounded-full bg-blue-500/20 animate-pulse" />
+            <div className="h-6 w-20 rounded-full bg-white/10 animate-pulse" />
+          </div>
+          {/* Title */}
+          <div className="space-y-3 mb-6">
+            <div className="h-12 w-full max-w-2xl rounded-xl bg-white/10 animate-pulse" />
+            <div className="h-12 w-3/4 max-w-xl rounded-xl bg-white/10 animate-pulse" />
+          </div>
+          {/* Institution strip */}
+          <div className="flex gap-3">
+            <div className="h-9 w-52 rounded-lg bg-white/10 animate-pulse" />
+            <div className="h-9 w-28 rounded-md bg-white/5 animate-pulse" />
           </div>
         </div>
       </div>
