@@ -2,7 +2,7 @@
 
 import { Technology } from '@/types';
 import Link from 'next/link';
-import { Building2, ArrowRight, CheckCircle } from 'lucide-react';
+import { Building2, ArrowRight, CheckCircle, FlaskConical } from 'lucide-react';
 import TechImage from './TechImage';
 
 interface Props {
@@ -10,7 +10,15 @@ interface Props {
   compact?: boolean;
 }
 
+// Split comma-separated technology type string into individual tags
+function parseTechTypes(raw: string): string[] {
+  if (!raw || raw === 'Not Specified' || raw === 'NA' || raw === 'Information being updated') return [];
+  return raw.split(',').map(t => t.trim()).filter(t => t.length > 0 && t !== 'Not Specified' && t !== 'NA');
+}
+
 export default function TechnologyCard({ technology, compact = false }: Props) {
+  const techTypes = parseTechTypes(technology.technology_type);
+
   return (
     <Link href={`/technologies/${technology.id}`} className="block group" id={`tech-card-${technology.id}`}>
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden h-full flex flex-col hover:border-gray-200 hover:shadow-md transition-all duration-200">
@@ -22,7 +30,7 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
             alt={technology.name}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          {/* Sector pill — only if image exists */}
+          {/* Sector pill */}
           <div className="absolute bottom-3 left-3">
             <span className="inline-block px-2.5 py-1 rounded-full text-xs font-medium bg-white/90 text-gray-700 border border-gray-200 backdrop-blur-sm">
               {technology.sector}
@@ -45,6 +53,21 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
           <h3 className="font-heading font-bold text-gray-900 text-base leading-snug mb-3 group-hover:text-[#003F8A] transition-colors line-clamp-2">
             {technology.name}
           </h3>
+
+          {/* Technology Type chips — comma-split, each as its own tag */}
+          {techTypes.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {techTypes.map((t, i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center gap-1 text-[11px] font-medium text-gray-500 bg-gray-50 border border-gray-100 px-2 py-0.5 rounded-full"
+                >
+                  <FlaskConical className="w-2.5 h-2.5 text-gray-400 flex-shrink-0" />
+                  {t}
+                </span>
+              ))}
+            </div>
+          )}
 
           {/* Problem Solved */}
           {!compact && technology.problem_solved && technology.problem_solved !== 'Information being updated' && (

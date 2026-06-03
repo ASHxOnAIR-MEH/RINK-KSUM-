@@ -34,6 +34,34 @@ function InfoMissing() {
   return <span className="text-sm text-gray-400 italic">Information being updated</span>;
 }
 
+// Split a comma-separated Technology Type string into trimmed, non-empty, valid tags
+function parseTechTypes(raw: string): string[] {
+  if (!raw || raw === 'Not Specified' || raw === 'NA' || raw === 'Information being updated') return [];
+  return raw.split(',').map(t => t.trim()).filter(t => t.length > 0 && t !== 'Not Specified' && t !== 'NA');
+}
+
+// Render technology type chips inline (for header pills)
+function TechTypeChips({ value, size = 'sm' }: { value: string; size?: 'sm' | 'xs' }) {
+  const types = parseTechTypes(value);
+  if (types.length === 0) return null;
+  return (
+    <>
+      {types.map((t, i) => (
+        <span
+          key={i}
+          className={`inline-flex items-center gap-1.5 rounded-full font-medium bg-gray-50 text-gray-600 border border-gray-100 ${
+            size === 'xs'
+              ? 'px-2 py-1 text-[11px]'
+              : 'px-3 py-1.5 text-xs'
+          }`}
+        >
+          <FlaskConical className="w-3 h-3" /> {t}
+        </span>
+      ))}
+    </>
+  );
+}
+
 function DetailRow({ label, value, icon: Icon }: {
   label: string;
   value: string;
@@ -111,11 +139,8 @@ export default async function TechnologyDetailPage({ params }: Props) {
                   <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
                     <Layers className="w-3 h-3" /> {tech.sector}
                   </span>
-                  {tech.technology_type && tech.technology_type !== 'Not Specified' && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-50 text-gray-600 border border-gray-100">
-                      <FlaskConical className="w-3 h-3" /> {tech.technology_type}
-                    </span>
-                  )}
+                  {/* Technology Type — split by comma into chips */}
+                  <TechTypeChips value={tech.technology_type} />
                   {tech.patent_status && tech.patent_status !== 'Not Specified' && (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
                       <Shield className="w-3 h-3" /> {tech.patent_status}
@@ -261,7 +286,24 @@ export default async function TechnologyDetailPage({ params }: Props) {
               <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Technology Details</h2>
               <DetailRow label="Institution"      value={tech.institution}      icon={Building2} />
               <DetailRow label="Sector"           value={tech.sector}           icon={Layers} />
-              <DetailRow label="Technology Type"  value={tech.technology_type}  icon={FlaskConical} />
+              {/* Technology Type — comma-split chips in sidebar */}
+              <div className="flex items-start gap-3 py-3 border-b border-gray-50">
+                <FlaskConical className="w-4 h-4 text-gray-300 mt-0.5 flex-shrink-0" />
+                <div>
+                  <div className="text-xs text-gray-400 font-medium mb-1.5">Technology Type</div>
+                  {parseTechTypes(tech.technology_type).length > 0 ? (
+                    <div className="flex flex-wrap gap-1.5">
+                      {parseTechTypes(tech.technology_type).map((t, i) => (
+                        <span key={i} className="inline-block px-2.5 py-1 rounded-full text-xs font-medium bg-gray-50 text-gray-700 border border-gray-100">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <InfoMissing />
+                  )}
+                </div>
+              </div>
               <DetailRow label="Patent Status"    value={tech.patent_status}    icon={Shield} />
               <DetailRow label="TRL Level"        value={tech.trl}              icon={ChevronRight} />
             </div>

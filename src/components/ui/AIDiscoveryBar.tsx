@@ -40,10 +40,17 @@ function Bold({ text }: { text: string }) {
   );
 }
 
+// Split comma-separated technology type string into individual tags
+function parseTechTypes(raw: string): string[] {
+  if (!raw || raw === 'Not Specified' || raw === 'NA' || raw === 'Information being updated') return [];
+  return raw.split(',').map(t => t.trim()).filter(t => t.length > 0 && t !== 'Not Specified' && t !== 'NA');
+}
+
 // ── Single result card ────────────────────────────────────────
 function ResultCard({ r }: { r: AISearchResult }) {
   const tech = r.technology;
   const pot = POT[tech.startup_potential] ?? POT['Not Specified'];
+  const techTypes = parseTechTypes(tech.technology_type);
 
   return (
     <div
@@ -63,11 +70,12 @@ function ResultCard({ r }: { r: AISearchResult }) {
         <span className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100">
           <Layers size={10} className="text-gray-400" /> {tech.sector}
         </span>
-        {tech.technology_type && tech.technology_type !== 'Not Specified' && (
-          <span className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100">
-            <FlaskConical size={10} className="text-gray-400" /> {tech.technology_type}
+        {/* Technology Type — each value as its own chip */}
+        {techTypes.map((t, i) => (
+          <span key={i} className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100">
+            <FlaskConical size={10} className="text-gray-400" /> {t}
           </span>
-        )}
+        ))}
       </div>
 
       {/* Footer */}
@@ -91,6 +99,7 @@ function ResultCard({ r }: { r: AISearchResult }) {
     </div>
   );
 }
+
 
 // ── Main AI Discovery Bar ─────────────────────────────────────
 export default function AIDiscoveryBar() {
