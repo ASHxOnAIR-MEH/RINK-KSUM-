@@ -23,10 +23,10 @@ const QUICK_ACTIONS = [
 
 // ── Startup Potential Badge ───────────────────────────────────
 const POTENTIAL_STYLE: Record<string, { bg: string; text: string; label: string }> = {
-  'High':          { bg: '#dcfce7', text: '#15803d', label: '⭐ High Potential' },
-  'Medium':        { bg: '#fef9c3', text: '#854d0e', label: '◉ Medium Potential' },
-  'Low':           { bg: '#fee2e2', text: '#991b1b', label: '○ Low Potential' },
-  'Not Specified': { bg: '#f3f4f6', text: '#6b7280', label: '— Unspecified' },
+  'High':          { bg: '#dcfce7', text: '#15803d', label: '● Recommended' },
+  'Medium':        { bg: '#eff6ff', text: '#1d4ed8', label: '● Featured' },
+  'Low':           { bg: '#f8fafc', text: '#64748b', label: '● Listed' },
+  'Not Specified': { bg: '#f8fafc', text: '#94a3b8', label: '○ Not Evaluated' },
 };
 
 // ── Message types ─────────────────────────────────────────────

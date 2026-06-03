@@ -150,7 +150,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
         ═══════════════════════════════════════════════════════ */}
         <div
           className="relative overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, #0a1628 0%, #0f2044 40%, #0d1a3a 70%, #071018 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #060e1c 0%, #0c1d3d 45%, #0a1530 75%, #060e1c 100%)' }}
         >
           {/* ── Dot grid overlay ── */}
           <div
@@ -232,7 +232,14 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
           />
 
           {/* ── Content ── */}
-          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-12">
+          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-14">
+            {/* Dark text-protection scrim — guarantees readability behind title */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: 'linear-gradient(to right, rgba(6,14,28,0.65) 0%, rgba(6,14,28,0.30) 60%, transparent 100%)',
+              }}
+            />
 
             {/* Breadcrumb */}
             <nav className="flex items-center gap-1.5 text-xs text-white/55 flex-wrap mb-8 animate-slide-fade-in">
@@ -269,12 +276,18 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
               ))}
             </div>
 
-            {/* Main title */}
+            {/* Main title — maximum contrast, always readable */}
             <h1
-              className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-6 font-heading tracking-tight max-w-3xl"
+              className="text-3xl md:text-4xl lg:text-[2.75rem] font-black leading-tight mb-6 font-heading tracking-tight max-w-3xl"
               style={{
                 animation: 'slide-fade-in 0.6s ease-out 0.2s both',
-                textShadow: '0 0 60px rgba(99,102,241,0.4), 0 2px 24px rgba(0,0,0,0.6), 0 0 120px rgba(59,130,246,0.2)',
+                color: '#FFFFFF',
+                textShadow: [
+                  '0 1px 2px rgba(0,0,0,0.9)',
+                  '0 2px 8px rgba(0,0,0,0.8)',
+                  '0 4px 20px rgba(0,0,0,0.6)',
+                  '0 0 40px rgba(0,0,0,0.4)',
+                ].join(', '),
               }}
             >
               {tech.name}

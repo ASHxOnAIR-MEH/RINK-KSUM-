@@ -18,12 +18,12 @@ const QUICK_PROMPTS = [
   { icon: '🏭', label: 'Manufacturing',              query: 'manufacturing industrial machinery technologies' },
 ];
 
-// ── Startup potential badge ───────────────────────────────────
-const POT: Record<string, { bg: string; text: string; dot: string }> = {
-  'High':          { bg: '#dcfce7', text: '#15803d', dot: '#22c55e' },
-  'Medium':        { bg: '#fef9c3', text: '#854d0e', dot: '#eab308' },
-  'Low':           { bg: '#fee2e2', text: '#991b1b', dot: '#ef4444' },
-  'Not Specified': { bg: '#f3f4f6', text: '#6b7280', dot: '#9ca3af' },
+// ── Startup potential badge ───────────────────────────────────────────
+const POT: Record<string, { bg: string; text: string; dot: string; label: string }> = {
+  'High':          { bg: '#dcfce7', text: '#15803d', dot: '#22c55e', label: 'Recommended' },
+  'Medium':        { bg: '#eff6ff', text: '#1d4ed8', dot: '#3b82f6', label: 'Featured' },
+  'Low':           { bg: '#f8fafc', text: '#64748b', dot: '#94a3b8', label: 'Listed' },
+  'Not Specified': { bg: '#f8fafc', text: '#94a3b8', dot: '#cbd5e1', label: 'Not Evaluated' },
 };
 
 // ── Parse **bold** markdown ───────────────────────────────────
@@ -85,7 +85,7 @@ function ResultCard({ r }: { r: AISearchResult }) {
           style={{ background: pot.bg, color: pot.text }}
         >
           <span className="w-1.5 h-1.5 rounded-full" style={{ background: pot.dot }} />
-          {tech.startup_potential} Potential
+          {pot.label}
         </span>
 
         <Link

@@ -108,10 +108,10 @@ export default function StartupDiscoveryClient({
         {!displayedSector && (
           <div className="mb-6">
             <h2 className="text-xl font-heading font-bold text-gray-900 mb-1">
-              High-Potential Technologies
+              Recommended Technologies
             </h2>
             <p className="text-sm text-gray-500">
-              Select a sector above to filter, or explore these high-startup-potential technologies
+              Select a sector above to filter, or explore recommended technologies from the RINK database
             </p>
           </div>
         )}
