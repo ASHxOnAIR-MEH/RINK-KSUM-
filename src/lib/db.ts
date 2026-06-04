@@ -85,14 +85,22 @@ export async function searchTechnologies(
   return { technologies: paginated, total, page, per_page: perPage };
 }
 
+// ── Sort by startup potential: High → Medium → Low ─────────
+function sortByPotential(techs: Technology[]): Technology[] {
+  const order = { 'High': 0, 'Medium': 1, 'Low': 2, 'Not Specified': 3 };
+  return [...techs].sort(
+    (a, b) => (order[a.startup_potential] ?? 3) - (order[b.startup_potential] ?? 3)
+  );
+}
+
 export async function getTechnologiesBySector(sectorSlug: string): Promise<Technology[]> {
   const techs = await fetchAllTechnologies();
-  return techs.filter(t => t.sector_slug === sectorSlug);
+  return sortByPotential(techs.filter(t => t.sector_slug === sectorSlug));
 }
 
 export async function getTechnologiesByInstitution(institutionSlug: string): Promise<Technology[]> {
   const techs = await fetchAllTechnologies();
-  return techs.filter(t => t.institution_slug === institutionSlug);
+  return sortByPotential(techs.filter(t => t.institution_slug === institutionSlug));
 }
 
 // ── Sectors ───────────────────────────────────────────────────

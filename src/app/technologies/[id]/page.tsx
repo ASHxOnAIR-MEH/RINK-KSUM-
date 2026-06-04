@@ -4,7 +4,7 @@ import Link from 'next/link';
 import {
   MapPin, Shield, ChevronRight, ExternalLink,
   Mail, Phone, BookOpen, Lightbulb, Zap,
-  Globe, FlaskConical, Layers, FileText, ArrowRight, Atom, Building2, Target
+  Globe, FlaskConical, Layers, FileText, ArrowRight, Atom
 } from 'lucide-react';
 
 const GOOGLE_FORM_URL =
@@ -118,26 +118,6 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
   const techTypes = parseTechTypes(tech.technology_type);
   const hasApps   = tech.applications.length > 0 && tech.applications[0] !== 'Information being updated';
   const hasDesc   = tech.description && tech.description !== 'Information being updated';
-
-  // ── Derive target industries from sector + keywords ──────────
-  // Since the sheet has no separate "Target Industries" column,
-  // we infer industry targets from the sector name and keywords.
-  const SECTOR_INDUSTRIES: Record<string, string[]> = {
-    'food-technology':                          ['Food & Beverage Industry', 'Food Processing Enterprises', 'Agri-Food Startups', 'Packaging Industry', 'Nutraceutical Manufacturers'],
-    'agriculture':                              ['Farming Enterprises', 'Agri-Tech Startups', 'Farmer Producer Organizations (FPOs)', 'Agricultural Research Institutes', 'Rural Development Bodies'],
-    'medtech-health-care':                      ['Healthcare Providers', 'Diagnostic Companies', 'Medical Device Manufacturers', 'Digital Health Startups', 'Pharmaceutical Enterprises'],
-    'biotechnology-life-sciences':              ['Biotech Companies', 'Pharmaceutical Manufacturers', 'Research Laboratories', 'Life Sciences Startups', 'Agricultural Biotech Firms'],
-    'energy-climate-sustainability':            ['Renewable Energy Companies', 'Climate Tech Startups', 'Government Energy Agencies', 'Industrial Manufacturers', 'Infrastructure Developers'],
-    'digital-technologies-ai-software':         ['IT & Software Companies', 'AI Startups', 'E-Governance Bodies', 'Financial Services', 'Enterprise Technology Providers'],
-    'digital-technologies-al-software':         ['IT & Software Companies', 'AI Startups', 'E-Governance Bodies', 'Financial Services', 'Enterprise Technology Providers'],
-    'advanced-materials-chemicals':             ['Chemical Manufacturers', 'Materials Science Companies', 'Construction Industry', 'Defence & Aerospace', 'Electronics Manufacturers'],
-    'consumer-products-cosmetics-lifestyle':    ['Cosmetics & Personal Care Industry', 'Wellness Brands', 'FMCG Companies', 'Retail Enterprises', 'Direct-to-Consumer Startups'],
-    'water-environment-waste-management':       ['Water Treatment Companies', 'Municipal Corporations', 'Environmental Agencies', 'Industrial Effluent Plants', 'Recycling Enterprises'],
-    'infrastructure-construction-smart-cities': ['Construction Companies', 'Smart City Authorities', 'Urban Planning Bodies', 'Real Estate Developers', 'Infrastructure Agencies'],
-    'robotics-automation-drones':               ['Manufacturing Industry', 'Defence & Security', 'Logistics Companies', 'Agriculture Automation Firms', 'Industrial Enterprises'],
-    'manufacturing-industrial-technologies':    ['Manufacturing Companies', 'Industrial Enterprises', 'SMEs & MSMEs', 'Export-Oriented Units', 'Industrial Parks'],
-  };
-  const targetIndustries = SECTOR_INDUSTRIES[tech.sector_slug] ?? [];
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -424,41 +404,6 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                       >
                         <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
                         <span className="text-[15px] text-slate-700 leading-relaxed">{app}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Target Industries — inferred from sector */}
-              {targetIndustries.length > 0 && (
-                <div
-                  className="bg-white rounded-2xl border border-slate-100 p-6 animate-slide-fade-in"
-                  style={{
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)',
-                    animationDelay: '0.4s',
-                  }}
-                >
-                  <div className="flex items-start gap-3 mb-5">
-                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                      <Building2 className="w-4 h-4 text-blue-600" />
-                    </div>
-                    <div>
-                      <h2 className="font-bold text-slate-900 font-heading">Target Industries</h2>
-                      <p className="text-xs text-slate-400 mt-0.5">
-                        Industry sectors that can adopt this technology
-                      </p>
-                    </div>
-                  </div>
-                  <ul className="space-y-2.5">
-                    {targetIndustries.map((industry, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2.5"
-                        style={{ animation: `slide-fade-in 0.3s ease-out ${0.4 + i * 0.07}s both` }}
-                      >
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />
-                        <span className="text-[15px] text-slate-700 leading-relaxed">{industry}</span>
                       </li>
                     ))}
                   </ul>

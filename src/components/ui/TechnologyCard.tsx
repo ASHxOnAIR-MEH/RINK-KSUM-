@@ -36,6 +36,15 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
               {technology.sector}
             </span>
           </div>
+          {/* ⭐ Featured badge — only for High startup potential (internal only) */}
+          {technology.startup_potential === 'High' && (
+            <div className="absolute top-3 right-3">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold shadow-sm"
+                style={{ background: 'rgba(217,119,6,0.92)', color: '#fff' }}>
+                ★ Featured
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Body */}
