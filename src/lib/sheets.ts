@@ -206,7 +206,10 @@ function rowToTechnology(row: string[], idx: number): Technology | null {
 
   const applicationsRaw = (row[7] || '').trim();
   const applications = applicationsRaw
-    ? applicationsRaw.split(/[,;]/).map(a => a.trim()).filter(Boolean)
+    ? applicationsRaw
+        .split(/[\n\r]+|[,;]/)   // split on newlines first, then comma/semicolon
+        .map(a => a.trim())
+        .filter(a => a.length > 0)
     : [];
 
   const sectorSlug = toSlug(sector);

@@ -249,20 +249,15 @@ export default async function HomePage() {
       <section className="py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-end justify-between mb-10">
-            <div>
-              <div className="text-xs font-semibold text-[#003F8A] uppercase tracking-widest mb-3">
-                Featured Technologies
-              </div>
-              <h2 className="text-2xl md:text-3xl font-heading font-bold text-gray-900">
-                Ready for Commercialization
-              </h2>
-            </div>
+            <h2 className="text-2xl md:text-3xl font-heading font-bold text-gray-900">
+              Featured Technologies
+            </h2>
             <Link
               href="/technologies"
               className="hidden md:flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#003F8A] transition-colors"
               id="all-technologies-link"
             >
-              Browse all {stats.technology_count}+ <ArrowRight className="w-4 h-4" />
+              Browse all technologies <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
