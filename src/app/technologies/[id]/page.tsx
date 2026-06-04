@@ -231,18 +231,19 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
             }}
           />
 
+          {/* ── Full-coverage dark scrim — applied on the entire hero section ── */}
+          <div
+            className="absolute inset-0 pointer-events-none z-[1]"
+            style={{
+              background: 'linear-gradient(160deg, rgba(4,9,20,0.82) 0%, rgba(6,14,28,0.70) 40%, rgba(8,18,40,0.50) 70%, rgba(4,9,20,0.40) 100%)',
+            }}
+          />
+
           {/* ── Content ── */}
           <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-14">
-            {/* Dark text-protection scrim — guarantees readability behind title */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background: 'linear-gradient(to right, rgba(6,14,28,0.65) 0%, rgba(6,14,28,0.30) 60%, transparent 100%)',
-              }}
-            />
 
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-xs text-white/55 flex-wrap mb-8 animate-slide-fade-in">
+            <nav className="flex items-center gap-1.5 text-xs text-white/60 flex-wrap mb-8 animate-slide-fade-in">
               <Link href="/" className="hover:text-white transition-colors font-medium">Home</Link>
               <ChevronRight className="w-3 h-3 flex-shrink-0 text-white/30" />
               <Link href="/startup-discovery" className="hover:text-white transition-colors">
@@ -253,52 +254,57 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                 {tech.sector}
               </Link>
               <ChevronRight className="w-3 h-3 flex-shrink-0 text-white/30" />
-              <span className="text-white/80 font-semibold truncate max-w-[180px] sm:max-w-xs">
+              <span className="text-white/85 font-semibold truncate max-w-[200px] sm:max-w-sm">
                 {tech.name}
               </span>
             </nav>
 
             {/* Sector + Type chips */}
             <div
-              className="flex flex-wrap gap-2 mb-5"
+              className="flex flex-wrap gap-2 mb-6"
               style={{ animation: 'slide-fade-in 0.5s ease-out 0.1s both' }}
             >
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-blue-500/40 text-blue-100 border border-blue-400/50 backdrop-blur-sm shadow-sm">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-blue-500/50 text-white border border-blue-300/40 backdrop-blur-sm shadow-sm">
                 <Layers className="w-3 h-3" /> {tech.sector}
               </span>
               {techTypes.map((t, i) => (
                 <span
                   key={i}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/15 text-white border border-white/30 backdrop-blur-sm shadow-sm"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/20 text-white border border-white/35 backdrop-blur-sm shadow-sm"
                 >
-                  <FlaskConical className="w-3 h-3 text-white/70" /> {t}
+                  <FlaskConical className="w-3 h-3 text-white/80" /> {t}
                 </span>
               ))}
             </div>
 
-            {/* Main title — maximum contrast, always readable */}
-            <h1
-              className="text-3xl md:text-4xl lg:text-[2.75rem] font-black leading-tight mb-6 font-heading tracking-tight max-w-3xl"
-              style={{
-                animation: 'slide-fade-in 0.6s ease-out 0.2s both',
-                color: '#FFFFFF',
-                textShadow: [
-                  '0 1px 2px rgba(0,0,0,0.9)',
-                  '0 2px 8px rgba(0,0,0,0.8)',
-                  '0 4px 20px rgba(0,0,0,0.6)',
-                  '0 0 40px rgba(0,0,0,0.4)',
-                ].join(', '),
-              }}
+            {/* ── Main Title Block — dedicated elevated panel for maximum readability ── */}
+            <div
+              className="mb-7 rounded-xl p-1"
+              style={{ animation: 'slide-fade-in 0.6s ease-out 0.2s both' }}
             >
-              {tech.name}
-            </h1>
+              <h1
+                className="text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.15] font-heading tracking-tight"
+                style={{
+                  color: '#FFFFFF',
+                  /* Multi-layer shadow stack: crisp edge + depth + wide glow */
+                  textShadow: [
+                    '0 1px 1px rgba(0,0,0,1)',
+                    '0 2px 6px rgba(0,0,0,0.95)',
+                    '0 4px 16px rgba(0,0,0,0.85)',
+                    '0 8px 32px rgba(0,0,0,0.70)',
+                  ].join(', '),
+                }}
+              >
+                {tech.name}
+              </h1>
+            </div>
 
             {/* Institution strip */}
             <div
               className="flex items-center gap-3 flex-wrap"
               style={{ animation: 'slide-fade-in 0.6s ease-out 0.35s both' }}
             >
-              <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white/15 border border-white/25 backdrop-blur-sm">
+              <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-black/30 border border-white/20 backdrop-blur-sm">
                 <MapPin className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                 <Link
                   href={`/institutions/${tech.institution_slug}`}
@@ -307,9 +313,9 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                   {tech.institution}
                 </Link>
               </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-2 rounded-md bg-white/8 border border-white/15">
-                <Atom className="w-3 h-3 text-white/50" />
-                <span className="text-xs text-white/60 font-mono tracking-wider">{tech.id}</span>
+              <div className="flex items-center gap-1.5 px-2.5 py-2 rounded-md bg-black/25 border border-white/15">
+                <Atom className="w-3 h-3 text-white/55" />
+                <span className="text-xs text-white/65 font-mono tracking-wider">{tech.id}</span>
               </div>
             </div>
 
@@ -369,7 +375,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                 </div>
               )}
 
-              {/* Applications — Monetization Pathways */}
+              {/* Applications */}
               {hasApps && (
                 <div
                   className="bg-white rounded-2xl border border-slate-100 p-6 animate-slide-fade-in"
@@ -383,9 +389,9 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                       <Zap className="w-4 h-4 text-emerald-600" />
                     </div>
                     <div>
-                      <h2 className="font-bold text-slate-900 font-heading">Monetization Pathways</h2>
+                      <h2 className="font-bold text-slate-900 font-heading">Applications</h2>
                       <p className="text-xs text-slate-400 mt-0.5">
-                        Market verticals where this technology can be commercialized
+                        Potential application areas for this technology
                       </p>
                     </div>
                   </div>
