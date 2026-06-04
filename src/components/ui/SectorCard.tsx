@@ -65,43 +65,68 @@ export default function SectorCard({ sector }: Props) {
           />
         )}
 
-        {/* Dark overlay for text readability (60–70% opacity) */}
+        {/* ── Layer 1: gradient overlay (bottom-heavy dark) ── */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.50) 50%, rgba(0,0,0,0.20) 100%)',
+            background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.60) 45%, rgba(0,0,0,0.35) 100%)',
           }}
         />
 
-        {/* Hover colour tint (reveals sector colour on hover) */}
+        {/* ── Layer 2: flat uniform scrim — guarantees readability everywhere ── */}
         <div
-          className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-30 transition-opacity duration-300"
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'rgba(0,0,0,0.30)' }}
+        />
+
+        {/* Hover colour tint */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-20 transition-opacity duration-300"
           style={{ background: sector.color }}
         />
 
-        {/* Content — sits above overlay */}
+        {/* Content — sits above all overlays */}
         <div className="relative z-10 p-4">
-          {/* Icon */}
+
+          {/* Icon — glassmorphic badge */}
           <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center mb-2.5 backdrop-blur-sm"
-            style={{ background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.25)' }}
+            className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
+            style={{
+              background: 'rgba(255,255,255,0.22)',
+              border: '1.5px solid rgba(255,255,255,0.40)',
+              backdropFilter: 'blur(6px)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+            }}
           >
-            {getSectorIcon(sector.slug, '#ffffff', 16)}
+            {getSectorIcon(sector.slug, '#ffffff', 18)}
           </div>
 
-          {/* Name */}
-          <h3 className="font-heading font-bold text-white text-sm leading-snug mb-1.5"
-            style={{ textShadow: '0 1px 4px rgba(0,0,0,0.7)' }}>
+          {/* Sector name — pure white, bold, always visible */}
+          <h3
+            className="font-heading font-bold text-sm leading-snug mb-2"
+            style={{
+              color: '#FFFFFF',
+              fontWeight: 700,
+              textShadow: '0 1px 2px rgba(0,0,0,1), 0 2px 8px rgba(0,0,0,0.9), 0 4px 16px rgba(0,0,0,0.7)',
+            }}
+          >
             {sector.name}
           </h3>
 
-          {/* Footer row */}
+          {/* Footer row — count + arrow */}
           <div className="flex items-center justify-between">
-            <span className="text-[11px] text-white/75 font-medium">
+            <span
+              className="text-[11px] font-semibold"
+              style={{
+                color: 'rgba(255,255,255,0.92)',
+                textShadow: '0 1px 4px rgba(0,0,0,0.9)',
+              }}
+            >
               {sector.tech_count} {sector.tech_count === 1 ? 'technology' : 'technologies'}
             </span>
             <ArrowRight
-              className="w-3.5 h-3.5 text-white/70 group-hover:text-white group-hover:translate-x-0.5 transition-all duration-200"
+              className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-all duration-200"
+              style={{ color: 'rgba(255,255,255,0.85)' }}
             />
           </div>
         </div>
