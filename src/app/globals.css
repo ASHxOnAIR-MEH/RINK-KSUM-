@@ -537,9 +537,15 @@ h1, h2, h3, h4, h5, h6 {
   .card,
   .sector-card,
   .filter-sidebar,
-  .modal-box {
+  .modal-box,
+  .search-input {
     background-color: var(--bg-card) !important;
     border-color: var(--border-card) !important;
+  }
+
+  .search-input:focus {
+    border-color: var(--color-brand-blue) !important;
+    box-shadow: 0 0 0 4px rgba(0, 63, 138, 0.25) !important;
   }
 
   .hover\:border-gray-200:hover,
@@ -606,13 +612,18 @@ h1, h2, h3, h4, h5, h6 {
     border-color: var(--border-navbar) !important;
   }
 
-  /* Darken inputs / dropdown lists */
-  select,
-  input,
-  textarea {
+  /* Darken inputs / dropdown lists (excluding transparent elements) */
+  select:not(.bg-transparent),
+  input:not(.bg-transparent),
+  textarea:not(.bg-transparent) {
     background-color: var(--bg-select) !important;
     color: var(--text-select) !important;
     border-color: var(--border-input) !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-muted) !important;
   }
   
   /* Suggestion search lists */
@@ -701,9 +712,16 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   /* Explicit light inputs values */
-  select, input, textarea {
+  select:not(.bg-transparent),
+  input:not(.bg-transparent),
+  textarea:not(.bg-transparent) {
     background-color: #FFFFFF;
     color: #0F172A;
     border-color: #E2E8F0;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #94A3B8 !important;
   }
 }

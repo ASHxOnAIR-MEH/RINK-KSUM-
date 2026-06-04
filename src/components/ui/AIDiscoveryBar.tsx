@@ -161,68 +161,72 @@ export default function AIDiscoveryBar() {
     <div className="w-full">
 
       {/* ── Search box ── */}
-      <form onSubmit={handleSubmit} className="relative">
-        <div
-          className="relative flex items-center rounded-2xl overflow-hidden transition-all duration-300"
-          style={{
-            background: 'white',
-            border: '2px solid',
-            borderColor: loading ? '#003F8A' : result ? '#003F8A40' : '#e0e7ff',
-            boxShadow: loading
-              ? '0 0 0 4px rgba(0,63,138,0.12), 0 4px 24px rgba(0,63,138,0.15)'
-              : '0 4px 24px rgba(0,63,138,0.10)',
-          }}
-        >
-          {/* Search Icon */}
-          <div className="pl-5 pr-3 flex-shrink-0">
-            {loading
-              ? <Loader2 size={20} className="text-[#003F8A] animate-spin" />
-              : <Search size={20} className="text-gray-400" />
-            }
+      <form onSubmit={handleSubmit} className="w-full">
+        <div className="flex flex-col sm:flex-row items-stretch w-full gap-3 sm:gap-0 rounded-2xl overflow-hidden shadow-lg transition-all duration-300">
+          {/* Input container */}
+          <div
+            className={`flex-1 flex items-center bg-white border-2 rounded-2xl sm:rounded-r-none sm:border-r-0 px-4 py-3.5 transition-all duration-300 focus-within:ring-4 focus-within:ring-brand-blue/10 ${
+              loading
+                ? 'border-[#003F8A]'
+                : result
+                ? 'border-[#003F8A]/30'
+                : 'border-gray-200'
+            }`}
+          >
+            {/* Search Icon */}
+            <div className="mr-3 flex-shrink-0">
+              {loading ? (
+                <Loader2 size={20} className="text-[#003F8A] animate-spin" />
+              ) : (
+                <Search size={20} className="text-gray-400" />
+              )}
+            </div>
+
+            {/* Input */}
+            <input
+              ref={inputRef}
+              type="text"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder="Describe your startup idea, industry, or challenge..."
+              className="flex-1 w-full min-w-0 bg-transparent text-gray-800 text-[15px] outline-none placeholder-gray-400 border-none p-0"
+              style={{ fontFamily: 'inherit' }}
+              disabled={loading}
+              id="ai-discovery-input"
+            />
+
+            {/* Reset */}
+            {(result || query) && !loading && (
+              <button
+                type="button"
+                onClick={handleReset}
+                className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors flex-shrink-0"
+                title="Clear search"
+              >
+                <RotateCcw size={15} />
+              </button>
+            )}
           </div>
-
-          {/* Input */}
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            placeholder="Describe your startup idea, industry, or challenge..."
-            className="flex-1 py-4 pr-4 text-gray-800 text-[15px] bg-transparent outline-none placeholder-gray-400"
-            style={{ fontFamily: 'inherit' }}
-            disabled={loading}
-            id="ai-discovery-input"
-          />
-
-          {/* Reset */}
-          {(result || query) && !loading && (
-            <button
-              type="button"
-              onClick={handleReset}
-              className="mr-3 p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors flex-shrink-0"
-              title="Clear search"
-            >
-              <RotateCcw size={15} />
-            </button>
-          )}
 
           {/* Submit */}
           <button
             type="submit"
             disabled={!query.trim() || loading}
-            className="flex-shrink-0 mr-2 flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm transition-all duration-200"
+            className={`flex-shrink-0 flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl sm:rounded-l-none font-semibold text-sm transition-all duration-200 border-2 border-transparent ${
+              query.trim() && !loading
+                ? 'text-white'
+                : 'bg-gray-200 text-gray-400'
+            }`}
             style={{
               background: query.trim() && !loading
                 ? 'linear-gradient(135deg, #003F8A 0%, #0055AA 100%)'
-                : '#e5e7eb',
-              color: query.trim() && !loading ? 'white' : '#9ca3af',
+                : undefined,
               cursor: query.trim() && !loading ? 'pointer' : 'not-allowed',
             }}
             id="ai-discover-btn"
           >
             <Search size={15} />
-            <span className="hidden sm:inline">Find Technologies</span>
-            <span className="sm:hidden">Search</span>
+            <span>Find Technologies</span>
           </button>
         </div>
       </form>
