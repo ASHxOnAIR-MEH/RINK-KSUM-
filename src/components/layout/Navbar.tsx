@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import ThemeToggle from './ThemeToggle';
 
 const NAV_LINKS = [
   { label: 'Home',              href: '/' },
@@ -64,31 +65,38 @@ export default function Navbar() {
           </Link>
 
           {/* ── Desktop Nav ── */}
-          <div className="hidden md:flex items-center gap-1">
-            {NAV_LINKS.map(link => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={clsx(
-                  'px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150',
-                  pathname === link.href
-                    ? 'text-[#003F8A] bg-blue-50'
-                    : 'text-gray-600 hover:text-[#003F8A] hover:bg-gray-50'
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
+          <div className="hidden md:flex items-center gap-4">
+            <div className="flex items-center gap-1">
+              {NAV_LINKS.map(link => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={clsx(
+                    'px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150',
+                    pathname === link.href
+                      ? 'text-[#003F8A] bg-blue-50'
+                      : 'text-gray-600 hover:text-[#003F8A] hover:bg-gray-50'
+                  )}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+            <div className="w-px h-6 bg-gray-200" />
+            <ThemeToggle />
           </div>
 
           {/* ── Mobile menu button ── */}
-          <button
-            className="md:hidden p-2 text-gray-600 hover:text-[#003F8A] hover:bg-gray-50 rounded-lg transition-all"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Menu"
-          >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          <div className="flex items-center gap-2 md:hidden">
+            <ThemeToggle />
+            <button
+              className="p-2 text-gray-600 hover:text-[#003F8A] hover:bg-gray-50 rounded-lg transition-all"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Menu"
+            >
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
 
         {/* ── Mobile Menu ── */}

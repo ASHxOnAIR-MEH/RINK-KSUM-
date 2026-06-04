@@ -6,7 +6,64 @@
    Kerala Startup Mission Style
    ============================================================ */
 
+:root {
+  /* DARK MODE (Default Theme for first-time visitors and presentations) */
+  --bg-app: #060e1a; /* Deep technology blue background */
+  --bg-card: #0c1527; /* Slightly lighter blue-black for cards */
+  --bg-card-hover: #121f37;
+  --border-card: rgba(255, 255, 255, 0.08);
+  --border-card-hover: rgba(255, 255, 255, 0.16);
+  --text-title: #FFFFFF; /* White headings */
+  --text-body: rgba(255, 255, 255, 0.7); /* Readable text */
+  --text-muted: rgba(255, 255, 255, 0.45);
+  --bg-navbar: rgba(6, 14, 26, 0.85);
+  --border-navbar: rgba(255, 255, 255, 0.08);
+  --bg-section: #081120;
+  --bg-badge-gray: rgba(255, 255, 255, 0.08);
+  --text-badge-gray: rgba(255, 255, 255, 0.7);
+  --bg-select: #0c1527;
+  --text-select: #FFFFFF;
+  --border-input: rgba(255, 255, 255, 0.12);
+}
+
+:root.light {
+  /* LIGHT MODE Theme */
+  --bg-app: #F7F9FC; /* Light professional background */
+  --bg-card: #FFFFFF; /* White cards */
+  --bg-card-hover: #FFFFFF;
+  --border-card: #E2E8F0; /* Soft borders */
+  --border-card-hover: rgba(0, 63, 138, 0.2);
+  --text-title: #0F172A; /* Dark headings */
+  --text-body: #475569;
+  --text-muted: #94A3B8;
+  --bg-navbar: rgba(255, 255, 255, 0.95);
+  --border-navbar: #E2E8F0;
+  --bg-section: #F8FAFF;
+  --bg-badge-gray: #F1F5F9;
+  --text-badge-gray: #475569;
+  --bg-select: #FFFFFF;
+  --text-select: #0F172A;
+  --border-input: #E2E8F0;
+}
+
 @theme inline {
+  /* Dynamic Theme Colors */
+  --color-bg-app:            var(--bg-app);
+  --color-bg-card:           var(--bg-card);
+  --color-bg-card-hover:     var(--bg-card-hover);
+  --color-border-card:       var(--border-card);
+  --color-border-card-hover: var(--border-card-hover);
+  --color-text-title:        var(--text-title);
+  --color-text-body:         var(--text-body);
+  --color-text-muted:        var(--text-muted);
+  --color-bg-navbar:         var(--bg-navbar);
+  --color-border-navbar:     var(--border-navbar);
+  --color-bg-section:        var(--bg-section);
+  --color-bg-badge-gray:     var(--bg-badge-gray);
+  --color-text-badge-gray:   var(--text-badge-gray);
+  --color-bg-select:         var(--bg-select);
+  --color-text-select:       var(--text-select);
+
   /* Brand Colors */
   --color-brand-blue:      #003F8A;
   --color-brand-blue-dark: #002D6B;
@@ -18,15 +75,15 @@
   --color-brand-gold:      #F59E0B;
   --color-brand-gold-light:#FEF3C7;
 
-  /* Grays */
-  --color-surface:         #FFFFFF;
-  --color-surface-2:       #F8FAFF;
-  --color-surface-3:       #F1F5F9;
-  --color-border:          #E2E8F0;
-  --color-border-dark:     #CBD5E1;
-  --color-text-primary:    #0F172A;
-  --color-text-secondary:  #475569;
-  --color-text-muted:      #94A3B8;
+  /* Grays fallback (Theme-dependent values preferred) */
+  --color-surface:         var(--bg-card);
+  --color-surface-2:       var(--bg-section);
+  --color-surface-3:       var(--bg-badge-gray);
+  --color-border:          var(--border-card);
+  --color-border-dark:     var(--border-card-hover);
+  --color-text-primary:    var(--text-title);
+  --color-text-secondary:  var(--text-body);
+  --color-text-muted:      var(--text-muted);
 
   /* Fonts */
   --font-sans: 'Inter', sans-serif;
@@ -34,7 +91,7 @@
 
   /* Shadows */
   --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,63,138,0.08);
-  --shadow-card-hover: 0 8px 32px rgba(0,63,138,0.16), 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-shadow-card-hover: 0 8px 32px rgba(0,63,138,0.16), 0 2px 8px rgba(0,0,0,0.08);
   --shadow-navbar: 0 1px 0 rgba(0,0,0,0.08), 0 4px 16px rgba(0,63,138,0.06);
 
   /* Animations */
@@ -51,21 +108,26 @@
 /* ── Global Reset ── */
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  transition: background-color 0.4s ease;
+}
 
 body {
   font-family: var(--font-sans);
-  background-color: #FFFFFF;
-  color: var(--color-text-primary);
+  background-color: var(--bg-app);
+  color: var(--text-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.2;
-  color: var(--color-text-primary);
+  color: var(--text-title);
+  transition: color 0.4s ease;
 }
 
 /* ── Keyframes ── */
@@ -462,4 +524,186 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 768px) {
   .stats-number { font-size: 2rem; }
   .hero-section::before, .hero-section::after { display: none; }
+}
+
+/* ============================================================
+   DARK & LIGHT MODE OVERRIDES
+   ============================================================ */
+
+/* ── Active Dark Mode Rules (Runs when light class is NOT present on html) ── */
+:root:not(.light) {
+  /* Override default white-background utility class */
+  .bg-white,
+  .card,
+  .sector-card,
+  .filter-sidebar,
+  .modal-box {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-card) !important;
+  }
+
+  .hover\:border-gray-200:hover,
+  .hover\:border-\[\#003F8A\]\/15:hover,
+  .sector-card:hover {
+    border-color: var(--border-card-hover) !important;
+  }
+
+  /* Override gray/slate light sections */
+  .bg-gray-50, 
+  .bg-slate-50, 
+  .bg-\[\#F8FAFF\],
+  .bg-\[\#F8FAFF\]\/96 {
+    background-color: var(--bg-app) !important;
+  }
+
+  /* Override dynamic body bg set in page class */
+  body.bg-white {
+    background-color: var(--bg-app) !important;
+  }
+
+  /* Primary texts */
+  .text-gray-900, 
+  .text-slate-900, 
+  .text-gray-800, 
+  .text-slate-800, 
+  .text-gray-700, 
+  .text-slate-700 {
+    color: var(--text-title) !important;
+  }
+
+  /* Secondary texts */
+  .text-gray-600, 
+  .text-slate-600, 
+  .text-gray-500, 
+  .text-slate-500 {
+    color: var(--text-body) !important;
+  }
+
+  /* Muted texts */
+  .text-gray-400, 
+  .text-slate-400,
+  .text-white\/60,
+  .text-white\/70,
+  .text-slate-400 {
+    color: var(--text-muted) !important;
+  }
+  
+  .text-white\/55, .text-white\/65 {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  /* Card Borders */
+  .border-gray-100, 
+  .border-slate-100, 
+  .border-gray-200, 
+  .border-slate-200 {
+    border-color: var(--border-card) !important;
+  }
+
+  /* Sticky navbar block */
+  nav.sticky, .navbar {
+    background-color: var(--bg-navbar) !important;
+    border-color: var(--border-navbar) !important;
+  }
+
+  /* Darken inputs / dropdown lists */
+  select,
+  input,
+  textarea {
+    background-color: var(--bg-select) !important;
+    color: var(--text-select) !important;
+    border-color: var(--border-input) !important;
+  }
+  
+  /* Suggestion search lists */
+  .absolute.bg-white {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-card) !important;
+  }
+
+  /* Lighter link colors for readability & accessibility */
+  .text-\[\#003F8A\],
+  nav.sticky a.text-\[\#003F8A\],
+  .group-hover\:text-\[\#003F8A\]:hover {
+    color: #38bdf8 !important;
+  }
+
+  /* Branded fallback */
+  .bg-gray-100 {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  /* Invert navbar logos */
+  #navbar-logo img {
+    filter: brightness(0) invert(1) !important;
+    mix-blend-mode: normal !important;
+  }
+  
+  /* AI assistant quick action chips */
+  .rink-chip {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-card) !important;
+    color: #38bdf8 !important;
+  }
+  
+  /* AI assistant text bubbles */
+  .bg-white.rounded-2xl {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-card) !important;
+  }
+  
+  /* AI Discovery bar prompt chips */
+  [id^="quick-prompt-"] {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #38bdf8 !important;
+  }
+
+  /* Stats numbers colors (KSUM green) */
+  .stats-number {
+    color: #10b981 !important;
+  }
+  
+  /* Disabled button overlays */
+  button:disabled {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: rgba(255, 255, 255, 0.3) !important;
+  }
+
+  /* Hover states */
+  .hover\:bg-gray-50:hover, 
+  .bg-blue-50 {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #38bdf8 !important;
+  }
+
+  /* Scrollbar override */
+  ::-webkit-scrollbar-track { background: var(--bg-app); }
+  ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); }
+  ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+}
+
+/* ── Active Light Mode Rules ── */
+:root.light {
+  body {
+    background-color: var(--bg-app);
+    color: var(--text-body);
+  }
+  
+  /* Retain multiply blend mode for logo on white navbar bg */
+  #navbar-logo img {
+    mix-blend-mode: multiply !important;
+  }
+
+  /* Stats number colors (RINK blue) */
+  .stats-number {
+    color: #003F8A !important;
+  }
+
+  /* Explicit light inputs values */
+  select, input, textarea {
+    background-color: #FFFFFF;
+    color: #0F172A;
+    border-color: #E2E8F0;
+  }
 }
