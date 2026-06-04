@@ -33,21 +33,21 @@ export default async function InstitutionDetailPage({ params }: Props) {
   if (!institution) notFound();
 
   return (
-    <div className="min-h-screen bg-[#F8FAFF]">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-card border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <Link href="/institutions" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#003F8A] transition-colors mb-3">
+          <Link href="/institutions" className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-accent-secondary transition-colors mb-3">
             <ArrowLeft className="w-4 h-4" />
             All Institutions
           </Link>
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-[#003F8A]/8 flex items-center justify-center flex-shrink-0">
-              <Building2 className="w-7 h-7 text-[#003F8A]/50" />
+            <div className="w-14 h-14 rounded-2xl bg-accent-secondary/15 flex items-center justify-center flex-shrink-0">
+              <Building2 className="w-7 h-7 text-accent-secondary" />
             </div>
             <div>
-              <h1 className="text-2xl font-heading font-bold text-gray-900">{institution.name}</h1>
-              <p className="text-sm text-gray-500 mt-0.5">
+              <h1 className="text-2xl font-heading font-bold text-heading">{institution.name}</h1>
+              <p className="text-sm text-text-secondary mt-0.5">
                 {institution.tech_count} {institution.tech_count === 1 ? 'technology' : 'technologies'} available
               </p>
             </div>
@@ -58,8 +58,8 @@ export default async function InstitutionDetailPage({ params }: Props) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {technologies.length === 0 ? (
           <div className="text-center py-16">
-            <FlaskConical className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No technologies found for this institution yet.</p>
+            <FlaskConical className="w-12 h-12 text-text-secondary/50 mx-auto mb-4" />
+            <p className="text-text-secondary">No technologies found for this institution yet.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

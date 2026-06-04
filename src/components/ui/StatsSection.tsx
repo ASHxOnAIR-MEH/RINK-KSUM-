@@ -32,20 +32,20 @@ export default async function StatsSection() {
   ];
 
   return (
-    <section className="py-10 bg-white border-b border-gray-100">
+    <section className="py-10 bg-card border-b border-border">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-3 gap-8 text-center">
           {items.map((item) => {
             const Icon = item.icon;
             return (
               <div key={item.id} id={item.id}>
-                <div className="text-4xl md:text-5xl font-heading font-black text-[#003F8A] mb-1 tabular-nums">
+                <div className="text-4xl md:text-5xl font-heading font-black text-accent-secondary mb-1 tabular-nums">
                   {item.value}{item.suffix}
                 </div>
-                <div className="font-semibold text-gray-800 text-sm mb-0.5">
+                <div className="font-semibold text-heading text-sm mb-0.5">
                   {item.label}
                 </div>
-                <div className="text-xs text-gray-400 leading-snug hidden sm:block">
+                <div className="text-xs text-text-secondary leading-snug hidden sm:block">
                   {item.desc}
                 </div>
               </div>

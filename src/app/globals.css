@@ -7,58 +7,132 @@
    ============================================================ */
 
 :root {
-  /* DARK MODE (Default Theme for first-time visitors and presentations) */
-  --bg-app: #060e1a; /* Deep technology blue background */
-  --bg-card: #0c1527; /* Slightly lighter blue-black for cards */
+  /* Centralized Theme Variables - Dark Mode (Default) */
+  --background: #060e1a;
+  --card: #0c1527;
+  --card-secondary: #081120;
+  --text-primary: rgba(255, 255, 255, 0.7);
+  --text-secondary: rgba(255, 255, 255, 0.45);
+  --heading: #FFFFFF;
+  --border: rgba(255, 255, 255, 0.08);
+  --accent: #00875A; /* Kerala Green */
+  --accent-secondary: #38bdf8; /* Sky Blue for high contrast in dark mode */
+
+  /* Legacy references fallback */
+  --bg-app: var(--background);
+  --bg-card: var(--card);
   --bg-card-hover: #121f37;
-  --border-card: rgba(255, 255, 255, 0.08);
+  --border-card: var(--border);
   --border-card-hover: rgba(255, 255, 255, 0.16);
-  --text-title: #FFFFFF; /* White headings */
-  --text-body: rgba(255, 255, 255, 0.7); /* Readable text */
-  --text-muted: rgba(255, 255, 255, 0.45);
+  --text-title: var(--heading);
+  --text-body: var(--text-primary);
+  --text-muted: var(--text-secondary);
   --bg-navbar: rgba(6, 14, 26, 0.85);
-  --border-navbar: rgba(255, 255, 255, 0.08);
-  --bg-section: #081120;
+  --border-navbar: var(--border);
+  --bg-section: var(--card-secondary);
   --bg-badge-gray: rgba(255, 255, 255, 0.08);
-  --text-badge-gray: rgba(255, 255, 255, 0.7);
-  --bg-select: #0c1527;
-  --text-select: #FFFFFF;
+  --text-badge-gray: var(--text-primary);
+  --bg-select: var(--card);
+  --text-select: var(--heading);
   --border-input: rgba(255, 255, 255, 0.12);
+
+  /* Specific callout variables */
+  --bg-amber-callout: rgba(245, 158, 11, 0.08);
+  --border-amber-callout: rgba(245, 158, 11, 0.22);
+  --text-amber-callout: #fbbf24;
+  --text-amber-body: rgba(255, 255, 255, 0.8);
+
+  /* Specific assistant bubble variables */
+  --bg-assistant-bubble: rgba(255, 255, 255, 0.05);
+  --border-assistant-bubble: rgba(255, 255, 255, 0.08);
+  --text-assistant-bubble: rgba(255, 255, 255, 0.8);
+
+  /* Specific hero variables */
+  --bg-hero: linear-gradient(135deg, #060e1a 0%, #081225 50%, #0a1730 100%);
+  --border-hero: rgba(255, 255, 255, 0.08);
 }
 
 :root.light {
-  /* LIGHT MODE Theme */
-  --bg-app: #F7F9FC; /* Light professional background */
-  --bg-card: #FFFFFF; /* White cards */
+  /* Centralized Theme Variables - Light Mode */
+  --background: #F7F9FC;
+  --card: #FFFFFF;
+  --card-secondary: #F8FAFF;
+  --text-primary: #475569;
+  --text-secondary: #94A3B8;
+  --heading: #0F172A;
+  --border: #E2E8F0;
+  --accent: #00875A;
+  --accent-secondary: #003F8A; /* Dark blue for Light Mode */
+
+  /* Legacy references fallback */
+  --bg-app: var(--background);
+  --bg-card: var(--card);
   --bg-card-hover: #FFFFFF;
-  --border-card: #E2E8F0; /* Soft borders */
+  --border-card: var(--border);
   --border-card-hover: rgba(0, 63, 138, 0.2);
-  --text-title: #0F172A; /* Dark headings */
-  --text-body: #475569;
-  --text-muted: #94A3B8;
+  --text-title: var(--heading);
+  --text-body: var(--text-primary);
+  --text-muted: var(--text-secondary);
   --bg-navbar: rgba(255, 255, 255, 0.95);
-  --border-navbar: #E2E8F0;
-  --bg-section: #F8FAFF;
+  --border-navbar: var(--border);
+  --bg-section: var(--card-secondary);
   --bg-badge-gray: #F1F5F9;
-  --text-badge-gray: #475569;
-  --bg-select: #FFFFFF;
-  --text-select: #0F172A;
-  --border-input: #E2E8F0;
+  --text-badge-gray: var(--text-primary);
+  --bg-select: var(--card);
+  --text-select: var(--heading);
+  --border-input: var(--border);
+
+  /* Specific callout variables */
+  --bg-amber-callout: #fef3c7;
+  --border-amber-callout: #fde68a;
+  --text-amber-callout: #b45309;
+  --text-amber-body: #1e293b;
+
+  /* Specific assistant bubble variables */
+  --bg-assistant-bubble: #FFFFFF;
+  --border-assistant-bubble: #E2E8F0;
+  --text-assistant-bubble: #1F2937;
+
+  /* Specific hero variables */
+  --bg-hero: linear-gradient(135deg, #F0F6FF 0%, #EEF5FF 50%, #F0FAF7 100%);
+  --border-hero: #E2E8F0;
 }
 
 @theme inline {
-  /* Dynamic Theme Colors */
-  --color-bg-app:            var(--bg-app);
-  --color-bg-card:           var(--bg-card);
+  /* Dynamic Theme Colors mapping to central vars */
+  --color-background:        var(--background);
+  --color-card:              var(--card);
+  --color-card-secondary:    var(--card-secondary);
+  --color-text-primary:      var(--text-primary);
+  --color-text-secondary:    var(--text-secondary);
+  --color-heading:           var(--heading);
+  --color-border:            var(--border);
+  --color-accent:            var(--accent);
+  --color-accent-secondary:  var(--accent-secondary);
+
+  /* Amber callout mapping */
+  --color-amber-callout-bg:     var(--bg-amber-callout);
+  --color-amber-callout-border: var(--border-amber-callout);
+  --color-amber-callout-text:   var(--text-amber-callout);
+  --color-amber-callout-body:   var(--text-amber-body);
+
+  /* Assistant bubbles mapping */
+  --color-assistant-bubble-bg:     var(--bg-assistant-bubble);
+  --color-assistant-bubble-border: var(--border-assistant-bubble);
+  --color-assistant-bubble-text:   var(--text-assistant-bubble);
+
+  /* Fallback names mapping */
+  --color-bg-app:            var(--background);
+  --color-bg-card:           var(--card);
   --color-bg-card-hover:     var(--bg-card-hover);
-  --color-border-card:       var(--border-card);
+  --color-border-card:       var(--border);
   --color-border-card-hover: var(--border-card-hover);
-  --color-text-title:        var(--text-title);
-  --color-text-body:         var(--text-body);
-  --color-text-muted:        var(--text-muted);
+  --color-text-title:        var(--heading);
+  --color-text-body:         var(--text-primary);
+  --color-text-muted:        var(--text-secondary);
   --color-bg-navbar:         var(--bg-navbar);
-  --color-border-navbar:     var(--border-navbar);
-  --color-bg-section:        var(--bg-section);
+  --color-border-navbar:     var(--border);
+  --color-bg-section:        var(--card-secondary);
   --color-bg-badge-gray:     var(--bg-badge-gray);
   --color-text-badge-gray:   var(--text-badge-gray);
   --color-bg-select:         var(--bg-select);

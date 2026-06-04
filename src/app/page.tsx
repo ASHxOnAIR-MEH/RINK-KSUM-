@@ -181,7 +181,7 @@ export default async function HomePage() {
                   }}
                 >
                   <Image
-                    src="/images/hero-innovation-v2.png"
+                    src="/images/hero-innovation-v2.jpg"
                     alt="Kerala Technology Innovation — Research meets Startups"
                     width={560}
                     height={420}
@@ -216,7 +216,7 @@ export default async function HomePage() {
       <StatsSection />
 
       {/* ── STARTUP DISCOVERY ────────────────────────────── */}
-      <section className="relative py-16 bg-white overflow-hidden">
+      <section className="relative py-16 bg-card overflow-hidden">
         {/* Subtle background image representing Kerala's innovation ecosystem */}
         <div
           className="absolute inset-0 pointer-events-none opacity-[0.06] bg-cover bg-center"
@@ -224,13 +224,13 @@ export default async function HomePage() {
         />
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="max-w-xl mb-10">
-            <div className="text-xs font-semibold text-[#003F8A] uppercase tracking-widest mb-3">
+            <div className="text-xs font-semibold text-accent-secondary uppercase tracking-widest mb-3">
               Startup Discovery
             </div>
-            <h2 className="text-2xl md:text-3xl font-heading font-bold text-gray-900 mb-3">
+            <h2 className="text-2xl md:text-3xl font-heading font-bold text-heading mb-3">
               I want to build a startup in...
             </h2>
-            <p className="text-gray-500 text-base">
+            <p className="text-text-primary text-base">
               Select a sector to explore technologies available for commercialization and startup creation.
             </p>
           </div>
@@ -243,7 +243,7 @@ export default async function HomePage() {
 
           <Link
             href="/sectors"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-[#003F8A] hover:underline"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-accent-secondary hover:underline"
             id="all-sectors-link"
           >
             Browse all {sectors.length} sectors <ArrowRight className="w-3.5 h-3.5" />
@@ -252,7 +252,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── FEATURED TECHNOLOGIES ─────────────────────────────── */}
-      <section className="relative py-16 bg-gray-50 overflow-hidden">
+      <section className="relative py-16 bg-card-secondary overflow-hidden">
         {/* Subtle background image representing research commercialization and technology transfer */}
         <div
           className="absolute inset-0 pointer-events-none opacity-[0.07] bg-cover bg-center blur-[1px]"
@@ -260,12 +260,12 @@ export default async function HomePage() {
         />
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-end justify-between mb-10">
-            <h2 className="text-2xl md:text-3xl font-heading font-bold text-gray-900">
+            <h2 className="text-2xl md:text-3xl font-heading font-bold text-heading">
               Featured Technologies
             </h2>
             <Link
               href="/technologies"
-              className="hidden md:flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#003F8A] transition-colors"
+              className="hidden md:flex items-center gap-1.5 text-sm font-medium text-text-secondary hover:text-accent-secondary transition-colors"
               id="all-technologies-link"
             >
               Browse all technologies <ArrowRight className="w-4 h-4" />
@@ -287,7 +287,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── INSTITUTIONS ─────────────────────────────────────── */}
-      <section className="relative py-16 bg-white overflow-hidden">
+      <section className="relative py-16 bg-card overflow-hidden">
         {/* Subtle background image representing research institutions and academic labs */}
         <div
           className="absolute inset-0 pointer-events-none opacity-[0.08] bg-cover bg-center"
@@ -296,16 +296,16 @@ export default async function HomePage() {
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <div className="text-xs font-semibold text-[#003F8A] uppercase tracking-widest mb-3">
+              <div className="text-xs font-semibold text-accent-secondary uppercase tracking-widest mb-3">
                 Research Institutions
               </div>
-              <h2 className="text-2xl md:text-3xl font-heading font-bold text-gray-900">
+              <h2 className="text-2xl md:text-3xl font-heading font-bold text-heading">
                 Explore by Institution
               </h2>
             </div>
             <Link
               href="/institutions"
-              className="hidden md:flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#003F8A] transition-colors"
+              className="hidden md:flex items-center gap-1.5 text-sm font-medium text-text-secondary hover:text-accent-secondary transition-colors"
               id="all-institutions-link"
             >
               All Institutions <ArrowRight className="w-4 h-4" />
@@ -315,14 +315,14 @@ export default async function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {topInstitutions.map((inst) => (
               <Link key={inst.slug} href={`/institutions/${inst.slug}`} id={`inst-card-${inst.slug}`}>
-                <div className="group p-5 rounded-2xl border border-gray-100 bg-white hover:border-[#003F8A]/15 hover:shadow-sm transition-all">
-                  <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center mb-4">
-                    <Building2 className="w-5 h-5 text-gray-300" />
+                <div className="group p-5 rounded-2xl border border-border bg-card hover:border-accent-secondary/20 hover:shadow-sm transition-all animate-fade-in">
+                  <div className="w-10 h-10 rounded-xl bg-card-secondary flex items-center justify-center mb-4">
+                    <Building2 className="w-5 h-5 text-text-secondary/50" />
                   </div>
-                  <h3 className="font-heading font-bold text-gray-800 text-sm leading-snug mb-1 group-hover:text-[#003F8A] transition-colors line-clamp-2">
+                  <h3 className="font-heading font-bold text-heading text-sm leading-snug mb-1 group-hover:text-accent-secondary transition-colors line-clamp-2">
                     {inst.name}
                   </h3>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-text-secondary">
                     {inst.tech_count} {inst.tech_count === 1 ? 'technology' : 'technologies'}
                   </span>
                 </div>

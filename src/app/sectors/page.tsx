@@ -12,16 +12,16 @@ export default async function SectorsPage() {
   const [sectors, stats] = await Promise.all([getAllSectors(), getPlatformStats()]);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFF]">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-card border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <Link href="/" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#003F8A] transition-colors mb-3">
+          <Link href="/" className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-accent-secondary transition-colors mb-3">
             <ArrowLeft className="w-4 h-4" />
             Back to Home
           </Link>
-          <h1 className="text-2xl font-heading font-bold text-gray-900">Browse by Sector</h1>
-          <p className="text-gray-500 text-sm mt-1">
+          <h1 className="text-2xl font-heading font-bold text-heading">Browse by Sector</h1>
+          <p className="text-text-secondary text-sm mt-1">
             {stats.sector_count} sectors · {stats.technology_count}+ technologies
           </p>
         </div>

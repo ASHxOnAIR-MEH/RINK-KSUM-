@@ -40,14 +40,14 @@ function FilterSelect({
 }) {
   return (
     <div className="filter-group">
-      <label htmlFor={id} className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+      <label htmlFor={id} className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
         {label}
       </label>
       <select
         id={id}
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 text-gray-700 bg-white focus:outline-none focus:border-[#003F8A] focus:ring-1 focus:ring-[#003F8A]/20"
+        className="w-full text-sm border border-border rounded-lg px-3 py-2 text-text-primary bg-card focus:outline-none focus:border-accent-secondary focus:ring-1 focus:ring-accent-secondary/20"
       >
         <option value="">All {label}s</option>
         {options.map(opt => (
@@ -105,28 +105,28 @@ export default function TechListClient({
   const activeFilterCount = Object.values(filters).filter(v => v !== '').length;
 
   return (
-    <div className="min-h-screen bg-[#F8FAFF]">
+    <div className="min-h-screen bg-background">
 
       {/* Header */}
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-card border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           <div className="flex flex-col md:flex-row md:items-center gap-4">
             <div className="flex-1">
-              <h1 className="text-2xl font-heading font-bold text-gray-900">
+              <h1 className="text-2xl font-heading font-bold text-heading">
                 All Technologies
               </h1>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-text-secondary mt-1">
                 {total} of {totalCount} technologies
                 {filters.q && <span> matching &ldquo;<strong>{filters.q}</strong>&rdquo;</span>}
               </p>
             </div>
             <div className="flex items-center gap-3">
               {/* View toggle */}
-              <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+              <div className="flex items-center border border-border rounded-lg overflow-hidden">
                 <button
                   id="grid-view-btn"
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 transition-colors ${viewMode === 'grid' ? 'bg-[#003F8A] text-white' : 'text-gray-400 hover:bg-gray-50'}`}
+                  className={`p-2 transition-colors ${viewMode === 'grid' ? 'bg-accent-secondary text-white' : 'text-text-secondary/60 hover:bg-card-secondary'}`}
                   title="Grid view"
                 >
                   <LayoutGrid className="w-4 h-4" />
@@ -134,7 +134,7 @@ export default function TechListClient({
                 <button
                   id="list-view-btn"
                   onClick={() => setViewMode('list')}
-                  className={`p-2 transition-colors ${viewMode === 'list' ? 'bg-[#003F8A] text-white' : 'text-gray-400 hover:bg-gray-50'}`}
+                  className={`p-2 transition-colors ${viewMode === 'list' ? 'bg-accent-secondary text-white' : 'text-text-secondary/60 hover:bg-card-secondary'}`}
                   title="List view"
                 >
                   <List className="w-4 h-4" />
@@ -146,14 +146,14 @@ export default function TechListClient({
                 onClick={() => setShowFilters(!showFilters)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border font-medium text-sm transition-all ${
                   showFilters || activeFilterCount > 0
-                    ? 'bg-[#003F8A] text-white border-[#003F8A]'
-                    : 'bg-white text-gray-700 border-gray-200 hover:border-[#003F8A]/30'
+                    ? 'bg-accent-secondary text-white border-accent-secondary'
+                    : 'bg-card text-text-primary border-border hover:border-accent-secondary/30'
                 }`}
               >
                 <SlidersHorizontal className="w-4 h-4" />
                 Filters
                 {activeFilterCount > 0 && (
-                  <span className="bg-white text-[#003F8A] text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  <span className="bg-card text-accent-secondary text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                     {activeFilterCount}
                   </span>
                 )}
@@ -162,7 +162,7 @@ export default function TechListClient({
                 <button
                   id="clear-filters-btn"
                   onClick={clearFilters}
-                  className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-red-500 transition-colors"
+                  className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-red-500 transition-colors"
                 >
                   <X className="w-4 h-4" />
                   Clear
@@ -230,14 +230,14 @@ export default function TechListClient({
                 />
 
                 <div className="filter-group">
-                  <label htmlFor="filter-potential" className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                  <label htmlFor="filter-potential" className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
                     Recommendation
                   </label>
                   <select
                     id="filter-potential"
                     value={filters.potential}
                     onChange={e => applyFilter('potential', e.target.value)}
-                    className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 text-gray-700 bg-white focus:outline-none focus:border-[#003F8A] focus:ring-1 focus:ring-[#003F8A]/20"
+                    className="w-full text-sm border border-border rounded-lg px-3 py-2 text-text-primary bg-card focus:outline-none focus:border-accent-secondary focus:ring-1 focus:ring-accent-secondary/20"
                   >
                     <option value="">All Technologies</option>
                     <option value="High">Recommended</option>
@@ -254,17 +254,17 @@ export default function TechListClient({
           <div className="flex-1 min-w-0">
             {isPending && (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="w-8 h-8 text-[#003F8A] animate-spin" />
+                <Loader2 className="w-8 h-8 text-accent-secondary animate-spin" />
               </div>
             )}
 
             {!isPending && technologies.length === 0 && (
               <div className="text-center py-16">
-                <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                  <Filter className="w-7 h-7 text-gray-400" />
+                <div className="w-16 h-16 rounded-full bg-card-secondary flex items-center justify-center mx-auto mb-4">
+                  <Filter className="w-7 h-7 text-text-secondary" />
                 </div>
-                <h3 className="font-heading font-bold text-gray-900 mb-2">No technologies found</h3>
-                <p className="text-gray-500 text-sm mb-4">Try adjusting your filters or search terms</p>
+                <h3 className="font-heading font-bold text-heading mb-2">No technologies found</h3>
+                <p className="text-text-secondary text-sm mb-4">Try adjusting your filters or search terms</p>
                 <button onClick={clearFilters} className="btn-primary">
                   Clear All Filters
                 </button>
@@ -292,12 +292,12 @@ export default function TechListClient({
                       onClick={() => {
                         startTransition(() => router.push(buildUrl({ page: String(page - 1) })));
                       }}
-                      className="flex items-center gap-1.5 px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:border-[#003F8A]/30 hover:text-[#003F8A] transition-colors"
+                      className="flex items-center gap-1.5 px-4 py-2 border border-border rounded-lg text-sm font-medium text-text-primary disabled:opacity-40 disabled:cursor-not-allowed hover:border-accent-secondary/30 hover:text-accent-secondary transition-colors"
                     >
                       <ChevronLeft className="w-4 h-4" />
                       Previous
                     </button>
-                    <span className="px-4 py-2 text-sm text-gray-500">
+                    <span className="px-4 py-2 text-sm text-text-secondary">
                       Page {page} of {totalPages}
                     </span>
                     <button
@@ -306,7 +306,7 @@ export default function TechListClient({
                       onClick={() => {
                         startTransition(() => router.push(buildUrl({ page: String(page + 1) })));
                       }}
-                      className="flex items-center gap-1.5 px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:border-[#003F8A]/30 hover:text-[#003F8A] transition-colors"
+                      className="flex items-center gap-1.5 px-4 py-2 border border-border rounded-lg text-sm font-medium text-text-primary disabled:opacity-40 disabled:cursor-not-allowed hover:border-accent-secondary/30 hover:text-accent-secondary transition-colors"
                     >
                       Next
                       <ChevronRight className="w-4 h-4" />

@@ -23,7 +23,7 @@ const QUICK_ACTIONS = [
 
 // ── Featured badge — only shown for High (internal field, not exposed) ──────
 const POTENTIAL_STYLE: Record<string, { bg: string; text: string; label: string }> = {
-  'High':          { bg: 'rgba(217,119,6,0.12)', text: '#92400e', label: '★ Featured' },
+  'High':          { bg: 'var(--bg-amber-callout)', text: 'var(--text-amber-callout)', label: '★ Featured' },
   'Medium':        { bg: 'transparent', text: 'transparent', label: '' },
   'Low':           { bg: 'transparent', text: 'transparent', label: '' },
   'Not Specified': { bg: 'transparent', text: 'transparent', label: '' },
@@ -44,11 +44,16 @@ interface ChatMessage {
 // ── Typing indicator ──────────────────────────────────────────
 function TypingIndicator() {
   return (
-    <div className="flex items-center gap-2 px-4 py-3 rounded-2xl rounded-tl-sm"
-      style={{ background: 'rgba(255,255,255,0.9)', width: 'fit-content', maxWidth: '80px' }}>
+    <div className="flex items-center gap-2 px-4 py-3 rounded-2xl rounded-tl-sm border"
+      style={{
+        background: 'var(--bg-assistant-bubble)',
+        borderColor: 'var(--border-assistant-bubble)',
+        width: 'fit-content',
+        maxWidth: '80px',
+      }}>
       {[0, 1, 2].map(i => (
         <span key={i} style={{
-          width: 7, height: 7, borderRadius: '50%', background: '#003F8A',
+          width: 7, height: 7, borderRadius: '50%', background: 'var(--accent-secondary)',
           animation: `rinkBounce 1.2s ease-in-out ${i * 0.2}s infinite`,
           display: 'block',
         }} />
@@ -64,32 +69,32 @@ function TechCard({ result }: { result: AISearchResult }) {
 
   return (
     <div style={{
-      background: 'white',
+      background: 'var(--bg-assistant-bubble)',
       borderRadius: 14,
-      border: '1px solid #e5e7eb',
+      border: '1px solid var(--border-assistant-bubble)',
       padding: '14px 16px',
       marginBottom: 10,
-      boxShadow: '0 1px 4px rgba(0,63,138,0.07)',
+      boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
       transition: 'box-shadow 0.2s',
     }}
-      onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,63,138,0.13)')}
-      onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,63,138,0.07)')}
+      onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)')}
+      onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.03)')}
     >
       {/* Name */}
-      <div style={{ fontWeight: 700, color: '#003F8A', fontSize: 14, lineHeight: 1.3, marginBottom: 8 }}>
+      <div style={{ fontWeight: 700, color: 'var(--accent-secondary)', fontSize: 14, lineHeight: 1.3, marginBottom: 8 }}>
         {tech.name}
       </div>
 
       {/* Meta row */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#6b7280', background: '#f3f4f6', borderRadius: 6, padding: '3px 8px' }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: 'var(--text-secondary)', background: 'var(--card-secondary)', border: '1px solid var(--border)', borderRadius: 6, padding: '3px 8px' }}>
           <Building2 size={10} /> {tech.institution}
         </span>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#6b7280', background: '#f3f4f6', borderRadius: 6, padding: '3px 8px' }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: 'var(--text-secondary)', background: 'var(--card-secondary)', border: '1px solid var(--border)', borderRadius: 6, padding: '3px 8px' }}>
           <Layers size={10} /> {tech.sector}
         </span>
         {tech.technology_type && tech.technology_type !== 'Not Specified' && (
-          <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#6b7280', background: '#f3f4f6', borderRadius: 6, padding: '3px 8px' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: 'var(--text-secondary)', background: 'var(--card-secondary)', border: '1px solid var(--border)', borderRadius: 6, padding: '3px 8px' }}>
             <FlaskConical size={10} /> {tech.technology_type}
           </span>
         )}
@@ -108,12 +113,16 @@ function TechCard({ result }: { result: AISearchResult }) {
         <Link href={`/technologies/${tech.id}`} target="_blank"
           style={{
             display: 'flex', alignItems: 'center', gap: 5,
-            fontSize: 12, fontWeight: 600, color: '#003F8A',
-            background: '#EFF6FF', borderRadius: 8, padding: '5px 12px',
-            textDecoration: 'none', transition: 'background 0.15s',
+            fontSize: 12, fontWeight: 600, color: 'var(--heading)',
+            background: 'var(--card-secondary)', border: '1px solid var(--border)', borderRadius: 8, padding: '5px 12px',
+            textDecoration: 'none', transition: 'all 0.15s',
           }}
-          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = '#DBEAFE')}
-          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = '#EFF6FF')}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLElement).style.background = 'var(--border)';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLElement).style.background = 'var(--card-secondary)';
+          }}
         >
           View Technology <ExternalLink size={11} />
         </Link>
@@ -309,11 +318,11 @@ export default function RinkAIAssistant() {
             width: 420, height: 620,
             display: 'flex', flexDirection: 'column',
             borderRadius: 24,
-            background: 'rgba(248, 250, 255, 0.96)',
+            background: 'var(--card)',
             backdropFilter: 'blur(24px)',
             WebkitBackdropFilter: 'blur(24px)',
-            border: '1px solid rgba(0,63,138,0.12)',
-            boxShadow: '0 24px 80px rgba(0,63,138,0.22), 0 4px 16px rgba(0,0,0,0.08)',
+            border: '1px solid var(--border)',
+            boxShadow: '0 24px 80px rgba(0,0,0,0.15), 0 4px 16px rgba(0,0,0,0.05)',
             overflow: 'hidden',
           }}
         >
@@ -378,10 +387,10 @@ export default function RinkAIAssistant() {
                 {msg.role === 'welcome' && (
                   <div>
                     <div style={{
-                      background: 'white', borderRadius: '18px 18px 18px 4px',
+                      background: 'var(--bg-assistant-bubble)', borderRadius: '18px 18px 18px 4px',
                       padding: '14px 16px', fontSize: 13.5, lineHeight: 1.6,
-                      color: '#1f2937', border: '1px solid #e5e7eb',
-                      boxShadow: '0 1px 4px rgba(0,0,0,0.05)', maxWidth: '90%',
+                      color: 'var(--text-assistant-bubble)', border: '1px solid var(--border-assistant-bubble)',
+                      boxShadow: '0 1px 4px rgba(0,0,0,0.03)', maxWidth: '90%',
                     }}>
                       <ParsedText text={msg.text!} />
                     </div>
@@ -396,10 +405,10 @@ export default function RinkAIAssistant() {
                           style={{
                             display: 'flex', alignItems: 'center', gap: 5,
                             padding: '6px 12px', borderRadius: 20,
-                            background: 'white', border: '1px solid #e0e7ff',
-                            fontSize: 12, fontWeight: 500, color: '#003F8A',
+                            background: 'var(--bg-assistant-bubble)', border: '1px solid var(--border-assistant-bubble)',
+                            fontSize: 12, fontWeight: 500, color: 'var(--accent-secondary)',
                             cursor: 'pointer', transition: 'all 0.15s',
-                            boxShadow: '0 1px 3px rgba(0,63,138,0.08)',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
                           }}
                         >
                           <span>{action.icon}</span>
@@ -427,14 +436,14 @@ export default function RinkAIAssistant() {
                 {/* Assistant Text Message */}
                 {msg.role === 'assistant' && (
                   <div style={{ display: 'flex', gap: 8 }}>
-                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#EFF6FF', border: '1px solid #BFDBFE', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
-                      <Sparkles size={13} color="#003F8A" />
+                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--card-secondary)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
+                      <Sparkles size={13} color="var(--accent-secondary)" />
                     </div>
                     <div style={{
-                      background: 'white', borderRadius: '18px 18px 18px 4px',
+                      background: 'var(--bg-assistant-bubble)', borderRadius: '18px 18px 18px 4px',
                       padding: '10px 16px', fontSize: 13.5, lineHeight: 1.6,
-                      color: '#1f2937', border: '1px solid #e5e7eb',
-                      boxShadow: '0 1px 4px rgba(0,0,0,0.05)', maxWidth: '85%',
+                      color: 'var(--text-assistant-bubble)', border: '1px solid var(--border-assistant-bubble)',
+                      boxShadow: '0 1px 4px rgba(0,0,0,0.03)', maxWidth: '85%',
                     }}>
                       <ParsedText text={msg.text!} />
                     </div>
@@ -446,14 +455,14 @@ export default function RinkAIAssistant() {
                   <div>
                     {/* Response label */}
                     <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-                      <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#EFF6FF', border: '1px solid #BFDBFE', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
-                        <Sparkles size={13} color="#003F8A" />
+                      <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--card-secondary)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
+                        <Sparkles size={13} color="var(--accent-secondary)" />
                       </div>
                       <div style={{
-                        background: 'white', borderRadius: '18px 18px 18px 4px',
+                        background: 'var(--bg-assistant-bubble)', borderRadius: '18px 18px 18px 4px',
                         padding: '10px 16px', fontSize: 13.5, lineHeight: 1.6,
-                        color: '#1f2937', border: '1px solid #e5e7eb',
-                        boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
+                        color: 'var(--text-assistant-bubble)', border: '1px solid var(--border-assistant-bubble)',
+                        boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
                       }}>
                         <ParsedText text={msg.responseMessage!} />
                       </div>
@@ -472,9 +481,9 @@ export default function RinkAIAssistant() {
                           target="_blank"
                           style={{
                             display: 'inline-flex', alignItems: 'center', gap: 5,
-                            fontSize: 12, color: '#003F8A', fontWeight: 600,
+                            fontSize: 12, color: 'var(--heading)', fontWeight: 600,
                             textDecoration: 'none', marginTop: 4, padding: '6px 12px',
-                            background: '#EFF6FF', borderRadius: 8,
+                            background: 'var(--card-secondary)', border: '1px solid var(--border)', borderRadius: 8,
                           }}
                         >
                           Browse all in Technology Explorer <ArrowRight size={12} />
@@ -489,8 +498,8 @@ export default function RinkAIAssistant() {
             {/* Loading indicator */}
             {loading && (
               <div style={{ display: 'flex', gap: 8 }}>
-                <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#EFF6FF', border: '1px solid #BFDBFE', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
-                  <Sparkles size={13} color="#003F8A" />
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--card-secondary)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
+                  <Sparkles size={13} color="var(--accent-secondary)" />
                 </div>
                 <TypingIndicator />
               </div>
@@ -503,19 +512,19 @@ export default function RinkAIAssistant() {
           {showScrollDown && (
             <button onClick={scrollToBottom} style={{
               position: 'absolute', bottom: 80, right: 20, width: 32, height: 32,
-              borderRadius: '50%', background: 'white', border: '1px solid #e5e7eb',
+              borderRadius: '50%', background: 'var(--bg-assistant-bubble)', border: '1px solid var(--border-assistant-bubble)',
               boxShadow: '0 2px 8px rgba(0,0,0,0.1)', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10,
             }}>
-              <ChevronDown size={16} color="#6b7280" />
+              <ChevronDown size={16} color="var(--text-secondary)" />
             </button>
           )}
 
           {/* ── Input Area ── */}
           <div style={{
             padding: '12px 16px 16px',
-            borderTop: '1px solid rgba(0,63,138,0.08)',
-            background: 'rgba(255,255,255,0.8)',
+            borderTop: '1px solid var(--border)',
+            background: 'var(--card)',
             flexShrink: 0,
           }}>
             <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 10, alignItems: 'flex-end' }}>
@@ -528,14 +537,14 @@ export default function RinkAIAssistant() {
                 rows={1}
                 style={{
                   flex: 1, padding: '10px 14px',
-                  borderRadius: 16, border: '1.5px solid #e0e7ff',
-                  background: 'white', fontSize: 13.5, lineHeight: 1.5,
+                  borderRadius: 16, border: '1.5px solid var(--border-assistant-bubble)',
+                  background: 'var(--bg-assistant-bubble)', fontSize: 13.5, lineHeight: 1.5,
                   resize: 'none', outline: 'none', fontFamily: 'inherit',
-                  color: '#1f2937', transition: 'border-color 0.15s',
+                  color: 'var(--text-assistant-bubble)', transition: 'border-color 0.15s',
                   maxHeight: 100, overflowY: 'auto',
                 }}
-                onFocus={e => (e.target.style.borderColor = '#003F8A')}
-                onBlur={e => (e.target.style.borderColor = '#e0e7ff')}
+                onFocus={e => (e.target.style.borderColor = 'var(--accent-secondary)')}
+                onBlur={e => (e.target.style.borderColor = 'var(--border-assistant-bubble)')}
                 disabled={loading}
                 id="rink-ai-input"
               />
@@ -546,21 +555,21 @@ export default function RinkAIAssistant() {
                   width: 42, height: 42, borderRadius: 14, border: 'none',
                   background: input.trim() && !loading
                     ? 'linear-gradient(135deg, #003F8A, #0066CC)'
-                    : '#e5e7eb',
+                    : 'var(--border-assistant-bubble)',
                   cursor: input.trim() && !loading ? 'pointer' : 'not-allowed',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   transition: 'all 0.15s', flexShrink: 0,
                 }}
               >
                 {loading
-                  ? <Loader2 size={18} color="#9ca3af" style={{ animation: 'spin 1s linear infinite' }} />
-                  : <Send size={18} color={input.trim() ? 'white' : '#9ca3af'} />
+                  ? <Loader2 size={18} color="var(--text-secondary)" style={{ animation: 'spin 1s linear infinite' }} />
+                  : <Send size={18} color={input.trim() ? 'white' : 'var(--text-secondary)'} />
                 }
               </button>
             </form>
 
             {/* Footer note */}
-            <div style={{ textAlign: 'center', fontSize: 10.5, color: '#9ca3af', marginTop: 8 }}>
+            <div style={{ textAlign: 'center', fontSize: 10.5, color: 'var(--text-secondary)', marginTop: 8 }}>
               Searches only real technologies from the RINK database
             </div>
           </div>

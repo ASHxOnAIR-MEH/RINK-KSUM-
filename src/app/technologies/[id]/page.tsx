@@ -49,14 +49,14 @@ function TRLMeter({ raw }: { raw: string }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-2.5">
-        <span className="text-sm font-semibold text-slate-700">{label}</span>
-        <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-0.5 rounded-full">
+        <span className="text-sm font-semibold text-text-primary">{label}</span>
+        <span className="text-xs font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
           TRL {level} / 9
         </span>
       </div>
 
       {/* Track */}
-      <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+      <div className="h-2.5 bg-card-secondary rounded-full overflow-hidden">
         <div
           className="h-full rounded-full animate-trl-fill"
           style={{
@@ -71,7 +71,7 @@ function TRLMeter({ raw }: { raw: string }) {
         {Array.from({ length: 9 }).map((_, i) => (
           <div
             key={i}
-            className={`h-1 flex-1 rounded-full ${i < level ? '' : 'bg-slate-100'}`}
+            className={`h-1 flex-1 rounded-full ${i < level ? '' : 'bg-card-secondary'}`}
             style={
               i < level
                 ? {
@@ -84,8 +84,8 @@ function TRLMeter({ raw }: { raw: string }) {
         ))}
       </div>
       <div className="flex justify-between mt-1">
-        <span className="text-[10px] text-slate-400 font-medium">Research</span>
-        <span className="text-[10px] text-slate-400 font-medium">Market Ready</span>
+        <span className="text-[10px] text-text-secondary font-medium">Research</span>
+        <span className="text-[10px] text-text-secondary font-medium">Market Ready</span>
       </div>
     </div>
   );
@@ -120,7 +120,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
   const hasDesc   = tech.description && tech.description !== 'Information being updated';
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background text-text-primary">
 
       {/* ── MOBILE STICKY BOTTOM CTA ─────────────────────────── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
@@ -333,21 +333,21 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
 
               {/* Problem Solved — Amber Callout */}
               <div
-                className="rounded-2xl bg-amber-50 border border-amber-100 p-6 animate-slide-fade-in"
+                className="rounded-2xl bg-amber-callout-bg border border-amber-callout-border p-6 animate-slide-fade-in"
                 style={{
-                  boxShadow: '0 2px 12px rgba(245,158,11,0.10)',
+                  boxShadow: '0 2px 12px rgba(245,158,11,0.06)',
                   animationDelay: '0.1s',
                 }}
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Lightbulb className="w-4.5 h-4.5 text-amber-600" />
+                  <div className="w-9 h-9 rounded-xl bg-amber-callout-text/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Lightbulb className="w-4.5 h-4.5 text-amber-callout-text" />
                   </div>
                   <div className="flex-1">
-                    <h2 className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">
+                    <h2 className="text-xs font-bold text-amber-callout-text uppercase tracking-widest mb-2">
                       Problem Being Solved
                     </h2>
-                    <p className="text-slate-800 leading-relaxed text-[15px]">
+                    <p className="text-amber-callout-body leading-relaxed text-[15px]">
                       {tech.problem_solved && tech.problem_solved !== 'Information being updated'
                         ? tech.problem_solved
                         : <InfoMissing />}
@@ -359,38 +359,38 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
               {/* Technology Description */}
               {hasDesc && (
                 <div
-                  className="bg-white rounded-2xl border border-slate-100 p-6 animate-slide-fade-in"
+                  className="bg-card rounded-2xl border border-border p-6 animate-slide-fade-in"
                   style={{
                     boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)',
                     animationDelay: '0.2s',
                   }}
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                      <BookOpen className="w-4 h-4 text-blue-600" />
+                    <div className="w-8 h-8 rounded-lg bg-accent-secondary/10 flex items-center justify-center">
+                      <BookOpen className="w-4 h-4 text-accent-secondary" />
                     </div>
-                    <h2 className="font-bold text-slate-900 font-heading">Technology Description</h2>
+                    <h2 className="font-bold text-heading font-heading">Technology Description</h2>
                   </div>
-                  <p className="text-slate-600 leading-relaxed text-[15px]">{tech.description}</p>
+                  <p className="text-text-primary leading-relaxed text-[15px]">{tech.description}</p>
                 </div>
               )}
 
               {/* Applications & Industry Potential — Bullet list card */}
               {hasApps && (
                 <div
-                  className="bg-white rounded-2xl border border-slate-100 p-6 animate-slide-fade-in"
+                  className="bg-card rounded-2xl border border-border p-6 animate-slide-fade-in"
                   style={{
                     boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)',
                     animationDelay: '0.3s',
                   }}
                 >
                   <div className="flex items-start gap-3 mb-5">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                      <Zap className="w-4 h-4 text-emerald-600" />
+                    <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <Zap className="w-4 h-4 text-accent" />
                     </div>
                     <div>
-                      <h2 className="font-bold text-slate-900 font-heading">Applications &amp; Industry Potential</h2>
-                      <p className="text-xs text-slate-400 mt-0.5">
+                      <h2 className="font-bold text-heading font-heading">Applications &amp; Industry Potential</h2>
+                      <p className="text-xs text-text-secondary mt-0.5">
                         Potential application areas for this technology
                       </p>
                     </div>
@@ -402,8 +402,8 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                         className="flex items-start gap-2.5"
                         style={{ animation: `slide-fade-in 0.3s ease-out ${0.3 + i * 0.07}s both` }}
                       >
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
-                        <span className="text-[15px] text-slate-700 leading-relaxed">{app}</span>
+                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="text-[15px] text-text-primary leading-relaxed">{app}</span>
                       </li>
                     ))}
                   </ul>
@@ -416,22 +416,22 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
             <div className="lg:col-span-3">
               <div className="lg:sticky lg:top-24 space-y-4">
 
-                {/* Main Action Card — Glassmorphic */}
+                {/* Main Action Card — Dynamic Background */}
                 <div
-                  className="rounded-2xl bg-white/80 backdrop-blur-md border border-white/60 p-6"
+                  className="rounded-2xl bg-card border border-border p-6"
                   style={{
-                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.04), 0 20px 50px rgba(0,0,0,0.07), inset 0 0 0 1px rgba(255,255,255,0.8)',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
                     animation: 'slide-fade-in 0.7s ease-out 0.2s both',
                   }}
                 >
 
                   {/* TRL Readiness Level */}
-                  <div className="mb-5 pb-5 border-b border-slate-100">
+                  <div className="mb-5 pb-5 border-b border-border">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded-md bg-blue-50 flex items-center justify-center">
-                        <Zap className="w-3.5 h-3.5 text-blue-600" />
+                      <div className="w-6 h-6 rounded-md bg-accent-secondary/10 flex items-center justify-center">
+                        <Zap className="w-3.5 h-3.5 text-accent-secondary" />
                       </div>
-                      <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+                      <span className="text-[11px] font-bold text-text-secondary uppercase tracking-widest">
                         Technology Readiness
                       </span>
                     </div>
@@ -439,19 +439,19 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                   </div>
 
                   {/* Patent / IP Status */}
-                  <div className="mb-5 pb-5 border-b border-slate-100">
+                  <div className="mb-5 pb-5 border-b border-border">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded-md bg-blue-50 flex items-center justify-center">
-                        <Shield className="w-3.5 h-3.5 text-blue-600" />
+                      <div className="w-6 h-6 rounded-md bg-accent-secondary/10 flex items-center justify-center">
+                        <Shield className="w-3.5 h-3.5 text-accent-secondary" />
                       </div>
-                      <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+                      <span className="text-[11px] font-bold text-text-secondary uppercase tracking-widest">
                         IP Status
                       </span>
                     </div>
                     {tech.patent_status && tech.patent_status !== 'Not Specified' && tech.patent_status !== 'NA' ? (
-                      <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-blue-50 border border-blue-100">
-                        <Shield className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                        <span className="text-sm font-semibold text-blue-900">{tech.patent_status}</span>
+                      <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-accent-secondary/10 border border-accent-secondary/20">
+                        <Shield className="w-4 h-4 text-accent-secondary flex-shrink-0" />
+                        <span className="text-sm font-semibold text-text-primary">{tech.patent_status}</span>
                       </div>
                     ) : (
                       <InfoMissing />
@@ -459,14 +459,14 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                   </div>
 
                   {/* Institution */}
-                  <div className="mb-5 pb-5 border-b border-slate-100">
+                  <div className="mb-5 pb-5 border-b border-border">
                     <div className="flex items-start gap-2.5">
-                      <MapPin className="w-4 h-4 text-slate-300 mt-0.5 flex-shrink-0" />
+                      <MapPin className="w-4 h-4 text-text-secondary mt-0.5 flex-shrink-0" />
                       <div>
-                        <div className="text-[11px] text-slate-400 font-medium mb-0.5">Institution</div>
+                        <div className="text-[11px] text-text-secondary font-medium mb-0.5">Institution</div>
                         <Link
                           href={`/institutions/${tech.institution_slug}`}
-                          className="text-sm font-semibold text-slate-800 hover:text-blue-700 transition-colors flex items-center gap-1 group"
+                          className="text-sm font-semibold text-text-primary hover:text-accent-secondary transition-colors flex items-center gap-1 group"
                         >
                           {tech.institution}
                           <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -488,7 +488,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                       Request This Technology
                       <ExternalLink className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                     </a>
-                    <p className="text-center text-[11px] text-slate-400 mt-3 leading-relaxed px-1">
+                    <p className="text-center text-[11px] text-text-secondary mt-3 leading-relaxed px-1">
                       Interested in commercializing this technology? Submit a request through RINK and our team will connect you with the relevant institution.
                     </p>
                   </div>
@@ -497,29 +497,29 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
 
                 {/* RINK Contact Card */}
                 <div
-                  className="rounded-2xl bg-white border border-slate-100 p-5"
+                  className="rounded-2xl bg-card border border-border p-5"
                   style={{
                     boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)',
                     animation: 'slide-fade-in 0.7s ease-out 0.35s both',
                   }}
                 >
-                  <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">
+                  <h3 className="text-[11px] font-bold text-text-secondary uppercase tracking-widest mb-4">
                     RINK Contact
                   </h3>
                   <div className="space-y-3">
-                    <div className="text-sm font-semibold text-slate-700 leading-snug">
+                    <div className="text-sm font-semibold text-text-primary leading-snug">
                       Research Innovation Network Kerala
                     </div>
-                    <a href="mailto:rink@startupmission.in" className="flex items-center gap-2.5 text-sm text-slate-500 hover:text-blue-700 transition-colors">
-                      <Mail className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" />
+                    <a href="mailto:rink@startupmission.in" className="flex items-center gap-2.5 text-sm text-text-secondary hover:text-accent-secondary transition-colors">
+                      <Mail className="w-3.5 h-3.5 text-text-secondary flex-shrink-0" />
                       rink@startupmission.in
                     </a>
-                    <a href="tel:08047180470" className="flex items-center gap-2.5 text-sm text-slate-500 hover:text-blue-700 transition-colors">
-                      <Phone className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" />
+                    <a href="tel:08047180470" className="flex items-center gap-2.5 text-sm text-text-secondary hover:text-accent-secondary transition-colors">
+                      <Phone className="w-3.5 h-3.5 text-text-secondary flex-shrink-0" />
                       080 4718 0470
                     </a>
-                    <a href="tel:04712700270" className="flex items-center gap-2.5 text-sm text-slate-500 hover:text-blue-700 transition-colors">
-                      <Phone className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" />
+                    <a href="tel:04712700270" className="flex items-center gap-2.5 text-sm text-text-secondary hover:text-accent-secondary transition-colors">
+                      <Phone className="w-3.5 h-3.5 text-text-secondary flex-shrink-0" />
                       0471-2700270
                     </a>
                   </div>
@@ -531,32 +531,32 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                     href={tech.institution_website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between w-full p-4 bg-white rounded-xl border border-slate-100 hover:border-blue-200 hover:shadow-sm transition-all group"
+                    className="flex items-center justify-between w-full p-4 bg-card rounded-xl border border-border hover:border-accent-secondary/20 hover:shadow-sm transition-all group"
                     style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}
                   >
                     <div className="flex items-center gap-2.5">
-                      <Globe className="w-4 h-4 text-slate-300" />
-                      <span className="text-sm font-medium text-slate-600 group-hover:text-blue-700 transition-colors">
+                      <Globe className="w-4 h-4 text-text-secondary" />
+                      <span className="text-sm font-medium text-text-primary group-hover:text-accent-secondary transition-colors">
                         Visit Institution Website
                       </span>
                     </div>
-                    <ExternalLink className="w-3.5 h-3.5 text-slate-300 group-hover:text-blue-700 transition-colors" />
+                    <ExternalLink className="w-3.5 h-3.5 text-text-secondary group-hover:text-accent-secondary transition-colors" />
                   </a>
                 )}
 
                 {/* More from Institution */}
                 <Link
                   href={`/institutions/${tech.institution_slug}`}
-                  className="flex items-center justify-between w-full p-4 bg-white rounded-xl border border-slate-100 hover:border-blue-200 hover:shadow-sm transition-all group"
+                  className="flex items-center justify-between w-full p-4 bg-card rounded-xl border border-border hover:border-accent-secondary/20 hover:shadow-sm transition-all group"
                   style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}
                 >
                   <div className="flex items-center gap-2.5">
-                    <MapPin className="w-4 h-4 text-slate-300" />
-                    <span className="text-sm font-medium text-slate-600 group-hover:text-blue-700 transition-colors">
+                    <MapPin className="w-4 h-4 text-text-secondary" />
+                    <span className="text-sm font-medium text-text-primary group-hover:text-accent-secondary transition-colors">
                       More from {tech.institution.split(' ').slice(0, 3).join(' ')}…
                     </span>
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-blue-700 transition-colors" />
+                  <ChevronRight className="w-3.5 h-3.5 text-text-secondary group-hover:text-accent-secondary transition-colors" />
                 </Link>
 
               </div>

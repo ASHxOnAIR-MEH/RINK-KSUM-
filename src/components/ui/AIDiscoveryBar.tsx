@@ -20,7 +20,7 @@ const QUICK_PROMPTS = [
 
 // ── Featured badge — only shown for High (internal field) ───────────────
 const POT: Record<string, { bg: string; text: string; dot: string; label: string }> = {
-  'High':          { bg: 'rgba(217,119,6,0.12)', text: '#92400e', dot: '#d97706', label: '★ Featured' },
+  'High':          { bg: 'var(--bg-amber-callout)', text: 'var(--text-amber-callout)', dot: 'var(--text-amber-callout)', label: '★ Featured' },
   'Medium':        { bg: 'transparent', text: 'transparent', dot: 'transparent', label: '' },
   'Low':           { bg: 'transparent', text: 'transparent', dot: 'transparent', label: '' },
   'Not Specified': { bg: 'transparent', text: 'transparent', dot: 'transparent', label: '' },
@@ -54,26 +54,26 @@ function ResultCard({ r }: { r: AISearchResult }) {
 
   return (
     <div
-      className="group bg-white rounded-2xl border border-gray-100 p-5 hover:border-blue-200 hover:shadow-lg transition-all duration-300"
+      className="group bg-card rounded-2xl border border-border p-5 hover:border-accent-secondary/25 hover:shadow-lg transition-all duration-300"
       style={{ boxShadow: '0 1px 6px rgba(0,63,138,0.06)' }}
     >
       {/* Name */}
-      <h4 className="font-heading font-bold text-[#003F8A] text-[15px] leading-snug mb-3 group-hover:text-[#002D6B] transition-colors">
+      <h4 className="font-heading font-bold text-accent-secondary text-[15px] leading-snug mb-3 group-hover:text-accent-secondary/90 transition-colors">
         {tech.name}
       </h4>
 
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mb-4">
-        <span className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100">
-          <Building2 size={10} className="text-gray-400" /> {tech.institution}
+        <span className="flex items-center gap-1.5 text-xs text-text-primary bg-card-secondary px-2.5 py-1 rounded-lg border border-border">
+          <Building2 size={10} className="text-text-secondary/60" /> {tech.institution}
         </span>
-        <span className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100">
-          <Layers size={10} className="text-gray-400" /> {tech.sector}
+        <span className="flex items-center gap-1.5 text-xs text-text-primary bg-card-secondary px-2.5 py-1 rounded-lg border border-border">
+          <Layers size={10} className="text-text-secondary/60" /> {tech.sector}
         </span>
         {/* Technology Type — each value as its own chip */}
         {techTypes.map((t, i) => (
-          <span key={i} className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100">
-            <FlaskConical size={10} className="text-gray-400" /> {t}
+          <span key={i} className="flex items-center gap-1.5 text-xs text-text-primary bg-card-secondary px-2.5 py-1 rounded-lg border border-border">
+            <FlaskConical size={10} className="text-text-secondary/60" /> {t}
           </span>
         ))}
       </div>
@@ -91,7 +91,7 @@ function ResultCard({ r }: { r: AISearchResult }) {
 
         <Link
           href={`/technologies/${tech.id}`}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#003F8A] bg-[#EFF6FF] hover:bg-[#DBEAFE] px-3 py-1.5 rounded-lg transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-secondary bg-accent-secondary/15 hover:bg-accent-secondary/25 px-3 py-1.5 rounded-lg transition-colors"
           id={`ai-result-${tech.id}`}
         >
           View Technology <ExternalLink size={11} />
@@ -165,20 +165,20 @@ export default function AIDiscoveryBar() {
         <div className="flex flex-col sm:flex-row items-stretch w-full gap-3 sm:gap-0 rounded-2xl overflow-hidden shadow-lg transition-all duration-300">
           {/* Input container */}
           <div
-            className={`flex-1 flex items-center bg-white border-2 rounded-2xl sm:rounded-r-none sm:border-r-0 px-4 py-3.5 transition-all duration-300 focus-within:ring-4 focus-within:ring-brand-blue/10 ${
+            className={`flex-1 flex items-center bg-card border-2 rounded-2xl sm:rounded-r-none sm:border-r-0 px-4 py-3.5 transition-all duration-300 focus-within:ring-4 focus-within:ring-accent-secondary/10 ${
               loading
-                ? 'border-[#003F8A]'
+                ? 'border-accent-secondary'
                 : result
-                ? 'border-[#003F8A]/30'
-                : 'border-gray-200'
+                ? 'border-accent-secondary/30'
+                : 'border-border'
             }`}
           >
             {/* Search Icon */}
             <div className="mr-3 flex-shrink-0">
               {loading ? (
-                <Loader2 size={20} className="text-[#003F8A] animate-spin" />
+                <Loader2 size={20} className="text-accent-secondary animate-spin" />
               ) : (
-                <Search size={20} className="text-gray-400" />
+                <Search size={20} className="text-text-secondary" />
               )}
             </div>
 
@@ -189,7 +189,7 @@ export default function AIDiscoveryBar() {
               value={query}
               onChange={e => setQuery(e.target.value)}
               placeholder="Describe your startup idea, industry, or challenge..."
-              className="flex-1 w-full min-w-0 bg-transparent text-gray-800 text-[15px] outline-none placeholder-gray-400 border-none p-0"
+              className="flex-1 w-full min-w-0 bg-transparent text-heading text-[15px] outline-none placeholder:text-text-secondary placeholder:text-[13px] md:placeholder:text-[14px] border-none p-0"
               style={{ fontFamily: 'inherit' }}
               disabled={loading}
               id="ai-discovery-input"
@@ -200,7 +200,7 @@ export default function AIDiscoveryBar() {
               <button
                 type="button"
                 onClick={handleReset}
-                className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors flex-shrink-0"
+                className="p-1.5 rounded-lg text-text-secondary hover:text-text-primary hover:bg-card-secondary transition-colors flex-shrink-0"
                 title="Clear search"
               >
                 <RotateCcw size={15} />
@@ -214,14 +214,13 @@ export default function AIDiscoveryBar() {
             disabled={!query.trim() || loading}
             className={`flex-shrink-0 flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl sm:rounded-l-none font-semibold text-sm transition-all duration-200 border-2 border-transparent ${
               query.trim() && !loading
-                ? 'text-white'
-                : 'bg-gray-200 text-gray-400'
+                ? 'text-white hover:opacity-90'
+                : 'bg-card-secondary text-text-secondary/40 border-border cursor-not-allowed'
             }`}
             style={{
               background: query.trim() && !loading
-                ? 'linear-gradient(135deg, #003F8A 0%, #0055AA 100%)'
+                ? 'linear-gradient(135deg, var(--accent-secondary) 0%, #0055AA 100%)'
                 : undefined,
-              cursor: query.trim() && !loading ? 'pointer' : 'not-allowed',
             }}
             id="ai-discover-btn"
           >
@@ -238,11 +237,10 @@ export default function AIDiscoveryBar() {
             <button
               key={p.label}
               onClick={() => { setQuery(p.query); search(p.query); }}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium text-[#003F8A] transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium text-accent-secondary transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 border border-border"
               style={{
-                background: 'rgba(255,255,255,0.75)',
+                background: 'var(--bg-assistant-bubble)',
                 backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(0,63,138,0.15)',
               }}
               id={`quick-prompt-${p.label.toLowerCase().replace(/\s+/g, '-')}`}
             >
@@ -257,21 +255,21 @@ export default function AIDiscoveryBar() {
       {loading && (
         <div className="mt-8 space-y-4" ref={resultsRef}>
           <div className="text-center mb-4">
-            <div className="inline-flex items-center gap-2 text-sm text-gray-500">
-              <Loader2 size={14} className="text-[#003F8A] animate-spin" />
-              Searching for <span className="font-semibold text-gray-700">&quot;{activeQuery}&quot;</span>...
+            <div className="inline-flex items-center gap-2 text-sm text-text-secondary">
+              <Loader2 size={14} className="text-accent-secondary animate-spin" />
+              Searching for <span className="font-semibold text-text-primary">&quot;{activeQuery}&quot;</span>...
             </div>
           </div>
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="bg-white rounded-2xl border border-gray-100 p-5 animate-pulse">
-              <div className="h-4 bg-gray-200 rounded w-3/4 mb-4" />
+            <div key={i} className="bg-card rounded-2xl border border-border p-5 animate-pulse">
+              <div className="h-4 bg-card-secondary rounded w-3/4 mb-4" />
               <div className="flex gap-2 mb-4">
-                <div className="h-6 bg-gray-100 rounded-lg w-28" />
-                <div className="h-6 bg-gray-100 rounded-lg w-20" />
+                <div className="h-6 bg-card-secondary rounded-lg w-28" />
+                <div className="h-6 bg-card-secondary rounded-lg w-20" />
               </div>
               <div className="flex justify-between">
-                <div className="h-6 bg-gray-100 rounded-full w-32" />
-                <div className="h-6 bg-blue-50 rounded-lg w-32" />
+                <div className="h-6 bg-card-secondary rounded-full w-32" />
+                <div className="h-6 bg-accent-secondary/10 rounded-lg w-32" />
               </div>
             </div>
           ))}
@@ -284,16 +282,16 @@ export default function AIDiscoveryBar() {
           {/* Result header */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-[#EFF6FF] flex items-center justify-center">
-                <Search size={14} className="text-[#003F8A]" />
+              <div className="w-7 h-7 rounded-lg bg-accent-secondary/15 flex items-center justify-center">
+                <Search size={14} className="text-accent-secondary" />
               </div>
-              <p className="text-sm text-gray-700 font-medium">
+              <p className="text-sm text-text-primary font-medium">
                 <Bold text={result.responseMessage} />
               </p>
             </div>
             <button
               onClick={handleReset}
-              className="text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1 transition-colors"
+              className="text-xs text-text-secondary hover:text-text-primary flex items-center gap-1 transition-colors"
             >
               <RotateCcw size={12} /> New search
             </button>
@@ -312,7 +310,7 @@ export default function AIDiscoveryBar() {
               <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link
                   href={`/technologies?q=${encodeURIComponent(activeQuery)}`}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-[#003F8A] border border-[#003F8A]/20 bg-white hover:bg-[#EFF6FF] transition-colors"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-accent-secondary border border-accent-secondary/20 bg-card hover:bg-card-secondary transition-colors"
                   id="ai-view-all-btn"
                 >
                   <Search size={14} />
