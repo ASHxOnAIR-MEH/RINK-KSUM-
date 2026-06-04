@@ -29,8 +29,10 @@ export default async function HomePage() {
 
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section
-        className="relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #071018 0%, #0a1628 45%, #0d2040 80%, #071018 100%)' }}
+        className="relative overflow-hidden bg-cover bg-center"
+        style={{
+          backgroundImage: 'linear-gradient(135deg, rgba(7, 16, 24, 0.85) 0%, rgba(10, 22, 40, 0.8) 45%, rgba(13, 32, 64, 0.75) 80%, rgba(7, 16, 24, 0.9) 100%), url("/images/hero-innovation-bg.png")',
+        }}
       >
         {/* Dot grid */}
         <div
@@ -72,7 +74,7 @@ export default async function HomePage() {
               <div className="flex items-center gap-4 mb-10">
                 <div className="relative" style={{ width: 110, height: 44 }}>
                   <Image
-                    src="/images/ksum-logo.png"
+                     src="/images/ksum-logo.png"
                     alt="Kerala Startup Mission"
                     fill
                     className="object-contain brightness-0 invert opacity-90"
@@ -110,11 +112,10 @@ export default async function HomePage() {
                 <span
                   style={{
                     color: '#FFFFFF',
-                    textShadow: '0 1px 2px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)',
                     display: 'block',
                   }}
                 >
-                  Discover Research.
+                  Discover Technologies.
                 </span>
                 <span className="relative" style={{ display: 'block' }}>
                   <span style={{ color: '#34d399' }}>Build Startups.</span>

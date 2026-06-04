@@ -86,18 +86,26 @@ export function classifyIntent(query: string): ConversationIntent {
 
 // ── Conversational responses (no DB search) ──────────────────
 export function getConversationalResponse(intent: ConversationIntent, query: string): AISearchResponse {
+  const normalizedQuery = query.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
+
+  let greetingMsg = `Hello Entrepreneur! Welcome to **RINK Technology Explorer**.\n\nWhat startup idea or technology area are you exploring today?`;
+  if (normalizedQuery === 'hi') {
+    greetingMsg = 'Hello Entrepreneur. What startup idea are you exploring today?';
+  } else if (normalizedQuery === 'hello') {
+    greetingMsg = 'Welcome to RINK Technology Explorer.';
+  }
+
   const messages: Record<ConversationIntent, string> = {
-    greeting:
-      `Hello! Welcome to **RINK Technology Explorer**.\n\nI'm the RINK Discovery Assistant. I help founders, startups, MSMEs, researchers and innovators discover technologies from Kerala's leading research institutions.\n\nWhat startup idea or technology area would you like to explore today?`,
+    greeting: greetingMsg,
 
     smalltalk:
       `I'm doing well, thank you!\n\nI'm here to help you discover technologies available for commercialization through Kerala's research ecosystem.\n\nWhat area would you like to explore? You can describe a startup idea, an industry, or a problem you're trying to solve.`,
 
     who_are_you:
-      `I'm the **RINK Discovery Assistant**.\n\nI help users discover technologies developed by Kerala's leading research institutions — and connect with RINK for technology transfer and commercialization opportunities.\n\nTry asking me something like:\n- *"Show me water purification technologies"*\n- *"I want to start a food processing business"*\n- *"Find agriculture startup opportunities"*`,
+      `I am the **RINK Discovery Assistant**.\n\nI help entrepreneurs and founders discover commercializable technologies developed by Kerala's leading research institutions and turn deep-tech patents into startups.`,
 
     help:
-      `Here's how to get the best results:\n\n**Describe your startup idea:**\n→ *"I want to start a coconut processing business"*\n\n**Search by industry:**\n→ *"Agriculture technologies"*\n→ *"Solar energy innovations"*\n\n**Search by problem:**\n→ *"Water purification"*\n→ *"Cancer detection"*\n\n**Filter by type:**\n→ *"Patented technologies"*\n→ *"TRL 7 and above"*\n\nWhat would you like to discover today?`,
+      `Here's how to get the best results:\n\n**Describe your startup idea:**\n→ *"I want to start a coconut processing business"*\n\n**Search by industry:**\n→ *"Agriculture technologies"*\n\n**Search by problem:**\n→ *"Water purification"*\n\nWhat would you like to discover today?`,
 
     thanks:
       `You're welcome!\n\nFeel free to describe a startup idea, challenge, or industry and I'll help you discover relevant technologies from the RINK database.`,
@@ -180,54 +188,55 @@ function scoreField(fieldText: string, rawQuery: string, tokens: string[], weigh
   if (!fieldText || !fieldText.trim()) return 0;
   const lower = fieldText.toLowerCase();
   const queryLower = rawQuery.toLowerCase().trim();
+  const escapedQuery = queryLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-  let score = 0;
-
-  // P1 — Exact phrase match in field (very high confidence)
-  if (queryLower.length >= 3 && lower.includes(queryLower)) {
-    score += weight * 3.0;
-    return score; // No need to check further
+  // P1 — Exact full field match
+  if (lower === queryLower) {
+    return weight * 5.0;
   }
 
-  // P2 & P3 — Token-level matching
-  let hits = 0;
-  let partialHits = 0;
+  // P2 — Exact phrase match with word boundaries (e.g., \bcontrol\b matches "pest control" but not "pest controller")
+  const exactPhraseRegex = new RegExp(`\\b${escapedQuery}\\b`, 'i');
+  if (exactPhraseRegex.test(lower)) {
+    return weight * 3.5;
+  }
+
+  // P3 — Partial/substring match of the entire phrase (e.g. matching "control" in "controller")
+  if (lower.includes(queryLower)) {
+    return weight * 1.5;
+  }
+
+  // P4 — Token-level matching
+  if (tokens.length === 0) return 0;
+
+  let exactTokenHits = 0;
+  let prefixTokenHits = 0;
+  let substringTokenHits = 0;
 
   for (const tok of tokens) {
-    // Word-boundary match
-    const wb = new RegExp(`\\b${tok.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i');
-    if (wb.test(lower)) {
-      hits++;
-    } else if (tok.length >= 5 && lower.includes(tok)) {
-      // Substring match only for tokens >= 5 chars
-      partialHits++;
+    const escapedTok = tok.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const exactWord = new RegExp(`\\b${escapedTok}\\b`, 'i');
+    const prefixWord = new RegExp(`\\b${escapedTok}`, 'i');
+
+    if (exactWord.test(lower)) {
+      exactTokenHits++;
+    } else if (prefixWord.test(lower)) {
+      prefixTokenHits++;
+    } else if (lower.includes(tok)) {
+      substringTokenHits++;
     }
   }
 
-  if (tokens.length === 0) return 0;
+  const totalHits = exactTokenHits + prefixTokenHits + substringTokenHits;
+  if (totalHits === 0) return 0;
 
-  const hitRatio = hits / tokens.length;
-  const partialRatio = partialHits / tokens.length;
+  // Prefer exact token hits, then prefix hits, then substring hits
+  let tokenScore = 0;
+  tokenScore += (exactTokenHits / tokens.length) * weight * 2.0;
+  tokenScore += (prefixTokenHits / tokens.length) * weight * 1.0;
+  tokenScore += (substringTokenHits / tokens.length) * weight * 0.3;
 
-  // P2 — All tokens match = high confidence
-  if (hitRatio >= 1.0) {
-    score += weight * 2.0;
-  }
-  // P3 — Most tokens match (>= 75%)
-  else if (hitRatio >= 0.75) {
-    score += weight * hitRatio * 1.5;
-  }
-  // P4 — Partial word-boundary matches
-  else if (hitRatio > 0) {
-    score += weight * hitRatio * 1.0;
-  }
-
-  // P5 — Substring-only matches (penalised)
-  if (partialHits > 0) {
-    score += weight * partialRatio * 0.4;
-  }
-
-  return score;
+  return tokenScore;
 }
 
 function scoreArrayField(arr: string[], rawQuery: string, tokens: string[], weight: number): number {
