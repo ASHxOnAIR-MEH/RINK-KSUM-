@@ -102,14 +102,21 @@ export default async function HomePage() {
 
               {/* Headline */}
               <h1
-                className="text-4xl md:text-5xl lg:text-6xl font-heading font-black text-white leading-tight mb-5"
+                className="text-4xl md:text-5xl lg:text-6xl font-heading font-black leading-tight mb-5"
                 style={{
                   animation: 'slide-fade-in 0.6s ease-out 0.2s both',
-                  textShadow: '0 0 60px rgba(79,70,229,0.3), 0 2px 24px rgba(0,0,0,0.5)',
                 }}
               >
-                Discover Research.{' '}
-                <span className="relative">
+                <span
+                  style={{
+                    color: '#FFFFFF',
+                    textShadow: '0 1px 2px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)',
+                    display: 'block',
+                  }}
+                >
+                  Discover Research.
+                </span>
+                <span className="relative" style={{ display: 'block' }}>
                   <span style={{ color: '#34d399' }}>Build Startups.</span>
                   <svg className="absolute -bottom-2 left-0 w-full" height="5" viewBox="0 0 300 5" preserveAspectRatio="none">
                     <path d="M0 2.5 Q75 0 150 2.5 Q225 5 300 2.5" stroke="#34d399" strokeWidth="2.5" fill="none" strokeLinecap="round" />
