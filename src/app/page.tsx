@@ -216,8 +216,13 @@ export default async function HomePage() {
       <StatsSection />
 
       {/* ── STARTUP DISCOVERY ────────────────────────────── */}
-      <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <section className="relative py-16 bg-white overflow-hidden">
+        {/* Subtle background image representing Kerala's innovation ecosystem */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.06] bg-cover bg-center"
+          style={{ backgroundImage: 'url("/images/startup-discovery-bg.png")' }}
+        />
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="max-w-xl mb-10">
             <div className="text-xs font-semibold text-[#003F8A] uppercase tracking-widest mb-3">
               Startup Discovery
@@ -247,8 +252,13 @@ export default async function HomePage() {
       </section>
 
       {/* ── FEATURED TECHNOLOGIES ─────────────────────────────── */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <section className="relative py-16 bg-gray-50 overflow-hidden">
+        {/* Subtle background image representing research commercialization and technology transfer */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.07] bg-cover bg-center blur-[1px]"
+          style={{ backgroundImage: 'url("/images/featured-techs-bg.png")' }}
+        />
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-end justify-between mb-10">
             <h2 className="text-2xl md:text-3xl font-heading font-bold text-gray-900">
               Featured Technologies
@@ -277,8 +287,13 @@ export default async function HomePage() {
       </section>
 
       {/* ── INSTITUTIONS ─────────────────────────────────────── */}
-      <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <section className="relative py-16 bg-white overflow-hidden">
+        {/* Subtle background image representing research institutions and academic labs */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.08] bg-cover bg-center"
+          style={{ backgroundImage: 'url("/images/institutions-bg.png")' }}
+        />
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-end justify-between mb-10">
             <div>
               <div className="text-xs font-semibold text-[#003F8A] uppercase tracking-widest mb-3">
