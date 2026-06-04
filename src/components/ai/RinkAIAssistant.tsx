@@ -193,16 +193,33 @@ export default function RinkAIAssistant() {
 
       const data: AISearchResponse = await res.json();
 
-      setMessages(prev => [
-        ...prev,
-        {
-          id: `res-${Date.now()}`,
-          role: 'results',
-          results: data.results,
-          responseMessage: data.responseMessage,
-          query: q,
-        },
+      // Conversational intents → plain assistant bubble (no results layout)
+      const CONVERSATIONAL_INTENTS = new Set([
+        'greeting', 'smalltalk', 'who_are_you', 'help', 'thanks', 'empty',
       ]);
+
+      if (CONVERSATIONAL_INTENTS.has(data.intent)) {
+        setMessages(prev => [
+          ...prev,
+          {
+            id: `res-${Date.now()}`,
+            role: 'assistant',
+            text: data.responseMessage,
+          },
+        ]);
+      } else {
+        // Search intent → results layout
+        setMessages(prev => [
+          ...prev,
+          {
+            id: `res-${Date.now()}`,
+            role: 'results',
+            results: data.results,
+            responseMessage: data.responseMessage,
+            query: q,
+          },
+        ]);
+      }
     } catch {
       setMessages(prev => [
         ...prev,

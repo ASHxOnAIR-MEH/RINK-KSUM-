@@ -135,7 +135,7 @@ export default function AIDiscoveryBar() {
       setResult({
         results: [],
         query: trimmed,
-        intent: 'error',
+        intent: 'empty',
         responseMessage: 'Could not connect to the RINK database. Please try again.',
         totalFound: 0,
       });
