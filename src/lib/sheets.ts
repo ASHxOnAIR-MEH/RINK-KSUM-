@@ -249,7 +249,7 @@ let _cache: { data: Technology[]; ts: number } | null = null;
 // Production: 5-minute cache to reduce API calls
 const CACHE_TTL = process.env.NODE_ENV === 'development'
   ? 0                  // instant refresh in dev
-  : 5 * 60 * 1000;    // 5 minutes in production
+  : 60 * 1000;         // 1 minute in production
 
 // Call this to force-clear the cache (used by /api/revalidate)
 export function clearCache() {
@@ -264,11 +264,11 @@ export async function fetchAllTechnologies(): Promise<Technology[]> {
   }
 
   // In dev: cache:'no-store' forces a fresh HTTP request every time
-  // In prod: revalidate every 5 minutes via Next.js ISR
+  // In prod: revalidate every 1 minute via Next.js ISR
   const fetchOptions: RequestInit =
     process.env.NODE_ENV === 'development'
       ? { cache: 'no-store' }                 // always fresh in dev
-      : { next: { revalidate: 300 } } as RequestInit; // 5-min ISR in prod
+      : { next: { revalidate: 60 } } as RequestInit; // 1-min ISR in prod
 
   try {
     const res = await fetch(SHEET_CSV_URL, fetchOptions);

@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const revalidate = 60; // Revalidate all pages at least every 60 seconds (1 minute)
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
