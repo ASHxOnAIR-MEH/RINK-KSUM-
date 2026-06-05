@@ -6,6 +6,7 @@ import { Technology, Sector } from '@/types';
 import TechnologyCard from '@/components/ui/TechnologyCard';
 import Link from 'next/link';
 import { Rocket, ArrowRight, Zap, Search } from 'lucide-react';
+import { getSectorIcon } from '@/components/ui/SectorIcons';
 
 interface Props {
   sectors: Sector[];
@@ -34,7 +35,7 @@ export default function StartupDiscoveryClient({
       {/* Hero */}
       <section className="border-b border-border py-16" style={{ background: 'var(--bg-hero)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent-secondary/15 rounded-full text-xs font-semibold text-accent-secondary mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/15 rounded-full text-xs font-semibold text-accent mb-6">
             <Zap className="w-3.5 h-3.5" />
             Startup Discovery
           </div>
@@ -53,20 +54,22 @@ export default function StartupDiscoveryClient({
                 key={sector.slug}
                 id={`sector-btn-${sector.slug}`}
                 onClick={() => handleSectorClick(sector)}
-                className={`group p-4 rounded-xl border transition-all duration-200 text-center ${
+                className={`group p-4 rounded-xl border transition-all duration-200 text-center flex flex-col items-center justify-center cursor-pointer ${
                   activeSectorSlug === sector.slug
-                    ? 'bg-accent-secondary border-accent-secondary shadow-lg scale-105 text-white'
+                    ? 'bg-accent border-accent shadow-lg scale-105 text-[#04142B]'
                     : 'bg-card border-border hover:bg-card-secondary text-text-primary'
                 }`}
               >
-                <div className="text-2xl mb-2">{sector.icon}</div>
-                <div className={`font-heading font-semibold text-xs leading-snug ${
-                  activeSectorSlug === sector.slug ? 'text-white' : 'text-heading group-hover:text-accent-secondary transition-colors'
+                <div className="mb-2">
+                  {getSectorIcon(sector.slug, activeSectorSlug === sector.slug ? '#04142B' : 'var(--accent)', 28)}
+                </div>
+                <div className={`font-heading font-bold text-xs leading-snug ${
+                  activeSectorSlug === sector.slug ? 'text-[#04142B]' : 'text-heading group-hover:text-accent transition-colors'
                 }`}>
                   {sector.name}
                 </div>
                 <div className={`text-xs mt-1 ${
-                  activeSectorSlug === sector.slug ? 'text-white/80' : 'text-text-secondary'
+                  activeSectorSlug === sector.slug ? 'text-[#04142B]/80' : 'text-text-secondary'
                 }`}>
                   {sector.tech_count} tech{sector.tech_count !== 1 ? 's' : ''}
                 </div>
@@ -82,10 +85,10 @@ export default function StartupDiscoveryClient({
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
                 style={{ background: `${displayedSector.color}15` }}
               >
-                {displayedSector.icon}
+                {getSectorIcon(displayedSector.slug, 'var(--accent)', 24)}
               </div>
               <div>
                 <h2 className="font-heading font-bold text-heading">
@@ -98,7 +101,7 @@ export default function StartupDiscoveryClient({
             </div>
             <Link
               href={`/sectors/${displayedSector.slug}`}
-              className="hidden md:flex items-center gap-1.5 text-sm font-semibold text-accent-secondary hover:underline"
+              className="hidden md:flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline"
             >
               View All <ArrowRight className="w-4 h-4" />
             </Link>

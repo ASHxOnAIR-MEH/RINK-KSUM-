@@ -9,10 +9,9 @@ import clsx from 'clsx';
 import ThemeToggle from './ThemeToggle';
 
 const NAV_LINKS = [
-  { label: 'Home',              href: '/' },
-  { label: 'Startup Discovery', href: '/startup-discovery' },
-  { label: 'Institutions',      href: '/institutions' },
-  { label: 'About',             href: '/about' },
+  { label: 'Home',         href: '/' },
+  { label: 'Institutions', href: '/institutions' },
+  { label: 'About',        href: '/about' },
 ];
 
 export default function Navbar() {

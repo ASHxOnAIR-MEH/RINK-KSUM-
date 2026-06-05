@@ -51,7 +51,7 @@ function getAcronym(name: string): string {
 
 export default function InstitutionCard({ institution }: Props) {
   const slug = institution.slug;
-  const banner = INST_BANNERS[slug] || INST_BANNERS['default'];
+  const banner = institution.bannerImage || institution.image || INST_BANNERS[slug] || INST_BANNERS['default'];
   const acronym = getAcronym(institution.name);
   const specs = institution.specializations || ['General Technology'];
 
@@ -61,10 +61,10 @@ export default function InstitutionCard({ institution }: Props) {
       id={`inst-card-${slug}`}
       className="block group"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-border bg-card h-64 flex flex-col justify-between hover:border-accent/30 hover:shadow-2xl transition-all duration-300">
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-card h-[200px] flex flex-col justify-between hover:border-accent/30 hover:shadow-2xl transition-all duration-300">
         
-        {/* Banner Image Header */}
-        <div className="relative h-28 w-full overflow-hidden flex-shrink-0 bg-card-secondary">
+        {/* Banner Image Header (16:6 approximate ratio) */}
+        <div className="relative h-20 w-full overflow-hidden flex-shrink-0 bg-card-secondary">
           <Image
             src={banner}
             alt={institution.name}
@@ -76,31 +76,31 @@ export default function InstitutionCard({ institution }: Props) {
           <div className="absolute inset-0 bg-gradient-to-t from-card via-black/40 to-transparent pointer-events-none" />
           
           {/* Circular logo badge overlapping the banner */}
-          <div className="absolute -bottom-5 left-5 w-12 h-12 rounded-xl bg-card border border-border flex items-center justify-center font-heading font-black text-xs shadow-lg tracking-wide text-accent select-none pointer-events-none">
+          <div className="absolute -bottom-4.5 left-4 w-9 h-9 rounded-lg bg-card border border-border flex items-center justify-center font-heading font-black text-[10px] shadow-lg tracking-wide text-accent select-none pointer-events-none">
             {acronym}
           </div>
         </div>
 
         {/* Card content */}
-        <div className="flex-1 flex flex-col justify-between p-5 pt-7">
+        <div className="flex-1 flex flex-col justify-between p-4 pt-6">
           <div>
-            <h3 className="font-heading font-bold text-heading text-[15px] leading-snug group-hover:text-accent transition-colors line-clamp-2">
+            <h3 className="font-heading font-bold text-heading text-sm leading-snug group-hover:text-accent transition-colors line-clamp-1">
               {institution.name}
             </h3>
             
             {/* Specialization List */}
-            <p className="text-xs text-text-secondary font-medium mt-2 line-clamp-2">
+            <p className="text-[11px] text-text-secondary font-medium mt-1 line-clamp-1">
               {specs.join(' • ')}
             </p>
           </div>
 
           {/* Footer details */}
-          <div className="flex items-center justify-between mt-auto pt-3 border-t border-border">
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-accent-secondary bg-accent-secondary/10 px-2 py-0.5 rounded-full border border-accent-secondary/20">
-              {institution.tech_count} {institution.tech_count === 1 ? 'Technology' : 'Technologies'}
+          <div className="flex items-center justify-between mt-auto pt-2 border-t border-border">
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-accent-secondary bg-accent-secondary/10 px-2 py-0.5 rounded border border-accent-secondary/20">
+              {institution.tech_count} {institution.tech_count === 1 ? 'Tech' : 'Techs'}
             </span>
-            <span className="flex items-center gap-1 text-xs font-bold text-accent group-hover:gap-1.5 transition-all">
-              Discover <ArrowRight className="w-3.5 h-3.5" />
+            <span className="flex items-center gap-0.5 text-xs font-bold text-accent group-hover:gap-1 transition-all">
+              Discover <ArrowRight className="w-3 h-3" />
             </span>
           </div>
         </div>

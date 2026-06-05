@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import SectorFilterView from './SectorFilterView';
+import { getSectorIcon } from '@/components/ui/SectorIcons';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -36,21 +37,21 @@ export default async function SectorDetailPage({ params }: Props) {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="bg-card border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <Link href="/sectors" className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-accent transition-colors mb-3">
-            <ArrowLeft className="w-4 h-4" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <Link href="/sectors" className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-accent transition-colors mb-2">
+            <ArrowLeft className="w-3.5 h-3.5" />
             All Sectors
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{ background: `${sector.color}15` }}
             >
-              {sector.icon}
+              {getSectorIcon(sector.slug, 'var(--accent)', 24)}
             </div>
             <div>
-              <h1 className="text-2xl font-heading font-bold text-heading">{sector.name}</h1>
-              <p className="text-sm text-text-secondary mt-0.5">
+              <h1 className="text-lg md:text-xl font-heading font-bold text-heading">{sector.name}</h1>
+              <p className="text-xs text-text-secondary mt-0.5">
                 {sector.tech_count} {sector.tech_count === 1 ? 'technology' : 'technologies'} available
               </p>
             </div>
@@ -58,7 +59,7 @@ export default async function SectorDetailPage({ params }: Props) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         <SectorFilterView initialTechnologies={technologies} />
       </div>
     </div>

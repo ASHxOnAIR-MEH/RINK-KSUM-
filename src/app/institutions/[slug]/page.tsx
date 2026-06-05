@@ -36,18 +36,18 @@ export default async function InstitutionDetailPage({ params }: Props) {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="bg-card border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <Link href="/institutions" className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-accent transition-colors mb-3">
-            <ArrowLeft className="w-4 h-4" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <Link href="/institutions" className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-accent transition-colors mb-2">
+            <ArrowLeft className="w-3.5 h-3.5" />
             All Institutions
           </Link>
-          <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center flex-shrink-0">
-              <Building2 className="w-7 h-7 text-accent" />
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
+              <Building2 className="w-5 h-5 text-accent" />
             </div>
             <div>
-              <h1 className="text-2xl font-heading font-bold text-heading">{institution.name}</h1>
-              <p className="text-sm text-text-secondary mt-0.5">
+              <h1 className="text-lg md:text-xl font-heading font-bold text-heading">{institution.name}</h1>
+              <p className="text-xs text-text-secondary mt-0.5">
                 {institution.tech_count} {institution.tech_count === 1 ? 'technology' : 'technologies'} available
               </p>
             </div>
@@ -55,7 +55,7 @@ export default async function InstitutionDetailPage({ params }: Props) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         <InstitutionFilterView initialTechnologies={technologies} />
       </div>
     </div>

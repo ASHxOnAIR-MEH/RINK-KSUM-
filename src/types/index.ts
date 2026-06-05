@@ -45,6 +45,8 @@ export interface Institution {
   slug: string;
   name: string;
   tech_count: number;
+  image?: string;
+  bannerImage?: string;
 }
 
 // ── Search & Filter Types ───────────────────────────────────
