@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import SectorFilterView from './SectorFilterView';
 import { getSectorIcon } from '@/components/ui/SectorIcons';
+import SectorBackground from '@/components/ui/SectorBackgrounds';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -36,8 +37,11 @@ export default async function SectorDetailPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-card border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+      <div className="relative bg-card border-b border-border overflow-hidden">
+        {/* Dynamic Vector Background */}
+        <SectorBackground slug={sector.slug} />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <Link href="/sectors" className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-accent transition-colors mb-2">
             <ArrowLeft className="w-3.5 h-3.5" />
             All Sectors

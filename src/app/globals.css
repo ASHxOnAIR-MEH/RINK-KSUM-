@@ -55,12 +55,12 @@
 :root.light {
   /* Centralized Theme Variables - Light Mode */
   --background: #FFFFFF;
-  --card: #F0FDF4;
-  --card-secondary: #DCF2E1;
+  --card: #FFFFFF;
+  --card-secondary: #F0FDF4;
   --text-primary: #1C4030;
   --text-secondary: rgba(17, 41, 32, 0.75);
   --heading: #112920;
-  --border: rgba(17, 41, 32, 0.12);
+  --border: rgba(17, 41, 32, 0.1);
   --accent: #1C4030;      /* Forest Green */
   --accent-secondary: #E9C46A; /* Warm Gold */
 
@@ -164,9 +164,9 @@
   --font-heading: 'Outfit', sans-serif;
 
   /* Shadows */
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,63,138,0.08);
-  --shadow-shadow-card-hover: 0 8px 32px rgba(0,63,138,0.16), 0 2px 8px rgba(0,0,0,0.08);
-  --shadow-navbar: 0 1px 0 rgba(0,0,0,0.08), 0 4px 16px rgba(0,63,138,0.06);
+  --shadow-card: 0 4px 20px rgba(17, 41, 32, 0.03), 0 2px 8px rgba(0,0,0,0.01);
+  --shadow-shadow-card-hover: 0 12px 32px rgba(17, 41, 32, 0.08), 0 4px 12px rgba(0,0,0,0.02);
+  --shadow-navbar: 0 1px 0 rgba(17, 41, 32, 0.05), 0 4px 16px rgba(17, 41, 32, 0.02);
 
   /* Animations */
   --animate-fade-in: fadeIn 0.4s ease-out;
@@ -283,16 +283,35 @@ h1, h2, h3, h4, h5, h6 {
   to   { transform: rotate(360deg); }
 }
 
+@keyframes drift-up {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 0.35; }
+  90% { opacity: 0.35; }
+  100% { transform: translateY(-160px) scale(0.8); opacity: 0; }
+}
+
+@keyframes slow-mesh {
+  0%, 100% { transform: scale(1) translate(0px, 0px); }
+  50% { transform: scale(1.08) translate(8px, -15px); }
+}
+
 /* ── Animation utility classes ── */
-.animate-float-orb      { animation: float-orb 9s ease-in-out infinite; }
-.animate-float-orb-slow { animation: float-orb-slow 13s ease-in-out infinite; }
-.animate-float-orb-xs   { animation: float-orb-xs 7s ease-in-out infinite; }
-.animate-hero-glow      { animation: hero-glow 5s ease-in-out infinite; }
-.animate-drift-x        { animation: drift-x 8s ease-in-out infinite; }
-.animate-spin-slow      { animation: spin-slow 20s linear infinite; }
+.animate-float-orb      { animation: float-orb 15s ease-in-out infinite; }
+.animate-float-orb-slow { animation: float-orb-slow 22s ease-in-out infinite; }
+.animate-float-orb-xs   { animation: float-orb-xs 12s ease-in-out infinite; }
+.animate-hero-glow      { animation: hero-glow 8s ease-in-out infinite; }
+.animate-drift-x        { animation: drift-x 12s ease-in-out infinite; }
+.animate-spin-slow      { animation: spin-slow 35s linear infinite; }
 .animate-glow-cta       { animation: glow-pulse-emerald 2.8s ease-in-out infinite; }
 .animate-slide-fade-in  { animation: slide-fade-in 0.6s cubic-bezier(0.4,0,0.2,1) both; }
 .animate-trl-fill       { animation: trl-fill 1.3s cubic-bezier(0.4,0,0.2,1) 0.4s both; transform-origin: left center; }
+.animate-drift-up       { animation: drift-up 14s linear infinite; }
+.animate-slow-mesh      { animation: slow-mesh 18s ease-in-out infinite; }
+
+/* Global hover border override for all cards */
+.card:hover, .sector-card:hover, [id^="tech-card-"]:hover, [id^="inst-card-"]:hover {
+  border-color: rgba(0, 250, 154, 0.35) !important;
+}
 
 /* ── Utility classes ── */
 .font-heading { font-family: var(--font-heading); }

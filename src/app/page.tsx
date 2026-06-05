@@ -3,8 +3,9 @@ import AIDiscoveryBar from '@/components/ui/AIDiscoveryBar';
 import SectorCard from '@/components/ui/SectorCard';
 import TechnologyCard from '@/components/ui/TechnologyCard';
 import InstitutionCard from '@/components/ui/InstitutionCard';
+import FloatingParticles from '@/components/ui/FloatingParticles';
+import EcosystemNetworkBackground from '@/components/ui/EcosystemNetworkBackground';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 export const metadata = {
@@ -27,7 +28,7 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background">
 
       {/* ── HERO & SEARCH SECTION ────────────────────────────── */}
-      <section className="relative overflow-hidden bg-cover bg-center py-16 md:py-20 border-b border-border" style={{ background: 'var(--bg-hero)' }}>
+      <section className="relative overflow-hidden py-20 md:py-24 border-b border-border animate-slow-mesh" style={{ background: 'var(--bg-hero)', backgroundSize: '200% 200%' }}>
         {/* Dot grid pattern */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -37,14 +38,17 @@ export default async function HomePage() {
           }}
         />
 
+        {/* Floating particles - restricted to Hero and Institutions */}
+        <FloatingParticles count={18} />
+
         {/* Ambient glow - neon emerald orb */}
         <div
           className="absolute animate-float-orb pointer-events-none"
           style={{
             top: '-80px', left: '10%',
             width: 400, height: 400, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(0,250,154,0.1) 0%, transparent 70%)',
-            filter: 'blur(80px)',
+            background: 'radial-gradient(circle, rgba(0,250,154,0.08) 0%, transparent 70%)',
+            filter: 'blur(95px)',
           }}
         />
         {/* Ambient glow - warm gold orb */}
@@ -53,8 +57,8 @@ export default async function HomePage() {
           style={{
             bottom: '-100px', right: '15%',
             width: 350, height: 350, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(233,196,106,0.08) 0%, transparent 70%)',
-            filter: 'blur(70px)',
+            background: 'radial-gradient(circle, rgba(233,196,106,0.06) 0%, transparent 70%)',
+            filter: 'blur(80px)',
           }}
         />
 
@@ -99,6 +103,9 @@ export default async function HomePage() {
 
           </div>
         </div>
+
+        {/* Section fade divider */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
       </section>
 
       {/* ── FEATURED OPPORTUNITIES ─────────────────────────────── */}
@@ -134,23 +141,35 @@ export default async function HomePage() {
             </Link>
           </div>
         </div>
+
+        {/* Section fade divider into card-secondary */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-card-secondary to-transparent pointer-events-none z-10" />
       </section>
 
-      {/* ── RESEARCH INSTITUTIONS ─────────────────────────────── */}
+      {/* ── RESEARCH PARTNERS (INSTITUTIONS) ────────────────────────── */}
       <section className="relative py-20 bg-card-secondary overflow-hidden border-b border-border">
+        {/* Innovation Network Graphic Backdrop */}
+        <EcosystemNetworkBackground />
+
+        {/* Floating particles - restricted to Hero and Institutions */}
+        <FloatingParticles count={15} />
+
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
-            <div>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div className="max-w-2xl">
               <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">
-                Research Partners
+                RESEARCH PARTNERS
               </div>
-              <h2 className="text-3xl font-heading font-bold text-heading">
+              <h2 className="text-3xl md:text-4xl font-heading font-bold text-heading mb-3">
                 Research Institutions
               </h2>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Connecting Kerala's leading research organizations with startup founders and technology commercialization opportunities.
+              </p>
             </div>
             <Link
               href="/institutions"
-              className="flex items-center gap-1.5 text-sm font-bold text-accent hover:opacity-85 transition-opacity"
+              className="flex items-center gap-1.5 text-sm font-bold text-accent hover:opacity-85 transition-opacity flex-shrink-0"
               id="all-institutions-link"
             >
               All Institutions <ArrowRight className="w-4 h-4" />
@@ -169,11 +188,14 @@ export default async function HomePage() {
             </Link>
           </div>
         </div>
+
+        {/* Section fade divider into background */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
       </section>
 
       {/* ── STARTUP DISCOVERY (SECTORS) ────────────────────────────── */}
       <section className="relative py-20 bg-background overflow-hidden">
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-xl mb-12">
             <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">
               Startup Discovery
@@ -182,7 +204,7 @@ export default async function HomePage() {
               I want to build a startup in...
             </h2>
             <p className="text-text-secondary text-base">
-              Select a sector to explore technologies available for commercialization and startup creation.
+              Explore startup opportunities by industry domain and discover technologies ready for commercialization.
             </p>
           </div>
 

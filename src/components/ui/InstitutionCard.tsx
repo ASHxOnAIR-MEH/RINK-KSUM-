@@ -2,65 +2,23 @@
 
 import { Institution } from '@/types';
 import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight, Building2, Layers } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 interface Props {
-  institution: Institution & { specializations?: string[] };
+  institution: Institution;
 }
 
-// ── Map each institution slug to a relevant sector background image ────
-const INST_DETAILS: Record<string, { acronym: string; banner: string; specialization: string }> = {
-  'icar-cpcri': {
-    acronym: 'CPCRI',
-    banner: '/images/institutions/cpcri.png',
-    specialization: 'Coconut Innovation'
-  },
-  'cpcri': {
-    acronym: 'CPCRI',
-    banner: '/images/institutions/cpcri.png',
-    specialization: 'Coconut Innovation'
-  },
-  'icar-ctcri': {
-    acronym: 'CTCRI',
-    banner: '/images/institutions/ctcri.png',
-    specialization: 'Tuber Crops & Biotechnology'
-  },
-  'ctcri': {
-    acronym: 'CTCRI',
-    banner: '/images/institutions/ctcri.png',
-    specialization: 'Tuber Crops & Biotechnology'
-  },
-  'kufos': {
-    acronym: 'KUFOS',
-    banner: '/images/institutions/kufos.png',
-    specialization: 'Ocean Technology & Fisheries'
-  },
-  'kau': {
-    acronym: 'KAU',
-    banner: '/images/sectors/agriculture.png',
-    specialization: 'Agriculture / Smart Farming'
-  },
-  'csir-niist': {
-    acronym: 'NIIST',
-    banner: '/images/sectors/advanced-materials-chemicals.png',
-    specialization: 'Advanced Materials & Chemical Innovation'
-  },
-  'niist': {
-    acronym: 'NIIST',
-    banner: '/images/sectors/advanced-materials-chemicals.png',
-    specialization: 'Advanced Materials & Chemical Innovation'
-  },
-  'c-dac': {
-    acronym: 'CDAC',
-    banner: '/images/sectors/digital-technologies-ai-software.png',
-    specialization: 'AI, Computing & Digital Innovation'
-  },
-  'cdac': {
-    acronym: 'CDAC',
-    banner: '/images/sectors/digital-technologies-ai-software.png',
-    specialization: 'AI, Computing & Digital Innovation'
-  }
+const INST_SPECIALIZATIONS: Record<string, string> = {
+  'icar-cpcri': 'Coconut Innovation',
+  'cpcri': 'Coconut Innovation',
+  'icar-ctcri': 'Tuber Crops & Biotechnology',
+  'ctcri': 'Tuber Crops & Biotechnology',
+  'kufos': 'Ocean Technology & Fisheries',
+  'kau': 'Agriculture / Smart Farming',
+  'csir-niist': 'Advanced Materials & Chemical Innovation',
+  'niist': 'Advanced Materials & Chemical Innovation',
+  'c-dac': 'AI, Computing & Digital Innovation',
+  'cdac': 'AI, Computing & Digital Innovation'
 };
 
 function getAcronym(name: string): string {
@@ -76,7 +34,6 @@ function getAcronym(name: string): string {
   if (upper.includes('NCRMI')) return 'NCRMI';
   if (upper.includes('KUFOS')) return 'KUFOS';
   
-  // Extract capital letters
   const matches = name.match(/[A-Z]/g);
   if (matches && matches.length > 1) {
     return matches.join('').slice(0, 5);
@@ -86,11 +43,8 @@ function getAcronym(name: string): string {
 
 export default function InstitutionCard({ institution }: Props) {
   const slug = institution.slug;
-  const details = INST_DETAILS[slug.toLowerCase()] || {
-    acronym: getAcronym(institution.name),
-    banner: '/images/sectors/digital-technologies-ai-software.png',
-    specialization: 'Research & Innovation Partner'
-  };
+  const acronym = getAcronym(institution.name);
+  const spec = INST_SPECIALIZATIONS[slug.toLowerCase()] || 'Research Partner';
 
   return (
     <Link
@@ -98,49 +52,42 @@ export default function InstitutionCard({ institution }: Props) {
       id={`inst-card-${slug}`}
       className="block group"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-border bg-card h-[170px] flex flex-col justify-between hover:border-accent/30 hover:shadow-2xl transition-all duration-300">
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-card h-[142px] flex flex-col justify-between p-5 hover:border-accent/35 hover:shadow-xl transition-all duration-300">
         
-        {/* Banner Image Header (height compressed to h-14) */}
-        <div className="relative h-14 w-full overflow-hidden flex-shrink-0 bg-card-secondary">
-          <Image
-            src={details.banner}
-            alt={institution.name}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
-          {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-card via-black/30 to-transparent pointer-events-none" />
-          
-          {/* Circular logo badge overlapping the banner */}
-          <div className="absolute -bottom-4.5 left-4 w-9 h-9 rounded-lg bg-card border border-border flex items-center justify-center font-heading font-black text-[10px] shadow-lg tracking-wide text-accent select-none pointer-events-none">
-            {details.acronym}
-          </div>
+        {/* Top Header Row */}
+        <div className="flex items-center justify-between gap-3">
+          {/* Acronym Badge */}
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-black tracking-wide bg-accent/10 text-accent border border-accent/20">
+            {acronym}
+          </span>
+          {/* Research Partner Label */}
+          <span className="text-[10px] text-text-secondary font-semibold uppercase tracking-wider">
+            Research Partner
+          </span>
         </div>
 
-        {/* Card content */}
-        <div className="flex-1 flex flex-col justify-between p-4 pt-5">
-          <div>
-            <h3 className="font-heading font-bold text-heading text-sm leading-snug group-hover:text-accent transition-colors line-clamp-1">
-              {institution.name}
-            </h3>
-            
-            {/* Specialization List */}
-            <p className="text-[11px] text-text-secondary font-medium mt-1 line-clamp-1">
-              {details.specialization}
-            </p>
-          </div>
-
-          {/* Footer details */}
-          <div className="flex items-center justify-between mt-auto pt-2 border-t border-border">
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-accent-secondary bg-accent-secondary/10 px-2 py-0.5 rounded border border-accent-secondary/20">
-              {institution.tech_count} {institution.tech_count === 1 ? 'Tech' : 'Techs'}
-            </span>
-            <span className="flex items-center gap-0.5 text-xs font-bold text-accent group-hover:gap-1 transition-all">
-              Discover <ArrowRight className="w-3 h-3" />
-            </span>
-          </div>
+        {/* Name and Specialization */}
+        <div className="my-2">
+          <h3 className="font-heading font-bold text-heading text-[15px] leading-snug line-clamp-1 group-hover:text-accent transition-colors">
+            {institution.name}
+          </h3>
+          <p className="text-[11px] text-text-secondary font-medium mt-0.5 line-clamp-1">
+            {spec}
+          </p>
         </div>
+
+        {/* Footer Row */}
+        <div className="flex items-center justify-between pt-2.5 border-t border-border mt-auto">
+          {/* Tech Count */}
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-accent-secondary bg-accent-secondary/10 px-2 py-0.5 rounded border border-accent-secondary/20">
+            {institution.tech_count} {institution.tech_count === 1 ? 'Tech Opportunity' : 'Tech Opportunities'}
+          </span>
+          {/* Discover CTA */}
+          <span className="flex items-center gap-1 text-[11px] font-bold text-accent group-hover:gap-1.5 transition-all">
+            Discover <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </div>
+
       </div>
     </Link>
   );
