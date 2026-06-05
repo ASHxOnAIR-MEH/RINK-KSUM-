@@ -54,20 +54,20 @@
 
 :root.light {
   /* Centralized Theme Variables - Light Mode */
-  --background: #F8FAFC;
-  --card: #FFFFFF;
-  --card-secondary: #F1F5F9;
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --heading: #0F172A;
-  --border: #E2E8F0;
+  --background: #FFFFFF;
+  --card: #F0FDF4;
+  --card-secondary: #DCF2E1;
+  --text-primary: #1C4030;
+  --text-secondary: rgba(17, 41, 32, 0.75);
+  --heading: #112920;
+  --border: rgba(17, 41, 32, 0.12);
   --accent: #1C4030;      /* Forest Green */
   --accent-secondary: #E9C46A; /* Warm Gold */
 
   /* Legacy references fallback */
   --bg-app: var(--background);
   --bg-card: var(--card);
-  --bg-card-hover: #F8FAFC;
+  --bg-card-hover: #E8F5E9;
   --border-card: var(--border);
   --border-card-hover: rgba(28, 64, 48, 0.2);
   --text-title: var(--heading);
@@ -76,7 +76,7 @@
   --bg-navbar: rgba(255, 255, 255, 0.95);
   --border-navbar: var(--border);
   --bg-section: var(--card-secondary);
-  --bg-badge-gray: #F1F5F9;
+  --bg-badge-gray: #DCF2E1;
   --text-badge-gray: var(--text-primary);
   --bg-select: var(--card);
   --text-select: var(--heading);
@@ -89,13 +89,13 @@
   --text-amber-body: #1E293B;
 
   /* Specific assistant bubble variables */
-  --bg-assistant-bubble: #FFFFFF;
-  --border-assistant-bubble: #E2E8F0;
-  --text-assistant-bubble: #0F172A;
+  --bg-assistant-bubble: #F0FDF4;
+  --border-assistant-bubble: rgba(17, 41, 32, 0.12);
+  --text-assistant-bubble: #1C4030;
 
   /* Specific hero variables */
-  --bg-hero: linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%);
-  --border-hero: #E2E8F0;
+  --bg-hero: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%);
+  --border-hero: rgba(17, 41, 32, 0.12);
 }
 
 @theme inline {

@@ -10,22 +10,57 @@ interface Props {
 }
 
 // ── Map each institution slug to a relevant sector background image ────
-const INST_BANNERS: Record<string, string> = {
-  'kau':                                           '/images/sectors/agriculture.png',
-  'icar-cpcri':                                    '/images/sectors/food-technology.png',
-  'cpcri':                                         '/images/sectors/food-technology.png',
-  'icar-ctcri':                                    '/images/sectors/biotechnology-life-sciences.png',
-  'ctcri':                                         '/images/sectors/biotechnology-life-sciences.png',
-  'csir-niist':                                    '/images/sectors/advanced-materials-chemicals.png',
-  'niist':                                         '/images/sectors/advanced-materials-chemicals.png',
-  'cwrdm':                                         '/images/sectors/water-environment-waste-management.png',
-  'kscste':                                        '/images/sectors/energy-climate-sustainability.png',
-  'kscste-kfri':                                   '/images/sectors/energy-climate-sustainability.png',
-  'kfri':                                          '/images/sectors/energy-climate-sustainability.png',
-  'jntbgri':                                       '/images/sectors/biotechnology-life-sciences.png',
-  'kufos':                                         '/images/sectors/water-environment-waste-management.png',
-  'ncrmi':                                         '/images/sectors/infrastructure-construction-smart-cities.png',
-  'default':                                       '/images/sectors/digital-technologies-ai-software.png',
+const INST_DETAILS: Record<string, { acronym: string; banner: string; specialization: string }> = {
+  'icar-cpcri': {
+    acronym: 'CPCRI',
+    banner: '/images/institutions/cpcri.png',
+    specialization: 'Coconut Innovation'
+  },
+  'cpcri': {
+    acronym: 'CPCRI',
+    banner: '/images/institutions/cpcri.png',
+    specialization: 'Coconut Innovation'
+  },
+  'icar-ctcri': {
+    acronym: 'CTCRI',
+    banner: '/images/institutions/ctcri.png',
+    specialization: 'Tuber Crops & Biotechnology'
+  },
+  'ctcri': {
+    acronym: 'CTCRI',
+    banner: '/images/institutions/ctcri.png',
+    specialization: 'Tuber Crops & Biotechnology'
+  },
+  'kufos': {
+    acronym: 'KUFOS',
+    banner: '/images/institutions/kufos.png',
+    specialization: 'Ocean Technology & Fisheries'
+  },
+  'kau': {
+    acronym: 'KAU',
+    banner: '/images/sectors/agriculture.png',
+    specialization: 'Agriculture / Smart Farming'
+  },
+  'csir-niist': {
+    acronym: 'NIIST',
+    banner: '/images/sectors/advanced-materials-chemicals.png',
+    specialization: 'Advanced Materials & Chemical Innovation'
+  },
+  'niist': {
+    acronym: 'NIIST',
+    banner: '/images/sectors/advanced-materials-chemicals.png',
+    specialization: 'Advanced Materials & Chemical Innovation'
+  },
+  'c-dac': {
+    acronym: 'CDAC',
+    banner: '/images/sectors/digital-technologies-ai-software.png',
+    specialization: 'AI, Computing & Digital Innovation'
+  },
+  'cdac': {
+    acronym: 'CDAC',
+    banner: '/images/sectors/digital-technologies-ai-software.png',
+    specialization: 'AI, Computing & Digital Innovation'
+  }
 };
 
 function getAcronym(name: string): string {
@@ -51,9 +86,11 @@ function getAcronym(name: string): string {
 
 export default function InstitutionCard({ institution }: Props) {
   const slug = institution.slug;
-  const banner = institution.bannerImage || institution.image || INST_BANNERS[slug] || INST_BANNERS['default'];
-  const acronym = getAcronym(institution.name);
-  const specs = institution.specializations || ['General Technology'];
+  const details = INST_DETAILS[slug.toLowerCase()] || {
+    acronym: getAcronym(institution.name),
+    banner: '/images/sectors/digital-technologies-ai-software.png',
+    specialization: 'Research & Innovation Partner'
+  };
 
   return (
     <Link
@@ -61,28 +98,28 @@ export default function InstitutionCard({ institution }: Props) {
       id={`inst-card-${slug}`}
       className="block group"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-border bg-card h-[200px] flex flex-col justify-between hover:border-accent/30 hover:shadow-2xl transition-all duration-300">
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-card h-[170px] flex flex-col justify-between hover:border-accent/30 hover:shadow-2xl transition-all duration-300">
         
-        {/* Banner Image Header (16:6 approximate ratio) */}
-        <div className="relative h-20 w-full overflow-hidden flex-shrink-0 bg-card-secondary">
+        {/* Banner Image Header (height compressed to h-14) */}
+        <div className="relative h-14 w-full overflow-hidden flex-shrink-0 bg-card-secondary">
           <Image
-            src={banner}
+            src={details.banner}
             alt={institution.name}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
           {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-card via-black/40 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-card via-black/30 to-transparent pointer-events-none" />
           
           {/* Circular logo badge overlapping the banner */}
           <div className="absolute -bottom-4.5 left-4 w-9 h-9 rounded-lg bg-card border border-border flex items-center justify-center font-heading font-black text-[10px] shadow-lg tracking-wide text-accent select-none pointer-events-none">
-            {acronym}
+            {details.acronym}
           </div>
         </div>
 
         {/* Card content */}
-        <div className="flex-1 flex flex-col justify-between p-4 pt-6">
+        <div className="flex-1 flex flex-col justify-between p-4 pt-5">
           <div>
             <h3 className="font-heading font-bold text-heading text-sm leading-snug group-hover:text-accent transition-colors line-clamp-1">
               {institution.name}
@@ -90,7 +127,7 @@ export default function InstitutionCard({ institution }: Props) {
             
             {/* Specialization List */}
             <p className="text-[11px] text-text-secondary font-medium mt-1 line-clamp-1">
-              {specs.join(' • ')}
+              {details.specialization}
             </p>
           </div>
 

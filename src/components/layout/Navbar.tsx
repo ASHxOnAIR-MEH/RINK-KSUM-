@@ -31,7 +31,7 @@ export default function Navbar() {
   return (
     <nav
       className={clsx(
-        'sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-shadow duration-300',
+        'sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border transition-shadow duration-300',
         scrolled && 'shadow-sm'
       )}
     >
@@ -45,18 +45,18 @@ export default function Navbar() {
                 src="/images/ksum-logo.png"
                 alt="Kerala Startup Mission"
                 fill
-                className="object-contain object-left"
+                className="object-contain object-left dark:brightness-0 dark:invert"
                 style={{ mixBlendMode: 'multiply' }}
                 priority
               />
             </div>
-            <div className="hidden sm:block w-px bg-gray-200 mx-1" style={{ height: 36 }} />
+            <div className="hidden sm:block w-px bg-border mx-1" style={{ height: 36 }} />
             <div className="hidden sm:block relative" style={{ height: 44, width: 80, position: 'relative' }}>
               <Image
                 src="/images/rink-logo.png"
                 alt="RINK"
                 fill
-                className="object-contain object-left"
+                className="object-contain object-left dark:brightness-0 dark:invert"
                 style={{ mixBlendMode: 'multiply' }}
                 priority
               />
@@ -73,15 +73,15 @@ export default function Navbar() {
                   className={clsx(
                     'px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150',
                     pathname === link.href
-                      ? 'text-[#003F8A] bg-blue-50'
-                      : 'text-gray-600 hover:text-[#003F8A] hover:bg-gray-50'
+                      ? 'text-accent bg-accent/10'
+                      : 'text-text-secondary hover:text-accent hover:bg-card-secondary'
                   )}
                 >
                   {link.label}
                 </Link>
               ))}
             </div>
-            <div className="w-px h-6 bg-gray-200" />
+            <div className="w-px h-6 bg-border" />
             <ThemeToggle />
           </div>
 
@@ -89,7 +89,7 @@ export default function Navbar() {
           <div className="flex items-center gap-2 md:hidden">
             <ThemeToggle />
             <button
-              className="p-2 text-gray-600 hover:text-[#003F8A] hover:bg-gray-50 rounded-lg transition-all"
+              className="p-2 text-text-secondary hover:text-accent hover:bg-card-secondary rounded-lg transition-all"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Menu"
             >
@@ -100,7 +100,7 @@ export default function Navbar() {
 
         {/* ── Mobile Menu ── */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-gray-100 bg-white py-3 space-y-1">
+          <div className="md:hidden border-t border-border bg-card py-3 space-y-1">
             {NAV_LINKS.map(link => (
               <Link
                 key={link.href}
@@ -108,8 +108,8 @@ export default function Navbar() {
                 className={clsx(
                   'block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors',
                   pathname === link.href
-                    ? 'text-[#003F8A] bg-blue-50'
-                    : 'text-gray-600 hover:text-[#003F8A] hover:bg-gray-50'
+                    ? 'text-accent bg-accent/10'
+                    : 'text-text-secondary hover:text-accent hover:bg-card-secondary'
                 )}
               >
                 {link.label}

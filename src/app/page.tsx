@@ -15,7 +15,7 @@ export const metadata = {
 
 export default async function HomePage() {
   const [featuredTechs, sectors, institutions] = await Promise.all([
-    getFeaturedTechnologies(6),
+    getFeaturedTechnologies(8),
     getAllSectors(),
     getAllInstitutions(),
   ]);
@@ -27,7 +27,7 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background">
 
       {/* ── HERO & SEARCH SECTION ────────────────────────────── */}
-      <section className="relative overflow-hidden bg-cover bg-center py-20 md:py-24 border-b border-border" style={{ background: 'var(--bg-hero)' }}>
+      <section className="relative overflow-hidden bg-cover bg-center py-16 md:py-20 border-b border-border" style={{ background: 'var(--bg-hero)' }}>
         {/* Dot grid pattern */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -61,29 +61,6 @@ export default async function HomePage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto">
 
-            {/* Logos */}
-            <div className="flex items-center justify-center gap-4 mb-8">
-              <div className="relative w-32 h-12">
-                <Image
-                  src="/images/ksum-logo.png"
-                  alt="Kerala Startup Mission"
-                  fill
-                  className="object-contain brightness-0 invert opacity-90 dark:brightness-0 dark:invert light:brightness-100 light:invert-0"
-                  priority
-                />
-              </div>
-              <div className="w-px h-8 bg-white/20 dark:bg-white/20 light:bg-slate-300" />
-              <div className="relative w-20 h-12">
-                <Image
-                  src="/images/rink-logo.png"
-                  alt="RINK"
-                  fill
-                  className="object-contain brightness-0 invert opacity-90 dark:brightness-0 dark:invert light:brightness-100 light:invert-0"
-                  priority
-                />
-              </div>
-            </div>
-
             {/* Label pill */}
             <div
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-semibold mb-6 animate-fade-in"
@@ -94,39 +71,39 @@ export default async function HomePage() {
 
             {/* Headline */}
             <h1
-              className="text-4xl sm:text-5xl md:text-6xl font-heading font-black leading-tight mb-6 text-heading tracking-tight"
+              className="text-4xl sm:text-5xl md:text-6xl font-heading font-black leading-tight mb-8 text-heading tracking-tight"
               style={{ animation: 'slide-fade-in 0.6s ease-out 0.2s both' }}
             >
               Discover Technologies.<br/>
               <span className="text-accent">Build Startups.</span>
             </h1>
 
-            {/* Subtitle */}
-            <p
-              className="text-text-primary text-lg md:text-xl leading-relaxed max-w-2xl mb-10"
-              style={{ animation: 'slide-fade-in 0.6s ease-out 0.3s both' }}
-            >
-              Access market-ready technologies from Kerala's leading academic and research institutions.
-              <span className="block mt-2 text-text-secondary text-base font-normal">
-                Find the machinery, processes, products, patents, and innovations your startup needs to scale.
-              </span>
-            </p>
-
             {/* Search Box Container with Glassmorphism */}
             <div 
-              className="w-full max-w-[900px] p-6 md:p-8 glass-search-container animate-slide-up"
-              style={{ animation: 'slide-fade-in 0.6s ease-out 0.45s both' }}
+              className="w-full max-w-[900px] p-6 md:p-8 glass-search-container animate-slide-up mb-8"
+              style={{ animation: 'slide-fade-in 0.6s ease-out 0.4s both' }}
             >
               <AIDiscoveryBar />
             </div>
+
+            {/* Subtitle / Description below the Search Box */}
+            <p
+              className="text-text-primary text-base md:text-lg leading-relaxed max-w-2xl"
+              style={{ animation: 'slide-fade-in 0.6s ease-out 0.5s both' }}
+            >
+              Access market-ready technologies from Kerala's leading academic and research institutions.
+              <span className="block mt-2 text-text-secondary text-sm md:text-base font-normal">
+                Find the machinery, processes, products, patents, and innovations your startup needs to scale.
+              </span>
+            </p>
 
           </div>
         </div>
       </section>
 
-      {/* ── FEATURED TECHNOLOGIES ─────────────────────────────── */}
+      {/* ── FEATURED OPPORTUNITIES ─────────────────────────────── */}
       <section className="relative py-20 bg-background overflow-hidden border-b border-border">
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
             <div>
               <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">
@@ -141,11 +118,11 @@ export default async function HomePage() {
               className="flex items-center gap-1.5 text-sm font-bold text-accent hover:opacity-85 transition-opacity"
               id="all-technologies-link"
             >
-              Browse all technologies <ArrowRight className="w-4 h-4" />
+              Explore Opportunities <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {featuredTechs.map((tech) => (
               <TechnologyCard key={tech.id} technology={tech} />
             ))}
@@ -153,7 +130,7 @@ export default async function HomePage() {
 
           <div className="mt-12 text-center sm:hidden">
             <Link href="/technologies" className="btn-secondary text-sm" id="explore-all-btn">
-              Browse All Technologies <ArrowRight className="w-3.5 h-3.5" />
+              Explore Opportunities <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
@@ -161,14 +138,14 @@ export default async function HomePage() {
 
       {/* ── RESEARCH INSTITUTIONS ─────────────────────────────── */}
       <section className="relative py-20 bg-card-secondary overflow-hidden border-b border-border">
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
             <div>
               <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">
                 Research Partners
               </div>
               <h2 className="text-3xl font-heading font-bold text-heading">
-                Explore by Institution
+                Research Institutions
               </h2>
             </div>
             <Link

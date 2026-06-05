@@ -150,10 +150,9 @@ export default function AIDiscoveryBar() {
   return (
     <div className="w-full flex flex-col items-center">
 
-      {/* AI Search pill label */}
-      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs font-semibold uppercase tracking-wider mb-4 animate-fade-in">
-        <Sparkles className="w-3.5 h-3.5 text-accent" />
-        AI-Powered Startup Discovery
+      {/* Clean text label */}
+      <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3.5 animate-fade-in">
+        Describe Your Startup Idea
       </div>
 
       {/* ── Search box ── */}
@@ -184,7 +183,7 @@ export default function AIDiscoveryBar() {
               type="text"
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Describe your startup idea, industry, technology need, machinery requirement, or problem to solve..."
+              placeholder="Search technologies, patents, machinery, products, institutions, or startup opportunities..."
               className="flex-1 w-full min-w-0 bg-transparent text-heading text-[15px] outline-none placeholder:text-text-secondary placeholder:text-[13px] md:placeholder:text-[14px] border-none p-0"
               style={{ fontFamily: 'inherit' }}
               disabled={loading}

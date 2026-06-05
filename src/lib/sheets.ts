@@ -184,30 +184,50 @@ function parseCSV(text: string): string[][] {
 // 17: Image URL
 // 18: Institution Website
 
-function rowToTechnology(row: string[], idx: number): Technology | null {
-  const id = row[0]?.trim();
-  const name = row[1]?.trim();
+function getHeaderMap(headers: string[]): Record<string, number> {
+  const map: Record<string, number> = {};
+  headers.forEach((h, idx) => {
+    const cleanHeader = h.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    map[cleanHeader] = idx;
+  });
+  return map;
+}
+
+function rowToTechnology(row: string[], headerMap: Record<string, number>): Technology | null {
+  const getVal = (keys: string[], fallback: string = ''): string => {
+    for (const key of keys) {
+      const idx = headerMap[key];
+      if (idx !== undefined && row[idx] !== undefined && row[idx] !== '') {
+        return row[idx].trim();
+      }
+    }
+    return fallback;
+  };
+
+  const id = getVal(['technologyid', 'id']);
+  const name = getVal(['technologyname', 'name']);
 
   if (!id || !name || id === 'Technology ID') return null;
 
-  const institution = row[2]?.trim() || 'Unknown Institution';
-  const sector = row[3]?.trim() || 'General';
-  const phone = (row[12] || '')
-    .replace(/[\r\n]+/g, '') // remove embedded newlines
+  const institution = getVal(['institution']) || 'Unknown Institution';
+  const sector = getVal(['sector']) || 'General';
+  
+  const phone = getVal(['phone', 'contactno', 'contactphone', 'mobile'], '')
+    .replace(/[\r\n]+/g, '')
     .trim();
-  const email = (row[13] || '').trim();
-  const imageUrl = (row[17] || '').trim();
-  const startupPotentialRaw = (row[8] || 'Not Specified').trim() as StartupPotential;
+  const email = getVal(['email', 'contactemail']);
+  const imageUrl = getVal(['imageurl', 'image', 'photourl', 'embedurl']);
+  const startupPotentialRaw = getVal(['startuppotential', 'potential'], 'Not Specified') as StartupPotential;
 
-  const keywordsRaw = (row[16] || '').trim();
+  const keywordsRaw = getVal(['keywords', 'tags']);
   const keywords = keywordsRaw
     ? keywordsRaw.split(/[,;]/).map(k => k.trim()).filter(Boolean)
     : [];
 
-  const applicationsRaw = (row[7] || '').trim();
+  const applicationsRaw = getVal(['applications', 'usecases']);
   const applications = applicationsRaw
     ? applicationsRaw
-        .split(/[\n\r]+|[,;]/)   // split on newlines first, then comma/semicolon
+        .split(/[\n\r]+|[,;]/)
         .map(a => a.trim())
         .filter(a => a.length > 0)
     : [];
@@ -216,6 +236,15 @@ function rowToTechnology(row: string[], idx: number): Technology | null {
   const institutionSlug = toSlug(institution);
   const embedUrl = toDriveEmbedUrl(imageUrl);
 
+  const trlVal = getVal(['trl', 'trllevel']);
+  const trl = trlVal && trlVal !== 'Not Specified' && trlVal !== 'NA' ? trlVal : 'TRL Not Available';
+
+  const patentVal = getVal(['patentstatus', 'patent']);
+  const patent_status = patentVal && patentVal !== 'Not Specified' && patentVal !== 'NA' ? patentVal : 'Patent Status Not Available';
+
+  const commVal = getVal(['commercializationstatus', 'commercialization', 'status']);
+  const commercialization_status = commVal && commVal !== 'Not Specified' && commVal !== 'NA' ? commVal : 'Commercialization Status Not Available';
+
   return {
     id,
     name,
@@ -223,21 +252,22 @@ function rowToTechnology(row: string[], idx: number): Technology | null {
     institution_slug: institutionSlug,
     sector,
     sector_slug: sectorSlug,
-    technology_type: (row[4] || '').trim() || 'Not Specified',
-    problem_solved: (row[5] || '').trim() || 'Information being updated',
-    description: (row[6] || '').trim() || 'Information being updated',
+    technology_type: getVal(['technologytype', 'type'], 'Not Specified'),
+    problem_solved: getVal(['problemsolved', 'problem'], 'Information being updated'),
+    description: getVal(['description', 'desc'], 'Information being updated'),
     applications: applications.length ? applications : ['Information being updated'],
     startup_potential: startupPotentialRaw,
     startup_potential_score: potentialScore(startupPotentialRaw),
-    trl: (row[9] || 'Not Specified').trim(),
-    patent_status: (row[10] || 'Not Specified').trim(),
-    contact_person: (row[11] || '').trim() || 'Contact Institution',
+    trl,
+    patent_status,
+    commercialization_status,
+    contact_person: getVal(['contactperson', 'contact'], 'Contact Institution'),
     phone,
     email,
     keywords,
     image_url: imageUrl,
     image_embed_url: embedUrl,
-    institution_website: (row[18] || '').trim(),
+    institution_website: getVal(['institutionwebsite', 'website', 'url']),
     featured: startupPotentialRaw === 'High',
   };
 }
@@ -281,10 +311,15 @@ export async function fetchAllTechnologies(): Promise<Technology[]> {
     const text = await res.text();
     const rows = parseCSV(text);
 
-    // Skip header row (row[0] = "Technology ID")
+    if (rows.length === 0) return [];
+
+    const headerRow = rows[0];
+    const headerMap = getHeaderMap(headerRow);
+
+    // Skip header row
     const technologies: Technology[] = [];
     for (let i = 1; i < rows.length; i++) {
-      const tech = rowToTechnology(rows[i], i);
+      const tech = rowToTechnology(rows[i], headerMap);
       if (tech) technologies.push(tech);
     }
 

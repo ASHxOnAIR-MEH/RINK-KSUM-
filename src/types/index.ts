@@ -16,8 +16,9 @@ export interface Technology {
   applications: string[];   // Applications (split from comma/semicolon)
   startup_potential: StartupPotential; // High / Medium / Low
   startup_potential_score: number;     // 5 / 3 / 2 for star display
-  trl: string;              // TRL (may be "Not Specified")
-  patent_status: string;    // Patent Status (freeform from sheet)
+  trl: string;              // TRL (sourced directly or fallback)
+  patent_status: string;    // Patent Status (sourced directly or fallback)
+  commercialization_status: string; // Commercialization Status (sourced directly or fallback)
   contact_person: string;   // Contact Person
   phone: string;            // Phone
   email: string;            // Email
