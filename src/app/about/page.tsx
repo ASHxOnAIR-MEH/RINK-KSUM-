@@ -158,21 +158,6 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* CTA */}
-        <div className="text-center py-8">
-          <h2 className="font-heading font-bold text-heading text-2xl mb-3">
-            Ready to Discover Your Next Startup Idea?
-          </h2>
-          <p className="text-text-secondary text-sm mb-6">Browse 150+ technologies across 10 sectors from Kerala's top research institutions.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-3">
-            <Link href="/technologies" className="btn-primary">
-              Explore Technologies <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link href="/startup-discovery" className="btn-secondary">
-              Startup Discovery Tool
-            </Link>
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -51,11 +51,11 @@ export default function Footer() {
             </p>
           </div>
           <div className="flex gap-3 flex-shrink-0">
-            <Link href="/startup-discovery" className="btn-green text-sm">
+            <Link href="/technologies" className="btn-green text-sm">
               Start Exploring
             </Link>
-            <Link href="/technologies" className="btn-secondary text-sm border-white text-white hover:bg-white/10">
-              All Technologies
+            <Link href="/startup-discovery" className="btn-secondary text-sm border-white text-white hover:bg-white/10">
+              Startup Discovery
             </Link>
           </div>
         </div>

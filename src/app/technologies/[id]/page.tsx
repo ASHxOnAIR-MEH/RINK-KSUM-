@@ -246,8 +246,8 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
             <nav className="flex items-center gap-1.5 text-xs text-white/60 flex-wrap mb-8 animate-slide-fade-in">
               <Link href="/" className="hover:text-white transition-colors font-medium">Home</Link>
               <ChevronRight className="w-3 h-3 flex-shrink-0 text-white/30" />
-              <Link href="/startup-discovery" className="hover:text-white transition-colors">
-                Startup Discovery
+              <Link href="/technologies" className="hover:text-white transition-colors">
+                Technologies
               </Link>
               <ChevronRight className="w-3 h-3 flex-shrink-0 text-white/30" />
               <Link href={`/sectors/${tech.sector_slug}`} className="hover:text-white transition-colors">
