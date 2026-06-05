@@ -1,8 +1,8 @@
 import { getSectorBySlug, getTechnologiesBySector, getAllSectors } from '@/lib/db';
 import { notFound } from 'next/navigation';
-import TechnologyCard from '@/components/ui/TechnologyCard';
 import Link from 'next/link';
-import { ArrowLeft, Layers } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
+import SectorFilterView from './SectorFilterView';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -37,7 +37,7 @@ export default async function SectorDetailPage({ params }: Props) {
       {/* Header */}
       <div className="bg-card border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <Link href="/sectors" className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-accent-secondary transition-colors mb-3">
+          <Link href="/sectors" className="flex items-center gap-1.5 text-sm text-text-secondary hover:text-accent transition-colors mb-3">
             <ArrowLeft className="w-4 h-4" />
             All Sectors
           </Link>
@@ -59,18 +59,7 @@ export default async function SectorDetailPage({ params }: Props) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        {technologies.length === 0 ? (
-          <div className="text-center py-16">
-            <Layers className="w-12 h-12 text-text-secondary/50 mx-auto mb-4" />
-            <p className="text-text-secondary">No technologies found for this sector yet.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {technologies.map(tech => (
-              <TechnologyCard key={tech.id} technology={tech} />
-            ))}
-          </div>
-        )}
+        <SectorFilterView initialTechnologies={technologies} />
       </div>
     </div>
   );

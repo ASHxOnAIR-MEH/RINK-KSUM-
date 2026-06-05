@@ -116,12 +116,40 @@ export async function getSectorBySlug(slug: string): Promise<Sector | null> {
 
 // ── Institutions ──────────────────────────────────────────────
 
-export async function getAllInstitutions(): Promise<Institution[]> {
-  return fetchInstitutions();
+export async function getAllInstitutions(): Promise<(Institution & { specializations?: string[] })[]> {
+  const insts = await fetchInstitutions();
+  const techs = await fetchAllTechnologies();
+
+  return insts.map(inst => {
+    const instTechs = techs.filter(t => t.institution_slug === inst.slug);
+    const sectorCounts = new Map<string, number>();
+    for (const t of instTechs) {
+      sectorCounts.set(t.sector, (sectorCounts.get(t.sector) ?? 0) + 1);
+    }
+    const sortedSectors = Array.from(sectorCounts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([name]) => name);
+    
+    // Apply curated sectors for KAU & CPCRI to ensure premium branding:
+    let specs = sortedSectors;
+    if (inst.slug.includes('kau')) {
+      specs = ['Agriculture', 'Food Processing', 'Machinery'];
+    } else if (inst.slug.includes('cpcri')) {
+      specs = ['Coconut Technologies', 'Food Tech', 'Biotechnology'];
+    } else if (specs.length === 0) {
+      specs = ['General Technology'];
+    }
+
+    return {
+      ...inst,
+      specializations: specs,
+    };
+  });
 }
 
-export async function getInstitutionBySlug(slug: string): Promise<Institution | null> {
-  const insts = await fetchInstitutions();
+export async function getInstitutionBySlug(slug: string): Promise<(Institution & { specializations?: string[] }) | null> {
+  const insts = await getAllInstitutions();
   return insts.find(i => i.slug === slug) ?? null;
 }
 

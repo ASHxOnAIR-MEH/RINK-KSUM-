@@ -8,68 +8,68 @@
 
 :root {
   /* Centralized Theme Variables - Dark Mode (Default) */
-  --background: #060e1a;
-  --card: #0c1527;
-  --card-secondary: #081120;
-  --text-primary: rgba(255, 255, 255, 0.7);
-  --text-secondary: rgba(255, 255, 255, 0.45);
+  --background: #04142B; /* Deep Navy */
+  --card: #0A1F3D;       /* Tech Navy */
+  --card-secondary: #071830; /* Dark Navy Variant */
+  --text-primary: rgba(255, 255, 255, 0.85);
+  --text-secondary: rgba(255, 255, 255, 0.60);
   --heading: #FFFFFF;
-  --border: rgba(255, 255, 255, 0.08);
-  --accent: #00875A; /* Kerala Green */
-  --accent-secondary: #38bdf8; /* Sky Blue for high contrast in dark mode */
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #00FA9A;      /* Neon Emerald */
+  --accent-secondary: #E9C46A; /* Warm Gold */
 
   /* Legacy references fallback */
   --bg-app: var(--background);
   --bg-card: var(--card);
-  --bg-card-hover: #121f37;
+  --bg-card-hover: #0F2C54;
   --border-card: var(--border);
-  --border-card-hover: rgba(255, 255, 255, 0.16);
+  --border-card-hover: rgba(0, 250, 154, 0.3);
   --text-title: var(--heading);
   --text-body: var(--text-primary);
   --text-muted: var(--text-secondary);
-  --bg-navbar: rgba(6, 14, 26, 0.85);
+  --bg-navbar: rgba(4, 20, 43, 0.85);
   --border-navbar: var(--border);
   --bg-section: var(--card-secondary);
   --bg-badge-gray: rgba(255, 255, 255, 0.08);
   --text-badge-gray: var(--text-primary);
   --bg-select: var(--card);
   --text-select: var(--heading);
-  --border-input: rgba(255, 255, 255, 0.12);
+  --border-input: rgba(255, 255, 255, 0.15);
 
   /* Specific callout variables */
-  --bg-amber-callout: rgba(245, 158, 11, 0.08);
-  --border-amber-callout: rgba(245, 158, 11, 0.22);
-  --text-amber-callout: #fbbf24;
-  --text-amber-body: rgba(255, 255, 255, 0.8);
+  --bg-amber-callout: rgba(233, 196, 106, 0.08);
+  --border-amber-callout: rgba(233, 196, 106, 0.25);
+  --text-amber-callout: #E9C46A;
+  --text-amber-body: rgba(255, 255, 255, 0.85);
 
   /* Specific assistant bubble variables */
-  --bg-assistant-bubble: rgba(255, 255, 255, 0.05);
+  --bg-assistant-bubble: rgba(10, 31, 61, 0.6);
   --border-assistant-bubble: rgba(255, 255, 255, 0.08);
-  --text-assistant-bubble: rgba(255, 255, 255, 0.8);
+  --text-assistant-bubble: rgba(255, 255, 255, 0.9);
 
   /* Specific hero variables */
-  --bg-hero: linear-gradient(135deg, #060e1a 0%, #081225 50%, #0a1730 100%);
+  --bg-hero: linear-gradient(135deg, #04142B 0%, #061A3A 50%, #08224E 100%);
   --border-hero: rgba(255, 255, 255, 0.08);
 }
 
 :root.light {
   /* Centralized Theme Variables - Light Mode */
-  --background: #F7F9FC;
+  --background: #F8FAFC;
   --card: #FFFFFF;
-  --card-secondary: #F8FAFF;
-  --text-primary: #475569;
-  --text-secondary: #94A3B8;
+  --card-secondary: #F1F5F9;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
   --heading: #0F172A;
   --border: #E2E8F0;
-  --accent: #00875A;
-  --accent-secondary: #003F8A; /* Dark blue for Light Mode */
+  --accent: #1C4030;      /* Forest Green */
+  --accent-secondary: #E9C46A; /* Warm Gold */
 
   /* Legacy references fallback */
   --bg-app: var(--background);
   --bg-card: var(--card);
-  --bg-card-hover: #FFFFFF;
+  --bg-card-hover: #F8FAFC;
   --border-card: var(--border);
-  --border-card-hover: rgba(0, 63, 138, 0.2);
+  --border-card-hover: rgba(28, 64, 48, 0.2);
   --text-title: var(--heading);
   --text-body: var(--text-primary);
   --text-muted: var(--text-secondary);
@@ -83,18 +83,18 @@
   --border-input: var(--border);
 
   /* Specific callout variables */
-  --bg-amber-callout: #fef3c7;
-  --border-amber-callout: #fde68a;
-  --text-amber-callout: #b45309;
-  --text-amber-body: #1e293b;
+  --bg-amber-callout: #FEF3C7;
+  --border-amber-callout: #FDE68A;
+  --text-amber-callout: #B45309;
+  --text-amber-body: #1E293B;
 
   /* Specific assistant bubble variables */
   --bg-assistant-bubble: #FFFFFF;
   --border-assistant-bubble: #E2E8F0;
-  --text-assistant-bubble: #1F2937;
+  --text-assistant-bubble: #0F172A;
 
   /* Specific hero variables */
-  --bg-hero: linear-gradient(135deg, #F0F6FF 0%, #EEF5FF 50%, #F0FAF7 100%);
+  --bg-hero: linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%);
   --border-hero: #E2E8F0;
 }
 
@@ -402,6 +402,39 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ── Search Bar ── */
+.glass-search-container {
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root:not(.light) .glass-search-container {
+  background: rgba(10, 31, 61, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+}
+
+:root.light .glass-search-container {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(28, 64, 48, 0.08);
+  box-shadow: 0 20px 40px rgba(28, 64, 48, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+}
+
+.search-glow-container {
+  transition: all 0.3s ease;
+}
+
+:root:not(.light) .search-glow-container:focus-within {
+  box-shadow: 0 0 25px rgba(0, 250, 154, 0.22);
+  border-color: rgba(0, 250, 154, 0.4) !important;
+}
+
+:root.light .search-glow-container:focus-within {
+  box-shadow: 0 0 20px rgba(28, 64, 48, 0.12);
+  border-color: rgba(28, 64, 48, 0.3) !important;
+}
+
 .search-input {
   width: 100%;
   padding: 14px 20px 14px 48px;
@@ -415,8 +448,8 @@ h1, h2, h3, h4, h5, h6 {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .search-input:focus {
-  border-color: var(--color-brand-blue);
-  box-shadow: 0 0 0 4px rgba(0,63,138,0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(0, 250, 154, 0.15);
 }
 .search-input::placeholder { color: var(--color-text-muted); }
 

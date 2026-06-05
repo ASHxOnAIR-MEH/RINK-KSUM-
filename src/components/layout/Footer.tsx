@@ -40,22 +40,19 @@ export default function Footer() {
   return (
     <footer className="bg-[#0F172A] text-white mt-auto">
       {/* CTA Strip */}
-      <div className="bg-[#003F8A] py-10">
+      <div className="bg-card border-t border-b border-border py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <h3 className="text-xl font-bold font-heading text-white">
+            <h3 className="text-2xl font-bold font-heading text-heading">
               Ready to Build a Startup from Research?
             </h3>
-            <p className="text-blue-200 text-sm mt-1">
-              Browse 150+ technologies from Kerala's leading research institutions.
+            <p className="text-text-secondary text-sm mt-1">
+              Browse technologies from Kerala's leading research institutions.
             </p>
           </div>
           <div className="flex gap-3 flex-shrink-0">
-            <Link href="/technologies" className="btn-green text-sm">
+            <Link href="/technologies" className="btn-primary py-3 px-8 text-sm font-bold bg-accent text-[#04142B] hover:opacity-95 shadow-lg rounded-xl transition-all duration-200">
               Start Exploring
-            </Link>
-            <Link href="/startup-discovery" className="btn-secondary text-sm border-white text-white hover:bg-white/10">
-              Startup Discovery
             </Link>
           </div>
         </div>

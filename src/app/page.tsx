@@ -1,11 +1,11 @@
-import { getFeaturedTechnologies, getAllSectors, getAllInstitutions, getPlatformStats } from '@/lib/db';
+import { getFeaturedTechnologies, getAllSectors, getAllInstitutions } from '@/lib/db';
 import AIDiscoveryBar from '@/components/ui/AIDiscoveryBar';
-import StatsSection from '@/components/ui/StatsSection';
 import SectorCard from '@/components/ui/SectorCard';
 import TechnologyCard from '@/components/ui/TechnologyCard';
+import InstitutionCard from '@/components/ui/InstitutionCard';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Building2, Sparkles, FlaskConical, Leaf } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 
 export const metadata = {
   title: 'RINK Technology Explorer — Kerala Startup Mission',
@@ -14,271 +14,144 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const [featuredTechs, sectors, institutions, stats] = await Promise.all([
+  const [featuredTechs, sectors, institutions] = await Promise.all([
     getFeaturedTechnologies(6),
     getAllSectors(),
     getAllInstitutions(),
-    getPlatformStats(),
   ]);
 
   const topSectors      = sectors.slice(0, 8);
-  const topInstitutions = institutions.slice(0, 8);
+  const topInstitutions = institutions.slice(0, 6); // Display top 6 institutions in the grid
 
   return (
-    <div>
+    <div className="min-h-screen bg-background">
 
-      {/* ── HERO ─────────────────────────────────────────────── */}
-      <section
-        className="relative overflow-hidden bg-cover bg-center"
-        style={{
-          backgroundImage: 'linear-gradient(135deg, rgba(7, 16, 24, 0.85) 0%, rgba(10, 22, 40, 0.8) 45%, rgba(13, 32, 64, 0.75) 80%, rgba(7, 16, 24, 0.9) 100%), url("/images/hero-innovation-bg.png")',
-        }}
-      >
-        {/* Dot grid */}
+      {/* ── HERO & SEARCH SECTION ────────────────────────────── */}
+      <section className="relative overflow-hidden bg-cover bg-center py-20 md:py-24 border-b border-border" style={{ background: 'var(--bg-hero)' }}>
+        {/* Dot grid pattern */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
+            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
           }}
         />
 
-        {/* Floating orb — indigo top-left */}
+        {/* Ambient glow - neon emerald orb */}
         <div
           className="absolute animate-float-orb pointer-events-none"
           style={{
-            top: '-100px', left: '-80px',
-            width: 420, height: 420, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(79,70,229,0.30) 0%, transparent 70%)',
-            filter: 'blur(60px)',
+            top: '-80px', left: '10%',
+            width: 400, height: 400, borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(0,250,154,0.1) 0%, transparent 70%)',
+            filter: 'blur(80px)',
           }}
         />
-        {/* Floating orb — emerald bottom-center */}
+        {/* Ambient glow - warm gold orb */}
         <div
           className="absolute animate-float-orb-slow pointer-events-none"
           style={{
-            bottom: '-80px', left: '25%',
-            width: 300, height: 300, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(5,150,105,0.22) 0%, transparent 70%)',
-            filter: 'blur(48px)',
+            bottom: '-100px', right: '15%',
+            width: 350, height: 350, borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(233,196,106,0.08) 0%, transparent 70%)',
+            filter: 'blur(70px)',
           }}
         />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[600px] items-center">
+          <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto">
 
-            {/* ── LEFT: Text + Search ── */}
-            <div className="py-16 md:py-20 lg:py-24 pr-0 lg:pr-10">
-
-              {/* Logos */}
-              <div className="flex items-center gap-4 mb-10">
-                <div className="relative" style={{ width: 110, height: 44 }}>
-                  <Image
-                     src="/images/ksum-logo.png"
-                    alt="Kerala Startup Mission"
-                    fill
-                    className="object-contain brightness-0 invert opacity-90"
-                    priority
-                  />
-                </div>
-                <div className="w-px h-8 bg-white/20" />
-                <div className="relative" style={{ width: 76, height: 44 }}>
-                  <Image
-                    src="/images/rink-logo.png"
-                    alt="RINK"
-                    fill
-                    className="object-contain brightness-0 invert opacity-90"
-                    priority
-                  />
-                </div>
-              </div>
-
-              {/* Label pill */}
-              <div
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/25 text-emerald-300 text-xs font-semibold mb-6"
-                style={{ animation: 'slide-fade-in 0.5s ease-out 0.1s both' }}
-              >
-                <Sparkles className="w-3 h-3" />
-                Kerala Research Innovation Network
-              </div>
-
-              {/* Headline */}
-              <h1
-                className="text-4xl md:text-5xl lg:text-6xl font-heading font-black leading-tight mb-5"
-                style={{
-                  animation: 'slide-fade-in 0.6s ease-out 0.2s both',
-                }}
-              >
-                <span
-                  style={{
-                    color: '#FFFFFF',
-                    display: 'block',
-                  }}
-                >
-                  Discover Technologies.
-                </span>
-                <span className="relative" style={{ display: 'block' }}>
-                  <span style={{ color: '#34d399' }}>Build Startups.</span>
-                  <svg className="absolute -bottom-2 left-0 w-full" height="5" viewBox="0 0 300 5" preserveAspectRatio="none">
-                    <path d="M0 2.5 Q75 0 150 2.5 Q225 5 300 2.5" stroke="#34d399" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                  </svg>
-                </span>
-              </h1>
-
-              {/* Subtitle */}
-              <p
-                className="text-white/60 text-lg leading-relaxed max-w-xl mb-8"
-                style={{ animation: 'slide-fade-in 0.6s ease-out 0.3s both' }}
-              >
-                Explore commercializable technologies from Kerala&apos;s leading research
-                institutions and turn deep-tech patents into startups.
-              </p>
-
-              {/* Quick stats pills */}
-              <div
-                className="flex flex-wrap gap-3 mb-8"
-                style={{ animation: 'slide-fade-in 0.5s ease-out 0.4s both' }}
-              >
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/8 border border-white/12 text-white/70 text-sm">
-                  <FlaskConical className="w-3.5 h-3.5 text-blue-400" />
-                  <span className="font-semibold text-white">{stats.technology_count}+</span>&nbsp;Technologies
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/8 border border-white/12 text-white/70 text-sm">
-                  <Leaf className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="font-semibold text-white">{stats.sector_count}</span>&nbsp;Sectors
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/8 border border-white/12 text-white/70 text-sm">
-                  <Building2 className="w-3.5 h-3.5 text-indigo-400" />
-                  <span className="font-semibold text-white">{stats.institution_count}</span>&nbsp;Institutions
-                </div>
-              </div>
-
-              {/* Discovery Bar */}
-              <div style={{ animation: 'slide-fade-in 0.6s ease-out 0.45s both' }}>
-                <AIDiscoveryBar />
-              </div>
-            </div>
-
-            {/* ── RIGHT: Hero Image ── */}
-            <div className="hidden lg:flex items-center justify-end relative h-full py-10">
-              <div className="relative w-full max-w-lg">
-                {/* Ambient glow behind image */}
-                <div
-                  className="absolute inset-0 animate-hero-glow pointer-events-none"
-                  style={{
-                    borderRadius: '24px',
-                    background: 'radial-gradient(ellipse at 50% 50%, rgba(79,70,229,0.3) 0%, rgba(5,150,105,0.15) 50%, transparent 75%)',
-                    filter: 'blur(32px)',
-                    transform: 'scale(1.15)',
-                  }}
+            {/* Logos */}
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <div className="relative w-32 h-12">
+                <Image
+                  src="/images/ksum-logo.png"
+                  alt="Kerala Startup Mission"
+                  fill
+                  className="object-contain brightness-0 invert opacity-90 dark:brightness-0 dark:invert light:brightness-100 light:invert-0"
+                  priority
                 />
-                {/* Image frame */}
-                <div
-                  className="relative overflow-hidden rounded-2xl"
-                  style={{
-                    border: '1px solid rgba(255,255,255,0.12)',
-                    boxShadow: '0 0 0 1px rgba(255,255,255,0.06) inset, 0 32px 80px rgba(0,0,0,0.6)',
-                  }}
-                >
-                  <Image
-                    src="/images/hero-innovation-v2.jpg"
-                    alt="Kerala Technology Innovation — Research meets Startups"
-                    width={560}
-                    height={420}
-                    className="w-full h-auto object-cover"
-                    priority
-                    style={{ display: 'block' }}
-                  />
-                  {/* Gradient fade at bottom */}
-                  <div
-                    className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none"
-                    style={{ background: 'linear-gradient(to top, rgba(7,16,24,0.85) 0%, transparent 100%)' }}
-                  />
-                  {/* Caption bar */}
-                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                    <span className="text-xs text-white/55 font-medium">
-                      Research → Innovation → Startup
-                    </span>
-                    <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      Live Database
-                    </span>
-                  </div>
-                </div>
+              </div>
+              <div className="w-px h-8 bg-white/20 dark:bg-white/20 light:bg-slate-300" />
+              <div className="relative w-20 h-12">
+                <Image
+                  src="/images/rink-logo.png"
+                  alt="RINK"
+                  fill
+                  className="object-contain brightness-0 invert opacity-90 dark:brightness-0 dark:invert light:brightness-100 light:invert-0"
+                  priority
+                />
               </div>
             </div>
 
-          </div>
-        </div>
-      </section>
-
-      {/* ── METRICS ──────────────────────────────────────────── */}
-      <StatsSection />
-
-      {/* ── STARTUP DISCOVERY ────────────────────────────── */}
-      <section className="relative py-16 bg-card overflow-hidden">
-        {/* Subtle background image representing Kerala's innovation ecosystem */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.06] bg-cover bg-center"
-          style={{ backgroundImage: 'url("/images/startup-discovery-bg.png")' }}
-        />
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="max-w-xl mb-10">
-            <div className="text-xs font-semibold text-accent-secondary uppercase tracking-widest mb-3">
-              Startup Discovery
+            {/* Label pill */}
+            <div
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-semibold mb-6 animate-fade-in"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-accent" />
+              Kerala Research Innovation Network
             </div>
-            <h2 className="text-2xl md:text-3xl font-heading font-bold text-heading mb-3">
-              I want to build a startup in...
-            </h2>
-            <p className="text-text-primary text-base">
-              Select a sector to explore technologies available for commercialization and startup creation.
+
+            {/* Headline */}
+            <h1
+              className="text-4xl sm:text-5xl md:text-6xl font-heading font-black leading-tight mb-6 text-heading tracking-tight"
+              style={{ animation: 'slide-fade-in 0.6s ease-out 0.2s both' }}
+            >
+              Discover Technologies.<br/>
+              <span className="text-accent">Build Startups.</span>
+            </h1>
+
+            {/* Subtitle */}
+            <p
+              className="text-text-primary text-lg md:text-xl leading-relaxed max-w-2xl mb-10"
+              style={{ animation: 'slide-fade-in 0.6s ease-out 0.3s both' }}
+            >
+              Access market-ready technologies from Kerala's leading academic and research institutions.
+              <span className="block mt-2 text-text-secondary text-base font-normal">
+                Find the machinery, processes, products, patents, and innovations your startup needs to scale.
+              </span>
             </p>
-          </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-8">
-            {topSectors.map((sector) => (
-              <SectorCard key={sector.slug} sector={sector} />
-            ))}
-          </div>
+            {/* Search Box Container with Glassmorphism */}
+            <div 
+              className="w-full max-w-[900px] p-6 md:p-8 glass-search-container animate-slide-up"
+              style={{ animation: 'slide-fade-in 0.6s ease-out 0.45s both' }}
+            >
+              <AIDiscoveryBar />
+            </div>
 
-          <Link
-            href="/sectors"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-accent-secondary hover:underline"
-            id="all-sectors-link"
-          >
-            Browse all {sectors.length} sectors <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          </div>
         </div>
       </section>
 
       {/* ── FEATURED TECHNOLOGIES ─────────────────────────────── */}
-      <section className="relative py-16 bg-card-secondary overflow-hidden">
-        {/* Subtle background image representing research commercialization and technology transfer */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.07] bg-cover bg-center blur-[1px]"
-          style={{ backgroundImage: 'url("/images/featured-techs-bg.png")' }}
-        />
+      <section className="relative py-20 bg-background overflow-hidden border-b border-border">
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="flex items-end justify-between mb-10">
-            <h2 className="text-2xl md:text-3xl font-heading font-bold text-heading">
-              Featured Technologies
-            </h2>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+            <div>
+              <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">
+                Featured Innovation
+              </div>
+              <h2 className="text-3xl font-heading font-bold text-heading">
+                Startup Opportunities
+              </h2>
+            </div>
             <Link
               href="/technologies"
-              className="hidden md:flex items-center gap-1.5 text-sm font-medium text-text-secondary hover:text-accent-secondary transition-colors"
+              className="flex items-center gap-1.5 text-sm font-bold text-accent hover:opacity-85 transition-opacity"
               id="all-technologies-link"
             >
               Browse all technologies <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredTechs.map((tech) => (
               <TechnologyCard key={tech.id} technology={tech} />
             ))}
           </div>
 
-          <div className="mt-8 text-center md:hidden">
+          <div className="mt-12 text-center sm:hidden">
             <Link href="/technologies" className="btn-secondary text-sm" id="explore-all-btn">
               Browse All Technologies <ArrowRight className="w-3.5 h-3.5" />
             </Link>
@@ -286,55 +159,69 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── INSTITUTIONS ─────────────────────────────────────── */}
-      <section className="relative py-16 bg-card overflow-hidden">
-        {/* Subtle background image representing research institutions and academic labs */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.08] bg-cover bg-center"
-          style={{ backgroundImage: 'url("/images/institutions-bg.png")' }}
-        />
+      {/* ── RESEARCH INSTITUTIONS ─────────────────────────────── */}
+      <section className="relative py-20 bg-card-secondary overflow-hidden border-b border-border">
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="flex items-end justify-between mb-10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
             <div>
-              <div className="text-xs font-semibold text-accent-secondary uppercase tracking-widest mb-3">
-                Research Institutions
+              <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">
+                Research Partners
               </div>
-              <h2 className="text-2xl md:text-3xl font-heading font-bold text-heading">
+              <h2 className="text-3xl font-heading font-bold text-heading">
                 Explore by Institution
               </h2>
             </div>
             <Link
               href="/institutions"
-              className="hidden md:flex items-center gap-1.5 text-sm font-medium text-text-secondary hover:text-accent-secondary transition-colors"
+              className="flex items-center gap-1.5 text-sm font-bold text-accent hover:opacity-85 transition-opacity"
               id="all-institutions-link"
             >
               All Institutions <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {topInstitutions.map((inst) => (
-              <Link key={inst.slug} href={`/institutions/${inst.slug}`} id={`inst-card-${inst.slug}`}>
-                <div className="group p-5 rounded-2xl border border-border bg-card hover:border-accent-secondary/20 hover:shadow-sm transition-all animate-fade-in">
-                  <div className="w-10 h-10 rounded-xl bg-card-secondary flex items-center justify-center mb-4">
-                    <Building2 className="w-5 h-5 text-text-secondary/50" />
-                  </div>
-                  <h3 className="font-heading font-bold text-heading text-sm leading-snug mb-1 group-hover:text-accent-secondary transition-colors line-clamp-2">
-                    {inst.name}
-                  </h3>
-                  <span className="text-xs text-text-secondary">
-                    {inst.tech_count} {inst.tech_count === 1 ? 'technology' : 'technologies'}
-                  </span>
-                </div>
-              </Link>
+              <InstitutionCard key={inst.slug} institution={inst} />
             ))}
           </div>
 
-          <div className="mt-6 text-center md:hidden">
+          <div className="mt-12 text-center sm:hidden">
             <Link href="/institutions" className="btn-secondary text-sm">
               All Institutions <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* ── STARTUP DISCOVERY (SECTORS) ────────────────────────────── */}
+      <section className="relative py-20 bg-background overflow-hidden">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="max-w-xl mb-12">
+            <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">
+              Startup Discovery
+            </div>
+            <h2 className="text-3xl font-heading font-bold text-heading mb-3">
+              I want to build a startup in...
+            </h2>
+            <p className="text-text-secondary text-base">
+              Select a sector to explore technologies available for commercialization and startup creation.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10">
+            {topSectors.map((sector) => (
+              <SectorCard key={sector.slug} sector={sector} />
+            ))}
+          </div>
+
+          <Link
+            href="/sectors"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-accent hover:opacity-85 transition-opacity"
+            id="all-sectors-link"
+          >
+            Browse all {sectors.length} sectors <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </section>
 

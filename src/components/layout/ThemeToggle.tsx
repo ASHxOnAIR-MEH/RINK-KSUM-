@@ -28,7 +28,7 @@ export default function ThemeToggle() {
   if (!mounted) {
     // Return dummy pill matching size to avoid SSR layout shift
     return (
-      <div className="w-[110px] h-[34px] bg-[#0c1527] rounded-full border border-white/5 opacity-50" />
+      <div className="w-[68px] h-[34px] bg-[#0A1F3D] rounded-full border border-white/5 opacity-50" />
     );
   }
 
@@ -36,40 +36,36 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="relative flex items-center justify-between w-[110px] h-[34px] p-1 rounded-full cursor-pointer transition-all duration-300 select-none border outline-none"
+      className="relative flex items-center justify-between w-[68px] h-[34px] p-1 rounded-full cursor-pointer transition-all duration-300 select-none border outline-none"
       style={{
-        backgroundColor: theme === 'dark' ? '#0d172a' : '#FFFFFF',
+        backgroundColor: theme === 'dark' ? '#0A1F3D' : '#FFFFFF',
         borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#E2E8F0',
         boxShadow: theme === 'dark' ? 'none' : '0 1px 3px rgba(0,0,0,0.05)',
       }}
       title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
       id="theme-toggle-btn"
     >
-      {/* Sliding Pill Indicator */}
+      {/* Sliding Circle Indicator */}
       <div
-        className="absolute top-1 bottom-1 w-[46px] rounded-full transition-all duration-300 ease-out shadow-sm"
+        className="absolute top-[2px] bottom-[2px] w-[28px] h-[28px] rounded-full transition-all duration-300 ease-out shadow-sm"
         style={{
-          left: theme === 'dark' ? '4px' : '56px',
-          backgroundColor: theme === 'dark' ? '#003F8A' : '#E2E8F0',
+          left: theme === 'dark' ? '3px' : '35px',
+          backgroundColor: theme === 'dark' ? '#00FA9A' : '#1C4030',
         }}
       />
 
-      {/* Dark Text/Icon */}
+      {/* Moon Icon (Dark Mode active indicator) */}
       <span
-        className="relative z-10 flex items-center gap-1 pl-2 text-[11px] font-bold transition-colors duration-300 select-none pointer-events-none"
-        style={{ color: theme === 'dark' ? '#FFFFFF' : '#94A3B8' }}
+        className="relative z-10 flex items-center justify-center w-[28px] h-[28px] transition-colors duration-300 select-none pointer-events-none"
       >
-        <Moon className="w-3 h-3 flex-shrink-0" />
-        Dark
+        <Moon className="w-4 h-4" style={{ color: theme === 'dark' ? '#04142B' : '#94A3B8' }} />
       </span>
 
-      {/* Light Text/Icon */}
+      {/* Sun Icon (Light Mode active indicator) */}
       <span
-        className="relative z-10 flex items-center gap-1 pr-2 text-[11px] font-bold transition-colors duration-300 select-none pointer-events-none"
-        style={{ color: theme === 'light' ? '#0F172A' : '#64748B' }}
+        className="relative z-10 flex items-center justify-center w-[28px] h-[28px] transition-colors duration-300 select-none pointer-events-none"
       >
-        Light
-        <Sun className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+        <Sun className="w-4.5 h-4.5" style={{ color: theme === 'light' ? '#FFFFFF' : '#64748B' }} />
       </span>
     </button>
   );

@@ -4,19 +4,9 @@ import { useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import {
   Search, ArrowRight, ExternalLink, Building2,
-  Layers, FlaskConical, Loader2, RotateCcw
+  Layers, FlaskConical, Loader2, RotateCcw, Sparkles
 } from 'lucide-react';
 import type { AISearchResponse, AISearchResult } from '@/lib/aiSearch';
-
-// ── Quick prompt chips ────────────────────────────────────────
-const QUICK_PROMPTS = [
-  { icon: '🚜', label: 'Agriculture Startup',       query: 'agriculture startup technologies' },
-  { icon: '🍽️', label: 'Food Processing',           query: 'food processing and food technology' },
-  { icon: '💧', label: 'Water Technology',           query: 'water purification and treatment technologies' },
-  { icon: '⚡', label: 'Renewable Energy',           query: 'renewable energy solar wind technologies' },
-  { icon: '🌱', label: 'Climate Tech',               query: 'climate environment sustainability technologies' },
-  { icon: '🏭', label: 'Manufacturing',              query: 'manufacturing industrial machinery technologies' },
-];
 
 // ── Featured badge — only shown for High (internal field) ───────────────
 const POT: Record<string, { bg: string; text: string; dot: string; label: string }> = {
@@ -54,11 +44,11 @@ function ResultCard({ r }: { r: AISearchResult }) {
 
   return (
     <div
-      className="group bg-card rounded-2xl border border-border p-5 hover:border-accent-secondary/25 hover:shadow-lg transition-all duration-300"
-      style={{ boxShadow: '0 1px 6px rgba(0,63,138,0.06)' }}
+      className="group bg-card rounded-2xl border border-border p-5 hover:border-accent/30 hover:shadow-lg transition-all duration-300"
+      style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}
     >
       {/* Name */}
-      <h4 className="font-heading font-bold text-accent-secondary text-[15px] leading-snug mb-3 group-hover:text-accent-secondary/90 transition-colors">
+      <h4 className="font-heading font-bold text-accent-secondary text-[15px] leading-snug mb-3 group-hover:text-accent transition-colors">
         {tech.name}
       </h4>
 
@@ -91,7 +81,7 @@ function ResultCard({ r }: { r: AISearchResult }) {
 
         <Link
           href={`/technologies/${tech.id}`}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-secondary bg-accent-secondary/15 hover:bg-accent-secondary/25 px-3 py-1.5 rounded-lg transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent bg-accent/10 hover:bg-accent/20 px-3 py-1.5 rounded-lg transition-colors"
           id={`ai-result-${tech.id}`}
         >
           View Technology <ExternalLink size={11} />
@@ -158,25 +148,31 @@ export default function AIDiscoveryBar() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col items-center">
+
+      {/* AI Search pill label */}
+      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs font-semibold uppercase tracking-wider mb-4 animate-fade-in">
+        <Sparkles className="w-3.5 h-3.5 text-accent" />
+        AI-Powered Startup Discovery
+      </div>
 
       {/* ── Search box ── */}
       <form onSubmit={handleSubmit} className="w-full">
-        <div className="flex flex-col sm:flex-row items-stretch w-full gap-3 sm:gap-0 rounded-2xl overflow-hidden shadow-lg transition-all duration-300">
+        <div className="flex flex-col sm:flex-row items-stretch w-full gap-3 sm:gap-0 rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 search-glow-container">
           {/* Input container */}
           <div
-            className={`flex-1 flex items-center bg-card border-2 rounded-2xl sm:rounded-r-none sm:border-r-0 px-4 py-3.5 transition-all duration-300 focus-within:ring-4 focus-within:ring-accent-secondary/10 ${
+            className={`flex-1 flex items-center bg-card border-2 rounded-2xl sm:rounded-r-none sm:border-r-0 px-4 py-3.5 transition-all duration-300 ${
               loading
-                ? 'border-accent-secondary'
+                ? 'border-accent'
                 : result
-                ? 'border-accent-secondary/30'
+                ? 'border-accent/30'
                 : 'border-border'
             }`}
           >
             {/* Search Icon */}
             <div className="mr-3 flex-shrink-0">
               {loading ? (
-                <Loader2 size={20} className="text-accent-secondary animate-spin" />
+                <Loader2 size={20} className="text-accent animate-spin" />
               ) : (
                 <Search size={20} className="text-text-secondary" />
               )}
@@ -188,7 +184,7 @@ export default function AIDiscoveryBar() {
               type="text"
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Describe your startup idea, industry, or challenge..."
+              placeholder="Describe your startup idea, industry, technology need, machinery requirement, or problem to solve..."
               className="flex-1 w-full min-w-0 bg-transparent text-heading text-[15px] outline-none placeholder:text-text-secondary placeholder:text-[13px] md:placeholder:text-[14px] border-none p-0"
               style={{ fontFamily: 'inherit' }}
               disabled={loading}
@@ -214,14 +210,9 @@ export default function AIDiscoveryBar() {
             disabled={!query.trim() || loading}
             className={`flex-shrink-0 flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl sm:rounded-l-none font-semibold text-sm transition-all duration-200 border-2 border-transparent ${
               query.trim() && !loading
-                ? 'text-white hover:opacity-90'
+                ? 'bg-accent text-[#04142B] hover:opacity-90 cursor-pointer'
                 : 'bg-card-secondary text-text-secondary/40 border-border cursor-not-allowed'
             }`}
-            style={{
-              background: query.trim() && !loading
-                ? 'linear-gradient(135deg, var(--accent-secondary) 0%, #0055AA 100%)'
-                : undefined,
-            }}
             id="ai-discover-btn"
           >
             <Search size={15} />
@@ -229,27 +220,6 @@ export default function AIDiscoveryBar() {
           </button>
         </div>
       </form>
-
-      {/* ── Quick prompt chips ── */}
-      {!result && (
-        <div className="flex flex-wrap justify-center gap-2 mt-4">
-          {QUICK_PROMPTS.map(p => (
-            <button
-              key={p.label}
-              onClick={() => { setQuery(p.query); search(p.query); }}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium text-accent-secondary transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 border border-border"
-              style={{
-                background: 'var(--bg-assistant-bubble)',
-                backdropFilter: 'blur(8px)',
-              }}
-              id={`quick-prompt-${p.label.toLowerCase().replace(/\s+/g, '-')}`}
-            >
-              <span>{p.icon}</span>
-              {p.label}
-            </button>
-          ))}
-        </div>
-      )}
 
       {/* ── Loading skeleton ── */}
       {loading && (
