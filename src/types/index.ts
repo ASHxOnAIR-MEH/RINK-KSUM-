@@ -48,6 +48,7 @@ export interface Institution {
   tech_count: number;
   image?: string;
   bannerImage?: string;
+  specializations?: string[];
 }
 
 // ── Search & Filter Types ───────────────────────────────────

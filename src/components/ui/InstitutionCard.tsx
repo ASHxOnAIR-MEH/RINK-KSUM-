@@ -44,7 +44,8 @@ function getAcronym(name: string): string {
 export default function InstitutionCard({ institution }: Props) {
   const slug = institution.slug;
   const acronym = getAcronym(institution.name);
-  const spec = INST_SPECIALIZATIONS[slug.toLowerCase()] || 'Research Partner';
+  const specFallback = INST_SPECIALIZATIONS[slug.toLowerCase()] || 'Research Partner';
+  const specs = institution.specializations || [specFallback];
 
   return (
     <Link
@@ -52,10 +53,13 @@ export default function InstitutionCard({ institution }: Props) {
       id={`inst-card-${slug}`}
       className="block group"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-border bg-card h-[142px] flex flex-col justify-between p-5 hover:border-accent/35 hover:shadow-xl transition-all duration-300">
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-card h-[145px] flex flex-col justify-between p-5 hover:border-accent/35 hover:shadow-xl transition-all duration-300">
         
+        {/* Subtle radial glow on hover */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--accent)_0%,transparent_70%)] opacity-0 group-hover:opacity-[0.035] transition-opacity duration-500 pointer-events-none z-0" />
+
         {/* Top Header Row */}
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center justify-between gap-3 z-10">
           {/* Acronym Badge */}
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-black tracking-wide bg-accent/10 text-accent border border-accent/20">
             {acronym}
@@ -66,21 +70,25 @@ export default function InstitutionCard({ institution }: Props) {
           </span>
         </div>
 
-        {/* Name and Specialization */}
-        <div className="my-2">
-          <h3 className="font-heading font-bold text-heading text-[15px] leading-snug line-clamp-1 group-hover:text-accent transition-colors">
+        {/* Name and Specializations */}
+        <div className="my-1.5 z-10">
+          <h3 className="font-heading font-bold text-heading text-[14px] leading-snug line-clamp-1 group-hover:text-accent transition-colors">
             {institution.name}
           </h3>
-          <p className="text-[11px] text-text-secondary font-medium mt-0.5 line-clamp-1">
-            {spec}
-          </p>
+          <div className="flex flex-wrap gap-1 mt-1.5">
+            {specs.slice(0, 3).map((s, idx) => (
+              <span key={idx} className="text-[9px] font-bold tracking-wide text-accent bg-accent/5 px-1.5 py-0.5 rounded border border-accent/10">
+                {s}
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* Footer Row */}
-        <div className="flex items-center justify-between pt-2.5 border-t border-border mt-auto">
+        <div className="flex items-center justify-between pt-2.5 border-t border-border mt-auto z-10">
           {/* Tech Count */}
           <span className="inline-flex items-center gap-1 text-[10px] font-bold text-accent-secondary bg-accent-secondary/10 px-2 py-0.5 rounded border border-accent-secondary/20">
-            {institution.tech_count} {institution.tech_count === 1 ? 'Tech Opportunity' : 'Tech Opportunities'}
+            {institution.tech_count} {institution.tech_count === 1 ? 'Opportunity' : 'Opportunities'}
           </span>
           {/* Discover CTA */}
           <span className="flex items-center gap-1 text-[11px] font-bold text-accent group-hover:gap-1.5 transition-all">

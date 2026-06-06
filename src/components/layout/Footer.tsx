@@ -44,15 +44,15 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <h3 className="text-2xl font-bold font-heading text-heading">
-              Ready to Build a Startup from Research?
+              Discover Technologies. Launch Ventures. Build the Future.
             </h3>
             <p className="text-text-secondary text-sm mt-1">
-              Browse technologies from Kerala's leading research institutions.
+              Browse commercializable innovations from Kerala's leading research institutions.
             </p>
           </div>
           <div className="flex gap-3 flex-shrink-0">
             <Link href="/technologies" className="btn-primary py-3 px-8 text-sm font-bold bg-accent text-[#04142B] hover:opacity-95 shadow-lg rounded-xl transition-all duration-200">
-              Start Exploring
+              Explore Marketplace →
             </Link>
           </div>
         </div>
@@ -93,7 +93,6 @@ export default function Footer() {
                 { label: 'All Technologies', href: '/technologies' },
                 { label: 'Browse by Sector', href: '/sectors' },
                 { label: 'Browse by Institution', href: '/institutions' },
-                { label: 'Startup Discovery', href: '/startup-discovery' },
                 { label: 'About RINK', href: '/about' },
               ].map((link) => (
                 <li key={link.href}>

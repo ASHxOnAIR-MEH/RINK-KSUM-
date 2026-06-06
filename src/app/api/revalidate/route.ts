@@ -38,7 +38,6 @@ export async function GET(request: NextRequest) {
     revalidatePath('/technologies');
     revalidatePath('/sectors');
     revalidatePath('/institutions');
-    revalidatePath('/startup-discovery');
     revalidatePath('/api/search-index');
 
     const timestamp = new Date().toISOString();
@@ -53,7 +52,6 @@ export async function GET(request: NextRequest) {
         '/technologies',
         '/sectors',
         '/institutions',
-        '/startup-discovery',
         '/api/search-index',
       ],
     });

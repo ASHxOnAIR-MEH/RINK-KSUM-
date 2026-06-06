@@ -38,6 +38,13 @@ export default async function HomePage() {
           }}
         />
 
+        {/* Top-right CTA button for large screens */}
+        <div className="hidden lg:flex absolute top-6 right-6 z-20">
+          <Link href="/technologies" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-accent text-[#112920] font-bold text-xs hover:opacity-90 hover:scale-[1.02] transition-all shadow-md">
+            Explore All Technologies →
+          </Link>
+        </div>
+
         {/* Floating particles - restricted to Hero and Institutions */}
         <FloatingParticles count={18} />
 
@@ -101,11 +108,58 @@ export default async function HomePage() {
               </span>
             </p>
 
+            {/* Secondary CTA below subtitle for mobile and tablet screens */}
+            <div className="mt-6 lg:hidden animate-fade-in font-sans" style={{ animation: 'slide-fade-in 0.6s ease-out 0.6s both' }}>
+              <Link href="/technologies" className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-accent text-[#112920] font-bold text-xs hover:opacity-95 shadow-md">
+                Explore All Technologies →
+              </Link>
+            </div>
+
           </div>
         </div>
 
         {/* Section fade divider */}
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
+      </section>
+
+      {/* ── METRICS STRIP (MARKETPLACE COUNTERS) ─────────────────── */}
+      <section className="bg-card border-b border-border py-6 z-10 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x-0 md:divide-x divide-border">
+            <div className="py-2">
+              <div className="text-2xl md:text-3xl font-heading font-black text-accent-secondary">
+                160+
+              </div>
+              <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-1">
+                Technologies Listed
+              </div>
+            </div>
+            <div className="py-2">
+              <div className="text-2xl md:text-3xl font-heading font-black text-accent">
+                20+
+              </div>
+              <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-1">
+                Research Partners
+              </div>
+            </div>
+            <div className="py-2">
+              <div className="text-2xl md:text-3xl font-heading font-black text-accent-secondary">
+                12
+              </div>
+              <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-1">
+                Opportunity Sectors
+              </div>
+            </div>
+            <div className="py-2">
+              <div className="text-2xl md:text-3xl font-heading font-black text-accent">
+                50+
+              </div>
+              <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-1">
+                Startup Opportunities
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ── FEATURED OPPORTUNITIES ─────────────────────────────── */}
@@ -193,12 +247,12 @@ export default async function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
       </section>
 
-      {/* ── STARTUP DISCOVERY (SECTORS) ────────────────────────────── */}
+      {/* ── EXPLORE STARTUP SECTORS ────────────────────────────── */}
       <section className="relative py-20 bg-background overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-xl mb-12">
             <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">
-              Startup Discovery
+              Explore Startup Sectors
             </div>
             <h2 className="text-3xl font-heading font-bold text-heading mb-3">
               I want to build a startup in...

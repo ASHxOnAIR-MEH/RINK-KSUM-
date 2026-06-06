@@ -39,8 +39,8 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* ── Logos ── */}
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0 select-none" id="navbar-logo">
-            <div className="relative h-11 w-32">
+          <Link href="/" className="flex items-center gap-3 flex-shrink-0 select-none" id="navbar-logo">
+            <div className="relative h-9 w-24">
               <Image
                 src="/images/ksum-logo.png"
                 alt="Kerala Startup Mission"
@@ -50,16 +50,14 @@ export default function Navbar() {
                 priority
               />
             </div>
-            <div className="hidden sm:block w-px bg-border mx-1" style={{ height: 36 }} />
-            <div className="hidden sm:block relative" style={{ height: 44, width: 80, position: 'relative' }}>
-              <Image
-                src="/images/rink-logo.png"
-                alt="RINK"
-                fill
-                className="object-contain object-left dark:brightness-0 dark:invert"
-                style={{ mixBlendMode: 'multiply' }}
-                priority
-              />
+            <div className="h-6 w-px bg-border" />
+            <div className="flex flex-col justify-center">
+              <span className="text-xs font-black text-heading tracking-wider uppercase leading-tight font-heading">
+                RINK Marketplace
+              </span>
+              <span className="hidden sm:block text-[8px] font-bold text-text-secondary tracking-widest uppercase leading-none mt-0.5">
+                Research Innovation Network Kerala
+              </span>
             </div>
           </Link>
 
