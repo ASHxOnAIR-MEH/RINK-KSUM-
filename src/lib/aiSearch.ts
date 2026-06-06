@@ -155,13 +155,48 @@ const STOP_WORDS = new Set([
 
 // ── Generic modifier terms that should not be used as primary search hooks ──
 const GENERIC_MODIFIERS = new Set([
+  // Actions and processes
   'monitoring', 'monitor', 'monitors', 'system', 'systems', 'device', 'devices',
   'machine', 'machines', 'process', 'processes', 'processing', 'method', 'methods',
   'apparatus', 'equipment', 'tool', 'tools', 'instrument', 'instruments',
   'unit', 'units', 'solution', 'solutions', 'product', 'products', 'idea', 'ideas',
   'technology', 'technologies', 'innovation', 'innovations', 'opportunity', 'opportunities',
   'startup', 'startups', 'business', 'venture', 'technological', 'technique', 'techniques',
-  'kit', 'kits', 'mechanism', 'mechanisms', 'concept', 'concepts', 'prototype', 'prototypes'
+  'kit', 'kits', 'mechanism', 'mechanisms', 'concept', 'concepts', 'prototype', 'prototypes',
+  
+  // Detection and analysis
+  'detection', 'detecting', 'detect', 'detector', 'detectors',
+  'screening', 'screen', 'screens', 'diagnostic', 'diagnostics', 'diagnosis',
+  'analysis', 'analyzing', 'analyze', 'analyzer', 'analyzers', 'estimation',
+  'identification', 'identifying', 'identify', 'assessment', 'assessing',
+  
+  // Extraction and production
+  'extraction', 'extracting', 'extract', 'extractor', 'extractors',
+  'production', 'producing', 'produce', 'producer', 'producers',
+  'cultivation', 'cultivating', 'cultivate',
+  'harvesting', 'harvest', 'harvester', 'harvesters',
+  'preservation', 'preserving', 'preserve', 'preservative',
+  
+  // Treatment and control
+  'treatment', 'treating', 'treat',
+  'purification', 'purifying', 'purifier', 'purifiers',
+  'separation', 'separating', 'separate', 'separator', 'separators',
+  'fabrication', 'fabricating', 'fabricate',
+  'manufacturing', 'manufacture',
+  'management', 'managing', 'manage',
+  'control', 'controlling', 'control', 'controller', 'controllers',
+  'generation', 'generating', 'generate', 'generator', 'generators',
+  'conversion', 'converting', 'convert', 'converter', 'converters',
+  'formulation', 'formulating', 'formulate', 'formula',
+  
+  // Quality and improvement
+  'improvement', 'improving', 'improve',
+  'enhancement', 'enhancing', 'enhance',
+  'reduction', 'reducing', 'reduce',
+  'prevention', 'preventing', 'prevent',
+  'development', 'developing', 'develop',
+  'application', 'applying', 'apply', 'applications',
+  'utilization', 'utilizing', 'utilize'
 ]);
 
 // ── Minimum token length (prevents "ca" matching "cassava") ──
@@ -247,9 +282,9 @@ function scoreField(fieldText: string, rawQuery: string, tokens: string[], weigh
 
   // Prefer exact token hits, then prefix hits, then substring hits
   let tokenScore = 0;
-  tokenScore += (exactTokenHits / tokens.length) * weight * 2.0;
-  tokenScore += (prefixTokenHits / tokens.length) * weight * 1.0;
-  tokenScore += (substringTokenHits / tokens.length) * weight * 0.3;
+  tokenScore += (exactTokenHits / tokens.length) * weight * 1.0;
+  tokenScore += (prefixTokenHits / tokens.length) * weight * 0.5;
+  tokenScore += (substringTokenHits / tokens.length) * weight * 0.15;
 
   return tokenScore;
 }
