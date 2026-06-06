@@ -30,11 +30,8 @@ export async function POST(request: NextRequest) {
     // Fetch all technologies from live Google Sheet
     const technologies = await fetchAllTechnologies();
 
-    const filters = body.filters || undefined;
-    const mode = body.mode || 'technology';
-
     // Run AI search scoring
-    const result = runAISearch(query, technologies, filters, mode);
+    const result = runAISearch(query, technologies);
 
     return NextResponse.json(result);
   } catch (err) {
