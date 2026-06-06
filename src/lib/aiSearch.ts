@@ -1,12 +1,19 @@
 // ============================================================
-// RINK Technology Explorer — Smart Search Engine v2
-// - Intent detection (greetings, small talk, help, search)
-// - Priority-ranked scoring: exact name > exact field > partial
-// - Hard score threshold prevents false positives
-// - Zero hallucination: only real DB records returned
+// RINK Technology Transfer Portal — AI Search Engine
+// - Intent detection (startup, problem, product, machinery, patent, sector)
+// - Weighted scoring: Sector (40%), Problem (25%), Tech (20%), Inst (10%), Startup Potential (5%)
+// - Dynamic grouping of core and supporting technologies for Startup mode
+// - Advanced filtering capabilities
 // ============================================================
 
 import { Technology } from '@/types';
+
+export interface StartupOpportunity {
+  title: string;
+  coreTechnology: Technology;
+  supportingTechnologies: Technology[];
+  relevanceScore: number;
+}
 
 export interface AISearchResult {
   technology: Technology;
@@ -16,10 +23,23 @@ export interface AISearchResult {
 
 export interface AISearchResponse {
   results: AISearchResult[];
+  startupOpportunities?: StartupOpportunity[];
   query: string;
   intent: ConversationIntent;
   responseMessage: string;
   totalFound: number;
+  mode?: 'technology' | 'startup';
+}
+
+export interface AISearchFilters {
+  institution?: string;
+  sector?: string;
+  technology_type?: string;
+  patented_only?: boolean;
+  trl_min?: number;
+  featured_only?: boolean;
+  recently_added?: boolean;
+  commercialization_ready?: boolean;
 }
 
 // ── Intent classification ────────────────────────────────────
@@ -31,9 +51,11 @@ export type ConversationIntent =
   | 'thanks'
   | 'search'
   | 'startup'
+  | 'problem'
+  | 'product'
+  | 'machinery'
   | 'patent'
-  | 'trl'
-  | 'commercial'
+  | 'sector'
   | 'empty';
 
 // ── Intent detection rules ───────────────────────────────────
@@ -84,6 +106,30 @@ export function classifyIntent(query: string): ConversationIntent {
   return 'search'; // Default — run database search
 }
 
+export function detectSearchIntent(query: string): ConversationIntent {
+  const q = query.toLowerCase();
+  
+  if (/patented|patent|ip available|licensing/i.test(q)) {
+    return 'patent';
+  }
+  if (/start a business|startup|commercialize|entrepreneurship|build a startup|start a|launch a/i.test(q)) {
+    return 'startup';
+  }
+  if (/machine|equipment|processing unit|fabrication|extractor|dryer|drier|harvester/i.test(q)) {
+    return 'machinery';
+  }
+  if (/coconut oil|biofertilizer|fish feed|nutraceuticals|juice|milk|beverage|powder|flour|feed|fertilizer/i.test(q)) {
+    return 'product';
+  }
+  if (/reduce|prevent|increase|improve|yield|loss|waste|monitor|detect|control|treat/i.test(q)) {
+    return 'problem';
+  }
+  if (/agriculture|food|biotech|medtech|digital|energy|water|robotics/i.test(q)) {
+    return 'sector';
+  }
+  return 'search';
+}
+
 // ── Conversational responses (no DB search) ──────────────────
 export function getConversationalResponse(intent: ConversationIntent, query: string): AISearchResponse {
   const normalizedQuery = query.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
@@ -113,12 +159,13 @@ export function getConversationalResponse(intent: ConversationIntent, query: str
     empty:
       `Please describe your startup idea or the technology area you're interested in, and I'll search the RINK database for you.`,
 
-    // These won't be used for conversational responses, but need to be defined
     search: '',
     startup: '',
+    problem: '',
+    product: '',
+    machinery: '',
     patent: '',
-    trl: '',
-    commercial: '',
+    sector: '',
   };
 
   return {
@@ -129,10 +176,6 @@ export function getConversationalResponse(intent: ConversationIntent, query: str
     totalFound: 0,
   };
 }
-
-// ── Minimum score threshold (prevents false positives) ───────
-// Raised from 30 to 50 to require stronger matches
-const MIN_SCORE_THRESHOLD = 50;
 
 // ── Common stop words ─────────────────────────────────────────
 const STOP_WORDS = new Set([
@@ -147,10 +190,11 @@ const STOP_WORDS = new Set([
   'start', 'build', 'launch', 'create', 'establish', 'open',
   'make', 'develop', 'produce', 'manufacture',
   'also', 'very', 'just', 'most', 'best', 'good', 'great',
+  'device', 'devices', 'machine', 'machines', 'process', 'processes',
 ]);
 
-// ── Minimum token length (prevents "ca" matching "cassava") ──
-const MIN_TOKEN_LEN = 4;
+// ── Minimum token length (prevents short word over-matching) ──
+const MIN_TOKEN_LEN = 3;
 
 // ── Tokenise: lowercase, remove punctuation, filter stops ────
 function tokenise(text: string): string[] {
@@ -161,124 +205,168 @@ function tokenise(text: string): string[] {
     .filter(t => t.length >= MIN_TOKEN_LEN && !STOP_WORDS.has(t));
 }
 
-// ── Extract TRL filter ────────────────────────────────────────
-function extractTRLFilter(q: string): number | null {
-  const m = q.match(/trl\s*(\d+)/i) || q.match(/readiness level\s*(\d+)/i);
-  if (m) return parseInt(m[1]);
-  if (/trl\s*[78]\s*(and|or|&|\+)?\s*above/i.test(q)) return 7;
-  if (/trl\s*9/i.test(q)) return 9;
-  return null;
-}
+export function cleanTopic(query: string, intent: ConversationIntent): string {
+  let q = query.trim();
+  q = q.replace(/^[!?.,\s]+|[!?.,\s]+$/g, '');
 
-// ── Startup intent patterns ───────────────────────────────────
-function detectStartupIntent(query: string): boolean {
-  return /i want to start|i want to build|i want to launch|starting a|build a|launch a|open a|i am looking for|looking for|show me|find me|suggest|recommend/i.test(query);
-}
+  const phrasesToRemove = [
+    /i want to start a/i, /i want to start/i, /how can i start a/i, /how can i start/i,
+    /how to start a/i, /how to start/i, /starting a/i, /start a/i, /start/i,
+    /i want to build a/i, /i want to build/i, /build a/i, /build/i,
+    /i want to launch a/i, /i want to launch/i, /launch a/i, /launch/i,
+    /startup idea for/i, /startup idea/i, /startup/i, /business idea/i, /business/i,
+    /opportunities in/i, /opportunities/i, /commercialize/i, /entrepreneurship/i,
+    /i need a device to/i, /i need a/i, /i need/i, /device to/i, /device/i,
+    /technologies for/i, /technology for/i, /technologies/i, /technology/i,
+    /innovations for/i, /innovation for/i, /innovations/i, /innovation/i,
+    /patented technology for/i, /patented technology/i, /patented/i, /patents/i, /patent/i,
+    /ip available for/i, /ip available/i, /licensing/i,
+    /for reducing/i, /for increasing/i, /for improving/i, /for/i,
+  ];
 
-// ──────────────────────────────────────────────────────────────
-// FIELD SCORING
-// Priority 1: Exact phrase match (highest score)
-// Priority 2: All tokens present (high score)
-// Priority 3: Most tokens present (medium score)
-// Priority 4: Word-boundary match (lower score)
-// Priority 5: Substring match for longer tokens only (lowest)
-// ──────────────────────────────────────────────────────────────
-
-function scoreField(fieldText: string, rawQuery: string, tokens: string[], weight: number): number {
-  if (!fieldText || !fieldText.trim()) return 0;
-  const lower = fieldText.toLowerCase();
-  const queryLower = rawQuery.toLowerCase().trim();
-  const escapedQuery = queryLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-  // P1 — Exact full field match
-  if (lower === queryLower) {
-    return weight * 5.0;
+  for (const regex of phrasesToRemove) {
+    q = q.replace(regex, '');
   }
 
-  // P2 — Exact phrase match with word boundaries (e.g., \bcontrol\b matches "pest control" but not "pest controller")
-  const exactPhraseRegex = new RegExp(`\\b${escapedQuery}\\b`, 'i');
-  if (exactPhraseRegex.test(lower)) {
-    return weight * 3.5;
+  q = q.trim().replace(/\s+/g, ' ');
+  if (q.length > 0) {
+    return q.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   }
-
-  // P3 — Partial/substring match of the entire phrase (e.g. matching "control" in "controller")
-  if (lower.includes(queryLower)) {
-    return weight * 1.5;
-  }
-
-  // P4 — Token-level matching
-  if (tokens.length === 0) return 0;
-
-  let exactTokenHits = 0;
-  let prefixTokenHits = 0;
-  let substringTokenHits = 0;
-
-  for (const tok of tokens) {
-    const escapedTok = tok.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const exactWord = new RegExp(`\\b${escapedTok}\\b`, 'i');
-    const prefixWord = new RegExp(`\\b${escapedTok}`, 'i');
-
-    if (exactWord.test(lower)) {
-      exactTokenHits++;
-    } else if (prefixWord.test(lower)) {
-      prefixTokenHits++;
-    } else if (lower.includes(tok)) {
-      substringTokenHits++;
-    }
-  }
-
-  const totalHits = exactTokenHits + prefixTokenHits + substringTokenHits;
-  if (totalHits === 0) return 0;
-
-  // Prefer exact token hits, then prefix hits, then substring hits
-  let tokenScore = 0;
-  tokenScore += (exactTokenHits / tokens.length) * weight * 2.0;
-  tokenScore += (prefixTokenHits / tokens.length) * weight * 1.0;
-  tokenScore += (substringTokenHits / tokens.length) * weight * 0.3;
-
-  return tokenScore;
+  return 'General Innovation';
 }
 
-function scoreArrayField(arr: string[], rawQuery: string, tokens: string[], weight: number): number {
-  if (!arr || arr.length === 0) return 0;
-  return scoreField(arr.join(' '), rawQuery, tokens, weight);
-}
-
-// ── Build response message ────────────────────────────────────
 function buildMessage(
   query: string,
   count: number,
-  isStartup: boolean,
-  trlFilter: number | null,
-  patentFilter: boolean,
+  intent: ConversationIntent,
+  topic: string
 ): string {
   if (count === 0) {
-    return `No closely matching technologies found in the RINK database for **"${query}"**.\n\nTry a more specific keyword, or browse by sector to explore all available technologies.`;
+    return `We couldn't find an exact match for **"${query}"** in the RINK database.`;
   }
-  if (patentFilter) return `Found **${count} patented technolog${count === 1 ? 'y' : 'ies'}** in the RINK database:`;
-  if (trlFilter !== null) return `Found **${count} technolog${count === 1 ? 'y' : 'ies'}** with TRL ${trlFilter}+:`;
-  if (isStartup) return `Found **${count} technolog${count === 1 ? 'y' : 'ies'}** relevant to your startup idea:`;
-  return `Found **${count} technolog${count === 1 ? 'y' : 'ies'}** matching **"${query}"**:`;
+  switch (intent) {
+    case 'startup':
+      return `We found **${count} technologies** that could help build your **${topic} Startup**`;
+    case 'problem':
+      return `Technologies relevant to **${topic}**`;
+    case 'sector':
+      return `**${count} commercialization opportunities** in **${topic}**`;
+    case 'product':
+      return `Product technologies matched for **${topic}**:`;
+    case 'machinery':
+      return `Machinery & equipment technologies matched for **${topic}**:`;
+    case 'patent':
+      return `Found **${count} patented technologies** relevant to **${topic}**:`;
+    default:
+      return `We found **${count} technologies** matching **"${query}"**`;
+  }
+}
+
+// ── Weighted Relevance Scoring Engine ──────────────────────────
+export function computeRelevanceScore(
+  tech: Technology,
+  query: string,
+  tokens: string[]
+): { score: number; matchedOn: string[] } {
+  const matchedOn: string[] = [];
+
+  // Technology ID Direct Match check (immediate 100%)
+  if (query.toLowerCase().trim() === tech.id.toLowerCase().trim()) {
+    return { score: 100, matchedOn: ['id'] };
+  }
+
+  // 1. Sector Match (40% weight)
+  let sectorMatch = 0;
+  const sectorLower = tech.sector.toLowerCase();
+  const sectorSlug = tech.sector_slug.toLowerCase();
+  const matchedSectorTokens = tokens.filter(tok => sectorLower.includes(tok) || sectorSlug.includes(tok));
+  if (matchedSectorTokens.length > 0) {
+    sectorMatch = Math.min(matchedSectorTokens.length / tokens.length, 1.0);
+    matchedOn.push('sector');
+  }
+
+  // 2. Problem Match (25% weight)
+  let problemMatch = 0;
+  const problemLower = tech.problem_solved.toLowerCase();
+  const descLower = tech.description.toLowerCase();
+  const problemHits = tokens.filter(tok => problemLower.includes(tok) || descLower.includes(tok)).length;
+  if (problemHits > 0) {
+    problemMatch = Math.min(problemHits / tokens.length, 1.0);
+    matchedOn.push('problem_solved');
+  }
+
+  // 3. Tech Match - Name/Keywords (20% weight)
+  let techMatch = 0;
+  const nameLower = tech.name.toLowerCase();
+  const nameHits = tokens.filter(tok => nameLower.includes(tok)).length;
+
+  let keywordHits = 0;
+  if (tech.keywords && tech.keywords.length > 0) {
+    const kws = tech.keywords.map(k => k.toLowerCase());
+    keywordHits = tokens.filter(tok => kws.some(k => k.includes(tok))).length;
+  }
+
+  if (nameHits > 0 || keywordHits > 0) {
+    const nameRatio = nameHits / tokens.length;
+    const kwRatio = keywordHits / tokens.length;
+    techMatch = Math.min(Math.max(nameRatio, kwRatio), 1.0);
+    matchedOn.push('name');
+  }
+
+  // 4. Institution Match (10% weight)
+  let instMatch = 0;
+  const instLower = tech.institution.toLowerCase();
+  const instSlug = tech.institution_slug.toLowerCase();
+  const matchedInstTokens = tokens.filter(tok => instLower.includes(tok) || instSlug.includes(tok));
+  if (matchedInstTokens.length > 0) {
+    instMatch = Math.min(matchedInstTokens.length / tokens.length, 1.0);
+    matchedOn.push('institution');
+  }
+
+  // If there are no actual text matches, return 0
+  if (matchedOn.length === 0) {
+    return { score: 0, matchedOn };
+  }
+
+  // 5. Startup Potential (5% weight)
+  let startupMatch = 0.2;
+  if (tech.startup_potential === 'High') startupMatch = 1.0;
+  else if (tech.startup_potential === 'Medium') startupMatch = 0.6;
+  else if (tech.startup_potential === 'Low') startupMatch = 0.2;
+
+  const score = Math.round(
+    (sectorMatch * 40) +
+    (problemMatch * 25) +
+    (techMatch * 20) +
+    (instMatch * 10) +
+    (startupMatch * 5)
+  );
+
+  return { score, matchedOn };
 }
 
 // ── Main search function ──────────────────────────────────────
-export function runAISearch(query: string, technologies: Technology[]): AISearchResponse {
+export function runAISearch(
+  query: string,
+  technologies: Technology[],
+  filters?: AISearchFilters,
+  mode: 'technology' | 'startup' = 'technology'
+): AISearchResponse {
   const q = query.trim();
 
   // ── Step 1: Intent classification ───────────────────────────
-  const intent = classifyIntent(q);
+  const baseIntent = classifyIntent(q);
 
   // ── Step 2: If conversational, return without DB search ─────
-  if (intent !== 'search') {
-    return getConversationalResponse(intent, q);
+  if (baseIntent !== 'search') {
+    return getConversationalResponse(baseIntent, q);
   }
 
-  // ── Step 3: Tokenise for DB search ──────────────────────────
+  // Determine specific search sub-intent
+  const searchIntent = detectSearchIntent(q);
+
+  // ── Step 3: Tokenise for search ──────────────────────────
   const tokens = tokenise(q);
-  const isStartup = detectStartupIntent(q);
-  const trlFilter = extractTRLFilter(q);
-  const patentFilter = /patent/i.test(q);
-  const commercialFilter = /commercial|market.?ready|trl\s*[89]/i.test(q);
 
   // No meaningful search tokens
   if (tokens.length === 0) {
@@ -288,92 +376,111 @@ export function runAISearch(query: string, technologies: Technology[]): AISearch
       intent: 'empty',
       responseMessage: `Please describe your startup idea or the technology you are looking for.`,
       totalFound: 0,
+      mode,
     };
   }
 
-  // ── Step 4: Score all technologies ──────────────────────────
+  // ── Step 4: Filter and score all technologies ────────────────
   const scored: AISearchResult[] = [];
 
   for (const tech of technologies) {
-    // ── Hard filters ──────────────────────────────────────────
-    if (patentFilter) {
-      const ps = tech.patent_status.toLowerCase();
-      if (!ps.includes('patent') || ps.includes('not patent') || ps === 'not specified') continue;
-    }
-    if (trlFilter !== null) {
-      const trlNum = parseInt(tech.trl?.replace(/[^0-9]/g, '') || '0');
-      if (isNaN(trlNum) || trlNum < trlFilter) continue;
-    }
-    if (commercialFilter && !patentFilter && trlFilter === null) {
-      const trlNum = parseInt(tech.trl?.replace(/[^0-9]/g, '') || '0');
-      if (!isNaN(trlNum) && trlNum > 0 && trlNum < 7) continue;
-    }
-
-    let score = 0;
-    const matchedOn: string[] = [];
-
-    // ── Field scoring (priority-weighted) ──────────────────
-
-    // 1. Technology Name — Highest weight. Exact name match = massive boost.
-    const nameScore = scoreField(tech.name, q, tokens, 100);
-    if (nameScore > 0) { score += nameScore; matchedOn.push('name'); }
-
-    // 2. Keywords — 2nd priority
-    const kwScore = scoreArrayField(tech.keywords, q, tokens, 70);
-    if (kwScore > 0) { score += kwScore; matchedOn.push('keywords'); }
-
-    // 3. Problem Solved — 3rd priority
-    const probScore = scoreField(tech.problem_solved, q, tokens, 55);
-    if (probScore > 0) { score += probScore; matchedOn.push('problem_solved'); }
-
-    // 4. Applications — 4th priority
-    const appScore = scoreArrayField(tech.applications, q, tokens, 50);
-    if (appScore > 0) { score += appScore; matchedOn.push('applications'); }
-
-    // 5. Sector — medium weight
-    const secScore = scoreField(tech.sector, q, tokens, 60);
-    if (secScore > 0) { score += secScore; matchedOn.push('sector'); }
-
-    // 6. Institution — medium weight
-    const instScore = scoreField(tech.institution, q, tokens, 55);
-    if (instScore > 0) { score += instScore; matchedOn.push('institution'); }
-
-    // 7. Technology Type — lower weight
-    const typeScore = scoreField(tech.technology_type, q, tokens, 40);
-    if (typeScore > 0) { score += typeScore; matchedOn.push('technology_type'); }
-
-    // 8. Description — lowest weight (broad field, avoid over-matching)
-    const descScore = scoreField(tech.description, q, tokens, 15);
-    if (descScore > 0) { score += descScore; matchedOn.push('description'); }
-
-    // ── Bonus: single strong name match always clears threshold ─
-    // This ensures "coconut" always returns coconut technologies
-    const nameLower = tech.name.toLowerCase();
-    const qLower = q.toLowerCase();
-    if (tokens.some(tok => tok.length >= 4 && nameLower.includes(tok))) {
-      score += 30; // Name-hit bonus ensures threshold is cleared
+    // Apply hard advanced filters
+    if (filters) {
+      if (filters.institution && tech.institution_slug !== filters.institution) continue;
+      if (filters.sector && tech.sector_slug !== filters.sector) continue;
+      if (filters.technology_type && tech.technology_type !== filters.technology_type) continue;
+      if (filters.patented_only) {
+        const ps = tech.patent_status.toLowerCase();
+        if (!ps.includes('patent') || ps.includes('not patent') || ps === 'not specified') continue;
+      }
+      if (filters.trl_min) {
+        const trlNum = parseInt(tech.trl?.replace(/[^0-9]/g, '') || '0');
+        if (isNaN(trlNum) || trlNum < filters.trl_min) continue;
+      }
+      if (filters.featured_only && !tech.featured) continue;
+      if (filters.commercialization_ready) {
+        const cs = tech.commercialization_status.toLowerCase();
+        if (cs.includes('evaluation') || cs.includes('not ready') || cs.includes('not specified')) continue;
+      }
     }
 
-    // ── Apply threshold ───────────────────────────────────────
-    if (score >= MIN_SCORE_THRESHOLD) {
-      scored.push({ technology: tech, score, matchedOn });
+    const { score, matchedOn } = computeRelevanceScore(tech, q, tokens);
+
+    if (score > 0) {
+      // Prioritize specific intents during scoring
+      let finalScore = score;
+      if (searchIntent === 'patent' && tech.patent_status.toLowerCase().includes('patented')) {
+        finalScore += 15;
+      }
+      if (searchIntent === 'startup' && tech.startup_potential === 'High') {
+        finalScore += 15;
+      }
+      if (searchIntent === 'machinery' && /machine|equipment|unit|drier|dryer|device/i.test(tech.technology_type)) {
+        finalScore += 15;
+      }
+      scored.push({ technology: tech, score: Math.min(finalScore, 100), matchedOn });
     }
   }
 
-  // Sort by score descending, cap at 8 results
-  const sorted = scored.sort((a, b) => b.score - a.score).slice(0, 8);
+  // Sort by score descending
+  const sorted = scored.sort((a, b) => b.score - a.score);
+  const cappedResults = sorted.slice(0, 8);
+  const topic = cleanTopic(q, searchIntent);
 
-  let finalIntent: ConversationIntent = 'search';
-  if (isStartup) finalIntent = 'startup';
-  else if (patentFilter) finalIntent = 'patent';
-  else if (trlFilter !== null) finalIntent = 'trl';
-  else if (commercialFilter) finalIntent = 'commercial';
+  const responseMessage = buildMessage(q, cappedResults.length, searchIntent, topic);
+
+  // ── Technology Transfer Startup Mode Grouping ────────────────
+  if (mode === 'startup' && cappedResults.length > 0) {
+    const startupOpportunities: StartupOpportunity[] = [];
+    const usedIds = new Set<string>();
+
+    // Take top results and build opportunities
+    for (const res of cappedResults) {
+      if (usedIds.has(res.technology.id)) continue;
+
+      const coreTech = res.technology;
+      usedIds.add(coreTech.id);
+
+      // Find supporting technologies (other technologies matching topic, same sector, or same institution)
+      const supporting = technologies
+        .filter(t => {
+          if (t.id === coreTech.id || usedIds.has(t.id)) return false;
+          const isSameSector = t.sector_slug === coreTech.sector_slug;
+          const isSameInst = t.institution_slug === coreTech.institution_slug;
+          const matchesQuery = tokens.some(tok => t.name.toLowerCase().includes(tok) || t.keywords.some(k => k.toLowerCase().includes(tok)));
+          return isSameSector && (isSameInst || matchesQuery);
+        })
+        .slice(0, 3);
+
+      supporting.forEach(t => usedIds.add(t.id));
+
+      const title = `${topic} Production & Commercialization Venture`;
+
+      startupOpportunities.push({
+        title,
+        coreTechnology: coreTech,
+        supportingTechnologies: supporting,
+        relevanceScore: res.score,
+      });
+    }
+
+    return {
+      results: cappedResults,
+      startupOpportunities: startupOpportunities.slice(0, 3), // return top 3 opportunities
+      query: q,
+      intent: searchIntent,
+      responseMessage,
+      totalFound: cappedResults.length,
+      mode,
+    };
+  }
 
   return {
-    results: sorted,
+    results: cappedResults,
     query: q,
-    intent: finalIntent,
-    responseMessage: buildMessage(q, sorted.length, isStartup, trlFilter, patentFilter),
-    totalFound: sorted.length,
+    intent: searchIntent,
+    responseMessage,
+    totalFound: cappedResults.length,
+    mode,
   };
 }
