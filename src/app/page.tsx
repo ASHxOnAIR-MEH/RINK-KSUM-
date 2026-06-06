@@ -29,6 +29,9 @@ export default async function HomePage() {
 
       {/* ── HERO & SEARCH SECTION ────────────────────────────── */}
       <section className="relative overflow-hidden py-20 md:py-24 border-b border-border animate-slow-mesh" style={{ background: 'var(--bg-hero)', backgroundSize: '200% 200%' }}>
+        {/* Research Network connection graph backdrop behind Hero */}
+        <EcosystemNetworkBackground />
+
         {/* Dot grid pattern */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -38,34 +41,37 @@ export default async function HomePage() {
           }}
         />
 
-        {/* Top-right CTA button for large screens */}
-        <div className="hidden lg:flex absolute top-6 right-6 z-20">
-          <Link href="/technologies" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-accent text-[#112920] font-bold text-xs hover:opacity-90 hover:scale-[1.02] transition-all shadow-md">
-            Explore All Technologies →
-          </Link>
-        </div>
-
         {/* Floating particles - restricted to Hero and Institutions */}
         <FloatingParticles count={18} />
 
-        {/* Ambient glow - neon emerald orb */}
+        {/* Ambient KSUM Navy Orb */}
         <div
           className="absolute animate-float-orb pointer-events-none"
           style={{
             top: '-80px', left: '10%',
             width: 400, height: 400, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(0,250,154,0.08) 0%, transparent 70%)',
-            filter: 'blur(95px)',
+            background: 'radial-gradient(circle, rgba(29, 20, 81, 0.04) 0%, transparent 70%)',
+            filter: 'blur(120px)',
           }}
         />
-        {/* Ambient glow - warm gold orb */}
+        {/* Ambient Emerald Orb */}
+        <div
+          className="absolute animate-float-orb-slow pointer-events-none"
+          style={{
+            bottom: '-60px', left: '30%',
+            width: 380, height: 380, borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(0, 250, 154, 0.04) 0%, transparent 70%)',
+            filter: 'blur(120px)',
+          }}
+        />
+        {/* Ambient Warm Gold Orb */}
         <div
           className="absolute animate-float-orb-slow pointer-events-none"
           style={{
             bottom: '-100px', right: '15%',
             width: 350, height: 350, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(233,196,106,0.06) 0%, transparent 70%)',
-            filter: 'blur(80px)',
+            background: 'radial-gradient(circle, rgba(233, 196, 106, 0.04) 0%, transparent 70%)',
+            filter: 'blur(120px)',
           }}
         />
 
@@ -91,29 +97,29 @@ export default async function HomePage() {
 
             {/* Search Box Container with Glassmorphism */}
             <div 
-              className="w-full max-w-[900px] p-6 md:p-8 glass-search-container animate-slide-up mb-8"
+              className="w-full max-w-[900px] p-6 md:p-8 glass-search-container animate-slide-up mb-4"
               style={{ animation: 'slide-fade-in 0.6s ease-out 0.4s both' }}
             >
               <AIDiscoveryBar />
             </div>
 
+            {/* Central CTA button directly under search box */}
+            <div className="mb-8 animate-fade-in font-sans" style={{ animation: 'slide-fade-in 0.6s ease-out 0.5s both' }}>
+              <Link href="/technologies" className="inline-flex items-center gap-1.5 px-6 py-3 rounded-xl bg-accent text-[#112920] font-black text-sm hover:opacity-95 hover:scale-[1.02] transition-all shadow-md">
+                Explore All Technologies →
+              </Link>
+            </div>
+
             {/* Subtitle / Description below the Search Box */}
             <p
               className="text-text-primary text-base md:text-lg leading-relaxed max-w-2xl"
-              style={{ animation: 'slide-fade-in 0.6s ease-out 0.5s both' }}
+              style={{ animation: 'slide-fade-in 0.6s ease-out 0.55s both' }}
             >
               Access market-ready technologies from Kerala's leading academic and research institutions.
               <span className="block mt-2 text-text-secondary text-sm md:text-base font-normal">
                 Find the machinery, processes, products, patents, and innovations your startup needs to scale.
               </span>
             </p>
-
-            {/* Secondary CTA below subtitle for mobile and tablet screens */}
-            <div className="mt-6 lg:hidden animate-fade-in font-sans" style={{ animation: 'slide-fade-in 0.6s ease-out 0.6s both' }}>
-              <Link href="/technologies" className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-accent text-[#112920] font-bold text-xs hover:opacity-95 shadow-md">
-                Explore All Technologies →
-              </Link>
-            </div>
 
           </div>
         </div>
@@ -248,7 +254,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── EXPLORE STARTUP SECTORS ────────────────────────────── */}
-      <section className="relative py-20 bg-background overflow-hidden">
+      <section className="relative py-20 bg-bg-section-b overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-xl mb-12">
             <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">

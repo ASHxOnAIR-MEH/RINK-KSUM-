@@ -31,7 +31,7 @@ export default function FloatingParticles({ count = 15 }: Props) {
       const size = `${sizeValue}px`;
       const left = `${Math.random() * 100}%`;
       const delay = `${Math.random() * 8}s`;
-      const duration = `${Math.random() * 10 + 12}s`; // 12s to 22s (very slow)
+      const duration = `${Math.random() * 10 + 22}s`; // 22s to 32s (super slow, average 27s)
       const color = colors[Math.floor(Math.random() * colors.length)];
 
       return {

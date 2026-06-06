@@ -53,7 +53,7 @@ export default function Navbar() {
             <div className="h-6 w-px bg-border" />
             <div className="flex flex-col justify-center">
               <span className="text-xs font-black text-heading tracking-wider uppercase leading-tight font-heading">
-                RINK Marketplace
+                RINK Technology Transfer Portal
               </span>
               <span className="hidden sm:block text-[8px] font-bold text-text-secondary tracking-widest uppercase leading-none mt-0.5">
                 Research Innovation Network Kerala

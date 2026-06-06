@@ -10,58 +10,10 @@ interface Props {
   compact?: boolean;
 }
 
-// Dynamic Opportunity Score Formula
-function calculateOpportunityScore(tech: Technology): number {
-  let score = 0;
-
-  // 1. TRL level score: TRL 1-3 => +20, TRL 4-6 => +40, TRL 7-9 => +60
-  const trlRaw = (tech.trl || '').toLowerCase();
-  if (!trlRaw.includes('not available') && !trlRaw.includes('not specified') && !trlRaw.includes('na')) {
-    const match = trlRaw.match(/\d+/);
-    if (match) {
-      const level = parseInt(match[0], 10);
-      if (level >= 7) score += 60;
-      else if (level >= 4) score += 40;
-      else if (level >= 1) score += 20;
-    }
-  }
-
-  // 2. Patent score: Applied => +15, Patented => +25
-  const patentRaw = (tech.patent_status || '').toLowerCase();
-  if (!patentRaw.includes('not available') && !patentRaw.includes('not specified') && !patentRaw.includes('na')) {
-    if (patentRaw.includes('patented') || patentRaw.includes('granted')) {
-      score += 25;
-    } else if (patentRaw.includes('applied') || patentRaw.includes('filed') || patentRaw.includes('pending') || patentRaw.includes('published')) {
-      score += 15;
-    }
-  }
-
-  // 3. Startup Potential score: Low => +5, Medium => +10, High => +15
-  const potential = tech.startup_potential;
-  if (potential === 'High') score += 15;
-  else if (potential === 'Medium') score += 10;
-  else if (potential === 'Low') score += 5;
-
-  // 4. Commercialization score: Prototype => +5, Pilot => +10, Market Ready => +15
-  const commRaw = (tech.commercialization_status || '').toLowerCase();
-  if (!commRaw.includes('not available') && !commRaw.includes('not specified') && !commRaw.includes('na')) {
-    if (commRaw.includes('market ready') || commRaw.includes('commercialized') || commRaw.includes('production ready')) {
-      score += 15;
-    } else if (commRaw.includes('pilot')) {
-      score += 10;
-    } else if (commRaw.includes('prototype')) {
-      score += 5;
-    }
-  }
-
-  return Math.min(100, score);
-}
-
 export default function TechnologyCard({ technology, compact = false }: Props) {
   const [imageFailed, setImageFailed] = useState(false);
   const hasImage = !!technology.image_embed_url && !imageFailed;
   const isHigh = technology.startup_potential === 'High';
-  const score = calculateOpportunityScore(technology);
 
   // Clean metadata
   const trlClean = (technology.trl && !technology.trl.toLowerCase().includes('not available'))
@@ -171,24 +123,6 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
               {visibleBadges}
             </div>
           )}
-
-          {/* Opportunity Score Indicator */}
-          <div className="flex items-center justify-between mb-4 bg-accent/5 dark:bg-accent/5 rounded-xl p-2.5 border border-accent/10">
-            <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider">
-              Opportunity Score
-            </span>
-            <div className="flex items-center gap-2">
-              <div className="w-16 h-1.5 bg-border rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-accent rounded-full" 
-                  style={{ width: `${score}%` }}
-                />
-              </div>
-              <span className="text-xs font-black text-heading">
-                {score}
-              </span>
-            </div>
-          </div>
 
           {/* View Details CTA */}
           <div className="mt-auto pt-3 border-t border-border flex items-center justify-between">
