@@ -29,7 +29,7 @@ export default function KeralaInnovationMap() {
   return (
     <div 
       className="absolute inset-y-0 right-10 md:right-20 w-[240px] md:w-[320px] pointer-events-none z-0 select-none flex items-center justify-center"
-      style={{ opacity: 0.045 }} // Low ambient opacity
+      style={{ opacity: 0.035 }} // Low ambient opacity
     >
       <svg 
         viewBox="0 0 220 520" 

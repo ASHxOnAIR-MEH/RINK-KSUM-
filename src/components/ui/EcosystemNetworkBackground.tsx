@@ -7,7 +7,7 @@ export default function EcosystemNetworkBackground() {
         viewBox="0 0 1400 450"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="absolute w-full h-full object-cover opacity-[0.03] dark:opacity-[0.025] text-accent dark:text-[#00FA9A]"
+        className="absolute w-full h-full object-cover opacity-[0.03] text-accent"
         preserveAspectRatio="none"
       >
         {/* Network Connections (connecting lines) */}

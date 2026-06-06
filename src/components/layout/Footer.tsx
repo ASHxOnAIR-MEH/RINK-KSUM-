@@ -38,14 +38,36 @@ function FooterSkyline() {
   return (
     <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none select-none z-0 opacity-[0.02]">
       <svg viewBox="0 0 1200 80" fill="currentColor" className="w-full h-full text-white" preserveAspectRatio="none">
-        {/* Skyline silhouette */}
+        {/* Skyline silhouette (incorporates labs, office/startup structures) */}
         <path d="M0 80 V72 H40 V68 H50 V72 H70 V64 H95 V70 H120 V60 H135 V72 H150 V66 H170 V72 H200 V56 H220 V72 H250 V68 H280 V72 H300 V52 H320 V72 H350 V70 H380 V72 H400 V60 H420 V72 H450 V64 H470 V72 H500 V48 H520 V72 H550 V68 H580 V72 H600 V62 H630 V72 H650 V64 H670 V72 H700 V56 H730 V72 H750 V68 H780 V72 H800 V52 H830 V72 H850 V64 H870 V72 H900 V58 H930 V72 H950 V66 H980 V72 H1000 V44 H1020 V72 H1050 V68 H1080 V72 H1100 V60 H1130 V72 H1150 V64 H1180 V72 H1200 V80 Z" />
         
         {/* Coconut Trees */}
-        <path d="M100 72 L102 60 M102 60 C 98 56, 94 58, 90 59 M102 60 C 100 54, 97 54, 95 56 M102 60 C 104 54, 107 54, 109 56 M102 60 C 106 56, 110 58, 114 59" stroke="currentColor" strokeWidth="0.8" />
-        <path d="M280 72 L282 58 M282 58 C 278 54, 274 55, 270 56 M282 58 C 280 52, 277 52, 275 54 M282 58 C 284 52, 287 52, 289 54 M282 58 C 286 54, 290 55, 294 56" stroke="currentColor" strokeWidth="0.8" />
-        <path d="M580 72 L582 60 M582 60 C 578 56, 574 58, 570 59 M582 60 C 580 54, 577 54, 575 56 M582 60 C 584 54, 587 54, 589 56 M582 60 C 586 56, 590 58, 594 59" stroke="currentColor" strokeWidth="0.8" />
-        <path d="M920 72 L922 60 M922 60 C 918 56, 914 58, 910 59 M922 60 C 920 54, 917 54, 915 56 M922 60 C 924 54, 927 54, 929 56 M922 60 C 932 56, 936 58, 940 59" stroke="currentColor" strokeWidth="0.8" />
+        <path d="M100 72 L102 60 M102 60 C 98 56, 94 58, 90 59 M102 60 C 100 54, 97 54, 95 56 M102 60 C 104 54, 107 54, 109 56 M102 60 C 106 56, 110 58, 114 59" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M280 72 L282 58 M282 58 C 278 54, 274 55, 270 56 M282 58 C 280 52, 277 52, 275 54 M282 58 C 284 52, 287 52, 289 54 M282 58 C 286 54, 290 55, 294 56" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M580 72 L582 60 M582 60 C 578 56, 574 58, 570 59 M582 60 C 580 54, 577 54, 575 56 M582 60 C 584 54, 587 54, 589 56 M582 60 C 586 56, 590 58, 594 59" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M920 72 L922 60 M922 60 C 918 56, 914 58, 910 59 M922 60 C 920 54, 917 54, 915 56 M922 60 C 924 54, 927 54, 929 56 M922 60 C 932 56, 936 58, 940 59" stroke="currentColor" strokeWidth="0.8" fill="none" />
+
+        {/* Research Lab Domes/Flask Icons floating in skyline */}
+        <g transform="translate(180, 24)" stroke="currentColor" strokeWidth="1" fill="none">
+          <path d="M6 16 L10 8 V4 H14 V8 L18 16 Z M6 13 H18" />
+        </g>
+        
+        {/* Startup Rocket Icon floating in skyline */}
+        <g transform="translate(390, 20)" stroke="currentColor" strokeWidth="1" fill="none">
+          <path d="M12 2 C12 2, 17 8, 17 14 C17 17, 15 19, 12 19 C9 19, 7 17, 7 14 C7 8, 12 2, 12 2 Z" />
+          <path d="M9 19 L7 22 M15 19 L17 22 M12 11 A 2 2 0 1 1 12 15 A 2 2 0 1 1 12 11" />
+        </g>
+
+        {/* Technology Transfer Arrows floating in skyline */}
+        <g transform="translate(680, 25)" stroke="currentColor" strokeWidth="1" fill="none">
+          <path d="M2 8 H22 M16 2 L22 8 L16 14 M8 22 L2 16 L8 10 M2 16 H22" />
+        </g>
+
+        {/* Startup Gear Icon floating in skyline */}
+        <g transform="translate(860, 22)" stroke="currentColor" strokeWidth="1" fill="none">
+          <circle cx="10" cy="10" r="5" />
+          <path d="M10 2 V4 M10 16 V18 M2 10 H4 M16 10 H18 M4.3 4.3 L5.8 5.8 M14.2 14.2 L15.7 15.7 M4.3 15.7 L5.8 14.2 M14.2 4.3 L15.7 5.8" />
+        </g>
 
         {/* Innovation network nodes */}
         <circle cx="210" cy="40" r="2.5" />

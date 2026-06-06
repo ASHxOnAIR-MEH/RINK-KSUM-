@@ -6,6 +6,7 @@ import {
   Mail, Phone, BookOpen, Lightbulb, Zap,
   Globe, FlaskConical, Layers, FileText, ArrowRight, Atom
 } from 'lucide-react';
+import LifecycleBackground from '@/components/ui/LifecycleBackground';
 
 const GOOGLE_FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSfJlFIqrK5Dzd5R-Voh19OvhUKxj7OzEqeW8XIdjJMNKxc8Eg/viewform';
@@ -120,7 +121,9 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
   const hasDesc   = tech.description && tech.description !== 'Information being updated';
 
   return (
-    <div className="min-h-screen bg-background text-text-primary">
+    <div className="min-h-screen bg-background text-text-primary relative overflow-hidden">
+      {/* Subtle vertical animated Technology Lifecycle background */}
+      <LifecycleBackground />
 
       {/* ── MOBILE STICKY BOTTOM CTA ─────────────────────────── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">

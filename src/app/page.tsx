@@ -32,8 +32,8 @@ export default async function HomePage() {
       {/* ── HERO & SEARCH SECTION ────────────────────────────── */}
       <section className="relative overflow-hidden py-20 md:py-24 border-b border-border animate-slow-mesh" style={{ background: 'var(--bg-hero)', backgroundSize: '200% 200%' }}>
         
-        {/* Kerala outline map backdrop with connected pulsing nodes */}
-        <KeralaInnovationMap />
+        {/* Innovation Network graph backdrop behind Hero */}
+        <EcosystemNetworkBackground />
 
         {/* Ambient floating research assets icons */}
         <FloatingResearchAssets />
@@ -171,11 +171,25 @@ export default async function HomePage() {
       {/* ── TRUST & CREDIBILITY STATS STRIP ─────────────────── */}
       <StatsSection />
 
-      {/* ── FEATURED OPPORTUNITIES ─────────────────────────────── */}
+      {/* ── FEATURED TECHNOLOGIES ─────────────────────────────── */}
       <section className="relative py-20 bg-background overflow-hidden border-b border-border">
-        {/* Subtle Patent diagram background at 2% opacity */}
+        <style>{`
+          @keyframes slow-drift {
+            0%, 100% {
+              transform: translate(0px, 0px) scale(1);
+            }
+            50% {
+              transform: translate(15px, 8px) scale(1.02);
+            }
+          }
+          .animate-slow-drift {
+            animation: slow-drift 40s ease-in-out infinite;
+          }
+        `}</style>
+        
+        {/* Subtle Patent diagram background at 2% opacity with slow drift */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.025] flex items-center justify-center select-none z-0">
-          <svg viewBox="0 0 800 500" className="w-full max-w-4xl h-full text-accent" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 800 500" className="w-full max-w-4xl h-full text-accent animate-slow-drift" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="400" cy="250" r="180" stroke="currentColor" strokeWidth="1.5" strokeDasharray="5 5" />
             <circle cx="400" cy="250" r="120" stroke="currentColor" strokeWidth="1" />
             <line x1="150" y1="250" x2="650" y2="250" stroke="currentColor" strokeWidth="1" />
@@ -191,19 +205,12 @@ export default async function HomePage() {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
             <div>
               <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">
-                Featured Innovation
+                FEATURED TECHNOLOGIES
               </div>
               <h2 className="text-3xl font-heading font-bold text-heading">
-                Startup Opportunities
+                Grab Featured Technologies Easily
               </h2>
             </div>
-            <Link
-              href="/technologies"
-              className="flex items-center gap-1.5 text-sm font-bold text-accent hover:opacity-85 transition-opacity"
-              id="all-technologies-link"
-            >
-              Explore Opportunities <ArrowRight className="w-4 h-4" />
-            </Link>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -214,19 +221,19 @@ export default async function HomePage() {
 
           <div className="mt-12 text-center sm:hidden">
             <Link href="/technologies" className="btn-secondary text-sm" id="explore-all-btn">
-              Explore Opportunities <ArrowRight className="w-3.5 h-3.5" />
+              Explore All Technologies <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
 
-        {/* Section fade divider into card-secondary */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-card-secondary to-transparent pointer-events-none z-10" />
+        {/* Section fade divider */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
       </section>
 
       {/* ── RESEARCH PARTNERS (INSTITUTIONS) ────────────────────────── */}
-      <section className="relative py-20 bg-card-secondary overflow-hidden border-b border-border">
-        {/* Innovation Network Graphic Backdrop */}
-        <EcosystemNetworkBackground />
+      <section className="relative py-20 bg-background overflow-hidden border-b border-border">
+        {/* Kerala outline map backdrop with connected pulsing nodes */}
+        <KeralaInnovationMap />
 
         {/* Ambient floating research assets icons */}
         <FloatingResearchAssets />
@@ -235,13 +242,13 @@ export default async function HomePage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div className="max-w-2xl">
               <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">
-                RESEARCH PARTNERS
+                FIND AN INSTITUTION
               </div>
               <h2 className="text-3xl md:text-4xl font-heading font-bold text-heading mb-3">
                 Research Institutions
               </h2>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Connecting Kerala's leading research organizations with startup founders and technology commercialization opportunities.
+                Explore Kerala\'s leading research institutions and discover technologies available for transfer, licensing, and commercialization.
               </p>
             </div>
             <Link

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import InstitutionFilterView from './InstitutionFilterView';
-import EcosystemNetworkBackground from '@/components/ui/EcosystemNetworkBackground';
+import InstitutionEcosystemBackground from '@/components/ui/InstitutionEcosystemBackground';
 import { getSectorIcon } from '@/components/ui/SectorIcons';
 
 interface Props {
@@ -59,7 +59,7 @@ export default async function InstitutionDetailPage({ params }: Props) {
       {/* Header */}
       <div className="relative overflow-hidden bg-card border-b border-border py-4">
         {/* Research Ecosystem Background SVG */}
-        <EcosystemNetworkBackground />
+        <InstitutionEcosystemBackground />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <Link href="/institutions" className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-accent transition-colors mb-2">

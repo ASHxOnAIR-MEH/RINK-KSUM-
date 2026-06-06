@@ -172,9 +172,9 @@ export default function InstitutionCard({ institution }: Props) {
     <Link
       href={`/institutions/${slug}`}
       id={`inst-card-${slug}`}
-      className="block group"
+      className="block group h-full"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-border bg-card h-[145px] flex flex-col justify-between p-5 hover:border-accent/35 hover:shadow-xl transition-all duration-300">
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-card h-full flex flex-col hover:border-accent/30 hover:shadow-xl transition-all duration-300">
         
         {/* Subtle radial glow on hover */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--accent)_0%,transparent_70%)] opacity-0 group-hover:opacity-[0.035] transition-opacity duration-500 pointer-events-none z-0" />
@@ -182,42 +182,50 @@ export default function InstitutionCard({ institution }: Props) {
         {/* Institution-specific background branding SVG */}
         <InstitutionBackground slug={slug} />
 
-        {/* Top Header Row */}
-        <div className="flex items-center justify-between gap-3 z-10">
-          {/* Acronym Badge */}
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-black tracking-wide bg-accent/10 text-accent border border-accent/20">
-            {acronym}
-          </span>
-          {/* Research Partner Label */}
-          <span className="text-[10px] text-text-secondary font-semibold uppercase tracking-wider">
-            Research Partner
-          </span>
-        </div>
+        {/* Card Content */}
+        <div className="flex flex-col flex-1 p-5 z-10">
+          {/* Institution Acronym */}
+          <div className="flex items-center justify-between mb-3">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-black tracking-wide bg-accent/10 text-accent border border-accent/20">
+              {acronym}
+            </span>
+          </div>
 
-        {/* Name and Specializations */}
-        <div className="my-1.5 z-10">
-          <h3 className="font-heading font-bold text-heading text-[14px] leading-snug line-clamp-1 group-hover:text-accent transition-colors">
+          {/* Institution Name */}
+          <h3 className="font-heading font-bold text-heading text-[16px] leading-snug mb-3 group-hover:text-accent transition-colors line-clamp-2">
             {institution.name}
           </h3>
-          <div className="flex flex-wrap gap-1 mt-1.5">
-            {specs.slice(0, 3).map((s, idx) => (
-              <span key={idx} className="text-[9px] font-bold tracking-wide text-accent bg-accent/5 px-1.5 py-0.5 rounded border border-accent/10">
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
 
-        {/* Footer Row */}
-        <div className="flex items-center justify-between pt-2.5 border-t border-border mt-auto z-10">
-          {/* Tech Count */}
-          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-accent-secondary bg-accent-secondary/10 px-2 py-0.5 rounded border border-accent-secondary/20">
-            {institution.tech_count} {institution.tech_count === 1 ? 'Opportunity' : 'Opportunities'}
-          </span>
+          {/* Technology Count */}
+          <div className="flex items-center gap-1.5 mb-4">
+            <span className="text-[11px] text-text-secondary font-medium uppercase tracking-wider">
+              Technologies:
+            </span>
+            <span className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded bg-accent-secondary/10 text-accent-secondary border border-accent-secondary/20">
+              {institution.tech_count} {institution.tech_count === 1 ? 'Opportunity' : 'Opportunities'}
+            </span>
+          </div>
+
+          {/* Sector Coverage */}
+          <div className="mb-4">
+            <div className="text-[10px] text-text-secondary font-semibold uppercase tracking-wider mb-2">
+              Sector Coverage
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {specs.slice(0, 3).map((s, idx) => (
+                <span key={idx} className="text-[9px] font-bold tracking-wide text-accent bg-accent/5 px-2 py-0.5 rounded border border-accent/10">
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
+
           {/* Discover CTA */}
-          <span className="flex items-center gap-1 text-[11px] font-bold text-accent group-hover:gap-1.5 transition-all">
-            Discover <ArrowRight className="w-3.5 h-3.5" />
-          </span>
+          <div className="mt-auto pt-3 border-t border-border flex items-center justify-end">
+            <span className="flex items-center gap-1 text-[11px] font-bold text-accent group-hover:gap-2 transition-all">
+              Discover <ArrowRight className="w-3.5 h-3.5" />
+            </span>
+          </div>
         </div>
 
       </div>

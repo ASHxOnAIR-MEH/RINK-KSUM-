@@ -8,7 +8,7 @@ export default function SectorBackground({ slug }: Props) {
   const s = slug.toLowerCase();
 
   // Helper styles: low opacity and matching the primary accent color
-  const svgClass = "absolute inset-0 w-full h-full pointer-events-none opacity-[0.035] dark:opacity-[0.025] text-accent dark:text-[#00FA9A] select-none z-0";
+  const svgClass = "absolute inset-0 w-full h-full pointer-events-none opacity-[0.03] text-accent select-none z-0";
 
   if (s.includes('agriculture') || s.includes('agritech')) {
     return (
