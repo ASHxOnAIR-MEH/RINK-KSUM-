@@ -8,13 +8,13 @@
 
 :root {
   /* Centralized Theme Variables - Dark Mode (Default) */
-  --background: #0D0929; /* Very Deep KSUM Navy */
+  --background: #0B0820; /* Very Deep KSUM Navy */
   --card: #1D1451;       /* KSUM Primary Navy */
-  --card-secondary: #251B63; /* Lighter KSUM Navy */
-  --bg-section-b: #0D0929;   /* Section B (same as background in dark) */
-  --bg-section-c: #251B63;   /* Section C (same as card-secondary in dark) */
-  --text-primary: rgba(248, 250, 248, 0.85); /* Off White opacity */
-  --text-secondary: rgba(248, 250, 248, 0.60);
+  --card-secondary: #2F2E38; /* KSUM Secondary Charcoal */
+  --bg-section-b: #0B0820;   /* Section B (same as background in dark) */
+  --bg-section-c: #2F2E38;   /* Section C (same as card-secondary in dark) */
+  --text-primary: #F8FAF8; /* Text Color */
+  --text-secondary: rgba(248, 250, 248, 0.70);
   --heading: #F8FAF8;     /* Off White */
   --border: rgba(248, 250, 248, 0.12);
   --accent: #00FA9A;      /* Neon Emerald */
@@ -29,7 +29,7 @@
   --text-title: var(--heading);
   --text-body: var(--text-primary);
   --text-muted: var(--text-secondary);
-  --bg-navbar: rgba(13, 9, 41, 0.85);
+  --bg-navbar: rgba(11, 8, 32, 0.85);
   --border-navbar: var(--border);
   --bg-section: var(--card-secondary);
   --bg-badge-gray: rgba(248, 250, 248, 0.08);
@@ -50,57 +50,10 @@
   --text-assistant-bubble: rgba(248, 250, 248, 0.9);
 
   /* Specific hero variables */
-  --bg-hero: linear-gradient(135deg, #0D0929 0%, #150F3F 50%, #1D1451 100%);
+  --bg-hero: linear-gradient(135deg, #0B0820 0%, #150F3F 50%, #1D1451 100%);
   --border-hero: rgba(248, 250, 248, 0.08);
 }
 
-:root.light {
-  /* Centralized Theme Variables - Light Mode */
-  --background: #FFFFFF; /* Section A */
-  --card: #FFFFFF;
-  --card-secondary: #EDF4EF; /* Section C */
-  --bg-section-b: #F3F8F5;   /* Section B */
-  --bg-section-c: #EDF4EF;   /* Section C */
-  --text-primary: #2F2E38; /* Charcoal */
-  --text-secondary: rgba(47, 46, 56, 0.75);
-  --heading: #1D1451;     /* Primary Navy */
-  --border: rgba(47, 46, 56, 0.12);
-  --accent: #1D1451;      /* Primary Navy */
-  --accent-secondary: #E9C46A; /* Warm Gold */
-
-  /* Legacy references fallback */
-  --bg-app: var(--background);
-  --bg-card: var(--card);
-  --bg-card-hover: #F0EFF4;
-  --border-card: var(--border);
-  --border-card-hover: rgba(29, 20, 81, 0.25);
-  --text-title: var(--heading);
-  --text-body: var(--text-primary);
-  --text-muted: var(--text-secondary);
-  --bg-navbar: rgba(248, 250, 248, 0.95);
-  --border-navbar: var(--border);
-  --bg-section: var(--card-secondary);
-  --bg-badge-gray: #E5E4EA;
-  --text-badge-gray: var(--text-primary);
-  --bg-select: var(--card);
-  --text-select: var(--heading);
-  --border-input: var(--border);
-
-  /* Specific callout variables */
-  --bg-amber-callout: #FEF3C7;
-  --border-amber-callout: #FDE68A;
-  --text-amber-callout: #B45309;
-  --text-amber-body: #2F2E38;
-
-  /* Specific assistant bubble variables */
-  --bg-assistant-bubble: #FFFFFF;
-  --border-assistant-bubble: rgba(29, 20, 81, 0.15);
-  --text-assistant-bubble: #2F2E38;
-
-  /* Specific hero variables */
-  --bg-hero: linear-gradient(135deg, #FFFFFF 0%, #F3F8F5 100%);
-  --border-hero: rgba(29, 20, 81, 0.12);
-}
 
 @theme inline {
   /* Dynamic Theme Colors mapping to central vars */
@@ -829,34 +782,26 @@ h1, h2, h3, h4, h5, h6 {
   ::-webkit-scrollbar-thumb:hover { background: #00FA9A; }
 }
 
-/* ── Active Light Mode Rules ── */
-:root.light {
-  body {
-    background-color: var(--bg-app);
-    color: var(--text-body);
+/* ── Keyframes for floating assets and pipeline flow ── */
+@keyframes float-asset {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
   }
-  
-  /* Retain multiply blend mode for logo on white navbar bg */
-  #navbar-logo img {
-    mix-blend-mode: multiply !important;
-  }
-
-  /* Stats number colors (KSUM Navy) */
-  .stats-number {
-    color: #1D1451 !important;
-  }
-
-  /* Explicit light inputs values */
-  select:not(.bg-transparent),
-  input:not(.bg-transparent),
-  textarea:not(.bg-transparent) {
-    background-color: #FFFFFF;
-    color: #0F172A;
-    border-color: #E2E8F0;
-  }
-
-  input::placeholder,
-  textarea::placeholder {
-    color: #94A3B8 !important;
+  50% {
+    transform: translateY(-20px) translateX(10px) rotate(2deg);
   }
 }
+
+@keyframes pipeline-flow {
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-float-asset {
+  animation: float-asset 30s ease-in-out infinite;
+}
+

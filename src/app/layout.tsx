@@ -5,13 +5,13 @@ import Footer from '@/components/layout/Footer';
 import RinkAIAssistant from '@/components/ai/RinkAIAssistant';
 
 export const metadata: Metadata = {
-  title: 'RINK Technology Explorer | Discover Research. Build Startups.',
+  title: 'RINK Technology Transfer Portal | Research Innovation Network Kerala',
   description:
-    'Discover commercializable technologies developed by Kerala research institutions. RINK Technology Explorer helps startup founders identify, evaluate, and access research innovations from CTCRI, CPCRI, NIIST, CWRDM, and more.',
+    'Connecting Research • Innovation • Commercialization. Discover and license commercializable technologies developed by Kerala research institutions.',
   keywords: 'Kerala startup, research technology, technology transfer, KSUM, RINK, CTCRI, CPCRI, NIIST, commercialization, innovation',
   openGraph: {
-    title: 'RINK Technology Explorer',
-    description: 'Discover Research. Build Startups. — Kerala Startup Mission',
+    title: 'RINK Technology Transfer Portal',
+    description: 'Connecting Research • Innovation • Commercialization — Kerala Startup Mission',
     type: 'website',
   },
 };
@@ -24,24 +24,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('rink-theme');
-                  if (theme === 'light') {
-                    document.documentElement.classList.add('light');
-                  } else {
-                    document.documentElement.classList.remove('light');
-                  }
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
       </head>
-      <body className="flex flex-col min-h-screen bg-white">
+      <body className="flex flex-col min-h-screen bg-background text-text-primary">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
@@ -51,4 +35,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
 

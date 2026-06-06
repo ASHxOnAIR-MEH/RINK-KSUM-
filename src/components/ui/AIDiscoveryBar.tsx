@@ -283,7 +283,7 @@ export default function AIDiscoveryBar() {
                   id="ai-view-all-btn"
                 >
                   <Search size={14} />
-                  Browse All Results in Technology Explorer
+                  Browse All Results in Technology Transfer Portal
                   <ArrowRight size={14} />
                 </Link>
               </div>

@@ -3,15 +3,17 @@ import AIDiscoveryBar from '@/components/ui/AIDiscoveryBar';
 import SectorCard from '@/components/ui/SectorCard';
 import TechnologyCard from '@/components/ui/TechnologyCard';
 import InstitutionCard from '@/components/ui/InstitutionCard';
-import FloatingParticles from '@/components/ui/FloatingParticles';
+import FloatingResearchAssets from '@/components/ui/FloatingResearchAssets';
+import KeralaInnovationMap from '@/components/ui/KeralaInnovationMap';
+import StatsSection from '@/components/ui/StatsSection';
 import EcosystemNetworkBackground from '@/components/ui/EcosystemNetworkBackground';
 import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 export const metadata = {
-  title: 'RINK Technology Explorer — Kerala Startup Mission',
+  title: 'RINK Technology Transfer Portal — Kerala Startup Mission',
   description:
-    "Explore commercializable technologies developed by Kerala's leading research institutions and discover opportunities for innovation and entrepreneurship.",
+    "Explore commercializable technologies developed by Kerala's leading research institutions under the Research Innovation Network Kerala (RINK).",
 };
 
 export default async function HomePage() {
@@ -29,8 +31,12 @@ export default async function HomePage() {
 
       {/* ── HERO & SEARCH SECTION ────────────────────────────── */}
       <section className="relative overflow-hidden py-20 md:py-24 border-b border-border animate-slow-mesh" style={{ background: 'var(--bg-hero)', backgroundSize: '200% 200%' }}>
-        {/* Research Network connection graph backdrop behind Hero */}
-        <EcosystemNetworkBackground />
+        
+        {/* Kerala outline map backdrop with connected pulsing nodes */}
+        <KeralaInnovationMap />
+
+        {/* Ambient floating research assets icons */}
+        <FloatingResearchAssets />
 
         {/* Dot grid pattern */}
         <div
@@ -40,9 +46,6 @@ export default async function HomePage() {
             backgroundSize: '32px 32px',
           }}
         />
-
-        {/* Floating particles - restricted to Hero and Institutions */}
-        <FloatingParticles count={18} />
 
         {/* Ambient KSUM Navy Orb */}
         <div
@@ -80,10 +83,10 @@ export default async function HomePage() {
 
             {/* Label pill */}
             <div
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-semibold mb-6 animate-fade-in"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-semibold mb-6 animate-fade-in"
             >
-              <Sparkles className="w-3.5 h-3.5 text-accent" />
-              Kerala Research Innovation Network
+              <Sparkles className="w-3.5 h-3.5 text-accent animate-[pulse_3s_infinite]" />
+              Research Innovation Network Kerala • Connecting Research • Innovation • Commercialization
             </div>
 
             {/* Headline */}
@@ -103,9 +106,12 @@ export default async function HomePage() {
               <AIDiscoveryBar />
             </div>
 
-            {/* Central CTA button directly under search box */}
+            {/* Central CTA button directly under search box with Emerald Gradient & Glow */}
             <div className="mb-8 animate-fade-in font-sans" style={{ animation: 'slide-fade-in 0.6s ease-out 0.5s both' }}>
-              <Link href="/technologies" className="inline-flex items-center gap-1.5 px-6 py-3 rounded-xl bg-accent text-[#112920] font-black text-sm hover:opacity-95 hover:scale-[1.02] transition-all shadow-md">
+              <Link 
+                href="/technologies" 
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#00FA9A] to-[#00C875] text-[#0A0820] font-heading font-extrabold text-sm transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(0,250,154,0.45)] active:scale-[0.98]"
+              >
                 Explore All Technologies →
               </Link>
             </div>
@@ -128,48 +134,59 @@ export default async function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
       </section>
 
-      {/* ── METRICS STRIP (MARKETPLACE COUNTERS) ─────────────────── */}
-      <section className="bg-card border-b border-border py-6 z-10 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x-0 md:divide-x divide-border">
-            <div className="py-2">
-              <div className="text-2xl md:text-3xl font-heading font-black text-accent-secondary">
-                160+
-              </div>
-              <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-1">
-                Technologies Listed
-              </div>
-            </div>
-            <div className="py-2">
-              <div className="text-2xl md:text-3xl font-heading font-black text-accent">
-                20+
-              </div>
-              <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-1">
-                Research Partners
-              </div>
-            </div>
-            <div className="py-2">
-              <div className="text-2xl md:text-3xl font-heading font-black text-accent-secondary">
-                12
-              </div>
-              <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-1">
-                Opportunity Sectors
-              </div>
-            </div>
-            <div className="py-2">
-              <div className="text-2xl md:text-3xl font-heading font-black text-accent">
-                50+
-              </div>
-              <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-1">
-                Startup Opportunities
-              </div>
-            </div>
-          </div>
+      {/* ── TECHNOLOGY TRANSFER PIPELINE (BACKGROUND VISUALIZATION) ────────────────── */}
+      <div className="w-full bg-[#0B0820] border-b border-border py-8 relative overflow-hidden flex items-center justify-center">
+        {/* Subtle animated pipeline background at 2% opacity */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.02] flex items-center justify-center select-none z-0">
+          <svg viewBox="0 0 1000 80" className="w-full max-w-5xl h-20 text-[#00FA9A]" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 50 40 L 950 40" stroke="currentColor" strokeWidth="2.5" strokeOpacity="0.3" strokeLinecap="round" />
+            <path d="M 50 40 L 950 40" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeDasharray="16 24" className="animate-[pipeline-flow_10s_linear_infinite]" />
+            
+            <circle cx="50" cy="40" r="5.5" fill="currentColor" />
+            <text x="50" y="66" textAnchor="middle" fill="currentColor" fontSize="10.5" fontWeight="900" fontFamily="Outfit, sans-serif" letterSpacing="0.05em">RESEARCH</text>
+            
+            <circle cx="230" cy="40" r="5.5" fill="currentColor" />
+            <text x="230" y="66" textAnchor="middle" fill="currentColor" fontSize="10.5" fontWeight="900" fontFamily="Outfit, sans-serif" letterSpacing="0.05em">PROTOTYPE</text>
+            
+            <circle cx="410" cy="40" r="5.5" fill="currentColor" />
+            <text x="410" y="66" textAnchor="middle" fill="currentColor" fontSize="10.5" fontWeight="900" fontFamily="Outfit, sans-serif" letterSpacing="0.05em">PATENT</text>
+            
+            <circle cx="590" cy="40" r="5.5" fill="currentColor" />
+            <text x="590" y="66" textAnchor="middle" fill="currentColor" fontSize="10.5" fontWeight="900" fontFamily="Outfit, sans-serif" letterSpacing="0.05em">LICENSING</text>
+            
+            <circle cx="770" cy="40" r="5.5" fill="currentColor" />
+            <text x="770" y="66" textAnchor="middle" fill="currentColor" fontSize="10.5" fontWeight="900" fontFamily="Outfit, sans-serif" letterSpacing="0.05em">STARTUP</text>
+            
+            <circle cx="950" cy="40" r="5.5" fill="currentColor" />
+            <text x="950" y="66" textAnchor="middle" fill="currentColor" fontSize="10.5" fontWeight="900" fontFamily="Outfit, sans-serif" letterSpacing="0.05em">COMMERCIALIZATION</text>
+          </svg>
         </div>
-      </section>
+        <div className="relative z-10 text-center max-w-4xl px-4 pointer-events-none">
+          <span className="text-[10px] font-black tracking-widest text-[#E9C46A] uppercase">
+            KSUM Technology Commercialization Pathway
+          </span>
+        </div>
+      </div>
+
+      {/* ── TRUST & CREDIBILITY STATS STRIP ─────────────────── */}
+      <StatsSection />
 
       {/* ── FEATURED OPPORTUNITIES ─────────────────────────────── */}
       <section className="relative py-20 bg-background overflow-hidden border-b border-border">
+        {/* Subtle Patent diagram background at 2% opacity */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.025] flex items-center justify-center select-none z-0">
+          <svg viewBox="0 0 800 500" className="w-full max-w-4xl h-full text-accent" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="400" cy="250" r="180" stroke="currentColor" strokeWidth="1.5" strokeDasharray="5 5" />
+            <circle cx="400" cy="250" r="120" stroke="currentColor" strokeWidth="1" />
+            <line x1="150" y1="250" x2="650" y2="250" stroke="currentColor" strokeWidth="1" />
+            <line x1="400" y1="50" x2="400" y2="450" stroke="currentColor" strokeWidth="1" />
+            <rect x="360" y="210" width="80" height="80" rx="6" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M 280 130 L 360 210 M 520 130 L 440 210 M 280 370 L 360 290 M 520 370 L 440 290" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
+            <text x="405" y="100" fill="currentColor" fontSize="8" fontWeight="bold">FIG. 1 - SYSTEM TOPOLOGY</text>
+            <text x="405" y="420" fill="currentColor" fontSize="8" fontWeight="bold">SHEET 1 OF 3</text>
+          </svg>
+        </div>
+
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
             <div>
@@ -211,8 +228,8 @@ export default async function HomePage() {
         {/* Innovation Network Graphic Backdrop */}
         <EcosystemNetworkBackground />
 
-        {/* Floating particles - restricted to Hero and Institutions */}
-        <FloatingParticles count={15} />
+        {/* Ambient floating research assets icons */}
+        <FloatingResearchAssets />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
@@ -255,6 +272,19 @@ export default async function HomePage() {
 
       {/* ── EXPLORE STARTUP SECTORS ────────────────────────────── */}
       <section className="relative py-20 bg-bg-section-b overflow-hidden">
+        {/* Subtle Sectors Illustration background at 2% opacity */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.025] flex items-center justify-center select-none z-0">
+          <svg viewBox="0 0 800 400" className="w-full max-w-4xl h-full text-accent" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="100,100 150,70 200,100 200,160 150,190 100,160" stroke="currentColor" strokeWidth="1.2" />
+            <polygon points="250,200 300,170 350,200 350,260 300,290 250,260" stroke="currentColor" strokeWidth="1.2" />
+            <polygon points="400,100 450,70 500,100 500,160 450,190 400,160" stroke="currentColor" strokeWidth="1.2" strokeDasharray="3 3" />
+            <polygon points="550,200 600,170 650,200 650,260 600,290 550,260" stroke="currentColor" strokeWidth="1.2" />
+            <line x1="200" y1="130" x2="250" y2="230" stroke="currentColor" strokeWidth="1" />
+            <line x1="350" y1="230" x2="400" y2="130" stroke="currentColor" strokeWidth="1" />
+            <line x1="500" y1="130" x2="550" y2="230" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" />
+          </svg>
+        </div>
+
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-xl mb-12">
             <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">

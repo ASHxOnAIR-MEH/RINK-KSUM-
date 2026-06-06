@@ -103,7 +103,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const tech = await getTechnologyById(id);
   if (!tech) return { title: 'Technology Not Found — RINK' };
   return {
-    title: `${tech.name} — RINK Technology Explorer`,
+    title: `${tech.name} — RINK Technology Transfer Portal`,
     description: tech.problem_solved?.slice(0, 160),
   };
 }

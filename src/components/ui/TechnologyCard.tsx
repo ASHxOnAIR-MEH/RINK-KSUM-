@@ -15,18 +15,35 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
   const hasImage = !!technology.image_embed_url && !imageFailed;
   const isHigh = technology.startup_potential === 'High';
 
-  // Clean metadata
-  const trlClean = (technology.trl && !technology.trl.toLowerCase().includes('not available'))
-    ? (technology.trl.startsWith('TRL') ? technology.trl : `TRL ${technology.trl}`)
-    : '';
+  // Sanitizer function to check if value exists and is meaningful
+  const sanitize = (val: string | null | undefined): string => {
+    if (!val) return '';
+    const clean = val.trim();
+    const lower = clean.toLowerCase();
+    if (
+      lower === '' ||
+      lower === 'na' ||
+      lower === 'n/a' ||
+      lower === 'nil' ||
+      lower === 'none' ||
+      lower.includes('not available') ||
+      lower.includes('not specified')
+    ) {
+      return '';
+    }
+    return clean;
+  };
 
-  const patentClean = (technology.patent_status && !technology.patent_status.toLowerCase().includes('not available'))
-    ? technology.patent_status
-    : '';
+  const trlVal = sanitize(technology.trl);
+  const patentVal = sanitize(technology.patent_status);
+  const commVal = sanitize(technology.commercialization_status);
 
-  const commClean = (technology.commercialization_status && !technology.commercialization_status.toLowerCase().includes('not available'))
-    ? technology.commercialization_status
+  // Formatted labels
+  const trlDisplay = trlVal 
+    ? (trlVal.toUpperCase().startsWith('TRL') ? trlVal.toUpperCase() : `TRL ${trlVal}`)
     : '';
+  const patentDisplay = patentVal;
+  const commDisplay = commVal;
 
   // Priority Badge Ordering
   const badges: React.ReactNode[] = [];
@@ -41,33 +58,34 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
   }
 
   // 2. TRL Badge
-  if (trlClean && !technology.trl.toLowerCase().includes('not specified') && !technology.trl.toLowerCase().includes('na')) {
+  if (trlDisplay) {
     badges.push(
       <span key="trl" className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded bg-[#00FA9A]/10 text-[#00FA9A] border border-[#00FA9A]/20">
-        {trlClean}
+        {trlDisplay}
       </span>
     );
   }
 
   // 3. Patent Badge
-  if (patentClean && !technology.patent_status.toLowerCase().includes('not specified') && !technology.patent_status.toLowerCase().includes('na')) {
+  if (patentDisplay) {
     badges.push(
       <span key="patent" className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded bg-[#E9C46A]/10 text-[#E9C46A] border border-[#E9C46A]/20">
-        {patentClean}
+        {patentDisplay}
       </span>
     );
   }
 
   // 4. Commercialization Badge
-  if (commClean && !technology.commercialization_status.toLowerCase().includes('not specified') && !technology.commercialization_status.toLowerCase().includes('na')) {
+  if (commDisplay) {
     badges.push(
       <span key="commercialization" className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-        {commClean}
+        {commDisplay}
       </span>
     );
   }
 
   const visibleBadges = badges.filter(Boolean);
+
 
   return (
     <Link href={`/technologies/${technology.id}`} className="block group" id={`tech-card-${technology.id}`}>

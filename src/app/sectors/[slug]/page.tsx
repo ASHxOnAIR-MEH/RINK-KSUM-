@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props) {
   const sector = await getSectorBySlug(slug);
   if (!sector) return { title: 'Sector Not Found — RINK' };
   return {
-    title: `${sector.name} Technologies — RINK Explorer`,
+    title: `${sector.name} Technologies — RINK Technology Transfer Portal`,
     description: `Browse ${sector.tech_count} commercializable technologies in ${sector.name} from Kerala research institutions.`,
   };
 }

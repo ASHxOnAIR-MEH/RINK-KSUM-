@@ -4,7 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import InstitutionCard from '@/components/ui/InstitutionCard';
 
 export const metadata = {
-  title: 'Research Institutions — RINK Technology Explorer',
+  title: 'Research Institutions — RINK Technology Transfer Portal',
   description: 'Browse technologies from all Kerala research institutions including ICAR-CPCRI, ICAR-CTCRI, CSIR-NIIST, KUFOS, and more.',
 };
 

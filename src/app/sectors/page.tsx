@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 export const metadata = {
-  title: 'Browse by Sector — RINK Technology Explorer',
+  title: 'Browse by Sector — RINK Technology Transfer Portal',
   description: 'Explore technologies by sector. Find commercializable technologies across Agriculture, Food Processing, Biotechnology, Aquaculture, and more.',
 };
 

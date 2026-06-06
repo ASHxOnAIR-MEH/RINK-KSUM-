@@ -77,7 +77,7 @@ export default function Footer() {
           </div>
           <div className="flex gap-3 flex-shrink-0">
             <Link href="/technologies" className="btn-primary py-3 px-8 text-sm font-bold bg-accent text-[#04142B] hover:opacity-95 shadow-lg rounded-xl transition-all duration-200">
-              Explore Marketplace →
+              Explore Technologies →
             </Link>
           </div>
         </div>
@@ -196,7 +196,7 @@ export default function Footer() {
             © {currentYear} Kerala Startup Mission. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <span className="text-gray-500 text-xs">RINK Technology Explorer v1.0</span>
+            <span className="text-gray-500 text-xs">RINK Technology Transfer Portal v1.0</span>
             <a
               href="https://startupmission.in"
               target="_blank"

@@ -2,7 +2,7 @@ import { searchTechnologies, getAllSectors, getAllInstitutions, getTechnologyTyp
 import TechListClient from './TechListClient';
 
 export const metadata = {
-  title: 'All Technologies — RINK Technology Explorer',
+  title: 'All Technologies — RINK Technology Transfer Portal',
   description: 'Browse all commercializable technologies from Kerala research institutions. Filter by sector, institution, type, and more.',
 };
 

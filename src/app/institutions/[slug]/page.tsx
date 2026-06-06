@@ -20,8 +20,8 @@ export async function generateMetadata({ params }: Props) {
   const inst = await getInstitutionBySlug(slug);
   if (!inst) return { title: 'Institution Not Found — RINK' };
   return {
-    title: `${inst.name} Technologies — RINK Explorer`,
-    description: `Browse ${inst.tech_count} commercializable technologies from ${inst.name} on the RINK Technology Explorer.`,
+    title: `${inst.name} Technologies — RINK Technology Transfer Portal`,
+    description: `Browse ${inst.tech_count} commercializable technologies from ${inst.name} on the RINK Technology Transfer Portal.`,
   };
 }
 

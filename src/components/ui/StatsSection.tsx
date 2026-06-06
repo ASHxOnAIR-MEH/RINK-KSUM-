@@ -1,56 +1,104 @@
-import { getPlatformStats } from '@/lib/db';
-import { FlaskConical, Building2, Layers } from 'lucide-react';
+'use client';
 
-export default async function StatsSection() {
-  const stats = await getPlatformStats();
+import React, { useEffect, useState, useRef } from 'react';
 
-  const items = [
-    {
-      id: 'stat-technologies',
-      icon: FlaskConical,
-      label: 'Technologies',
-      value: stats.technology_count,
-      suffix: '+',
-      desc: 'Commercializable research technologies',
-    },
-    {
-      id: 'stat-institutions',
-      icon: Building2,
-      label: 'Institutions',
-      value: stats.institution_count,
-      suffix: '+',
-      desc: 'Kerala research institutions',
-    },
-    {
-      id: 'stat-sectors',
-      icon: Layers,
-      label: 'Sectors',
-      value: stats.sector_count,
-      suffix: '',
-      desc: 'Technology domains covered',
-    },
-  ];
+export default function StatsSection() {
+  const [techs, setTechs] = useState(0);
+  const [insts, setInsts] = useState(0);
+  const [opps, setOpps] = useState(0);
+  const [patents, setPatents] = useState(0);
+  const [ecosystem, setEcosystem] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          animateCount(120, setTechs);
+          animateCount(10, setInsts);
+          animateCount(30, setOpps);
+          animateCount(15, setPatents);
+          animateCount(100, setEcosystem);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasAnimated]);
+
+  const animateCount = (target: number, setter: React.Dispatch<React.SetStateAction<number>>) => {
+    let start = 0;
+    const duration = 1400; // ms
+    const increment = target / (duration / 16); // ~60fps
+    
+    const step = () => {
+      start += increment;
+      if (start >= target) {
+        setter(target);
+      } else {
+        setter(Math.floor(start));
+        requestAnimationFrame(step);
+      }
+    };
+    
+    requestAnimationFrame(step);
+  };
 
   return (
-    <section className="py-10 bg-card border-b border-border">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-3 gap-8 text-center">
-          {items.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div key={item.id} id={item.id}>
-                <div className="text-4xl md:text-5xl font-heading font-black text-accent-secondary mb-1 tabular-nums">
-                  {item.value}{item.suffix}
-                </div>
-                <div className="font-semibold text-heading text-sm mb-0.5">
-                  {item.label}
-                </div>
-                <div className="text-xs text-text-secondary leading-snug hidden sm:block">
-                  {item.desc}
-                </div>
-              </div>
-            );
-          })}
+    <section ref={sectionRef} className="bg-card border-b border-border py-8 z-10 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center divide-x-0 md:divide-x divide-border">
+          <div className="py-2 px-1">
+            <div className="text-3xl md:text-4xl font-heading font-black text-accent">
+              {techs}+
+            </div>
+            <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-2">
+              Technologies
+            </div>
+          </div>
+          
+          <div className="py-2 px-1">
+            <div className="text-3xl md:text-4xl font-heading font-black text-[#E9C46A]">
+              {insts}+
+            </div>
+            <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-2">
+              Research Institutions
+            </div>
+          </div>
+
+          <div className="py-2 px-1">
+            <div className="text-3xl md:text-4xl font-heading font-black text-accent">
+              {opps}+
+            </div>
+            <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-2">
+              Commercialization Opportunities
+            </div>
+          </div>
+
+          <div className="py-2 px-1">
+            <div className="text-3xl md:text-4xl font-heading font-black text-[#E9C46A]">
+              {patents}+
+            </div>
+            <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-2">
+              Patent-Ready Technologies
+            </div>
+          </div>
+
+          <div className="py-2 px-1">
+            <div className="text-3xl md:text-4xl font-heading font-black text-accent">
+              {ecosystem}%
+            </div>
+            <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider mt-2">
+              Kerala Research Ecosystem
+            </div>
+          </div>
         </div>
       </div>
     </section>

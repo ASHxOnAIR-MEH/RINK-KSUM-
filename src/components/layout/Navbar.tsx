@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import ThemeToggle from './ThemeToggle';
 
 const NAV_LINKS = [
   { label: 'Home',         href: '/' },
@@ -79,13 +78,10 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
-            <div className="w-px h-6 bg-border" />
-            <ThemeToggle />
           </div>
 
           {/* ── Mobile menu button ── */}
           <div className="flex items-center gap-2 md:hidden">
-            <ThemeToggle />
             <button
               className="p-2 text-text-secondary hover:text-accent hover:bg-card-secondary rounded-lg transition-all"
               onClick={() => setMobileOpen(!mobileOpen)}

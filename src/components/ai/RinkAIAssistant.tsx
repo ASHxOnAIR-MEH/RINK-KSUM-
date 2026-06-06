@@ -486,7 +486,7 @@ export default function RinkAIAssistant() {
                             background: 'var(--card-secondary)', border: '1px solid var(--border)', borderRadius: 8,
                           }}
                         >
-                          Browse all in Technology Explorer <ArrowRight size={12} />
+                          Browse all in Technology Transfer Portal <ArrowRight size={12} />
                         </Link>
                       </div>
                     )}

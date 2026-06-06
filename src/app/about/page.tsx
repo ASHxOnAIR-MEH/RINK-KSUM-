@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Lightbulb, Target, Users, Building2, ArrowRight, CheckCircle, Globe } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'About RINK Technology Explorer | Kerala Startup Mission',
+  title: 'About RINK Technology Transfer Portal | Kerala Startup Mission',
   description: 'Learn about RINK — Research Innovation Network Kerala — and how this platform helps startup founders discover and commercialize research technologies.',
 };
 
@@ -20,13 +20,13 @@ export default function AboutPage() {
           </div>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent-secondary/15 rounded-full text-xs font-semibold text-accent-secondary mb-5">
             <Lightbulb className="w-3.5 h-3.5" />
-            About RINK Technology Explorer
+            About RINK Technology Transfer Portal
           </div>
           <h1 className="text-4xl font-heading font-black text-heading mb-4">
             Bridging Research &amp; Entrepreneurship
           </h1>
           <p className="text-text-primary leading-relaxed text-base max-w-2xl mx-auto opacity-90">
-            RINK Technology Explorer is a sub-portal of the Research Innovation Network Kerala (RINK),
+            RINK Technology Transfer Portal is a sub-portal of the Research Innovation Network Kerala (RINK),
             an initiative by the Kerala Startup Mission (KSUM) to connect research institutions
             with startup founders and entrepreneurs.
           </p>
@@ -64,7 +64,7 @@ export default function AboutPage() {
             <div className="text-3xl mb-4">💡</div>
             <h2 className="font-heading font-bold text-accent-secondary text-xl mb-3">Our Solution</h2>
             <p className="text-text-secondary text-sm leading-relaxed mb-4">
-              RINK Technology Explorer is a searchable, categorized platform that presents each
+              RINK Technology Transfer Portal is a searchable, categorized platform that presents each
               technology with startup context — problem solved, applications, startup potential,
               and direct institution contact information.
             </p>
