@@ -311,8 +311,163 @@ function buildMessage(
   return `Found **${count} technolog${count === 1 ? 'y' : 'ies'}** matching **"${query}"**:`;
 }
 
+// ── Gemini Search Integration ────────────────────────────────
+interface GeminiResponseJSON {
+  intent: string;
+  responseMessage: string;
+  matchedIds: string[];
+}
+
+async function runGeminiSearch(query: string, technologies: Technology[]): Promise<AISearchResponse | null> {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    console.warn('[RINK AI] GEMINI_API_KEY is not defined. Falling back to local search.');
+    return null;
+  }
+
+  try {
+    const minimalTechList = technologies.map(t => ({
+      id: t.id,
+      name: t.name,
+      sector: t.sector,
+      institution: t.institution,
+      problem_solved: t.problem_solved,
+      trl: t.trl,
+      patent_status: t.patent_status
+    }));
+
+    const prompt = `You are the RINK AI Discovery Assistant, the intelligent brain behind Kerala Startup Mission's Technology Transfer & Commercialization Portal.
+Your task is to analyze the user's natural language input and match it with the most relevant technologies in our database.
+
+Here is the database of 160 available technologies in Kerala's research ecosystem:
+${JSON.stringify(minimalTechList)}
+
+User Query: "${query}"
+
+Instructions:
+1. Classify the user query into one of these intents:
+   - "greeting": if the user is saying hello (e.g. "hi", "hello")
+   - "smalltalk": if the user is asking how you are or chatting generically
+   - "who_are_you": if the user asks about your identity or what you do
+   - "help": if the user asks how to use the search or what they can ask
+   - "thanks": if the user says thank you or generic closing words
+   - "search": if the user is searching for technologies, problem solutions, products, etc.
+   - "empty": if the query is blank or doesn't have words
+
+2. Response Message:
+   - If the intent is conversational (greeting, smalltalk, help, thanks, who_are_you), write a helpful, friendly, natural response in markdown.
+   - If the intent is "search", write a concise, professional summary response in markdown introducing the matches found (e.g., "I found 3 technologies matching your request..."). Highlight key enablers.
+
+3. Matched IDs:
+   - If the intent is "search", return an array of up to 8 technology IDs that are most relevant to the user query, ordered by relevance.
+   - If the intent is conversational and no search is needed, return an empty array.
+
+Return a JSON object matching this schema:
+{
+  "intent": "greeting" | "smalltalk" | "who_are_you" | "help" | "thanks" | "search" | "empty",
+  "responseMessage": string,
+  "matchedIds": string[]
+}`;
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt
+              }
+            ]
+          }
+        ],
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "OBJECT",
+            properties: {
+              intent: {
+                type: "STRING",
+                enum: ["greeting", "smalltalk", "who_are_you", "help", "thanks", "search", "empty"]
+              },
+              responseMessage: { type: "STRING" },
+              matchedIds: {
+                type: "ARRAY",
+                items: { type: "STRING" }
+              }
+            },
+            required: ["intent", "responseMessage", "matchedIds"]
+          }
+        }
+      })
+    });
+
+    if (!response.ok) {
+      console.error('[RINK AI] Gemini API request failed:', response.statusText);
+      return null;
+    }
+
+    const data = await response.json();
+    const textResult = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!textResult) {
+      console.error('[RINK AI] Gemini returned empty response');
+      return null;
+    }
+
+    const parsed: GeminiResponseJSON = JSON.parse(textResult.trim());
+
+    // Map matched IDs back to Technology objects and compute scores
+    const results: AISearchResult[] = [];
+    const techMap = new Map(technologies.map(t => [t.id.toLowerCase(), t]));
+
+    for (let idx = 0; idx < parsed.matchedIds.length; idx++) {
+      const id = parsed.matchedIds[idx];
+      const tech = techMap.get(id.toLowerCase());
+      if (tech) {
+        // Assign descending scores based on Gemini's ranking
+        const score = Math.max(50, 100 - idx * 5);
+        results.push({
+          technology: tech,
+          score,
+          matchedOn: ['gemini_match']
+        });
+      }
+    }
+
+    return {
+      results,
+      query,
+      intent: parsed.intent as ConversationIntent,
+      responseMessage: parsed.responseMessage,
+      totalFound: results.length
+    };
+  } catch (error) {
+    console.error('[RINK AI] Error in runGeminiSearch:', error);
+    return null;
+  }
+}
+
 // ── Main search function ──────────────────────────────────────
-export function runAISearch(query: string, technologies: Technology[]): AISearchResponse {
+export async function runAISearch(query: string, technologies: Technology[]): Promise<AISearchResponse> {
+  const q = query.trim();
+
+  // Try calling Gemini first
+  const geminiResult = await runGeminiSearch(q, technologies);
+  if (geminiResult) {
+    return geminiResult;
+  }
+
+  // Fallback to local search logic
+  return runLocalSearch(q, technologies);
+}
+
+// ── Local search function (reliable offline fallback) ─────────
+export function runLocalSearch(query: string, technologies: Technology[]): AISearchResponse {
   const q = query.trim();
 
   // ── Step 1: Intent classification ───────────────────────────
@@ -323,7 +478,7 @@ export function runAISearch(query: string, technologies: Technology[]): AISearch
     return getConversationalResponse(intent, q);
   }
 
-    // ── Step 3: Tokenise for DB search ──────────────────────────
+  // ── Step 3: Tokenise for DB search ──────────────────────────
   const tokens = tokenise(q);
   const isStartup = detectStartupIntent(q);
   const trlFilter = extractTRLFilter(q);

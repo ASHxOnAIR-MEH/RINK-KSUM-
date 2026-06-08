@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     const technologies = await fetchAllTechnologies();
 
     // Run AI search scoring
-    const result = runAISearch(query, technologies);
+    const result = await runAISearch(query, technologies);
 
     return NextResponse.json(result);
   } catch (err) {
@@ -47,6 +47,6 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get('q') || '';
   const technologies = await fetchAllTechnologies();
-  const result = runAISearch(query, technologies);
+  const result = await runAISearch(query, technologies);
   return NextResponse.json(result);
 }
