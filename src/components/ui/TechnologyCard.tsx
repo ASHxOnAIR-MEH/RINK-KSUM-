@@ -18,13 +18,8 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
   const displayImage = technology.technology_image_embed_url || technology.technology_image || technology.image_embed_url;
   const hasImage = !!displayImage && !imageFailed;
   
-  // Startup Potential validation
-  const isFeatured = ['featured', 'very high', 'high'].includes(technology.startup_potential?.toLowerCase() || '');
-  const potentialLabel = technology.startup_potential === 'Featured'
-    ? '★ FEATURED'
-    : technology.startup_potential === 'Very High'
-    ? '★ VERY HIGH'
-    : '★ HIGH POTENTIAL';
+  // Startup Potential validation - show Featured badge only for 'High' or 'Featured' potentials
+  const showFeaturedBadge = ['featured', 'high'].includes(technology.startup_potential?.toLowerCase() || '');
 
   // Sanitizer function to check if value exists and is meaningful
   const sanitize = (val: string | null | undefined): string => {
@@ -59,11 +54,11 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
   // Priority Badge Ordering
   const badges: React.ReactNode[] = [];
 
-  // 1. ★ FEATURED / POTENTIAL (always first)
-  if (isFeatured) {
+  // 1. ★ FEATURED (always first)
+  if (showFeaturedBadge) {
     badges.push(
       <span key="featured" className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#E9C46A] text-[#112920]">
-        {potentialLabel}
+        ★ FEATURED
       </span>
     );
   }

@@ -17,6 +17,94 @@ export const metadata = {
     "Explore commercializable technologies developed by Kerala's leading research institutions under the Research Innovation Network Kerala (RINK).",
 };
 
+const localFloatingAssets = [
+  {
+    id: 1,
+    name: 'Patent Document',
+    left: '4%',
+    top: '15%',
+    duration: '29s',
+    delay: '0s',
+    svg: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1">
+        <rect x="4" y="2" width="16" height="20" rx="2" />
+        <path d="M8 6h8M8 10h8M8 14h5" />
+      </svg>
+    )
+  },
+  {
+    id: 2,
+    name: 'Research Paper',
+    left: '88%',
+    top: '12%',
+    duration: '34s',
+    delay: '-5s',
+    svg: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M7 7h10M7 11h10" />
+      </svg>
+    )
+  },
+  {
+    id: 3,
+    name: 'Technology Blueprint',
+    left: '75%',
+    top: '60%',
+    duration: '38s',
+    delay: '-12s',
+    svg: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-14 h-14" strokeWidth="0.8">
+        <circle cx="12" cy="12" r="8" strokeDasharray="2 2" />
+        <line x1="12" y1="2" x2="12" y2="22" />
+        <line x1="2" y1="12" x2="22" y2="12" />
+      </svg>
+    )
+  },
+  {
+    id: 4,
+    name: 'Innovation Node',
+    left: '12%',
+    top: '65%',
+    duration: '27s',
+    delay: '-8s',
+    svg: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
+        <circle cx="6" cy="6" r="2.5" />
+        <circle cx="18" cy="18" r="2.5" />
+        <line x1="7.5" y1="7.5" x2="16.5" y2="16.5" />
+      </svg>
+    )
+  },
+  {
+    id: 5,
+    name: 'Licensing Document',
+    left: '46%',
+    top: '18%',
+    duration: '31s',
+    delay: '-15s',
+    svg: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1">
+        <rect x="4" y="4" width="16" height="16" rx="1.5" />
+        <path d="M8 12l2.5 2.5 5.5-5.5" />
+      </svg>
+    )
+  },
+  {
+    id: 6,
+    name: 'Research Network Path',
+    left: '50%',
+    top: '72%',
+    duration: '36s',
+    delay: '-3s',
+    svg: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1">
+        <path d="M12 2v20M2 12h20" strokeDasharray="3 3" />
+      </svg>
+    )
+  }
+];
+
 export default async function HomePage() {
   const [featuredTechs, recentTechs, platformStats, sectors, institutions] = await Promise.all([
     getFeaturedTechnologies(20),
@@ -147,31 +235,42 @@ export default async function HomePage() {
       {/* ── FEATURED TECHNOLOGIES ─────────────────────────────── */}
       <section className="relative py-20 bg-background overflow-hidden border-b border-border">
         <style>{`
-          @keyframes slow-drift {
+          @keyframes float-featured-asset {
             0%, 100% {
-              transform: translate(0px, 0px) scale(1);
+              transform: translateY(0px) translateX(0px) rotate(0deg);
             }
             50% {
-              transform: translate(15px, 8px) scale(1.02);
+              transform: translateY(-15px) translateX(8px) rotate(2deg);
             }
           }
-          .animate-slow-drift {
-            animation: slow-drift 40s ease-in-out infinite;
+          .animate-float-featured {
+            animation: float-featured-asset 30s ease-in-out infinite;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .animate-float-featured {
+              animation: none !important;
+            }
           }
         `}</style>
         
-        {/* Subtle Patent diagram background at 2% opacity with slow drift */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.025] flex items-center justify-center select-none z-0">
-          <svg viewBox="0 0 800 500" className="w-full max-w-4xl h-full text-accent animate-slow-drift" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="400" cy="250" r="180" stroke="currentColor" strokeWidth="1.5" strokeDasharray="5 5" />
-            <circle cx="400" cy="250" r="120" stroke="currentColor" strokeWidth="1" />
-            <line x1="150" y1="250" x2="650" y2="250" stroke="currentColor" strokeWidth="1" />
-            <line x1="400" y1="50" x2="400" y2="450" stroke="currentColor" strokeWidth="1" />
-            <rect x="360" y="210" width="80" height="80" rx="6" stroke="currentColor" strokeWidth="1.5" />
-            <path d="M 280 130 L 360 210 M 520 130 L 440 210 M 280 370 L 360 290 M 520 370 L 440 290" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
-            <text x="405" y="100" fill="currentColor" fontSize="8" fontWeight="bold">FIG. 1 - SYSTEM TOPOLOGY</text>
-            <text x="405" y="420" fill="currentColor" fontSize="8" fontWeight="bold">SHEET 1 OF 3</text>
-          </svg>
+        {/* Subtle innovation-themed ambient background layer (2.5% opacity) */}
+        <div className="absolute inset-0 pointer-events-none select-none z-0">
+          {localFloatingAssets.map((asset) => (
+            <div
+              key={asset.id}
+              className="absolute animate-float-featured blur-[1px] text-accent"
+              style={{
+                left: asset.left,
+                top: asset.top,
+                opacity: 0.025, // Strictly 2.5% opacity (range 2% - 4%)
+                animationDuration: asset.duration,
+                animationDelay: asset.delay,
+              }}
+              title={asset.name}
+            >
+              {asset.svg}
+            </div>
+          ))}
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">

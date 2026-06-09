@@ -38,12 +38,12 @@ export async function getTechnologyById(id: string): Promise<Technology | null> 
   return techs.find(t => t.id === id) ?? null;
 }
 
-export async function getFeaturedTechnologies(limit = 20): Promise<Technology[]> {
+export async function getFeaturedTechnologies(limit = 100): Promise<Technology[]> {
   const techs = await fetchAllTechnologies();
-  return techs
-    .filter(t => t.featured)
-    .sort((a, b) => b.startup_potential_score - a.startup_potential_score)
-    .slice(0, limit);
+  return techs.filter(t => {
+    const pot = (t.startup_potential || '').toLowerCase();
+    return pot === 'high' || pot === 'featured';
+  });
 }
 
 export async function getRecentTechnologies(limit = 8): Promise<Technology[]> {
