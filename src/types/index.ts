@@ -27,10 +27,15 @@ export interface Technology {
   image_embed_url: string;  // Converted embed URL for <img>
   institution_website: string; // Institution Website
   // Derived / computed
-  featured: boolean;        // High startup potential = featured
+  featured: boolean;        // High/Very High/Featured startup potential = featured
+  technology_image?: string;
+  technology_image_embed_url?: string;
+  institution_image?: string;
+  institution_image_embed_url?: string;
+  last_updated?: string;
 }
 
-export type StartupPotential = 'High' | 'Medium' | 'Low' | 'Not Specified';
+export type StartupPotential = 'Featured' | 'Very High' | 'High' | 'Medium' | 'Low' | 'Not Specified';
 
 // ── Derived aggregates ──────────────────────────────────────
 
@@ -49,6 +54,9 @@ export interface Institution {
   image?: string;
   bannerImage?: string;
   specializations?: string[];
+  institution_image?: string;
+  institution_image_embed_url?: string;
+  last_updated?: string;
 }
 
 // ── Search & Filter Types ───────────────────────────────────

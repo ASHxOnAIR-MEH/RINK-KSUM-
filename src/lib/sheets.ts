@@ -103,6 +103,8 @@ export function toDriveEmbedUrl(url: string): string {
 // ── Startup potential mapping ─────────────────────────────────
 function potentialScore(level: string): number {
   const l = level.toLowerCase();
+  if (l === 'featured') return 10;
+  if (l === 'very high') return 8;
   if (l === 'high') return 5;
   if (l === 'medium') return 3;
   if (l === 'low') return 2;
@@ -245,6 +247,13 @@ function rowToTechnology(row: string[], headerMap: Record<string, number>): Tech
   const commVal = getVal(['commercializationstatus', 'commercialization', 'status']);
   const commercialization_status = commVal && commVal !== 'Not Specified' && commVal !== 'NA' ? commVal : 'Commercialization Status Not Available';
 
+  const techImage = getVal(['technologyimage', 'technologyphotourl']);
+  const instImage = getVal(['institutionimage', 'institutionlogo', 'logo']);
+  const lastUpdated = getVal(['lastupdated', 'updated', 'lastupdateddate']);
+
+  const techImageEmbedUrl = techImage ? toDriveEmbedUrl(techImage) : '';
+  const instImageEmbedUrl = instImage ? toDriveEmbedUrl(instImage) : '';
+
   return {
     id,
     name,
@@ -268,7 +277,12 @@ function rowToTechnology(row: string[], headerMap: Record<string, number>): Tech
     image_url: imageUrl,
     image_embed_url: embedUrl,
     institution_website: getVal(['institutionwebsite', 'website', 'url']),
-    featured: startupPotentialRaw === 'High',
+    featured: ['featured', 'very high', 'high'].includes(startupPotentialRaw.toLowerCase()),
+    technology_image: techImage,
+    technology_image_embed_url: techImageEmbedUrl,
+    institution_image: instImage,
+    institution_image_embed_url: instImageEmbedUrl,
+    last_updated: lastUpdated
   };
 }
 
@@ -360,22 +374,38 @@ export async function fetchSectors(): Promise<Sector[]> {
 
 export async function fetchInstitutions(): Promise<Institution[]> {
   const techs = await fetchAllTechnologies();
-  const map = new Map<string, { name: string; count: number }>();
+  const map = new Map<string, { name: string; count: number; image?: string; imageEmbed?: string; lastUpdated?: string }>();
 
   for (const t of techs) {
     const existing = map.get(t.institution_slug);
     if (existing) {
       existing.count++;
+      if (!existing.image && t.institution_image) {
+        existing.image = t.institution_image;
+        existing.imageEmbed = t.institution_image_embed_url;
+      }
+      if (!existing.lastUpdated && t.last_updated) {
+        existing.lastUpdated = t.last_updated;
+      }
     } else {
-      map.set(t.institution_slug, { name: t.institution, count: 1 });
+      map.set(t.institution_slug, {
+        name: t.institution,
+        count: 1,
+        image: t.institution_image,
+        imageEmbed: t.institution_image_embed_url,
+        lastUpdated: t.last_updated
+      });
     }
   }
 
   return Array.from(map.entries())
-    .map(([slug, { name, count }]) => ({
+    .map(([slug, { name, count, image, imageEmbed, lastUpdated }]) => ({
       slug,
       name,
       tech_count: count,
+      institution_image: image,
+      institution_image_embed_url: imageEmbed,
+      last_updated: lastUpdated
     }))
     .sort((a, b) => b.tech_count - a.tech_count);
 }

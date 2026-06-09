@@ -311,11 +311,32 @@ function buildMessage(
   return `Found **${count} technolog${count === 1 ? 'y' : 'ies'}** matching **"${query}"**:`;
 }
 
+// ── Local Sector Classifier (for fallback) ────────────────────
+function detectLocalSector(query: string): string {
+  const q = query.toLowerCase();
+  if (/agricult|farm|crop|plant|soil|fertiliz|pest|insect/i.test(q)) return 'agriculture';
+  if (/coconut|food|beverage|juice|milk|flour|biscuit|dryer|drier|baker/i.test(q)) return 'food-technology';
+  if (/biotech|dna|gene|cell|bacteri|fungi|microb|tissue/i.test(q)) return 'biotechnology-life-sciences';
+  if (/cancer|tumor|breast|cervic|cardi|heart|diabet|medical|health|health.?care|clinical|biosensor/i.test(q)) return 'medtech-health-care';
+  if (/solar|wind|turbin|energi|battery|batteries|climate|carbon|green/i.test(q)) return 'energy-climate-sustainability';
+  if (/water|purif|sewag|waste|pollut|filter|recycl/i.test(q)) return 'water-environment-waste-management';
+  if (/robot|drone|automat|sensor|sensor|acoustic|uav/i.test(q)) return 'robotics-automation-drones';
+  if (/software|ai|digital|app|cloud|network|algorithm|deep.?learning/i.test(q)) return 'digital-technologies-ai-software';
+  if (/chemical|material|plastic|polym|nano|compos/i.test(q)) return 'advanced-materials-chemicals';
+  if (/manufactur|industrial|metal|machin|weld|lathe|gear/i.test(q)) return 'manufacturing-industrial-technologies';
+  if (/construct|build|smart.?citi|infrastructure/i.test(q)) return 'infrastructure-construction-smart-cities';
+  if (/consumer|cosmetic|soap|shampoo|lifestyle|fashion/i.test(q)) return 'consumer-products-cosmetics-lifestyle';
+  return 'none';
+}
+
 // ── Gemini Search Integration ────────────────────────────────
-interface GeminiResponseJSON {
+interface GeminiAnalysisJSON {
   intent: string;
   responseMessage: string;
-  matchedIds: string[];
+  analysis: {
+    sector: string;
+    needs: string[];
+  };
 }
 
 async function runGeminiSearch(query: string, technologies: Technology[]): Promise<AISearchResponse | null> {
@@ -326,27 +347,28 @@ async function runGeminiSearch(query: string, technologies: Technology[]): Promi
   }
 
   try {
-    const minimalTechList = technologies.map(t => ({
-      id: t.id,
-      name: t.name,
-      sector: t.sector,
-      institution: t.institution,
-      problem_solved: t.problem_solved,
-      trl: t.trl,
-      patent_status: t.patent_status
-    }));
-
     const prompt = `You are the RINK AI Discovery Assistant, the intelligent brain behind Kerala Startup Mission's Technology Transfer & Commercialization Portal.
-Your task is to analyze the user's natural language input and match it with the most relevant technologies in our database.
+Your task is to analyze the user's startup idea or query, extract the most accurate sector/industry it belongs to, and identify what key technologies or capabilities they need.
 
-Here is the database of 160 available technologies in Kerala's research ecosystem:
-${JSON.stringify(minimalTechList)}
+Available consolidated sectors (use exactly one of these slugs, or "none"):
+- "agriculture" (Agriculture & Agritech)
+- "food-technology" (Food Technology)
+- "biotechnology-life-sciences" (Biotech & Life Sciences)
+- "medtech-health-care" (Medtech & Healthcare)
+- "energy-climate-sustainability" (Energy, Climate & Sustainability)
+- "digital-technologies-ai-software" (Digital Technologies, AI & Software)
+- "water-environment-waste-management" (Water, Environment & Waste Management)
+- "robotics-automation-drones" (Robotics & Drones)
+- "advanced-materials-chemicals" (Advanced Materials & Chemicals)
+- "manufacturing-industrial-technologies" (Manufacturing & Industrial Technologies)
+- "infrastructure-construction-smart-cities" (Infrastructure, Construction & Smart Cities)
+- "consumer-products-cosmetics-lifestyle" (Consumer Products, Cosmetics & Lifestyle)
 
 User Query: "${query}"
 
 Instructions:
 1. Classify the user query into one of these intents:
-   - "greeting": if the user is saying hello (e.g. "hi", "hello")
+   - "greeting": if the user says hello (e.g. "hi", "hello")
    - "smalltalk": if the user is asking how you are or chatting generically
    - "who_are_you": if the user asks about your identity or what you do
    - "help": if the user asks how to use the search or what they can ask
@@ -355,18 +377,21 @@ Instructions:
    - "empty": if the query is blank or doesn't have words
 
 2. Response Message:
-   - If the intent is conversational (greeting, smalltalk, help, thanks, who_are_you), write a helpful, friendly, natural response in markdown.
-   - If the intent is "search", write a concise, professional summary response in markdown introducing the matches found (e.g., "I found 3 technologies matching your request..."). Highlight key enablers.
+   - If the intent is conversational (greeting, smalltalk, help, thanks, who_are_you), write a helpful, friendly response.
+   - If the intent is "search", write a concise, professional summary response in markdown introducing the matches found (e.g., "I found 3 technologies matching your request..."). Highlight key requirements.
 
-3. Matched IDs:
-   - If the intent is "search", return an array of up to 8 technology IDs that are most relevant to the user query, ordered by relevance.
-   - If the intent is conversational and no search is needed, return an empty array.
+3. Extract Sector and Needs:
+   - "sector": Choose the most fitting sector slug from the list above. If it's a general question or doesn't fit any single sector, use "none".
+   - "needs": Extract 1 to 4 specific search keywords representing what they need. Exclude generic verbs or generic modifiers (like "system", "device", "monitoring"). Focus on domain nouns (e.g., "coconut", "pest", "sensor", "cancer").
 
 Return a JSON object matching this schema:
 {
   "intent": "greeting" | "smalltalk" | "who_are_you" | "help" | "thanks" | "search" | "empty",
   "responseMessage": string,
-  "matchedIds": string[]
+  "analysis": {
+    "sector": string,
+    "needs": string[]
+  }
 }`;
 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
@@ -396,12 +421,19 @@ Return a JSON object matching this schema:
                 enum: ["greeting", "smalltalk", "who_are_you", "help", "thanks", "search", "empty"]
               },
               responseMessage: { type: "STRING" },
-              matchedIds: {
-                type: "ARRAY",
-                items: { type: "STRING" }
+              analysis: {
+                type: "OBJECT",
+                properties: {
+                  sector: { type: "STRING" },
+                  needs: {
+                    type: "ARRAY",
+                    items: { type: "STRING" }
+                  }
+                },
+                required: ["sector", "needs"]
               }
             },
-            required: ["intent", "responseMessage", "matchedIds"]
+            required: ["intent", "responseMessage", "analysis"]
           }
         }
       })
@@ -419,33 +451,22 @@ Return a JSON object matching this schema:
       return null;
     }
 
-    const parsed: GeminiResponseJSON = JSON.parse(textResult.trim());
+    const parsed: GeminiAnalysisJSON = JSON.parse(textResult.trim());
 
-    // Map matched IDs back to Technology objects and compute scores
-    const results: AISearchResult[] = [];
-    const techMap = new Map(technologies.map(t => [t.id.toLowerCase(), t]));
+    // Filter out any generic modifiers that Gemini might have outputted
+    const cleanNeeds = (parsed.analysis.needs || []).filter(
+      need => !GENERIC_MODIFIERS.has(need.toLowerCase())
+    );
 
-    for (let idx = 0; idx < parsed.matchedIds.length; idx++) {
-      const id = parsed.matchedIds[idx];
-      const tech = techMap.get(id.toLowerCase());
-      if (tech) {
-        // Assign descending scores based on Gemini's ranking
-        const score = Math.max(50, 100 - idx * 5);
-        results.push({
-          technology: tech,
-          score,
-          matchedOn: ['gemini_match']
-        });
-      }
-    }
-
-    return {
-      results,
+    // Query our local database using the extracted sector and needs
+    return runLocalSearchWithAnalysis(
       query,
-      intent: parsed.intent as ConversationIntent,
-      responseMessage: parsed.responseMessage,
-      totalFound: results.length
-    };
+      technologies,
+      parsed.analysis.sector,
+      cleanNeeds,
+      parsed.intent as ConversationIntent,
+      parsed.responseMessage
+    );
   } catch (error) {
     console.error('[RINK AI] Error in runGeminiSearch:', error);
     return null;
@@ -456,156 +477,128 @@ Return a JSON object matching this schema:
 export async function runAISearch(query: string, technologies: Technology[]): Promise<AISearchResponse> {
   const q = query.trim();
 
-  // Try calling Gemini first
+  // 1. Try Gemini Analysis Search first
   const geminiResult = await runGeminiSearch(q, technologies);
   if (geminiResult) {
     return geminiResult;
   }
 
-  // Fallback to local search logic
-  return runLocalSearch(q, technologies);
+  // 2. Fallback to Local Search with Local Classifier
+  return runLocalSearchFallback(q, technologies);
 }
 
-// ── Local search function (reliable offline fallback) ─────────
-export function runLocalSearch(query: string, technologies: Technology[]): AISearchResponse {
+// ── Local search fallback ─────────────────────────────────────
+export function runLocalSearchFallback(query: string, technologies: Technology[]): AISearchResponse {
   const q = query.trim();
-
-  // ── Step 1: Intent classification ───────────────────────────
   const intent = classifyIntent(q);
 
-  // ── Step 2: If conversational, return without DB search ─────
   if (intent !== 'search') {
     return getConversationalResponse(intent, q);
   }
 
-  // ── Step 3: Tokenise for DB search ──────────────────────────
+  const sector = detectLocalSector(q);
   const tokens = tokenise(q);
-  const isStartup = detectStartupIntent(q);
-  const trlFilter = extractTRLFilter(q);
-  const patentFilter = /patent/i.test(q);
-  const commercialFilter = /commercial|market.?ready|trl\s*[89]/i.test(q);
+  const needs = tokens.filter(tok => !GENERIC_MODIFIERS.has(tok));
 
-  // Identify specific tokens (excluding generic modifiers)
-  const specificTokens = tokens.filter(tok => !GENERIC_MODIFIERS.has(tok));
+  return runLocalSearchWithAnalysis(q, technologies, sector, needs, intent);
+}
 
-  // No meaningful search tokens
-  if (tokens.length === 0) {
-    return {
-      results: [],
-      query: q,
-      intent: 'empty',
-      responseMessage: `Please describe your startup idea or the technology you are looking for.`,
-      totalFound: 0,
-    };
-  }
-
-  // ── Step 4: Score all technologies ──────────────────────────
+// ── Local Search and Scoring with extracted parameters ────────
+export function runLocalSearchWithAnalysis(
+  query: string,
+  technologies: Technology[],
+  sector: string,
+  needs: string[],
+  intent: ConversationIntent,
+  responseMessage?: string
+): AISearchResponse {
+  const q = query.trim();
   const scored: AISearchResult[] = [];
 
+  const patentFilter = /patent/i.test(q);
+  const trlFilter = extractTRLFilter(q);
+  const commercialFilter = /commercial|market.?ready|trl\s*[89]/i.test(q);
+
   for (const tech of technologies) {
-    // ── Specific token check (prevents cross-domain false positives) ─
-    // If specific tokens exist in the query, the technology MUST match at least one of them.
-    if (specificTokens.length > 0) {
+    let score = 0;
+    const matchedOn: string[] = [];
+
+    // 1. Sector Boost (+50 points)
+    if (sector !== 'none' && tech.sector_slug === sector) {
+      score += 50;
+      matchedOn.push('sector');
+    }
+
+    // 2. Needs Matching
+    let needsMatched = 0;
+    for (const need of needs) {
       const nameLower = tech.name.toLowerCase();
       const keywordsLower = (tech.keywords || []).map(k => k.toLowerCase()).join(' ');
       const problemLower = (tech.problem_solved || '').toLowerCase();
       const appsLower = (tech.applications || []).map(a => a.toLowerCase()).join(' ');
-      const sectorLower = (tech.sector || '').toLowerCase();
       const descLower = (tech.description || '').toLowerCase();
       const typeLower = (tech.technology_type || '').toLowerCase();
+      const sectorLower = (tech.sector || '').toLowerCase();
+      const instLower = (tech.institution || '').toLowerCase();
 
-      const fullSearchableText = `${nameLower} ${keywordsLower} ${problemLower} ${appsLower} ${sectorLower} ${descLower} ${typeLower}`;
+      const text = `${nameLower} ${keywordsLower} ${problemLower} ${appsLower} ${descLower} ${typeLower} ${sectorLower} ${instLower}`;
+      const escaped = need.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`\\b${escaped}`, 'i');
 
-      const hasSpecificMatch = specificTokens.some(tok => {
-        const escapedTok = tok.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`\\b${escapedTok}`, 'i');
-        return regex.test(fullSearchableText);
-      });
+      if (regex.test(text)) {
+        needsMatched++;
 
-      if (!hasSpecificMatch) {
-        continue; // Exclude this technology entirely
+        // Add specific field scoring boosts
+        if (new RegExp(`\\b${escaped}`, 'i').test(nameLower)) {
+          score += 40;
+          matchedOn.push('name');
+        } else if (keywordsLower.includes(need)) {
+          score += 25;
+          matchedOn.push('keywords');
+        } else if (problemLower.includes(need) || appsLower.includes(need)) {
+          score += 20;
+          matchedOn.push('problem_solved');
+        } else {
+          score += 10;
+          matchedOn.push('description');
+        }
       }
     }
 
-    // ── Hard filters ──────────────────────────────────────────
-    if (patentFilter) {
-      const ps = tech.patent_status.toLowerCase();
-      if (!ps.includes('patent') || ps.includes('not patent') || ps === 'not specified') continue;
-    }
-    if (trlFilter !== null) {
-      const trlNum = parseInt(tech.trl?.replace(/[^0-9]/g, '') || '0');
-      if (isNaN(trlNum) || trlNum < trlFilter) continue;
-    }
-    if (commercialFilter && !patentFilter && trlFilter === null) {
-      const trlNum = parseInt(tech.trl?.replace(/[^0-9]/g, '') || '0');
-      if (!isNaN(trlNum) && trlNum > 0 && trlNum < 7) continue;
-    }
+    // Must match at least one need if needs are specified
+    if (score > 0 && (needs.length === 0 || needsMatched > 0)) {
+      // Apply TRL and patent filters if requested
+      if (patentFilter) {
+        const ps = tech.patent_status.toLowerCase();
+        if (!ps.includes('patent') || ps.includes('not patent') || ps === 'not specified') continue;
+      }
+      if (trlFilter !== null) {
+        const trlNum = parseInt(tech.trl?.replace(/[^0-9]/g, '') || '0');
+        if (isNaN(trlNum) || trlNum < trlFilter) continue;
+      }
+      if (commercialFilter && !patentFilter && trlFilter === null) {
+        const trlNum = parseInt(tech.trl?.replace(/[^0-9]/g, '') || '0');
+        if (!isNaN(trlNum) && trlNum > 0 && trlNum < 7) continue;
+      }
 
-    let score = 0;
-    const matchedOn: string[] = [];
-
-    // ── Field scoring (priority-weighted) ──────────────────
-
-    // 1. Technology Name — Highest weight. Exact name match = massive boost.
-    const nameScore = scoreField(tech.name, q, tokens, 100);
-    if (nameScore > 0) { score += nameScore; matchedOn.push('name'); }
-
-    // 2. Keywords — 2nd priority
-    const kwScore = scoreArrayField(tech.keywords, q, tokens, 70);
-    if (kwScore > 0) { score += kwScore; matchedOn.push('keywords'); }
-
-    // 3. Problem Solved — 3rd priority
-    const probScore = scoreField(tech.problem_solved, q, tokens, 55);
-    if (probScore > 0) { score += probScore; matchedOn.push('problem_solved'); }
-
-    // 4. Applications — 4th priority
-    const appScore = scoreArrayField(tech.applications, q, tokens, 50);
-    if (appScore > 0) { score += appScore; matchedOn.push('applications'); }
-
-    // 5. Sector — medium weight
-    const secScore = scoreField(tech.sector, q, tokens, 60);
-    if (secScore > 0) { score += secScore; matchedOn.push('sector'); }
-
-    // 6. Institution — medium weight
-    const instScore = scoreField(tech.institution, q, tokens, 55);
-    if (instScore > 0) { score += instScore; matchedOn.push('institution'); }
-
-    // 7. Technology Type — lower weight
-    const typeScore = scoreField(tech.technology_type, q, tokens, 40);
-    if (typeScore > 0) { score += typeScore; matchedOn.push('technology_type'); }
-
-    // 8. Description — lowest weight (broad field, avoid over-matching)
-    const descScore = scoreField(tech.description, q, tokens, 15);
-    if (descScore > 0) { score += descScore; matchedOn.push('description'); }
-
-    // ── Bonus: single strong name match always clears threshold ─
-    // This ensures "coconut" always returns coconut technologies
-    const nameLower = tech.name.toLowerCase();
-    const qLower = q.toLowerCase();
-    if (tokens.some(tok => tok.length >= 4 && nameLower.includes(tok))) {
-      score += 30; // Name-hit bonus ensures threshold is cleared
-    }
-
-    // ── Apply threshold ───────────────────────────────────────
-    if (score >= MIN_SCORE_THRESHOLD) {
-      scored.push({ technology: tech, score, matchedOn });
+      scored.push({
+        technology: tech,
+        score: Math.min(100, score),
+        matchedOn: Array.from(new Set(matchedOn))
+      });
     }
   }
 
-  // Sort by score descending, cap at 8 results
+  // Sort and slice
   const sorted = scored.sort((a, b) => b.score - a.score).slice(0, 8);
 
-  let finalIntent: ConversationIntent = 'search';
-  if (isStartup) finalIntent = 'startup';
-  else if (patentFilter) finalIntent = 'patent';
-  else if (trlFilter !== null) finalIntent = 'trl';
-  else if (commercialFilter) finalIntent = 'commercial';
+  const defaultMsg = buildMessage(q, sorted.length, detectStartupIntent(q), trlFilter, patentFilter);
 
   return {
     results: sorted,
     query: q,
-    intent: finalIntent,
-    responseMessage: buildMessage(q, sorted.length, isStartup, trlFilter, patentFilter),
-    totalFound: sorted.length,
+    intent: intent,
+    responseMessage: responseMessage || defaultMsg,
+    totalFound: sorted.length
   };
 }

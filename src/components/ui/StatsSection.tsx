@@ -12,7 +12,13 @@ interface FloatingIcon {
   delay: string;
 }
 
-export default function StatsSection() {
+interface Props {
+  totalCount?: number;
+  sectorsCount?: number;
+  institutionsCount?: number;
+}
+
+export default function StatsSection({ totalCount = 160, sectorsCount = 11, institutionsCount = 11 }: Props) {
   const [techs, setTechs] = useState(0);
   const [insts, setInsts] = useState(0);
   const [sectors, setSectors] = useState(0);
@@ -24,9 +30,9 @@ export default function StatsSection() {
       (entries) => {
         if (entries[0].isIntersecting && !hasAnimated) {
           setHasAnimated(true);
-          animateCount(160, setTechs);
-          animateCount(11, setInsts);
-          animateCount(11, setSectors);
+          animateCount(totalCount, setTechs);
+          animateCount(institutionsCount, setInsts);
+          animateCount(sectorsCount, setSectors);
         }
       },
       { threshold: 0.1 }
@@ -37,7 +43,7 @@ export default function StatsSection() {
     }
 
     return () => observer.disconnect();
-  }, [hasAnimated]);
+  }, [hasAnimated, totalCount, sectorsCount, institutionsCount]);
 
   const animateCount = (target: number, setter: React.Dispatch<React.SetStateAction<number>>) => {
     let start = 0;
@@ -136,12 +142,12 @@ export default function StatsSection() {
       <style>{`
         @keyframes red-dot-pulse {
           0% {
-            box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.65);
+            box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7);
             transform: scale(1);
           }
           70% {
             box-shadow: 0 0 0 8px rgba(255, 59, 48, 0);
-            transform: scale(1.06);
+            transform: scale(1.08);
           }
           100% {
             box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
@@ -175,15 +181,15 @@ export default function StatsSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* ── LIVE INDICATOR PANEL ── */}
-        <div className="flex items-center justify-center gap-2.5 mb-8">
+        <div className="flex items-center justify-center gap-2 mb-8">
           <span 
-            className="w-2.5 h-2.5 rounded-full bg-[#FF3B30] animate-red-dot" 
+            className="w-2.5 h-2.5 rounded-full bg-[#FF3B30] animate-red-dot mr-1" 
             style={{
-              boxShadow: '0 0 10px rgba(255,59,48,0.5)'
+              boxShadow: '0 0 10px rgba(255,59,48,0.7)'
             }}
           />
-          <span className="text-[10px] font-black tracking-widest text-[#F8FAF8]/75 uppercase font-heading">
-            Live Technology Database
+          <span className="text-[11px] font-black tracking-widest text-[#F8FAF8] uppercase font-heading">
+            🔴 {totalCount} Technologies Available
           </span>
         </div>
 
@@ -196,7 +202,7 @@ export default function StatsSection() {
               {techs}+
             </div>
             <div className="text-[9px] text-text-secondary font-black uppercase tracking-widest text-center">
-              Technologies Listed
+              Technologies Available
             </div>
           </div>
 

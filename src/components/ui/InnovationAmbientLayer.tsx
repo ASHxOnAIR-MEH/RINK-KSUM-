@@ -20,14 +20,13 @@ export default function InnovationAmbientLayer() {
       name: 'Patent Document',
       left: '4%',
       top: '12%',
-      duration: '35s',
+      duration: '25s',
       delay: '0s',
       color: 'text-[#00FA9A]', // Emerald
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <rect x="4" y="2" width="16" height="20" rx="2" />
           <path d="M8 6h8M8 10h8M8 14h5" />
-          <circle cx="15" cy="15" r="2" fill="currentColor" fillOpacity="0.05" />
         </svg>
       )
     },
@@ -36,7 +35,7 @@ export default function InnovationAmbientLayer() {
       name: 'Research Paper',
       left: '92%',
       top: '8%',
-      duration: '42s',
+      duration: '32s',
       delay: '-5s',
       color: 'text-[#F8FAF8]', // Off White
       svg: (
@@ -51,39 +50,35 @@ export default function InnovationAmbientLayer() {
       name: 'Laboratory Flask',
       left: '14%',
       top: '45%',
-      duration: '38s',
+      duration: '28s',
       delay: '-10s',
       color: 'text-[#E9C46A]', // Gold
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <path d="M9 3h6M12 3v5M6 21h12L12 8z" />
-          <circle cx="12" cy="14" r="1" fill="currentColor" />
         </svg>
       )
     },
     {
       id: 4,
-      name: 'DNA Helix',
+      name: 'Microscope',
       left: '88%',
       top: '52%',
-      duration: '45s',
+      duration: '38s',
       delay: '-15s',
       color: 'text-[#00FA9A]', // Emerald
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
-          <path d="M4.5 10c3-3 6.5-3 9.5 0s6.5 3 9.5 0" />
-          <path d="M4.5 14c3 3 6.5 3 9.5 0s6.5-3 9.5 0" />
-          <line x1="10" y1="10.5" x2="10" y2="13.5" />
-          <line x1="14" y1="10.5" x2="14" y2="13.5" />
+          <path d="M12 2v3M5 21h14M16 21a4 4 0 0 0-4-4h-2a4 4 0 0 0-4 4M10 17v-3M14 17v-3M8 14h8M12 5v9M9 5h6" />
         </svg>
       )
     },
     {
       id: 5,
-      name: 'AI Chip',
+      name: 'AI Chip Outlines',
       left: '78%',
       top: '28%',
-      duration: '33s',
+      duration: '22s',
       delay: '-2s',
       color: 'text-[#F8FAF8]',
       svg: (
@@ -95,16 +90,17 @@ export default function InnovationAmbientLayer() {
     },
     {
       id: 6,
-      name: 'Circuit Trace',
+      name: 'Technology Node',
       left: '28%',
       top: '80%',
-      duration: '48s',
+      duration: '35s',
       delay: '-12s',
       color: 'text-[#00FA9A]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
-          <path d="M2 12h5l3-6 4 12 3-6h5" />
-          <circle cx="10" cy="6" r="1.5" fill="currentColor" />
+          <circle cx="6" cy="6" r="2.5" />
+          <circle cx="18" cy="18" r="2.5" />
+          <line x1="7.5" y1="7.5" x2="16.5" y2="16.5" />
         </svg>
       )
     },
@@ -113,7 +109,7 @@ export default function InnovationAmbientLayer() {
       name: 'Innovation Gear',
       left: '3%',
       top: '72%',
-      duration: '29s',
+      duration: '24s',
       delay: '-8s',
       color: 'text-[#E9C46A]',
       svg: (
@@ -128,7 +124,7 @@ export default function InnovationAmbientLayer() {
       name: 'Licensing Certificate',
       left: '84%',
       top: '85%',
-      duration: '52s',
+      duration: '39s',
       delay: '-22s',
       color: 'text-[#F8FAF8]',
       svg: (
@@ -143,15 +139,12 @@ export default function InnovationAmbientLayer() {
       name: 'Technology Transfer Arrow',
       left: '52%',
       top: '70%',
-      duration: '31s',
+      duration: '27s',
       delay: '-6s',
       color: 'text-[#00FA9A]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
-          <path d="M17 3 L21 7 L17 11" />
-          <path d="M3 7 H21" />
-          <path d="M7 21 L3 17 L7 13" />
-          <path d="M21 17 H3" />
+          <path d="M17 3 L21 7 L17 11 M3 7 H21 M7 21 L3 17 L7 13 M21 17 H3" />
         </svg>
       )
     },
@@ -160,7 +153,7 @@ export default function InnovationAmbientLayer() {
       name: 'Patent Blueprint',
       left: '32%',
       top: '18%',
-      duration: '40s',
+      duration: '30s',
       delay: '-18s',
       color: 'text-[#E9C46A]',
       svg: (
@@ -173,31 +166,33 @@ export default function InnovationAmbientLayer() {
     },
     {
       id: 11,
-      name: 'Knowledge Node',
+      name: 'Technology Node 2',
       left: '64%',
       top: '85%',
-      duration: '57s',
+      duration: '40s',
       delay: '-25s',
       color: 'text-[#00FA9A]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
-          <circle cx="6" cy="6" r="2" />
-          <circle cx="18" cy="18" r="2" />
-          <line x1="7.5" y1="7.5" x2="16.5" y2="16.5" />
+          <circle cx="12" cy="6" r="2.5" />
+          <circle cx="6" cy="16" r="2" />
+          <circle cx="18" cy="16" r="2" />
+          <line x1="12" y1="8.5" x2="6" y2="14" />
+          <line x1="12" y1="8.5" x2="18" y2="14" />
         </svg>
       )
     },
     {
       id: 12,
-      name: 'Ecosystem Connections',
+      name: 'Network Pathways',
       left: '42%',
       top: '8%',
-      duration: '37s',
+      duration: '31s',
       delay: '-3s',
       color: 'text-[#F8FAF8]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
-          <path d="M12 22 C 12 22, 19 12, 19 8 C 19 4.1, 15.9 1, 12 1 C 8.1 1, 5 4.1, 5 8 C 5 12, 12 22, 12 22 Z" />
+          <path d="M12 2v20M2 12h20M12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2z" strokeDasharray="3 3" />
         </svg>
       )
     }
@@ -206,7 +201,7 @@ export default function InnovationAmbientLayer() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none">
       
-      {/* Dynamic Keyframes for exact requested transform offsets */}
+      {/* Dynamic Keyframes for exact requested transform offsets and reduced-motion fallback */}
       <style>{`
         @keyframes float-ambient-asset {
           0%, 100% {
@@ -219,6 +214,11 @@ export default function InnovationAmbientLayer() {
         .animate-float-ambient {
           animation: float-ambient-asset 30s ease-in-out infinite;
         }
+        @media (prefers-reduced-motion: reduce) {
+          .animate-float-ambient {
+            animation: none !important;
+          }
+        }
       `}</style>
 
       {elements.map((el) => (
@@ -228,7 +228,7 @@ export default function InnovationAmbientLayer() {
           style={{
             left: el.left,
             top: el.top,
-            opacity: 0.035, // 0.02 - 0.05 opacity
+            opacity: 0.025, // Strictly 2.5% opacity (range 2% - 4%)
             animationDuration: el.duration,
             animationDelay: el.delay,
           }}

@@ -6,7 +6,7 @@
 // ============================================================
 
 import {
-  Technology, Sector, Institution, TechnologyFilters, SearchResult, SearchIndexItem
+  Technology, Sector, Institution, TechnologyFilters, SearchResult, SearchIndexItem, StartupPotential
 } from '@/types';
 import {
   fetchAllTechnologies, fetchSectors, fetchInstitutions
@@ -38,15 +38,38 @@ export async function getTechnologyById(id: string): Promise<Technology | null> 
   return techs.find(t => t.id === id) ?? null;
 }
 
-export async function getFeaturedTechnologies(limit = 6): Promise<Technology[]> {
+export async function getFeaturedTechnologies(limit = 20): Promise<Technology[]> {
   const techs = await fetchAllTechnologies();
-  return techs.filter(t => t.featured).slice(0, limit);
+  return techs
+    .filter(t => t.featured)
+    .sort((a, b) => b.startup_potential_score - a.startup_potential_score)
+    .slice(0, limit);
 }
 
-export async function getRecentTechnologies(limit = 6): Promise<Technology[]> {
+export async function getRecentTechnologies(limit = 8): Promise<Technology[]> {
   const techs = await fetchAllTechnologies();
-  // "Recent" = last added to the sheet (last rows)
-  return [...techs].reverse().slice(0, limit);
+  
+  // Sort by last_updated date if parseable, falling back to reverse row index order
+  return [...techs]
+    .sort((a, b) => {
+      const timeA = a.last_updated ? Date.parse(a.last_updated) : NaN;
+      const timeB = b.last_updated ? Date.parse(b.last_updated) : NaN;
+      
+      const isValidA = !isNaN(timeA);
+      const isValidB = !isNaN(timeB);
+      
+      if (isValidA && isValidB) {
+        return timeB - timeA; // Descending order (newest first)
+      }
+      if (isValidA) return -1; // Valid date comes first
+      if (isValidB) return 1;
+      
+      // Fallback: reverse row index order (newer rows at the bottom)
+      const idxA = techs.indexOf(a);
+      const idxB = techs.indexOf(b);
+      return idxB - idxA;
+    })
+    .slice(0, limit);
 }
 
 export async function searchTechnologies(
@@ -85,11 +108,18 @@ export async function searchTechnologies(
   return { technologies: paginated, total, page, per_page: perPage };
 }
 
-// ── Sort by startup potential: High → Medium → Low ─────────
+// ── Sort by startup potential: Featured → Very High → High → Medium → Low ─────────
 function sortByPotential(techs: Technology[]): Technology[] {
-  const order = { 'High': 0, 'Medium': 1, 'Low': 2, 'Not Specified': 3 };
+  const order: Record<StartupPotential, number> = {
+    'Featured': 0,
+    'Very High': 1,
+    'High': 2,
+    'Medium': 3,
+    'Low': 4,
+    'Not Specified': 5
+  };
   return [...techs].sort(
-    (a, b) => (order[a.startup_potential] ?? 3) - (order[b.startup_potential] ?? 3)
+    (a, b) => (order[a.startup_potential] ?? 5) - (order[b.startup_potential] ?? 5)
   );
 }
 

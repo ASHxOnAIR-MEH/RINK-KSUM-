@@ -10,7 +10,7 @@ interface Props {
 }
 
 // ── Map each sector slug → its accent color ────
-const SECTOR_ACCENTS: Record<string, string> = {
+export const SECTOR_ACCENTS: Record<string, string> = {
   'agriculture':                              '#10B981', // Green
   'food-technology':                          '#F97316', // Orange
   'biotechnology-life-sciences':              '#8B5CF6', // Purple
@@ -44,7 +44,7 @@ const SECTOR_SUBSECTORS: Record<string, string[]> = {
 };
 
 // ── Illustrated Custom Vector Artwork component (Colored pencil / soft vector editorial style) ────
-function SectorIllustration({ slug, accentColor }: { slug: string; accentColor: string }) {
+export function SectorIllustration({ slug, accentColor }: { slug: string; accentColor: string }) {
   const s = slug.toLowerCase();
 
   // 1. AGRICULTURE
@@ -275,6 +275,62 @@ function SectorIllustration({ slug, accentColor }: { slug: string; accentColor: 
           <circle cx="0" cy="0" r="7" stroke="currentColor" strokeWidth="1.5" fill="var(--background)" />
           <circle cx="20" cy="-40" r="5" fill={accentColor} />
           <circle cx="55" cy="-50" r="3.5" fill="currentColor" />
+        </g>
+      </svg>
+    );
+  }
+
+  // 10. INFRASTRUCTURE, CONSTRUCTION & SMART CITIES
+  if (s.includes('infrastructure') || s.includes('construct') || s.includes('cities')) {
+    return (
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+        <path d="M50 160 L50 40 L160 40 M50 70 L90 40 M90 40 L90 160" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M140 40 L140 80 L160 85 L150 40" stroke="currentColor" strokeWidth="1" />
+        <line x1="50" y1="160" x2="180" y2="160" stroke="currentColor" strokeWidth="2" />
+        <rect x="230" y="60" width="50" height="100" rx="4" stroke="currentColor" strokeWidth="1.5" />
+        <rect x="295" y="90" width="45" height="70" rx="4" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M245 80 h20 M245 100 h20 M245 120 h20" stroke={accentColor} strokeWidth="1.5" />
+        <path d="M305 110 h25 M305 130 h25" stroke="currentColor" strokeWidth="1.2" />
+      </svg>
+    );
+  }
+
+  // 11. MANUFACTURING & INDUSTRIAL TECHNOLOGIES
+  if (s.includes('manufactur') || s.includes('industrial') || s.includes('gear')) {
+    return (
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+        <g transform="translate(120, 100)">
+          <circle cx="0" cy="0" r="30" stroke="currentColor" strokeWidth="1.5" />
+          <circle cx="0" cy="0" r="10" stroke="currentColor" strokeWidth="1" />
+          <path d="M0 -36 v6 M0 30 v6 M-36 0 h6 M30 0 h6 M-25 -25 l4 4 M21 21 l4 4 M-25 25 l4 -4 M21 -21 l4 -4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+        </g>
+        <g transform="translate(180, 140) scale(0.7)">
+          <circle cx="0" cy="0" r="30" stroke={accentColor} strokeWidth="1.5" />
+          <circle cx="0" cy="0" r="10" stroke="currentColor" strokeWidth="1" />
+          <path d="M0 -36 v6 M0 30 v6 M-36 0 h6 M30 0 h6" stroke={accentColor} strokeWidth="2.5" strokeLinecap="round" />
+        </g>
+        <path d="M250 140 H350 M250 150 H350" stroke="currentColor" strokeWidth="1" />
+        <circle cx="260" cy="145" r="4" fill="currentColor" />
+        <circle cx="340" cy="145" r="4" fill="currentColor" />
+        <rect x="280" y="115" width="30" height="25" rx="3" stroke={accentColor} strokeWidth="1" fill="var(--background)" />
+      </svg>
+    );
+  }
+
+  // 12. CONSUMER PRODUCTS, COSMETICS & LIFESTYLE
+  if (s.includes('consumer') || s.includes('cosmetic') || s.includes('lifestyle') || s.includes('product')) {
+    return (
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+        <g transform="translate(100, 100)">
+          <rect x="-15" y="-15" width="30" height="30" rx="8" stroke="currentColor" strokeWidth="1.5" fill="var(--background)" />
+          <circle cx="0" cy="0" r="8" stroke={accentColor} strokeWidth="1.2" />
+          <path d="M-8 -15 V-35 H8 V-15 M-8 15 V35 H8 V15" stroke="currentColor" strokeWidth="1" />
+        </g>
+        <g transform="translate(250, 90)">
+          <rect x="-20" y="-10" width="40" height="60" rx="10" stroke="currentColor" strokeWidth="1.5" />
+          <rect x="-8" y="-22" width="16" height="12" rx="2" stroke={accentColor} strokeWidth="1.5" />
+          <line x1="-20" y1="15" x2="20" y2="15" stroke="currentColor" strokeWidth="1" />
+          <circle cx="0" cy="30" r="8" stroke="currentColor" strokeWidth="0.8" strokeDasharray="2 2" />
         </g>
       </svg>
     );

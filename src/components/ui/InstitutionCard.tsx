@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { Institution } from '@/types';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Calendar } from 'lucide-react';
 
 interface Props {
   institution: Institution;
@@ -120,7 +121,7 @@ function InstitutionBackground({ slug }: { slug: string }) {
       </div>
     );
   }
-
+ 
   // NIIST -> Advanced Materials
   if (s.includes('niist')) {
     return (
@@ -138,7 +139,7 @@ function InstitutionBackground({ slug }: { slug: string }) {
       </div>
     );
   }
-
+ 
   // CWRDM -> Water Resources
   if (s.includes('cwrdm')) {
     return (
@@ -150,7 +151,7 @@ function InstitutionBackground({ slug }: { slug: string }) {
       </div>
     );
   }
-
+ 
   // Generic fallback
   return (
     <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.02] text-accent flex items-center justify-end pr-4 select-none">
@@ -163,10 +164,14 @@ function InstitutionBackground({ slug }: { slug: string }) {
 }
 
 export default function InstitutionCard({ institution }: Props) {
+  const [imageFailed, setImageFailed] = useState(false);
   const slug = institution.slug;
   const acronym = getAcronym(institution.name);
   const specFallback = INST_SPECIALIZATIONS[slug.toLowerCase()] || 'Research Partner';
   const specs = institution.specializations || [specFallback];
+
+  const hasImage = !!institution.institution_image && !imageFailed;
+  const displayImage = institution.institution_image_embed_url || institution.institution_image;
 
   return (
     <Link
@@ -179,8 +184,29 @@ export default function InstitutionCard({ institution }: Props) {
         {/* Subtle radial glow on hover */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--accent)_0%,transparent_70%)] opacity-0 group-hover:opacity-[0.035] transition-opacity duration-500 pointer-events-none z-0" />
 
-        {/* Institution-specific background branding SVG */}
-        <InstitutionBackground slug={slug} />
+        {/* Top Hero Banner (if image is available) */}
+        {hasImage && (
+          <div className="relative h-28 w-full overflow-hidden bg-[#0A0820] border-b border-border">
+            <img
+              src={displayImage}
+              alt={institution.name}
+              onError={() => setImageFailed(true)}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              referrerPolicy="no-referrer"
+              loading="lazy"
+            />
+            {/* Dark overlay gradient */}
+            <div
+              className="absolute inset-0 pointer-events-none z-1"
+              style={{
+                background: 'linear-gradient(to top, rgba(11, 8, 32, 0.7) 0%, rgba(11, 8, 32, 0) 100%)',
+              }}
+            />
+          </div>
+        )}
+
+        {/* Institution-specific background branding SVG (fallback or background overlay) */}
+        {!hasImage && <InstitutionBackground slug={slug} />}
 
         {/* Card Content */}
         <div className="flex flex-col flex-1 p-5 z-10">
@@ -196,14 +222,24 @@ export default function InstitutionCard({ institution }: Props) {
             {institution.name}
           </h3>
 
-          {/* Technology Count */}
-          <div className="flex items-center gap-1.5 mb-4">
-            <span className="text-[11px] text-text-secondary font-medium uppercase tracking-wider">
-              Technologies:
-            </span>
-            <span className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded bg-accent-secondary/10 text-accent-secondary border border-accent-secondary/20">
-              {institution.tech_count} {institution.tech_count === 1 ? 'Opportunity' : 'Opportunities'}
-            </span>
+          {/* Technology Count & Date info */}
+          <div className="flex flex-col gap-2 mb-4">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] text-text-secondary font-medium uppercase tracking-wider">
+                Technologies:
+              </span>
+              <span className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded bg-accent-secondary/10 text-accent-secondary border border-accent-secondary/20">
+                {institution.tech_count} {institution.tech_count === 1 ? 'Opportunity' : 'Opportunities'}
+              </span>
+            </div>
+            
+            {/* Latest upload date */}
+            {institution.last_updated && (
+              <div className="flex items-center gap-1.5 text-[10px] text-accent/90 font-bold uppercase tracking-wider mt-0.5">
+                <Calendar size={11} className="text-accent/70 flex-shrink-0" />
+                Latest Upload: {institution.last_updated}
+              </div>
+            )}
           </div>
 
           {/* Sector Coverage */}
