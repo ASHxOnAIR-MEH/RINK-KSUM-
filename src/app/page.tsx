@@ -1,6 +1,6 @@
 import { getFeaturedTechnologies, getRecentTechnologies, getPlatformStats, getAllSectors, getAllInstitutions } from '@/lib/db';
 import AIDiscoveryBar from '@/components/ui/AIDiscoveryBar';
-import SectorCard from '@/components/ui/SectorCard';
+import SectorCard, { SectorIllustration, SECTOR_ACCENTS } from '@/components/ui/SectorCard';
 import TechnologyCard from '@/components/ui/TechnologyCard';
 import InstitutionCard from '@/components/ui/InstitutionCard';
 import FloatingResearchAssets from '@/components/ui/FloatingResearchAssets';
@@ -116,6 +116,15 @@ export default async function HomePage() {
 
   const topSectors      = sectors.slice(0, 8);
   const topInstitutions = institutions.slice(0, 6); // Display top 6 institutions in the grid
+
+  // Map institutions to their logos/images for the Newly Added section
+  const institutionLogoMap = new Map<string, string>();
+  institutions.forEach((inst) => {
+    const logoUrl = inst.institution_image_embed_url || inst.institution_image;
+    if (logoUrl) {
+      institutionLogoMap.set(inst.slug, logoUrl);
+    }
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -298,50 +307,6 @@ export default async function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
       </section>
 
-      {/* ── RECENTLY ADDED TECHNOLOGIES ───────────────────────── */}
-      <section className="relative py-20 bg-bg-section-b overflow-hidden border-b border-border">
-        {/* Subtle decorative grid/nodes background */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.02] flex items-center justify-center select-none z-0">
-          <svg viewBox="0 0 800 500" className="w-full max-w-4xl h-full text-accent" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <line x1="100" y1="100" x2="700" y2="100" stroke="currentColor" strokeWidth="1" strokeDasharray="5 5" />
-            <line x1="100" y1="250" x2="700" y2="250" stroke="currentColor" strokeWidth="1" />
-            <line x1="100" y1="400" x2="700" y2="400" stroke="currentColor" strokeWidth="1" strokeDasharray="5 5" />
-            <circle cx="200" cy="250" r="5" fill="currentColor" />
-            <circle cx="400" cy="250" r="5" fill="currentColor" />
-            <circle cx="600" cy="250" r="5" fill="currentColor" />
-          </svg>
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
-            <div>
-              <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">
-                RECENTLY ADDED
-              </div>
-              <h2 className="text-3xl font-heading font-bold text-heading">
-                Recently Added Technologies
-              </h2>
-            </div>
-            <Link
-              href="/technologies"
-              className="flex items-center gap-1.5 text-sm font-bold text-accent hover:opacity-85 transition-opacity"
-              id="all-recent-link"
-            >
-              Explore All Technologies <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {recentTechs.map((tech) => (
-              <TechnologyCard key={tech.id} technology={tech} />
-            ))}
-          </div>
-        </div>
-
-        {/* Section fade divider */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
-      </section>
-
       {/* ── RESEARCH PARTNERS (INSTITUTIONS) ────────────────────────── */}
       <section className="relative py-20 bg-background overflow-hidden border-b border-border">
         {/* Kerala outline map backdrop with connected pulsing nodes */}
@@ -417,7 +382,7 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-10">
             {topSectors.map((sector) => (
               <SectorCard key={sector.slug} sector={sector} />
             ))}
@@ -431,6 +396,148 @@ export default async function HomePage() {
             Browse all {sectors.length} sectors <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
+      </section>
+
+      {/* ── NEWLY ADDED TECHNOLOGIES ───────────────────────── */}
+      <section className="relative py-20 bg-background overflow-hidden border-b border-border">
+        {/* Subtle decorative grid/nodes background */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.02] flex items-center justify-center select-none z-0">
+          <svg viewBox="0 0 800 500" className="w-full max-w-4xl h-full text-accent" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="100" y1="100" x2="700" y2="100" stroke="currentColor" strokeWidth="1" strokeDasharray="5 5" />
+            <line x1="100" y1="250" x2="700" y2="250" stroke="currentColor" strokeWidth="1" />
+            <line x1="100" y1="400" x2="700" y2="400" stroke="currentColor" strokeWidth="1" strokeDasharray="5 5" />
+            <circle cx="200" cy="250" r="5" fill="currentColor" />
+            <circle cx="400" cy="250" r="5" fill="currentColor" />
+            <circle cx="600" cy="250" r="5" fill="currentColor" />
+          </svg>
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+            <div>
+              <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3">
+                NEWLY ADDED TECHNOLOGIES
+              </div>
+              <h2 className="text-3xl font-heading font-bold text-heading mb-2">
+                New Technologies
+              </h2>
+              <p className="text-sm text-text-secondary max-w-xl">
+                Latest technologies recently added to the Kerala Research Innovation Network.
+              </p>
+            </div>
+            <Link
+              href="/technologies"
+              className="inline-flex items-center gap-1.5 text-sm font-bold text-accent hover:opacity-85 transition-opacity"
+              id="all-recent-link"
+            >
+              Explore All Technologies <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {recentTechs.map((tech) => {
+              const instLogo = institutionLogoMap.get(tech.institution_slug);
+              const displayImage = tech.technology_image_embed_url || tech.technology_image || tech.image_embed_url;
+              const hasImage = !!displayImage;
+              
+              return (
+                <div key={tech.id} className="bg-card rounded-2xl border border-border overflow-hidden flex flex-col hover:border-accent/30 hover:shadow-xl transition-all duration-300 h-full">
+                  {/* Technology Image Banner */}
+                  <div className="relative aspect-[16/9] w-full overflow-hidden flex-shrink-0 bg-[#0A0820] border-b border-border">
+                    {hasImage ? (
+                      <>
+                        <img
+                          src={displayImage}
+                          alt={tech.name}
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                          referrerPolicy="no-referrer"
+                          loading="lazy"
+                        />
+                        <div
+                          className="absolute inset-0 pointer-events-none z-1"
+                          style={{
+                            background: 'linear-gradient(to top, rgba(11, 8, 32, 0.8) 0%, rgba(11, 8, 32, 0.1) 100%)',
+                          }}
+                        />
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 w-full h-full opacity-45 z-0">
+                        <SectorIllustration slug={tech.sector_slug} accentColor={SECTOR_ACCENTS[tech.sector_slug] || '#10B981'} />
+                        <div
+                          className="absolute inset-0 pointer-events-none z-1"
+                          style={{
+                            background: 'linear-gradient(to top, rgba(11, 8, 32, 0.9) 0%, rgba(11, 8, 32, 0.3) 100%)',
+                          }}
+                        />
+                      </div>
+                    )}
+                    
+                    {/* Sector badge overlay */}
+                    <div className="absolute bottom-3 left-3 z-10">
+                      <span className="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[#0A0820]/90 text-text-primary border border-border backdrop-blur-sm uppercase tracking-wider">
+                        {tech.sector}
+                      </span>
+                    </div>
+
+                    {/* NEW badge overlay */}
+                    {tech.last_updated && (
+                      <div className="absolute top-3 right-3 z-10">
+                        <span className="inline-block px-2.5 py-0.5 rounded text-[10px] font-black bg-emerald-500 text-[#112920] uppercase tracking-wide">
+                          NEW
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Card Body */}
+                  <div className="flex flex-col flex-1 p-5">
+                    {/* Institution Row with Logo */}
+                    <div className="flex items-center gap-2 mb-2.5 min-w-0">
+                      {instLogo ? (
+                        <div className="w-7 h-7 rounded-md overflow-hidden bg-white border border-border flex-shrink-0 flex items-center justify-center">
+                          <img src={instLogo} alt={tech.institution} className="w-full h-full object-contain p-0.5" referrerPolicy="no-referrer" loading="lazy" />
+                        </div>
+                      ) : (
+                        <div className="w-7 h-7 rounded-md bg-accent/10 border border-accent/20 flex-shrink-0 flex items-center justify-center">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4 text-accent">
+                            <rect x="4" y="2" width="16" height="20" rx="2" />
+                            <path d="M9 22V12h6v10" />
+                          </svg>
+                        </div>
+                      )}
+                      <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider line-clamp-1 truncate">
+                        {tech.institution}
+                      </span>
+                    </div>
+
+                    {/* Tech Title */}
+                    <h3 className="font-heading font-bold text-heading text-[15px] leading-snug mb-2 line-clamp-2 min-h-[40px]">
+                      {tech.name}
+                    </h3>
+
+                    {/* Added Date */}
+                    {tech.last_updated && (
+                      <div className="text-[10px] text-text-secondary font-semibold uppercase tracking-wider mb-4">
+                        Added: {tech.last_updated}
+                      </div>
+                    )}
+
+                    {/* View Technology CTA Button (min-height 44px) */}
+                    <Link
+                      href={`/technologies/${tech.id}`}
+                      className="mt-auto w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-accent/10 hover:bg-accent text-accent hover:text-[#0A0820] font-bold text-xs transition-all border border-accent/20 hover:border-transparent cursor-pointer"
+                    >
+                      View Technology
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Section fade divider */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
       </section>
 
       {/* ── TECHNOLOGY TRANSFER PIPELINE (BACKGROUND VISUALIZATION) ────────────────── */}

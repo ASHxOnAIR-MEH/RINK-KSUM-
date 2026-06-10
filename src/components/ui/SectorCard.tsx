@@ -358,7 +358,7 @@ export default function SectorCard({ sector }: Props) {
   return (
     <Link href={`/sectors/${sector.slug}`} id={`sector-card-${sector.slug}`} className="block group">
       <div
-        className="relative overflow-hidden rounded-2xl h-52 flex flex-col justify-end cursor-pointer transition-all duration-300 border border-border bg-card shadow-md hover:-translate-y-1.5 hover:shadow-xl"
+        className="relative overflow-hidden h-40 sm:h-52 flex flex-col justify-end cursor-pointer transition-all duration-300 border border-border bg-card shadow-md hover:-translate-y-1.5 hover:shadow-xl"
         style={{ transition: 'all 0.3s ease' }}
       >
         {/* Stylized Illustrated custom Vector Artwork */}
@@ -382,7 +382,7 @@ export default function SectorCard({ sector }: Props) {
 
         {/* Title & Info panel with Glassmorphism */}
         <div 
-          className="relative z-10 p-3.5 m-2.5 rounded-xl border border-white/10"
+          className="relative z-10 p-2.5 sm:p-3.5 m-2 sm:m-2.5 rounded-xl border border-white/10"
           style={{
             background: 'rgba(0, 0, 0, 0.55)',
             backdropFilter: 'blur(8px)',
@@ -411,7 +411,7 @@ export default function SectorCard({ sector }: Props) {
           </div>
 
           {/* Sub-sectors themed badges */}
-          <div className="flex flex-wrap gap-1 mb-2.5">
+          <div className="hidden sm:flex flex-wrap gap-1 mb-2.5">
             {subsectors.slice(0, 2).map((sub, i) => (
               <span key={i} className="text-[8.5px] font-bold tracking-wide text-white/90 bg-white/10 px-1.5 py-0.5 rounded">
                 {sub}

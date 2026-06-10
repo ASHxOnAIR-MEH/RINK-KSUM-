@@ -83,7 +83,7 @@ export default function Navbar() {
           {/* ── Mobile menu button ── */}
           <div className="flex items-center gap-2 md:hidden">
             <button
-              className="p-2 text-text-secondary hover:text-accent hover:bg-card-secondary rounded-lg transition-all"
+              className="w-11 h-11 flex items-center justify-center text-text-secondary hover:text-accent hover:bg-card-secondary rounded-lg transition-all cursor-pointer"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Menu"
             >
@@ -93,14 +93,19 @@ export default function Navbar() {
         </div>
 
         {/* ── Mobile Menu ── */}
-        {mobileOpen && (
-          <div className="md:hidden border-t border-border bg-card py-3 space-y-1">
+        <div 
+          className={clsx(
+            "md:hidden overflow-hidden transition-all duration-300 ease-in-out border-border bg-card",
+            mobileOpen ? "max-h-60 border-t opacity-100 py-3" : "max-h-0 border-t-0 opacity-0 py-0 pointer-events-none"
+          )}
+        >
+          <div className="space-y-1">
             {NAV_LINKS.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={clsx(
-                  'block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors',
+                  'block px-4 py-3 text-sm font-medium rounded-lg transition-colors',
                   pathname === link.href
                     ? 'text-accent bg-accent/10'
                     : 'text-text-secondary hover:text-accent hover:bg-card-secondary'
@@ -110,7 +115,7 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );

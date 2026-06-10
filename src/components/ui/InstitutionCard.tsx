@@ -184,32 +184,31 @@ export default function InstitutionCard({ institution }: Props) {
         {/* Subtle radial glow on hover */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--accent)_0%,transparent_70%)] opacity-0 group-hover:opacity-[0.035] transition-opacity duration-500 pointer-events-none z-0" />
 
-        {/* Top Hero Banner (if image is available) */}
-        {hasImage && (
-          <div className="relative h-28 w-full overflow-hidden bg-[#0A0820] border-b border-border">
-            <img
-              src={displayImage}
-              alt={institution.name}
-              onError={() => setImageFailed(true)}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              referrerPolicy="no-referrer"
-              loading="lazy"
-            />
-            {/* Dark overlay gradient */}
-            <div
-              className="absolute inset-0 pointer-events-none z-1"
-              style={{
-                background: 'linear-gradient(to top, rgba(11, 8, 32, 0.7) 0%, rgba(11, 8, 32, 0) 100%)',
-              }}
-            />
-          </div>
-        )}
-
-        {/* Institution-specific background branding SVG (fallback or background overlay) */}
-        {!hasImage && <InstitutionBackground slug={slug} />}
+        {/* Top Banner Area */}
+        <div className="relative h-16 w-full bg-[#0A0820] border-b border-border overflow-hidden flex-shrink-0">
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-accent-secondary/5 z-0" />
+          
+          {/* Logo badge overlay (overlapping banner & body) */}
+          {hasImage ? (
+            <div className="absolute -bottom-6 left-5 w-14 h-14 rounded-xl overflow-hidden bg-card border-2 border-border shadow-md z-20 flex items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={displayImage}
+                alt={institution.name}
+                onError={() => setImageFailed(true)}
+                className="w-full h-full object-contain p-1"
+                referrerPolicy="no-referrer"
+                loading="lazy"
+              />
+            </div>
+          ) : (
+            <InstitutionBackground slug={slug} />
+          )}
+        </div>
 
         {/* Card Content */}
-        <div className="flex flex-col flex-1 p-5 z-10">
+        <div className={`flex flex-col flex-1 p-5 z-10 ${hasImage ? 'pt-8' : 'pt-5'}`}>
           {/* Institution Acronym */}
           <div className="flex items-center justify-between mb-3">
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-black tracking-wide bg-accent/10 text-accent border border-accent/20">
