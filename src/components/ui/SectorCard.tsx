@@ -338,13 +338,13 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
 
   // Default / Fallback: Clean Innovation Cluster Network
   return (
-    <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+    <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/15">
       <path d="M50 40 L150 90 L100 150 L220 110 L300 50" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
       <circle cx="50" cy="40" r="4" fill="currentColor" />
-      <circle cx="150" cy="90" r="6" stroke="currentColor" strokeWidth="1.5" fill="var(--background)" />
+      <circle cx="150" cy="90" r="6" stroke="currentColor" strokeWidth="1.5" fill="rgba(255,255,255,0.2)" />
       <circle cx="150" cy="90" r="3" fill={accentColor} />
       <circle cx="100" cy="150" r="4" fill="currentColor" />
-      <circle cx="220" cy="110" r="8" stroke="currentColor" strokeWidth="1.5" fill="var(--background)" />
+      <circle cx="220" cy="110" r="8" stroke="currentColor" strokeWidth="1.5" fill="rgba(255,255,255,0.2)" />
       <circle cx="220" cy="110" r="3" fill={accentColor} />
       <circle cx="300" cy="50" r="5" fill="currentColor" />
     </svg>
@@ -358,80 +358,67 @@ export default function SectorCard({ sector }: Props) {
   return (
     <Link href={`/sectors/${sector.slug}`} id={`sector-card-${sector.slug}`} className="block group">
       <div
-        className="relative overflow-hidden h-40 sm:h-52 flex flex-col justify-end cursor-pointer transition-all duration-300 border border-border bg-card shadow-md hover:-translate-y-1.5 hover:shadow-xl"
-        style={{ transition: 'all 0.3s ease' }}
+        className="relative overflow-hidden rounded-2xl h-40 sm:h-52 flex flex-col justify-end cursor-pointer border border-gray-100 bg-gray-50 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-250"
+        style={{ transition: 'all 0.25s ease' }}
       >
-        {/* Stylized Illustrated custom Vector Artwork */}
+        {/* Sector illustration artwork */}
         <div className="absolute inset-0 w-full h-full select-none z-0">
           <SectorIllustration slug={sector.slug} accentColor={accentColor} />
         </div>
 
-        {/* ── Dark gradient overlay ── */}
+        {/* Gradient overlay — light to ensure text readability */}
         <div
           className="absolute inset-0 pointer-events-none z-1"
           style={{
-            background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.20) 100%)',
+            background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.40) 45%, rgba(0,0,0,0.10) 100%)',
           }}
         />
 
-        {/* Hover color tint */}
+        {/* Subtle hover color tint */}
         <div
-          className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-[0.08] transition-opacity duration-300 z-2"
+          className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-[0.06] transition-opacity duration-300 z-2"
           style={{ background: accentColor }}
         />
 
-        {/* Title & Info panel with Glassmorphism */}
-        <div 
-          className="relative z-10 p-2.5 sm:p-3.5 m-2 sm:m-2.5 rounded-xl border border-white/10"
+        {/* Title & Info panel — clean semi-transparent white */}
+        <div
+          className="relative z-10 p-2.5 sm:p-3.5 m-2 sm:m-2.5 rounded-xl border border-white/20"
           style={{
-            background: 'rgba(0, 0, 0, 0.55)',
+            background: 'rgba(255, 255, 255, 0.18)',
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)',
           }}
         >
           {/* Header row: Icon & Sector Title */}
           <div className="flex items-center gap-2 mb-1.5">
-            <div 
-              className="w-7 h-7 rounded-lg flex items-center justify-center border"
-              style={{
-                background: 'rgba(255,255,255,0.10)',
-                borderColor: 'rgba(255,255,255,0.20)',
-              }}
+            <div
+              className="w-7 h-7 rounded-lg flex items-center justify-center border border-white/30"
+              style={{ background: 'rgba(255,255,255,0.25)' }}
             >
               {getSectorIcon(sector.slug, '#ffffff', 14)}
             </div>
-            <h3
-              className="font-heading font-black text-xs text-white leading-tight uppercase tracking-wider"
-              style={{
-                textShadow: '0 2px 6px rgba(0,0,0,0.5)',
-              }}
-            >
+            <h3 className="font-heading font-black text-xs text-white leading-tight uppercase tracking-wider drop-shadow-sm">
               {sector.name}
             </h3>
           </div>
 
-          {/* Sub-sectors themed badges */}
+          {/* Sub-sector badges */}
           <div className="hidden sm:flex flex-wrap gap-1 mb-2.5">
             {subsectors.slice(0, 2).map((sub, i) => (
-              <span key={i} className="text-[8.5px] font-bold tracking-wide text-white/90 bg-white/10 px-1.5 py-0.5 rounded">
+              <span key={i} className="text-[8.5px] font-bold tracking-wide text-white/90 bg-white/20 px-1.5 py-0.5 rounded">
                 {sub}
               </span>
             ))}
           </div>
 
-          {/* Footer row: tech count & arrow */}
-          <div className="flex items-center justify-between pt-2 border-t border-white/10">
-            <span
-              className="text-[9.5px] font-bold text-white/80"
-              style={{
-                textShadow: '0 1px 2px rgba(0,0,0,0.4)',
-              }}
-            >
+          {/* Footer row */}
+          <div className="flex items-center justify-between pt-2 border-t border-white/20">
+            <span className="text-[9.5px] font-bold text-white/90 drop-shadow-sm">
               {sector.tech_count} {sector.tech_count === 1 ? 'technology' : 'technologies'}
             </span>
             <ArrowRight
-              className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-200"
-              style={{ color: accentColor }}
+              className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-200 drop-shadow-sm"
+              style={{ color: '#ffffff' }}
             />
           </div>
         </div>

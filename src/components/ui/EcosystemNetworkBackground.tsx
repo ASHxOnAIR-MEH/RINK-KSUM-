@@ -51,17 +51,17 @@ export default function EcosystemNetworkBackground() {
 
         {/* Network Nodes (circles) */}
         <circle cx="150" cy="120" r="6" fill="currentColor" />
-        <circle cx="300" cy="180" r="10" stroke="currentColor" strokeWidth="2" fill="var(--background)" />
+        <circle cx="300" cy="180" r="10" stroke="currentColor" strokeWidth="2" fill="white" />
         <circle cx="300" cy="180" r="4" fill="currentColor" />
         <circle cx="220" cy="320" r="8" fill="currentColor" />
-        <circle cx="450" cy="250" r="12" stroke="currentColor" strokeWidth="2" fill="var(--background)" />
+        <circle cx="450" cy="250" r="12" stroke="currentColor" strokeWidth="2" fill="white" />
         <circle cx="450" cy="250" r="5" fill="currentColor" />
         <circle cx="580" cy="120" r="7" fill="currentColor" />
         <circle cx="720" cy="280" r="9" stroke="currentColor" strokeWidth="1.5" fill="currentColor" className="opacity-80" />
-        <circle cx="880" cy="140" r="14" stroke="currentColor" strokeWidth="2" fill="var(--background)" />
+        <circle cx="880" cy="140" r="14" stroke="currentColor" strokeWidth="2" fill="white" />
         <circle cx="880" cy="140" r="6" fill="currentColor" />
         <circle cx="1020" cy="320" r="8" fill="currentColor" />
-        <circle cx="1200" cy="160" r="10" stroke="currentColor" strokeWidth="2" fill="var(--background)" />
+        <circle cx="1200" cy="160" r="10" stroke="currentColor" strokeWidth="2" fill="white" />
         <circle cx="1200" cy="160" r="4" fill="currentColor" />
 
         {/* Patent Motifs (Shield/Document outlines centered on key nodes) */}
@@ -109,7 +109,7 @@ export default function EcosystemNetworkBackground() {
           strokeDasharray="2 4"
         />
         <circle cx="500" cy="330" r="3" fill="currentColor" />
-        <circle cx="650" cy="300" r="4" stroke="currentColor" strokeWidth="1" fill="var(--background)" />
+        <circle cx="650" cy="300" r="4" stroke="currentColor" strokeWidth="1" fill="white" />
       </svg>
     </div>
   );

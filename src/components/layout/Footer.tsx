@@ -85,20 +85,20 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#0F172A] text-white mt-auto relative overflow-hidden">
+    <footer className="bg-[#1E3A8A] text-white mt-auto relative overflow-hidden">
       {/* CTA Strip */}
-      <div className="bg-card border-t border-b border-border py-12">
+      <div className="bg-white border-t border-gray-100 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <h3 className="text-2xl font-bold font-heading text-heading">
+            <h3 className="text-2xl font-bold font-heading text-gray-900">
               Discover Technologies. Launch Ventures. Build the Future.
             </h3>
-            <p className="text-text-secondary text-sm mt-1">
-              Browse commercializable innovations from Kerala's leading research institutions.
+            <p className="text-gray-500 text-sm mt-1 font-sans">
+              Browse commercializable innovations from Kerala&apos;s leading research institutions.
             </p>
           </div>
           <div className="flex gap-3 flex-shrink-0">
-            <Link href="/technologies" className="btn-primary py-3 px-8 text-sm font-bold bg-accent text-[#04142B] hover:opacity-95 shadow-lg rounded-xl transition-all duration-200">
+            <Link href="/technologies" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#2563EB] text-white font-heading font-bold text-sm hover:bg-[#1D4ED8] shadow-sm transition-all duration-200">
               Explore Technologies →
             </Link>
           </div>
@@ -145,7 +145,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-white text-sm transition-colors"
+                    className="text-blue-200 hover:text-white text-sm transition-colors font-sans"
                   >
                     {link.label}
                   </Link>

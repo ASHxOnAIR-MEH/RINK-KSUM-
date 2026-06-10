@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 60; // Revalidate all pages at least every 60 seconds (1 minute)
+export const revalidate = 60;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -25,8 +25,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body className="flex flex-col min-h-screen bg-background text-text-primary relative">
+      <body className="flex flex-col min-h-screen bg-background text-text-primary relative pb-16 md:pb-0">
         <Navbar />
         <main className="flex-1 relative z-10">{children}</main>
         <Footer />
@@ -38,5 +42,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-
-
