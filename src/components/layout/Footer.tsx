@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Mail, Phone, Globe, ExternalLink } from 'lucide-react';
+import { Mail, Phone, Globe, ExternalLink, MapPin } from 'lucide-react';
 
 function FooterRINKIcon() {
   const size = 40;
@@ -135,13 +135,12 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5">
               {[
-                { label: 'Browse Technologies', href: '/technologies' },
-                { label: 'Browse by Sector', href: '/sectors' },
-                { label: 'Partner Institutions', href: '/institutions' },
                 { label: 'About RINK', href: '/about' },
-                { label: 'Contact', href: '/about#contact' },
+                { label: 'Browse Technologies', href: '/technologies' },
+                { label: 'Institutions', href: '/institutions' },
+                { label: 'Contact Us', href: '/about#contact' },
               ].map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link href={link.href} className="text-blue-200 hover:text-white text-sm transition-colors font-sans">
                     {link.label}
                   </Link>
@@ -157,23 +156,30 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-2.5">
-                <Phone className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-400 text-sm">+91-471-2971190</span>
+                <MapPin className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                <span className="text-gray-400 text-sm">
+                  Kerala Startup Mission<br/>
+                  G3B, Thejaswini, Technopark Campus<br/>
+                  Thiruvananthapuram, Kerala 695581
+                </span>
               </li>
-              <li className="flex items-start gap-2.5">
-                <Mail className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+              <li className="flex items-center gap-2.5">
+                <Mail className="w-4 h-4 text-blue-400 flex-shrink-0" />
                 <span className="text-gray-400 text-sm">info@startupmission.in</span>
               </li>
-              <li className="flex items-start gap-2.5">
-                <Globe className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+              <li className="flex items-center gap-2.5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-blue-400 flex-shrink-0">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect width="4" height="12" x="2" y="9" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
                 <a
-                  href="https://startupmission.in"
+                  href="https://www.linkedin.com/company/research-innovation-network-kerala/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-blue-400 text-sm transition-colors flex items-center gap-1"
+                  className="text-gray-400 hover:text-blue-400 text-sm transition-colors"
                 >
-                  startupmission.in
-                  <ExternalLink className="w-3 h-3" />
+                  Research Innovation Network Kerala
                 </a>
               </li>
             </ul>
