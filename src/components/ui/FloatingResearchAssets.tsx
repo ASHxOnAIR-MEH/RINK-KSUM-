@@ -22,7 +22,7 @@ export default function FloatingResearchAssets() {
       top: '18%',
       duration: '28s',
       delay: '0s',
-      color: 'text-[#00FA9A]', // Emerald Accent
+      color: 'text-[#2563EB]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
           <rect x="4" y="2" width="16" height="20" rx="2" />
@@ -39,7 +39,7 @@ export default function FloatingResearchAssets() {
       top: '22%',
       duration: '34s',
       delay: '-4s',
-      color: 'text-[#F8FAF8]', // Off White
+      color: 'text-[#2563EB]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
           <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -56,7 +56,7 @@ export default function FloatingResearchAssets() {
       top: '68%',
       duration: '31s',
       delay: '-8s',
-      color: 'text-[#E9C46A]', // Warm Gold
+      color: 'text-[#2563EB]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
           <path d="M9 3h6M12 3v5M6 21h12L12 8z" />
@@ -72,7 +72,7 @@ export default function FloatingResearchAssets() {
       top: '55%',
       duration: '38s',
       delay: '-12s',
-      color: 'text-[#00FA9A]', // Emerald
+      color: 'text-[#2563EB]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
           <rect x="5" y="5" width="14" height="14" rx="2" />
@@ -88,7 +88,7 @@ export default function FloatingResearchAssets() {
       top: '28%',
       duration: '26s',
       delay: '-2s',
-      color: 'text-[#F8FAF8]', // Off White
+      color: 'text-[#2563EB]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
           <circle cx="12" cy="12" r="5" />
@@ -99,35 +99,31 @@ export default function FloatingResearchAssets() {
     },
     {
       id: 6,
-      name: 'Licensing Certificate',
+      name: 'Technology Node',
       left: '88%',
       top: '78%',
       duration: '39s',
       delay: '-18s',
-      color: 'text-[#E9C46A]', // Warm Gold
+      color: 'text-[#2563EB]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
-          <rect x="3" y="4" width="18" height="16" rx="2" />
-          <path d="M9 10.5l2 2 4-4M7 15h10" />
+          <circle cx="6" cy="6" r="3" />
+          <circle cx="18" cy="18" r="3" />
+          <line x1="8" y1="8" x2="16" y2="16" />
         </svg>
       )
     },
     {
       id: 7,
-      name: 'DNA Strand',
+      name: 'Microscope',
       left: '12%',
       top: '84%',
       duration: '35s',
       delay: '-10s',
-      color: 'text-[#00FA9A]', // Emerald
+      color: 'text-[#2563EB]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
-          <path d="M4.5 10c3-3 6.5-3 9.5 0s6.5 3 9.5 0" />
-          <path d="M4.5 14c3 3 6.5 3 9.5 0s6.5-3 9.5 0" />
-          <line x1="6" y1="11" x2="6" y2="13" />
-          <line x1="10" y1="10" x2="10" y2="14" />
-          <line x1="14" y1="10" x2="14" y2="14" />
-          <line x1="18" y1="11" x2="18" y2="13" />
+          <path d="M12 2v3M5 21h14M16 21a4 4 0 0 0-4-4h-2a4 4 0 0 0-4 4M10 17v-3M14 17v-3M8 14h8M12 5v9M9 5h6" />
         </svg>
       )
     }
@@ -135,14 +131,32 @@ export default function FloatingResearchAssets() {
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 select-none">
+      <style>{`
+        @keyframes float-innovation {
+          0%, 100% {
+            transform: translateY(0px) translateX(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-20px) translateX(10px) rotate(2deg);
+          }
+        }
+        .animate-float-asset {
+          animation: float-innovation 30s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .animate-float-asset {
+            animation: none !important;
+          }
+        }
+      `}</style>
       {assets.map((asset) => (
         <div
           key={asset.id}
-          className={`absolute animate-float-asset blur-[2px] transition-all ${asset.color}`}
+          className={`absolute animate-float-asset blur-[1px] transition-all ${asset.color}`}
           style={{
             left: asset.left,
             top: asset.top,
-            opacity: 0.045, // 0.03 - 0.05 opacity
+            opacity: 0.025, // 2-3% opacity as requested
             animationDuration: asset.duration,
             animationDelay: asset.delay,
           }}

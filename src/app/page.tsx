@@ -2,12 +2,13 @@ import { getFeaturedTechnologies, getRecentTechnologies, getPlatformStats, getAl
 import AIDiscoveryBar from '@/components/ui/AIDiscoveryBar';
 import SectorCard, { SectorIllustration, SECTOR_ACCENTS } from '@/components/ui/SectorCard';
 import TechnologyCard from '@/components/ui/TechnologyCard';
-import InstitutionCard from '@/components/ui/InstitutionCard';
 import FloatingResearchAssets from '@/components/ui/FloatingResearchAssets';
 import KeralaInnovationMap from '@/components/ui/KeralaInnovationMap';
 import StatsSection from '@/components/ui/StatsSection';
 import EcosystemNetworkBackground from '@/components/ui/EcosystemNetworkBackground';
 import FeaturedCarousel from '@/components/ui/FeaturedCarousel';
+import PartnerInstitutionsSection from '@/components/ui/PartnerInstitutionsSection';
+import ConnectWithRINK from '@/components/ui/ConnectWithRINK';
 import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
@@ -130,13 +131,62 @@ export default async function HomePage() {
     <div className="min-h-screen bg-white">
 
       {/* ── HERO & SEARCH SECTION ────────────────────────── */}
-      <section className="relative overflow-hidden py-20 md:py-28 border-b border-gray-100" style={{ background: 'linear-gradient(135deg, #F0F6FF 0%, #EEF4FF 40%, #F8FAFF 100%)' }}>
+      <section className="relative overflow-hidden py-8 sm:py-16 md:py-24 border-b border-gray-100" style={{ background: 'linear-gradient(135deg, #F0F6FF 0%, #EEF4FF 40%, #F8FAFF 100%)' }}>
         
-        {/* Research Innovation Network backdrop */}
+        {/* Layer 1: Research Innovation Network backdrop */}
         <EcosystemNetworkBackground />
 
-        {/* Floating research assets */}
+        {/* Layer 2: Floating research assets */}
         <FloatingResearchAssets />
+
+        {/* Layer 3: Tech Pathway Blueprint */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.015] flex items-center justify-center">
+          <svg viewBox="0 0 800 800" fill="none" stroke="#2563EB" strokeWidth="0.5" className="w-[120%] h-[120%] object-cover transform -rotate-12">
+            {/* Blueprint Grid & Concentric circles */}
+            <pattern id="blueprint-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2563EB" strokeWidth="0.5"/>
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#blueprint-grid)" />
+            <circle cx="400" cy="400" r="200" strokeDasharray="5 5" />
+            <circle cx="400" cy="400" r="300" strokeDasharray="10 10" />
+            <path d="M0,400 L800,400 M400,0 L400,800" strokeDasharray="4 4" />
+          </svg>
+        </div>
+
+        {/* Layer 4: Data Streams */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.02]">
+          <style>{`
+            @keyframes data-stream {
+              0% { transform: translateX(-100%); }
+              100% { transform: translateX(100vw); }
+            }
+            .animate-stream {
+              animation: data-stream 20s linear infinite;
+            }
+            .animate-stream-delayed {
+              animation: data-stream 25s linear infinite;
+              animation-delay: -10s;
+            }
+          `}</style>
+          <div className="absolute top-[20%] left-0 w-[200px] h-[1px] bg-gradient-to-r from-transparent via-[#2563EB] to-transparent animate-stream" />
+          <div className="absolute top-[40%] left-0 w-[300px] h-[1.5px] bg-gradient-to-r from-transparent via-[#2563EB] to-transparent animate-stream-delayed" />
+          <div className="absolute top-[70%] left-0 w-[250px] h-[1px] bg-gradient-to-r from-transparent via-[#2563EB] to-transparent animate-stream" style={{ animationDuration: '30s' }} />
+        </div>
+
+        {/* Layer 5: Sector-specific Illustrations */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.025] flex justify-between px-10 items-end pb-20">
+          {/* Agriculture Tractor Outline */}
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1" className="w-24 h-24 transform rotate-6">
+            <path d="M4 16A3 3 0 0 0 7 19A3 3 0 0 0 10 16" />
+            <path d="M14 16A3 3 0 0 0 17 19A3 3 0 0 0 20 16" />
+            <path d="M14 16H10" />
+            <path d="M4 16V10L7 5H13L16 10H20V16" />
+          </svg>
+          {/* MedTech Heart/Pulse Outline */}
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1" className="w-20 h-20 transform -rotate-12 mb-10">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+          </svg>
+        </div>
 
         {/* Subtle dot grid */}
         <div
@@ -173,15 +223,15 @@ export default async function HomePage() {
 
             {/* Label pill */}
             <div
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#2563EB] text-xs font-semibold mb-6 animate-fade-in font-sans"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#2563EB] text-[10px] sm:text-xs font-semibold mb-4 sm:mb-6 animate-fade-in font-sans leading-tight"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
-              Research Innovation Network Kerala • Connecting Research • Innovation • Commercialization
+              <Sparkles className="w-3.5 h-3.5 text-[#2563EB] flex-shrink-0" />
+              <span>Research Innovation Network Kerala • Connecting Research • Innovation • Commercialization</span>
             </div>
 
             {/* Headline */}
             <h1
-              className="text-4xl sm:text-5xl md:text-6xl font-heading font-black leading-tight mb-8 text-gray-900 tracking-tight"
+              className="text-3xl sm:text-5xl md:text-6xl font-heading font-black leading-tight mb-4 sm:mb-8 text-gray-900 tracking-tight"
               style={{ animation: 'slide-fade-in 0.6s ease-out 0.2s both' }}
             >
               Discover Technologies.<br/>
@@ -190,7 +240,7 @@ export default async function HomePage() {
 
             {/* Search Box */}
             <div 
-              className="w-full max-w-[900px] p-5 md:p-7 bg-white rounded-2xl border border-gray-200 shadow-md animate-slide-up mb-4"
+              className="w-full max-w-[900px] p-3 sm:p-5 md:p-7 bg-white rounded-2xl border border-gray-200 shadow-md animate-slide-up mb-4"
               style={{ animation: 'slide-fade-in 0.6s ease-out 0.4s both' }}
             >
               <AIDiscoveryBar />
@@ -200,7 +250,7 @@ export default async function HomePage() {
             <div className="mb-8 animate-fade-in font-sans" style={{ animation: 'slide-fade-in 0.6s ease-out 0.5s both' }}>
               <Link 
                 href="/technologies" 
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#2563EB] text-white font-heading font-bold text-sm transition-all duration-200 hover:bg-[#1D4ED8] hover:shadow-lg hover:shadow-blue-200 active:scale-[0.98]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-blue-50 text-[#2563EB] border border-blue-200 font-heading font-semibold text-xs sm:text-sm transition-all duration-200 hover:bg-blue-100 hover:shadow-sm active:scale-[0.98]"
               >
                 Explore All Technologies →
               </Link>
@@ -298,51 +348,8 @@ export default async function HomePage() {
       </section>
 
       {/* ── RESEARCH PARTNERS (INSTITUTIONS) ────────────────────────── */}
-      <section className="relative py-20 bg-[#F8FAFF] overflow-hidden border-b border-gray-100">
-        {/* Kerala outline map backdrop with connected pulsing nodes */}
-        <KeralaInnovationMap />
-
-        {/* Ambient floating research assets icons */}
-        <FloatingResearchAssets />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <div className="max-w-2xl">
-              <div className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-3">
-                FIND AN INSTITUTION
-              </div>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-3">
-                Research Institutions
-              </h2>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Explore Kerala&apos;s leading research institutions and discover technologies available for transfer, licensing, and commercialization.
-              </p>
-            </div>
-            <Link
-              href="/institutions"
-              className="flex items-center gap-1.5 text-sm font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition-colors flex-shrink-0 font-sans"
-              id="all-institutions-link"
-            >
-              All Institutions <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {topInstitutions.map((inst) => (
-              <InstitutionCard key={inst.slug} institution={inst} />
-            ))}
-          </div>
-
-          <div className="mt-12 text-center sm:hidden">
-            <Link href="/institutions" className="btn-secondary text-sm">
-              All Institutions <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        </div>
-
-        {/* Section fade divider */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#F8FAFF] to-transparent pointer-events-none z-10" />
-      </section>
+      {/* ── PARTNER INSTITUTIONS ─────────────────────────────── */}
+      <PartnerInstitutionsSection institutions={institutions} />
 
       {/* ── EXPLORE STARTUP SECTORS ────────────────────────────── */}
       <section className="relative py-20 bg-white overflow-hidden border-b border-gray-100">
@@ -529,6 +536,8 @@ export default async function HomePage() {
         {/* Section fade divider */}
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#F8FAFF] to-transparent pointer-events-none z-10" />
       </section>
+      {/* ── CONNECT WITH RINK ────────────────────────────── */}
+      <ConnectWithRINK />
 
     </div>
   );

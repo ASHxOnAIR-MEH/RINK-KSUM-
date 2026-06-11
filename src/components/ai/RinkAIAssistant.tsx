@@ -293,7 +293,7 @@ export default function RinkAIAssistant() {
           onClick={() => setOpen(true)}
           className="rink-ai-fab"
           style={{
-            position: 'fixed', bottom: 28, right: 28, zIndex: 9999,
+            position: 'fixed', bottom: 90, right: 28, zIndex: 9999,
             width: 60, height: 60, borderRadius: '50%',
             background: 'linear-gradient(135deg, #003F8A 0%, #0066CC 100%)',
             border: 'none', cursor: 'pointer',
@@ -314,8 +314,8 @@ export default function RinkAIAssistant() {
         <div
           className="rink-ai-panel"
           style={{
-            position: 'fixed', bottom: 28, right: 28, zIndex: 9999,
-            width: 420, height: 620,
+            position: 'fixed', bottom: 90, right: 28, zIndex: 9999,
+            width: 420, maxWidth: 'calc(100vw - 56px)', height: 620, maxHeight: 'calc(100vh - 120px)',
             display: 'flex', flexDirection: 'column',
             borderRadius: 24,
             background: 'var(--card)',

@@ -151,16 +151,16 @@ export default function AIDiscoveryBar() {
     <div className="w-full flex flex-col items-center">
 
       {/* Clean text label */}
-      <div className="text-xs font-bold text-accent uppercase tracking-widest mb-3.5 animate-fade-in">
+      <div className="text-[10px] sm:text-xs font-bold text-accent uppercase tracking-widest mb-2 sm:mb-3.5 animate-fade-in">
         Describe Your Startup Idea
       </div>
 
       {/* ── Search box ── */}
       <form onSubmit={handleSubmit} className="w-full">
-        <div className="flex flex-col sm:flex-row items-stretch w-full gap-3 sm:gap-0 rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 search-glow-container">
+        <div className="flex flex-row items-stretch w-full rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 search-glow-container">
           {/* Input container */}
           <div
-            className={`flex-1 flex items-center bg-card border-2 rounded-2xl sm:rounded-r-none sm:border-r-0 px-4 py-3.5 transition-all duration-300 ${
+            className={`flex-1 flex items-center bg-card border-2 rounded-l-2xl border-r-0 px-3 py-2.5 sm:px-4 sm:py-3.5 transition-all duration-300 ${
               loading
                 ? 'border-accent'
                 : result
@@ -207,7 +207,7 @@ export default function AIDiscoveryBar() {
           <button
             type="submit"
             disabled={!query.trim() || loading}
-            className={`flex-shrink-0 flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl sm:rounded-l-none font-semibold text-sm transition-all duration-200 border-2 border-transparent ${
+            className={`flex-shrink-0 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2.5 sm:py-3.5 rounded-r-2xl font-semibold text-xs sm:text-sm transition-all duration-200 border-2 border-transparent ${
               query.trim() && !loading
                 ? 'bg-accent text-[#04142B] hover:opacity-90 cursor-pointer'
                 : 'bg-card-secondary text-text-secondary/40 border-border cursor-not-allowed'
@@ -215,7 +215,8 @@ export default function AIDiscoveryBar() {
             id="ai-discover-btn"
           >
             <Search size={15} />
-            <span>Find Technologies</span>
+            <span className="hidden sm:inline">Find Technologies</span>
+            <span className="sm:hidden">Search</span>
           </button>
         </div>
       </form>
