@@ -86,28 +86,26 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#1E3A8A] text-white mt-auto relative overflow-hidden">
-      {/* CTA Strip */}
-      <div className="bg-white border-t border-gray-100 py-12">
+      {/* Single CTA Strip */}
+      <div className="bg-[#F0F6FF] border-t border-blue-100 py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <h3 className="text-2xl font-bold font-heading text-gray-900">
-              Discover Technologies. Launch Ventures. Build the Future.
+            <h3 className="text-xl font-bold font-heading text-gray-900">
+              Ready to Discover Technologies?
             </h3>
             <p className="text-gray-500 text-sm mt-1 font-sans">
-              Browse commercializable innovations from Kerala&apos;s leading research institutions.
+              Browse 160+ technologies from Kerala&apos;s leading research institutions and commercialization partners.
             </p>
           </div>
-          <div className="flex gap-3 flex-shrink-0">
-            <Link href="/technologies" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#2563EB] text-white font-heading font-bold text-sm hover:bg-[#1D4ED8] shadow-sm transition-all duration-200">
-              Explore Technologies →
-            </Link>
-          </div>
+          <Link href="/technologies" className="flex-shrink-0 inline-flex items-center gap-2 px-7 py-3 rounded-xl bg-[#2563EB] text-white font-heading font-bold text-sm hover:bg-[#1D4ED8] transition-colors shadow-sm">
+            Browse Technologies →
+          </Link>
         </div>
       </div>
 
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
@@ -123,7 +121,7 @@ export default function Footer() {
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
               Research Innovation Network Kerala — connecting research institutions
-              with startup founders.
+              with startup founders across Kerala.
             </p>
             <p className="text-gray-500 text-xs mt-3">
               A Kerala Startup Mission initiative
@@ -133,45 +131,22 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h4 className="text-sm font-semibold text-white mb-4 uppercase tracking-wide">
-              Explore
+              Navigate
             </h4>
             <ul className="space-y-2.5">
               {[
-                { label: 'All Technologies', href: '/technologies' },
+                { label: 'Browse Technologies', href: '/technologies' },
                 { label: 'Browse by Sector', href: '/sectors' },
-                { label: 'Browse by Institution', href: '/institutions' },
+                { label: 'Partner Institutions', href: '/institutions' },
                 { label: 'About RINK', href: '/about' },
+                { label: 'Contact', href: '/about#contact' },
               ].map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-blue-200 hover:text-white text-sm transition-colors font-sans"
-                  >
+                  <Link href={link.href} className="text-blue-200 hover:text-white text-sm transition-colors font-sans">
                     {link.label}
                   </Link>
                 </li>
               ))}
-            </ul>
-          </div>
-
-          {/* Institutions */}
-          <div>
-            <h4 className="text-sm font-semibold text-white mb-4 uppercase tracking-wide">
-              Institutions
-            </h4>
-            <ul className="space-y-2.5">
-              {['CTCRI', 'CPCRI', 'NIIST', 'NCRMI', 'KSCSTE', 'KFRI', 'CWRDM', 'JNTBGRI'].map(
-                (inst) => (
-                  <li key={inst}>
-                    <Link
-                      href={`/institutions/${inst.toLowerCase()}`}
-                      className="text-gray-400 hover:text-white text-sm transition-colors"
-                    >
-                      {inst}
-                    </Link>
-                  </li>
-                )
-              )}
             </ul>
           </div>
 
