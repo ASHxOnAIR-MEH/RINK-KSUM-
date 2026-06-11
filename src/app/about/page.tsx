@@ -48,55 +48,7 @@ export default async function AboutPage() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14 space-y-16">
-
-        {/* ── Problem & Solution ───────────────────────────── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-gray-50 rounded-2xl border border-gray-100 p-7">
-            <div className="text-3xl mb-4">🔍</div>
-            <h2 className="font-heading font-bold text-gray-900 text-xl mb-3">The Problem</h2>
-            <p className="text-gray-500 text-sm leading-relaxed mb-4">
-              Kerala&apos;s research institutions have developed hundreds of commercializable technologies.
-              These remain locked in research papers, PDFs, and institutional documents — invisible to the startup ecosystem.
-            </p>
-            <ul className="space-y-2">
-              {[
-                "Founders don't know what technologies exist",
-                'No single discovery platform exists',
-                'Institution contacts are hard to find',
-                'Startup potential is not communicated',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-2 text-sm text-gray-500">
-                  <span className="text-red-400 mt-0.5">✗</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="bg-blue-50 rounded-2xl border border-blue-100 p-7">
-            <div className="text-3xl mb-4">💡</div>
-            <h2 className="font-heading font-bold text-[#2563EB] text-xl mb-3">Our Solution</h2>
-            <p className="text-gray-600 text-sm leading-relaxed mb-4">
-              RINK Technology Transfer Portal is a searchable, categorized platform that presents each
-              technology with startup context — problem solved, applications, startup potential,
-              and direct institution contact information.
-            </p>
-            <ul className="space-y-2">
-              {[
-                'Searchable database of 160+ technologies',
-                'Startup potential rated for each technology',
-                'Direct institution contact for licensing',
-                '100% free, public access',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-[#2563EB] flex-shrink-0 mt-0.5" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-12">
 
         {/* ── Who It's For ─────────────────────────────────── */}
         <div>

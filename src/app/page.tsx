@@ -276,7 +276,7 @@ export default async function HomePage() {
                 Kerala&apos;s Research-to-Startup Network
               </h2>
               <p className="text-gray-600 leading-relaxed text-sm md:text-base font-sans max-w-xl">
-                Research Innovation Network Kerala (RINK) is an initiative of Kerala Startup Mission that connects research institutions, innovators, startups and industry partners to accelerate technology commercialization and innovation-led entrepreneurship across Kerala.
+                Research Innovation Network Kerala (RINK) connects research institutions, innovators, startups and industry partners to accelerate technology commercialization and innovation-driven entrepreneurship across Kerala.
               </p>
               <Link href="/about" className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition-colors font-heading" id="about-rink-learn-more">
                 Learn More <ArrowRight className="w-4 h-4" />
@@ -286,12 +286,12 @@ export default async function HomePage() {
             {/* Stats cards */}
             <div className="flex-shrink-0 grid grid-cols-2 gap-4 w-full md:w-72">
               {[
-                { num: '160+', label: 'Technologies', sub: 'Ready for commercialization' },
                 { num: '23', label: 'Institutions', sub: 'Partner research institutes' },
                 { num: '11+', label: 'Sectors', sub: 'Technology domains' },
                 { num: '100%', label: 'Free Access', sub: 'Open to all innovators' },
+                { num: '160+', label: 'Technologies', sub: 'Ready for commercialization' },
               ].map(s => (
-                <div key={s.label} className="bg-[#F8FAFF] rounded-xl border border-gray-100 p-4">
+                <div key={s.label} className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
                   <div className="text-2xl font-black text-[#2563EB] font-heading">{s.num}</div>
                   <div className="text-sm font-bold text-gray-800 font-heading">{s.label}</div>
                   <div className="text-[11px] text-gray-400 mt-0.5 font-sans">{s.sub}</div>
@@ -302,25 +302,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── 8. SINGLE CTA BANNER ─────────────────────────────── */}
-      <section className="py-16 bg-[#F0F6FF] border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-          <div className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-3">Discover Technologies</div>
-          <h2 className="text-2xl md:text-3xl font-heading font-bold text-gray-900 mb-3">
-            Ready to Discover Technologies?
-          </h2>
-          <p className="text-gray-600 text-sm mb-8 max-w-md mx-auto font-sans">
-            Browse 160+ technologies from Kerala&apos;s leading research institutions and commercialization partners.
-          </p>
-          <Link
-            href="/technologies"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#2563EB] text-white font-heading font-bold text-sm hover:bg-[#1D4ED8] transition-colors shadow-sm"
-            id="single-cta-browse"
-          >
-            Browse Technologies <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </section>
 
     </div>
   );

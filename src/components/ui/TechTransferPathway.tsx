@@ -92,10 +92,10 @@ export default function TechTransferPathway({ compact = false }: Props) {
   const [activeStep, setActiveStep] = useState<number | null>(null);
 
   return (
-    <section className={`relative bg-white overflow-hidden border-b border-gray-100 ${compact ? 'py-14' : 'py-20'}`}>
+    <section className={`relative bg-white border-b border-gray-100 ${compact ? 'py-14' : 'py-20'}`}>
       {/* Subtle circuit-trace background */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.025]">
-        <svg viewBox="0 0 1200 300" fill="none" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.025]">
+        <svg viewBox="0 0 1200 300" fill="none" className="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
           <path d="M0 150 H200 V80 H500 V220 H800 V100 H1200" stroke="#2563EB" strokeWidth="1" strokeDasharray="6 4" />
           <circle cx="200" cy="150" r="5" fill="#2563EB" />
           <circle cx="500" cy="80" r="5" fill="#2563EB" />
@@ -195,28 +195,17 @@ export default function TechTransferPathway({ compact = false }: Props) {
                   )}
                 </div>
 
-                {/* Desktop tooltip card — appears below */}
-                {activeStep === step.id && (
-                  <div className="hidden md:block absolute top-[88px] left-1/2 -translate-x-1/2 w-48 bg-white border border-blue-200 rounded-xl shadow-lg p-3 z-20 text-left">
-                    <div className="text-xs font-bold text-[#2563EB] mb-1.5 font-heading">{step.label}</div>
-                    <div className="text-[11px] text-gray-600 leading-relaxed font-sans">{step.detail}</div>
-                    {/* Pointer */}
-                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-2 overflow-hidden">
-                      <div className="w-3 h-3 bg-white border-t border-l border-blue-200 rotate-45 mx-auto mt-0.5" />
-                    </div>
-                  </div>
-                )}
               </div>
             ))}
           </div>
 
-          {/* Mobile accordion detail */}
+          {/* Dynamic detail card (Desktop & Mobile) - expands container naturally without clipping */}
           {activeStep && (
-            <div className="md:hidden mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
-              <div className="text-sm font-bold text-[#2563EB] mb-2 font-heading">
+            <div className="mt-8 bg-blue-50 border border-blue-200 rounded-xl p-5 text-center max-w-3xl mx-auto shadow-sm animate-fade-in">
+              <div className="text-sm md:text-lg font-bold text-[#2563EB] mb-2 font-heading">
                 {STEPS.find(s => s.id === activeStep)?.label}
               </div>
-              <div className="text-sm text-gray-700 leading-relaxed font-sans">
+              <div className="text-sm md:text-base text-gray-700 leading-relaxed font-sans">
                 {STEPS.find(s => s.id === activeStep)?.detail}
               </div>
             </div>
