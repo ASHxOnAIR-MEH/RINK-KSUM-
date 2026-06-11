@@ -8,17 +8,33 @@ import type { Institution } from '@/types';
 // ── Local logo map: slug → local image path ───────────────────
 // Add new paths here as logos are uploaded
 const LOCAL_LOGOS: Record<string, string> = {
-  'icar-cpcri': '/images/institutions/cpcri.png',
-  'cpcri': '/images/institutions/cpcri.png',
-  'icar-ctcri': '/images/institutions/ctcri.png',
-  'ctcri': '/images/institutions/ctcri.png',
-  'kerala-university-of-fisheries-and-ocean-studies-kufos': '/images/institutions/kufos.png',
-  'kufos': '/images/institutions/kufos.png',
+  // CPCRI — updated higher quality logo
+  'icar-cpcri': '/images/institutions/cpcri.jpg',
+  'cpcri': '/images/institutions/cpcri.jpg',
+  // CTCRI — updated higher quality logo
+  'icar-ctcri': '/images/institutions/ctcri.jpg',
+  'ctcri': '/images/institutions/ctcri.jpg',
+  // CSIR-NIIST
+  'csir-niist': '/images/institutions/csir-niist.jpg',
+  'niist': '/images/institutions/csir-niist.jpg',
+  'national-institute-for-interdisciplinary-science-and-technology': '/images/institutions/csir-niist.jpg',
+  // CIFT
+  'cift': '/images/institutions/cift.jpg',
+  'central-institute-of-fisheries-technology': '/images/institutions/cift.jpg',
+  'icar-cift': '/images/institutions/cift.jpg',
+  // KUFOS — both Thiruvananthapuram and Kochi versions
+  'kerala-university-of-fisheries-and-ocean-studies-kufos': '/images/institutions/kufos-kochi.jpg',
+  'kerala-university-of-fisheries-and-ocean-studies': '/images/institutions/kufos-kochi.jpg',
+  'kufos': '/images/institutions/kufos-kochi.jpg',
+  // Previously uploaded logos
   'kscste-jntbgri': '/images/institutions/kscste-jntbgri.jpg',
   'jntbgri': '/images/institutions/kscste-jntbgri.jpg',
+  'jawaharlal-nehru-tropical-botanic-garden-and-research-institute': '/images/institutions/kscste-jntbgri.jpg',
   'iiser-thiruvananthapuram': '/images/institutions/iiser-thiruvananthapuram.jpg',
   'iiser': '/images/institutions/iiser-thiruvananthapuram.jpg',
+  'indian-institute-of-science-education-and-research-thiruvananthapuram': '/images/institutions/iiser-thiruvananthapuram.jpg',
   'iit-palakkad': '/images/institutions/iit-palakkad.jpg',
+  'indian-institute-of-technology-palakkad': '/images/institutions/iit-palakkad.jpg',
 };
 
 function getLogoUrl(inst: Institution): string | null {
