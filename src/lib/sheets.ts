@@ -79,25 +79,41 @@ function getSectorMeta(slug: string) {
 }
 
 // ── Google Drive URL converter ────────────────────────────────
+// Converts any Drive share link into a direct thumbnail URL that
+// works in <img> tags without redirects or consent prompts.
+// Drive thumbnail endpoint: https://drive.google.com/thumbnail?id=FILE_ID&sz=w800
 export function toDriveEmbedUrl(url: string): string {
-  if (!url || url === 'Not Specified' || url === 'NA') return '';
+  if (!url || url === 'Not Specified' || url === 'NA' || url.trim() === '') return '';
 
-  // Already a direct embed
-  if (url.includes('drive.google.com/uc?')) return url;
+  const trimmed = url.trim();
+
+  // Already a thumbnail URL — return as-is
+  if (trimmed.includes('drive.google.com/thumbnail')) return trimmed;
+
+  // Already a uc?export=view URL — convert to thumbnail for reliability
+  if (trimmed.includes('drive.google.com/uc?')) {
+    const idMatch = trimmed.match(/[?&]id=([^&]+)/);
+    if (idMatch) return `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w800`;
+    return trimmed;
+  }
 
   // Pattern: https://drive.google.com/file/d/FILE_ID/view?...
-  const match = url.match(/\/file\/d\/([^/]+)\//);
-  if (match) {
-    return `https://drive.google.com/uc?id=${match[1]}&export=view`;
+  const fileMatch = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (fileMatch) {
+    return `https://drive.google.com/thumbnail?id=${fileMatch[1]}&sz=w800`;
   }
 
   // Pattern: https://drive.google.com/open?id=FILE_ID
-  const openMatch = url.match(/[?&]id=([^&]+)/);
+  const openMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
   if (openMatch) {
-    return `https://drive.google.com/uc?id=${openMatch[1]}&export=view`;
+    return `https://drive.google.com/thumbnail?id=${openMatch[1]}&sz=w800`;
   }
 
-  return url; // return as-is if can't parse
+  // Pattern: https://drive.google.com/drive/folders/... (not an image — skip)
+  if (trimmed.includes('drive.google.com/drive/')) return '';
+
+  // Non-Drive URL — return as-is (might be a direct image link)
+  return trimmed;
 }
 
 // ── Startup potential mapping ─────────────────────────────────
@@ -218,7 +234,12 @@ function rowToTechnology(row: string[], headerMap: Record<string, number>): Tech
     .replace(/[\r\n]+/g, '')
     .trim();
   const email = getVal(['email', 'contactemail']);
-  const imageUrl = getVal(['imageurl', 'image', 'photourl', 'embedurl']);
+  const imageUrl = getVal(['imageurl', 'image', 'photourl', 'embedurl', 'imagelink', 'imgurl']);
+
+  // Log missing image URLs in development to help debug
+  if (process.env.NODE_ENV === 'development' && !imageUrl) {
+    console.warn(`[RINK] No image URL for tech: ${id} — "${name}"`);
+  }
   const startupPotentialRaw = getVal(['startuppotential', 'potential'], 'Not Specified') as StartupPotential;
 
   const keywordsRaw = getVal(['keywords', 'tags']);
@@ -247,9 +268,15 @@ function rowToTechnology(row: string[], headerMap: Record<string, number>): Tech
   const commVal = getVal(['commercializationstatus', 'commercialization', 'status']);
   const commercialization_status = commVal && commVal !== 'Not Specified' && commVal !== 'NA' ? commVal : 'Commercialization Status Not Available';
 
-  const techImage = getVal(['technologyimage', 'technologyphotourl']);
-  const instImage = getVal(['institutionimage', 'institutionlogo', 'logo']);
+  const techImage = getVal(['technologyimage', 'technologyphotourl', 'techimage', 'technologyimageurl']);
+  const instImage = getVal(['institutionimage', 'institutionlogo', 'logo', 'institutionlogourl', 'institutionlogo']);
   const lastUpdated = getVal(['lastupdated', 'updated', 'lastupdateddate']);
+
+  // Log resolved image URLs in development
+  if (process.env.NODE_ENV === 'development' && (imageUrl || techImage)) {
+    const resolvedUrl = imageUrl ? toDriveEmbedUrl(imageUrl) : (techImage ? toDriveEmbedUrl(techImage) : '');
+    console.log(`[RINK] Image for "${name}": raw=${imageUrl || techImage}, resolved=${resolvedUrl}`);
+  }
 
   const techImageEmbedUrl = techImage ? toDriveEmbedUrl(techImage) : '';
   const instImageEmbedUrl = instImage ? toDriveEmbedUrl(instImage) : '';

@@ -212,7 +212,13 @@ export default async function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {recentTechs.map((tech) => {
-              const displayImage = tech.technology_image_embed_url || tech.technology_image || tech.image_embed_url;
+              // Same priority order as TechnologyCard: Image URL column first
+              const displayImage =
+                tech.image_embed_url ||
+                tech.technology_image_embed_url ||
+                tech.image_url ||
+                tech.technology_image ||
+                null;
               const hasImage = !!displayImage;
               return (
                 <div key={tech.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col hover:shadow-md hover:border-blue-200 transition-all duration-250 h-full">

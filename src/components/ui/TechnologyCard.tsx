@@ -16,8 +16,16 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
   const [imageFailed, setImageFailed] = useState(false);
   const prefersReduced = useReducedMotion();
 
-  // Resolve technology image source
-  const displayImage = technology.technology_image_embed_url || technology.technology_image || technology.image_embed_url;
+  // Resolve technology image source.
+  // Priority: 1) Image URL column (image_embed_url) from sheet
+  //           2) Technology Image column (technology_image_embed_url)
+  //           3) Legacy fallbacks
+  const displayImage =
+    technology.image_embed_url ||
+    technology.technology_image_embed_url ||
+    technology.image_url ||
+    technology.technology_image ||
+    null;
   const hasImage = !!displayImage && !imageFailed;
 
   // Show FEATURED badge only for 'High' or 'Featured'
