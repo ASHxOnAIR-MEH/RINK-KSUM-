@@ -1,17 +1,19 @@
 import { getTechnologyById, getAllTechnologies } from '@/lib/db';
+import { fetchAllTechnologies } from '@/lib/sheets';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import {
-  MapPin, Shield, ChevronRight, ExternalLink,
-  Mail, Phone, BookOpen, Lightbulb, Zap,
-  Globe, FlaskConical, Layers, FileText, ArrowRight, Atom
+  ChevronRight, ExternalLink, Mail, Phone, Globe,
+  FlaskConical, Layers, ArrowRight, Building2,
+  Lightbulb, Zap, Shield, BarChart3, CheckCircle2,
+  Tag, Microscope, FileText, MapPin, Factory, TrendingUp,
 } from 'lucide-react';
-import LifecycleBackground from '@/components/ui/LifecycleBackground';
+import TechImage from '@/components/ui/TechImage';
 
 const GOOGLE_FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSfJlFIqrK5Dzd5R-Voh19OvhUKxj7OzEqeW8XIdjJMNKxc8Eg/viewform';
 
-// ── Helpers ──────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────
 
 function parseTechTypes(raw: string): string[] {
   if (!raw || raw === 'Not Specified' || raw === 'NA') return [];
@@ -35,64 +37,15 @@ function getTRLLabel(level: number): string {
   return 'Production Ready';
 }
 
-function InfoMissing() {
-  return <span className="text-sm text-slate-400 italic">Information being updated</span>;
+function clean(val: string | undefined | null): string {
+  if (!val) return '';
+  const v = val.trim();
+  if (['na', 'n/a', 'nil', 'none', 'not specified', 'not available', 'information being updated']
+    .includes(v.toLowerCase())) return '';
+  return v;
 }
 
-// ── Animated TRL Meter ────────────────────────────────────────
-
-function TRLMeter({ raw }: { raw: string }) {
-  const level = parseTRL(raw);
-  if (level === 0) return <InfoMissing />;
-  const label = getTRLLabel(level);
-  const pct = Math.round((level / 9) * 100);
-
-  return (
-    <div>
-      <div className="flex items-center justify-between mb-2.5">
-        <span className="text-sm font-semibold text-text-primary">{label}</span>
-        <span className="text-xs font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
-          TRL {level} / 9
-        </span>
-      </div>
-
-      {/* Track */}
-      <div className="h-2.5 bg-card-secondary rounded-full overflow-hidden">
-        <div
-          className="h-full rounded-full animate-trl-fill"
-          style={{
-            width: `${pct}%`,
-            background: 'linear-gradient(to right, #f59e0b, #10b981, #059669)',
-          }}
-        />
-      </div>
-
-      {/* Mini segment markers */}
-      <div className="flex gap-0.5 mt-2">
-        {Array.from({ length: 9 }).map((_, i) => (
-          <div
-            key={i}
-            className={`h-1 flex-1 rounded-full ${i < level ? '' : 'bg-card-secondary'}`}
-            style={
-              i < level
-                ? {
-                    background: i < 3 ? '#fbbf24' : i < 6 ? '#6ee7b7' : '#059669',
-                    animation: `slide-fade-in 0.25s ease-out ${i * 0.07}s both`,
-                  }
-                : {}
-            }
-          />
-        ))}
-      </div>
-      <div className="flex justify-between mt-1">
-        <span className="text-[10px] text-text-secondary font-medium">Research</span>
-        <span className="text-[10px] text-text-secondary font-medium">Market Ready</span>
-      </div>
-    </div>
-  );
-}
-
-// ── Meta ─────────────────────────────────────────────────────
+// ── Meta ──────────────────────────────────────────────────────
 
 export async function generateStaticParams() {
   const techs = await getAllTechnologies();
@@ -106,467 +59,559 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return {
     title: `${tech.name} — RINK Technology Transfer Portal`,
     description: tech.problem_solved?.slice(0, 160),
+    openGraph: {
+      title: tech.name,
+      description: tech.problem_solved?.slice(0, 160),
+    },
   };
 }
 
-// ── Page ─────────────────────────────────────────────────────
+// ── TRL Bar ───────────────────────────────────────────────────
+
+function TRLBar({ raw }: { raw: string }) {
+  const level = parseTRL(raw);
+  if (level === 0) return <span className="text-gray-400 text-sm italic">TRL Not Specified</span>;
+  const label = getTRLLabel(level);
+  const pct = Math.round((level / 9) * 100);
+  const color = level <= 3 ? '#f59e0b' : level <= 6 ? '#3b82f6' : '#10b981';
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-sm font-semibold text-gray-700">{label}</span>
+        <span className="text-xs font-black px-2 py-0.5 rounded-full text-white" style={{ background: color }}>
+          TRL {level}/9
+        </span>
+      </div>
+      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+        <div className="h-full rounded-full transition-all duration-700" style={{ width: `${pct}%`, background: color }} />
+      </div>
+      <div className="flex justify-between mt-1">
+        <span className="text-[10px] text-gray-400">Basic Research</span>
+        <span className="text-[10px] text-gray-400">Production Ready</span>
+      </div>
+    </div>
+  );
+}
+
+// ── Page ──────────────────────────────────────────────────────
 
 export default async function TechnologyDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const tech = await getTechnologyById(id);
+  const [tech, allTechs] = await Promise.all([
+    getTechnologyById(id),
+    fetchAllTechnologies(),
+  ]);
   if (!tech) notFound();
 
   const techTypes = parseTechTypes(tech.technology_type);
-  const hasApps   = tech.applications.length > 0 && tech.applications[0] !== 'Information being updated';
-  const hasDesc   = tech.description && tech.description !== 'Information being updated';
+
+  const displayImage =
+    tech.image_embed_url ||
+    tech.technology_image_embed_url ||
+    tech.image_url ||
+    tech.technology_image ||
+    null;
+
+  const trlLevel = parseTRL(tech.trl);
+  const trlLabel = getTRLLabel(trlLevel);
+
+  const hasDesc = !!clean(tech.description);
+  const hasProblem = !!clean(tech.problem_solved);
+  const hasApps = tech.applications.length > 0 && clean(tech.applications[0]);
+  const hasKeywords = tech.keywords.length > 0;
+
+  // Related technologies: same sector, different ID, max 4
+  const related = allTechs
+    .filter(t => t.sector_slug === tech.sector_slug && t.id !== tech.id)
+    .slice(0, 4);
+
+  // Opportunity summary
+  const opportunitySummary = hasProblem
+    ? tech.problem_solved.slice(0, 150) + (tech.problem_solved.length > 150 ? '…' : '')
+    : `Developed by ${tech.institution}, this technology offers commercial potential in the ${tech.sector} sector.`;
 
   return (
-    <div className="min-h-screen bg-background text-text-primary relative overflow-hidden">
-      {/* Subtle vertical animated Technology Lifecycle background */}
-      <LifecycleBackground />
+    <div className="min-h-screen bg-white text-gray-900">
 
-      {/* ── MOBILE STICKY BOTTOM CTA ─────────────────────────── */}
+      {/* ── MOBILE STICKY BOTTOM CTA ───────────────────────── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
-        <div className="bg-white/90 backdrop-blur-lg border-t border-slate-100 shadow-[0_-8px_32px_rgba(0,0,0,0.08)] px-4 pt-3 pb-5">
+        <div className="bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-4 pt-3 pb-5">
           <a
             href={GOOGLE_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            id="mobile-request-btn"
-            className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-emerald-600 text-white font-bold text-sm active:scale-95 transition-all"
+            className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[#2563EB] text-white font-bold text-sm"
           >
-            <FileText className="w-4 h-4 flex-shrink-0" />
-            Request This Technology
-            <ExternalLink className="w-3.5 h-3.5 opacity-75 flex-shrink-0" />
+            <FileText className="w-4 h-4" />
+            Request Licensing / Transfer
+            <ExternalLink className="w-3.5 h-3.5 opacity-75" />
           </a>
-          <p className="text-center text-[11px] text-slate-400 mt-2 leading-snug">
-            Submit a request through RINK and our team will connect you with the relevant institution.
-          </p>
         </div>
       </div>
 
-      <div className="pb-36 lg:pb-0">
+      <div className="pb-28 lg:pb-0">
 
-        {/* ═══════════════════════════════════════════════════════
-            ANIMATED TECH HERO HEADER
-            Dark gradient background with floating orbs + dot grid
-        ═══════════════════════════════════════════════════════ */}
-        <div
-          className="relative overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, #060e1c 0%, #0c1d3d 45%, #0a1530 75%, #060e1c 100%)' }}
-        >
-          {/* ── Dot grid overlay ── */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)',
-              backgroundSize: '36px 36px',
-            }}
-          />
-
-          {/* ── Floating orb 1 — large indigo ── */}
-          <div
-            className="absolute animate-float-orb pointer-events-none"
-            style={{
-              top: '-80px', right: '-60px',
-              width: 340, height: 340,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(99,102,241,0.35) 0%, transparent 70%)',
-              filter: 'blur(48px)',
-            }}
-          />
-
-          {/* ── Floating orb 2 — emerald ── */}
-          <div
-            className="absolute animate-float-orb-slow pointer-events-none"
-            style={{
-              bottom: '-60px', left: '8%',
-              width: 260, height: 260,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(16,185,129,0.28) 0%, transparent 70%)',
-              filter: 'blur(40px)',
-            }}
-          />
-
-          {/* ── Floating orb 3 — blue centre ── */}
-          <div
-            className="absolute animate-hero-glow pointer-events-none"
-            style={{
-              top: '20px', left: '38%',
-              width: 180, height: 180,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 70%)',
-              filter: 'blur(32px)',
-            }}
-          />
-
-          {/* ── Floating orb 4 — tiny amber ── */}
-          <div
-            className="absolute animate-float-orb-xs pointer-events-none"
-            style={{
-              top: '30%', right: '18%',
-              width: 100, height: 100,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(245,158,11,0.25) 0%, transparent 70%)',
-              filter: 'blur(20px)',
-            }}
-          />
-
-          {/* ── Spinning ring decoration ── */}
-          <div
-            className="absolute animate-spin-slow pointer-events-none opacity-10"
-            style={{
-              top: '-40px', right: '5%',
-              width: 200, height: 200,
-              border: '1.5px solid rgba(255,255,255,0.5)',
-              borderRadius: '50%',
-              borderTopColor: 'transparent',
-            }}
-          />
-          <div
-            className="absolute animate-spin-slow pointer-events-none opacity-10"
-            style={{
-              top: '-20px', right: '7%',
-              width: 140, height: 140,
-              border: '1px dashed rgba(99,102,241,0.6)',
-              borderRadius: '50%',
-              animationDirection: 'reverse',
-            }}
-          />
-
-          {/* ── Full-coverage dark scrim — applied on the entire hero section ── */}
-          <div
-            className="absolute inset-0 pointer-events-none z-[1]"
-            style={{
-              background: 'linear-gradient(160deg, rgba(4,9,20,0.82) 0%, rgba(6,14,28,0.70) 40%, rgba(8,18,40,0.50) 70%, rgba(4,9,20,0.40) 100%)',
-            }}
-          />
-
-          {/* ── Content ── */}
-          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-14">
+        {/* ══════════════════════════════════════════════════════
+            SECTION 1 — HERO  (two-column clean layout)
+        ══════════════════════════════════════════════════════ */}
+        <section className="border-b border-gray-100" style={{ background: 'linear-gradient(135deg,#F0F6FF 0%,#EEF4FF 50%,#F8FAFF 100%)' }}>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-10">
 
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-xs text-white/60 flex-wrap mb-8 animate-slide-fade-in">
-              <Link href="/" className="hover:text-white transition-colors font-medium">Home</Link>
-              <ChevronRight className="w-3 h-3 flex-shrink-0 text-white/30" />
-              <Link href="/technologies" className="hover:text-white transition-colors">
-                Technologies
-              </Link>
-              <ChevronRight className="w-3 h-3 flex-shrink-0 text-white/30" />
-              <Link href={`/sectors/${tech.sector_slug}`} className="hover:text-white transition-colors">
-                {tech.sector}
-              </Link>
-              <ChevronRight className="w-3 h-3 flex-shrink-0 text-white/30" />
-              <span className="text-white/85 font-semibold truncate max-w-[200px] sm:max-w-sm">
-                {tech.name}
-              </span>
+            <nav className="flex items-center gap-1.5 text-xs text-gray-500 flex-wrap mb-7 font-sans">
+              <Link href="/" className="hover:text-[#2563EB] transition-colors">Home</Link>
+              <ChevronRight className="w-3 h-3 text-gray-300" />
+              <Link href="/technologies" className="hover:text-[#2563EB] transition-colors">Technologies</Link>
+              <ChevronRight className="w-3 h-3 text-gray-300" />
+              <Link href={`/sectors/${tech.sector_slug}`} className="hover:text-[#2563EB] transition-colors">{tech.sector}</Link>
+              <ChevronRight className="w-3 h-3 text-gray-300" />
+              <span className="text-gray-700 font-medium truncate max-w-[180px] sm:max-w-xs">{tech.name}</span>
             </nav>
 
-            {/* Sector + Type chips */}
-            <div
-              className="flex flex-wrap gap-2 mb-6"
-              style={{ animation: 'slide-fade-in 0.5s ease-out 0.1s both' }}
-            >
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-blue-500/50 text-white border border-blue-300/40 backdrop-blur-sm shadow-sm">
-                <Layers className="w-3 h-3" /> {tech.sector}
-              </span>
-              {techTypes.map((t, i) => (
-                <span
-                  key={i}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/20 text-white border border-white/35 backdrop-blur-sm shadow-sm"
-                >
-                  <FlaskConical className="w-3 h-3 text-white/80" /> {t}
-                </span>
+            {/* Two-column hero */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+
+              {/* LEFT — 60% */}
+              <div className="lg:col-span-3 flex flex-col gap-5">
+
+                {/* Sector + Type badges */}
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#2563EB] text-white">
+                    <Layers className="w-3 h-3" /> {tech.sector}
+                  </span>
+                  {techTypes.map((t, i) => (
+                    <span key={i} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white border border-gray-200 text-gray-700">
+                      <FlaskConical className="w-3 h-3 text-[#2563EB]" /> {t}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Title */}
+                <h1 className="text-3xl sm:text-4xl font-heading font-black text-gray-900 leading-tight">
+                  {tech.name}
+                </h1>
+
+                {/* Institution + ID */}
+                <div className="flex flex-wrap items-center gap-3">
+                  <Link href={`/institutions/${tech.institution_slug}`}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-sm font-semibold text-gray-800 hover:border-[#2563EB] hover:text-[#2563EB] transition-colors">
+                    <Building2 className="w-3.5 h-3.5 text-[#2563EB]" />
+                    {tech.institution}
+                  </Link>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs font-mono text-gray-500">
+                    ID: {tech.id}
+                  </span>
+                </div>
+
+                {/* Opportunity summary */}
+                <p className="text-gray-600 text-base leading-relaxed font-sans max-w-xl">
+                  {opportunitySummary}
+                </p>
+
+                {/* Startup potential badge */}
+                {tech.startup_potential && clean(tech.startup_potential) && (
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-sm font-bold w-fit">
+                    <TrendingUp className="w-4 h-4" />
+                    Startup Potential: {tech.startup_potential}
+                  </div>
+                )}
+              </div>
+
+              {/* RIGHT — Technology Image (40%) */}
+              <div className="lg:col-span-2">
+                <div className="rounded-2xl overflow-hidden border border-gray-100 shadow-md bg-gray-50 aspect-[16/9] w-full relative">
+                  <TechImage src={displayImage} alt={tech.name} />
+                </div>
+                {/* Institution logo area below image */}
+                <div className="mt-3 flex items-center gap-2 px-1">
+                  <Building2 className="w-3.5 h-3.5 text-gray-400" />
+                  <span className="text-xs text-gray-500 font-sans leading-tight">{tech.institution}</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            SECTION 2 — OPPORTUNITY SNAPSHOT (5 cards)
+        ══════════════════════════════════════════════════════ */}
+        <section className="border-b border-gray-100 bg-white py-8">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {[
+                {
+                  icon: <Factory className="w-5 h-5 text-[#2563EB]" />,
+                  label: 'Sector',
+                  value: tech.sector,
+                  bg: 'bg-blue-50 border-blue-100',
+                },
+                {
+                  icon: <Tag className="w-5 h-5 text-purple-600" />,
+                  label: 'Applications',
+                  value: hasApps ? tech.applications.slice(0, 2).join(', ') : 'See details below',
+                  bg: 'bg-purple-50 border-purple-100',
+                },
+                {
+                  icon: <TrendingUp className="w-5 h-5 text-amber-600" />,
+                  label: 'Startup Potential',
+                  value: clean(tech.startup_potential) || 'Evaluating',
+                  bg: 'bg-amber-50 border-amber-100',
+                },
+                {
+                  icon: <Zap className="w-5 h-5 text-emerald-600" />,
+                  label: 'TRL Level',
+                  value: trlLevel > 0 ? `TRL ${trlLevel} — ${trlLabel}` : 'Not Specified',
+                  bg: 'bg-emerald-50 border-emerald-100',
+                },
+                {
+                  icon: <Shield className="w-5 h-5 text-rose-600" />,
+                  label: 'Patent Status',
+                  value: clean(tech.patent_status) || 'Contact Institution',
+                  bg: 'bg-rose-50 border-rose-100',
+                },
+              ].map(({ icon, label, value, bg }) => (
+                <div key={label} className={`rounded-xl border p-4 ${bg}`}>
+                  <div className="mb-2">{icon}</div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">{label}</div>
+                  <div className="text-sm font-bold text-gray-800 leading-snug">{value}</div>
+                </div>
               ))}
             </div>
-
-            {/* ── Main Title Block — dedicated elevated panel for maximum readability ── */}
-            <div
-              className="mb-7 rounded-xl p-1"
-              style={{ animation: 'slide-fade-in 0.6s ease-out 0.2s both' }}
-            >
-              <h1
-                className="text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.15] font-heading tracking-tight"
-                style={{
-                  color: '#FFFFFF',
-                  /* Multi-layer shadow stack: crisp edge + depth + wide glow */
-                  textShadow: [
-                    '0 1px 1px rgba(0,0,0,1)',
-                    '0 2px 6px rgba(0,0,0,0.95)',
-                    '0 4px 16px rgba(0,0,0,0.85)',
-                    '0 8px 32px rgba(0,0,0,0.70)',
-                  ].join(', '),
-                }}
-              >
-                {tech.name}
-              </h1>
-            </div>
-
-            {/* Institution strip */}
-            <div
-              className="flex items-center gap-3 flex-wrap"
-              style={{ animation: 'slide-fade-in 0.6s ease-out 0.35s both' }}
-            >
-              <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-black/30 border border-white/20 backdrop-blur-sm">
-                <MapPin className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                <Link
-                  href={`/institutions/${tech.institution_slug}`}
-                  className="text-sm font-bold text-white hover:text-emerald-300 transition-colors"
-                >
-                  {tech.institution}
-                </Link>
-              </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-2 rounded-md bg-black/25 border border-white/15">
-                <Atom className="w-3 h-3 text-white/55" />
-                <span className="text-xs text-white/65 font-mono tracking-wider">{tech.id}</span>
-              </div>
-            </div>
-
           </div>
-        </div>
+        </section>
 
-        {/* ═══════════════════════════════════════════════════════
-            MAIN CONTENT GRID
-        ═══════════════════════════════════════════════════════ */}
+        {/* ══════════════════════════════════════════════════════
+            MAIN CONTENT — TWO COLUMN
+        ══════════════════════════════════════════════════════ */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-          <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-            {/* ── LEFT COLUMN — Narrative ── */}
-            <div className="lg:col-span-7 space-y-6">
+            {/* ── LEFT (2/3) — Sections 3–6 ─────────────────── */}
+            <div className="lg:col-span-2 space-y-8">
 
-              {/* Problem Solved — Amber Callout */}
-              <div
-                className="rounded-2xl bg-amber-callout-bg border border-amber-callout-border p-6 animate-slide-fade-in"
-                style={{
-                  boxShadow: '0 2px 12px rgba(245,158,11,0.06)',
-                  animationDelay: '0.1s',
-                }}
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-amber-callout-text/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Lightbulb className="w-4.5 h-4.5 text-amber-callout-text" />
+              {/* SECTION 3 — Problem & Description */}
+              {hasProblem && (
+                <div className="rounded-2xl border border-amber-100 bg-amber-50 p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-7 h-7 rounded-lg bg-amber-100 flex items-center justify-center">
+                      <Lightbulb className="w-4 h-4 text-amber-600" />
+                    </div>
+                    <h2 className="font-heading font-bold text-gray-900">Problem Being Solved</h2>
                   </div>
-                  <div className="flex-1">
-                    <h2 className="text-xs font-bold text-amber-callout-text uppercase tracking-widest mb-2">
-                      Problem Being Solved
-                    </h2>
-                    <p className="text-amber-callout-body leading-relaxed text-[15px]">
-                      {tech.problem_solved && tech.problem_solved !== 'Information being updated'
-                        ? tech.problem_solved
-                        : <InfoMissing />}
-                    </p>
+                  <p className="text-gray-700 leading-relaxed text-[15px] font-sans">{tech.problem_solved}</p>
+                </div>
+              )}
+
+              {hasDesc && (
+                <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center">
+                      <Microscope className="w-4 h-4 text-[#2563EB]" />
+                    </div>
+                    <h2 className="font-heading font-bold text-gray-900">Technology Description</h2>
                   </div>
+                  <p className="text-gray-700 leading-relaxed text-[15px] font-sans">{tech.description}</p>
+                </div>
+              )}
+
+              {/* SECTION 4 — Applications as tags */}
+              {hasApps && (
+                <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-7 h-7 rounded-lg bg-purple-50 flex items-center justify-center">
+                      <Tag className="w-4 h-4 text-purple-600" />
+                    </div>
+                    <h2 className="font-heading font-bold text-gray-900">Applications & Use Cases</h2>
+                  </div>
+                  <div className="flex flex-wrap gap-2.5">
+                    {tech.applications.map((app, i) => (
+                      <span key={i} className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-purple-50 border border-purple-100 text-sm font-semibold text-purple-800 font-sans">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" />
+                        {app}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* SECTION 5 — Benefits */}
+              {hasApps && (
+                <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    </div>
+                    <h2 className="font-heading font-bold text-gray-900">Key Benefits</h2>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {[
+                      { icon: '🏭', label: 'Commercial Scale Production', show: true },
+                      { icon: '💰', label: 'High Value Addition', show: true },
+                      { icon: '🌱', label: 'Sustainable Technology', show: true },
+                      { icon: '🚀', label: 'Startup Friendly', show: ['high', 'featured', 'very high'].includes(tech.startup_potential?.toLowerCase() || '') },
+                      { icon: '📈', label: 'Market Ready', show: trlLevel >= 6 },
+                      { icon: '🔬', label: 'Research Backed', show: true },
+                    ].filter(b => b.show).map((benefit, i) => (
+                      <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-emerald-50 border border-emerald-100">
+                        <span className="text-xl">{benefit.icon}</span>
+                        <span className="text-sm font-semibold text-emerald-800">{benefit.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* SECTION 6 — Market Opportunity */}
+              <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center">
+                    <BarChart3 className="w-4 h-4 text-[#2563EB]" />
+                  </div>
+                  <h2 className="font-heading font-bold text-gray-900">Market Opportunity</h2>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { label: 'Target Sector', value: tech.sector },
+                    { label: 'Technology Type', value: clean(tech.technology_type) || 'Innovative Technology' },
+                    { label: 'Startup Potential', value: clean(tech.startup_potential) || 'High Potential' },
+                    { label: 'Institution', value: tech.institution },
+                  ].map(({ label, value }) => (
+                    <div key={label} className="p-3 rounded-xl bg-[#F8FAFF] border border-gray-100">
+                      <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">{label}</div>
+                      <div className="text-sm font-semibold text-gray-800 leading-snug">{value}</div>
+                    </div>
+                  ))}
+                </div>
+                {hasKeywords && (
+                  <div className="mt-4 pt-4 border-t border-gray-100">
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Keywords</div>
+                    <div className="flex flex-wrap gap-2">
+                      {tech.keywords.map((kw, i) => (
+                        <span key={i} className="px-2.5 py-1 rounded-full bg-gray-100 text-xs text-gray-600 font-medium">{kw}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* SECTION 7 — Licensing & Commercialization */}
+              <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6">
+                <div className="flex items-center gap-2 mb-5">
+                  <div className="w-7 h-7 rounded-lg bg-rose-50 flex items-center justify-center">
+                    <Shield className="w-4 h-4 text-rose-600" />
+                  </div>
+                  <h2 className="font-heading font-bold text-gray-900">Technology Transfer & Licensing</h2>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                  <div className="text-center p-4 rounded-xl bg-blue-50 border border-blue-100">
+                    <div className="text-2xl font-black text-[#2563EB] font-heading mb-1">
+                      {trlLevel > 0 ? `TRL ${trlLevel}` : 'N/A'}
+                    </div>
+                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wide">Readiness Level</div>
+                    <div className="text-xs text-blue-600 mt-1 font-semibold">{trlLabel}</div>
+                  </div>
+                  <div className="text-center p-4 rounded-xl bg-amber-50 border border-amber-100">
+                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Patent Status</div>
+                    <div className="text-sm font-bold text-amber-800">
+                      {clean(tech.patent_status) || 'Contact Institution'}
+                    </div>
+                  </div>
+                  <div className="text-center p-4 rounded-xl bg-emerald-50 border border-emerald-100">
+                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Licensing</div>
+                    <div className="text-sm font-bold text-emerald-800">
+                      {clean(tech.commercialization_status) || 'Available via RINK'}
+                    </div>
+                  </div>
+                </div>
+
+                <TRLBar raw={tech.trl} />
+
+                <div className="mt-6 pt-5 border-t border-gray-100">
+                  <p className="text-sm text-gray-600 font-sans leading-relaxed mb-4">
+                    Interested in licensing or commercializing this technology? Submit an inquiry through RINK and
+                    our team will connect you with <strong>{tech.institution}</strong>.
+                  </p>
+                  <a
+                    href={GOOGLE_FORM_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    id="request-technology-btn"
+                    className="hidden lg:inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#2563EB] text-white font-bold text-sm hover:bg-[#1D4ED8] transition-colors"
+                  >
+                    <FileText className="w-4 h-4" />
+                    Request Licensing / Transfer
+                    <ExternalLink className="w-3.5 h-3.5 opacity-75" />
+                  </a>
                 </div>
               </div>
 
-              {/* Technology Description */}
-              {hasDesc && (
-                <div
-                  className="bg-card rounded-2xl border border-border p-6 animate-slide-fade-in"
-                  style={{
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)',
-                    animationDelay: '0.2s',
-                  }}
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 rounded-lg bg-accent-secondary/10 flex items-center justify-center">
-                      <BookOpen className="w-4 h-4 text-accent-secondary" />
-                    </div>
-                    <h2 className="font-bold text-heading font-heading">Technology Description</h2>
-                  </div>
-                  <p className="text-text-primary leading-relaxed text-[15px]">{tech.description}</p>
-                </div>
-              )}
-
-              {/* Applications & Industry Potential — Bullet list card */}
-              {hasApps && (
-                <div
-                  className="bg-card rounded-2xl border border-border p-6 animate-slide-fade-in"
-                  style={{
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)',
-                    animationDelay: '0.3s',
-                  }}
-                >
-                  <div className="flex items-start gap-3 mb-5">
-                    <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <Zap className="w-4 h-4 text-accent" />
-                    </div>
-                    <div>
-                      <h2 className="font-bold text-heading font-heading">Applications &amp; Industry Potential</h2>
-                      <p className="text-xs text-text-secondary mt-0.5">
-                        Potential application areas for this technology
-                      </p>
-                    </div>
-                  </div>
-                  <ul className="space-y-2.5">
-                    {tech.applications.map((app, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2.5"
-                        style={{ animation: `slide-fade-in 0.3s ease-out ${0.3 + i * 0.07}s both` }}
-                      >
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                        <span className="text-[15px] text-text-primary leading-relaxed">{app}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
             </div>
 
-            {/* ── RIGHT COLUMN — Sticky Glassmorphic Panel ── */}
-            <div className="lg:col-span-3">
+            {/* ── RIGHT (1/3) — Sticky sidebar ──────────────── */}
+            <div className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-4">
 
-                {/* Main Action Card — Dynamic Background */}
-                <div
-                  className="rounded-2xl bg-card border border-border p-6"
-                  style={{
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
-                    animation: 'slide-fade-in 0.7s ease-out 0.2s both',
-                  }}
-                >
+                {/* SECTION 8 — Institution Card */}
+                <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">Partner Institution</div>
 
-                  {/* TRL Readiness Level */}
-                  <div className="mb-5 pb-5 border-b border-border">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded-md bg-accent-secondary/10 flex items-center justify-center">
-                        <Zap className="w-3.5 h-3.5 text-accent-secondary" />
-                      </div>
-                      <span className="text-[11px] font-bold text-text-secondary uppercase tracking-widest">
-                        Technology Readiness
-                      </span>
-                    </div>
-                    <TRLMeter raw={tech.trl} />
-                  </div>
-
-                  {/* Patent / IP Status */}
-                  <div className="mb-5 pb-5 border-b border-border">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded-md bg-accent-secondary/10 flex items-center justify-center">
-                        <Shield className="w-3.5 h-3.5 text-accent-secondary" />
-                      </div>
-                      <span className="text-[11px] font-bold text-text-secondary uppercase tracking-widest">
-                        IP Status
-                      </span>
-                    </div>
-                    {tech.patent_status && tech.patent_status !== 'Not Specified' && tech.patent_status !== 'NA' ? (
-                      <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-accent-secondary/10 border border-accent-secondary/20">
-                        <Shield className="w-4 h-4 text-accent-secondary flex-shrink-0" />
-                        <span className="text-sm font-semibold text-text-primary">{tech.patent_status}</span>
-                      </div>
+                  {/* Institution Logo */}
+                  <div className="w-full h-20 rounded-xl bg-[#F8FAFF] border border-gray-100 flex items-center justify-center mb-4 overflow-hidden">
+                    {tech.institution_image_embed_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={tech.institution_image_embed_url}
+                        alt={tech.institution}
+                        className="w-full h-full object-contain p-3"
+                        referrerPolicy="no-referrer"
+                        loading="lazy"
+                      />
                     ) : (
-                      <InfoMissing />
+                      <Building2 className="w-8 h-8 text-gray-300" />
                     )}
                   </div>
 
-                  {/* Institution */}
-                  <div className="mb-5 pb-5 border-b border-border">
-                    <div className="flex items-start gap-2.5">
-                      <MapPin className="w-4 h-4 text-text-secondary mt-0.5 flex-shrink-0" />
-                      <div>
-                        <div className="text-[11px] text-text-secondary font-medium mb-0.5">Institution</div>
-                        <Link
-                          href={`/institutions/${tech.institution_slug}`}
-                          className="text-sm font-semibold text-text-primary hover:text-accent-secondary transition-colors flex items-center gap-1 group"
-                        >
-                          {tech.institution}
-                          <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Desktop CTA Button with glow pulse animation */}
-                  <div className="hidden lg:block">
-                    <a
-                      href={GOOGLE_FORM_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      id="request-technology-btn"
-                      className="animate-glow-cta group flex items-center justify-center gap-2 w-full py-4 px-6 rounded-xl bg-emerald-600 text-white font-bold text-[13px] tracking-wide hover:bg-emerald-700 hover:-translate-y-0.5 active:translate-y-0 transition-transform duration-200"
-                    >
-                      <FileText className="w-4 h-4 flex-shrink-0" />
-                      Request This Technology
-                      <ExternalLink className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                    </a>
-                    <p className="text-center text-[11px] text-text-secondary mt-3 leading-relaxed px-1">
-                      Interested in commercializing this technology? Submit a request through RINK and our team will connect you with the relevant institution.
-                    </p>
-                  </div>
-
-                </div>
-
-                {/* RINK Contact Card */}
-                <div
-                  className="rounded-2xl bg-card border border-border p-5"
-                  style={{
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)',
-                    animation: 'slide-fade-in 0.7s ease-out 0.35s both',
-                  }}
-                >
-                  <h3 className="text-[11px] font-bold text-text-secondary uppercase tracking-widest mb-4">
-                    RINK Contact
+                  <h3 className="font-heading font-bold text-gray-900 text-sm leading-snug mb-1">
+                    {tech.institution}
                   </h3>
-                  <div className="space-y-3">
-                    <div className="text-sm font-semibold text-text-primary leading-snug">
-                      Research Innovation Network Kerala
+
+                  {tech.institution_website && clean(tech.institution_website) && (
+                    <a href={tech.institution_website} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-[#2563EB] hover:underline mb-4 font-sans">
+                      <Globe className="w-3 h-3" />
+                      Visit Website
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  )}
+
+                  {(clean(tech.email) || clean(tech.phone)) && (
+                    <div className="border-t border-gray-100 pt-3 mt-3 space-y-2">
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Contact</div>
+                      {clean(tech.phone) && (
+                        <a href={`tel:${tech.phone}`} className="flex items-center gap-2 text-xs text-gray-600 hover:text-[#2563EB] transition-colors">
+                          <Phone className="w-3.5 h-3.5 text-gray-400" />
+                          {tech.phone}
+                        </a>
+                      )}
+                      {clean(tech.email) && (
+                        <a href={`mailto:${tech.email}`} className="flex items-center gap-2 text-xs text-gray-600 hover:text-[#2563EB] transition-colors">
+                          <Mail className="w-3.5 h-3.5 text-gray-400" />
+                          {tech.email}
+                        </a>
+                      )}
                     </div>
-                    <a href="mailto:rink@startupmission.in" className="flex items-center gap-2.5 text-sm text-text-secondary hover:text-accent-secondary transition-colors">
-                      <Mail className="w-3.5 h-3.5 text-text-secondary flex-shrink-0" />
-                      rink@startupmission.in
+                  )}
+
+                  <Link href={`/institutions/${tech.institution_slug}`}
+                    className="mt-4 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border border-[#2563EB] text-[#2563EB] text-xs font-bold hover:bg-blue-50 transition-colors">
+                    View Institution
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+
+                {/* Quick Facts */}
+                <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">Quick Facts</div>
+                  <dl className="space-y-3">
+                    {[
+                      { label: 'Technology ID', value: tech.id },
+                      { label: 'Sector', value: tech.sector },
+                      { label: 'Type', value: clean(tech.technology_type) || '—' },
+                      { label: 'TRL', value: trlLevel > 0 ? `TRL ${trlLevel}/9` : '—' },
+                      { label: 'Patent', value: clean(tech.patent_status) || '—' },
+                      { label: 'Licensing', value: clean(tech.commercialization_status) || 'Available via RINK' },
+                    ].map(({ label, value }) => (
+                      <div key={label} className="flex justify-between gap-2 text-xs">
+                        <dt className="text-gray-400 font-medium flex-shrink-0">{label}</dt>
+                        <dd className="text-gray-800 font-semibold text-right leading-snug">{value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+
+                {/* RINK Contact */}
+                <div className="rounded-2xl border border-gray-100 bg-[#F8FAFF] p-5">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">RINK Contact</div>
+                  <div className="text-sm font-semibold text-gray-900 mb-2">Research Innovation Network Kerala</div>
+                  <div className="space-y-2">
+                    <a href="mailto:rink@startupmission.in" className="flex items-center gap-2 text-xs text-gray-600 hover:text-[#2563EB] transition-colors">
+                      <Mail className="w-3.5 h-3.5 text-gray-400" /> rink@startupmission.in
                     </a>
-                    <a href="tel:08047180470" className="flex items-center gap-2.5 text-sm text-text-secondary hover:text-accent-secondary transition-colors">
-                      <Phone className="w-3.5 h-3.5 text-text-secondary flex-shrink-0" />
-                      080 4718 0470
+                    <a href="tel:04712700270" className="flex items-center gap-2 text-xs text-gray-600 hover:text-[#2563EB] transition-colors">
+                      <Phone className="w-3.5 h-3.5 text-gray-400" /> 0471-2700270
                     </a>
-                    <a href="tel:04712700270" className="flex items-center gap-2.5 text-sm text-text-secondary hover:text-accent-secondary transition-colors">
-                      <Phone className="w-3.5 h-3.5 text-text-secondary flex-shrink-0" />
-                      0471-2700270
+                    <a href="https://startupmission.in" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-[#2563EB] hover:underline">
+                      <Globe className="w-3.5 h-3.5" /> startupmission.in
                     </a>
                   </div>
                 </div>
 
-                {/* Institution Website */}
-                {tech.institution_website && tech.institution_website !== 'Not Specified' && (
-                  <a
-                    href={tech.institution_website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between w-full p-4 bg-card rounded-xl border border-border hover:border-accent-secondary/20 hover:shadow-sm transition-all group"
-                    style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Globe className="w-4 h-4 text-text-secondary" />
-                      <span className="text-sm font-medium text-text-primary group-hover:text-accent-secondary transition-colors">
-                        Visit Institution Website
-                      </span>
-                    </div>
-                    <ExternalLink className="w-3.5 h-3.5 text-text-secondary group-hover:text-accent-secondary transition-colors" />
-                  </a>
-                )}
-
-                {/* More from Institution */}
-                <Link
-                  href={`/institutions/${tech.institution_slug}`}
-                  className="flex items-center justify-between w-full p-4 bg-card rounded-xl border border-border hover:border-accent-secondary/20 hover:shadow-sm transition-all group"
-                  style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <MapPin className="w-4 h-4 text-text-secondary" />
-                    <span className="text-sm font-medium text-text-primary group-hover:text-accent-secondary transition-colors">
-                      More from {tech.institution.split(' ').slice(0, 3).join(' ')}…
-                    </span>
-                  </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-text-secondary group-hover:text-accent-secondary transition-colors" />
-                </Link>
+                {/* Desktop CTA */}
+                <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer" id="cta-sidebar-btn"
+                  className="hidden lg:flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[#2563EB] text-white font-bold text-sm hover:bg-[#1D4ED8] transition-colors">
+                  <FileText className="w-4 h-4" />
+                  Request Licensing / Transfer
+                  <ExternalLink className="w-3.5 h-3.5 opacity-75" />
+                </a>
 
               </div>
             </div>
 
           </div>
         </div>
+
+        {/* ══════════════════════════════════════════════════════
+            SECTION 9 — RELATED TECHNOLOGIES
+        ══════════════════════════════════════════════════════ */}
+        {related.length > 0 && (
+          <section className="border-t border-gray-100 bg-[#F8FAFF] py-12">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+              <div className="flex items-end justify-between mb-8">
+                <div>
+                  <div className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-2">More from {tech.sector}</div>
+                  <h2 className="text-2xl font-heading font-bold text-gray-900">Related Technologies</h2>
+                </div>
+                <Link href={`/sectors/${tech.sector_slug}`}
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-[#2563EB] hover:underline">
+                  View all <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {related.map(rel => {
+                  const relImg = rel.image_embed_url || rel.technology_image_embed_url || rel.image_url || rel.technology_image || null;
+                  return (
+                    <Link key={rel.id} href={`/technologies/${rel.id}`}
+                      className="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md hover:border-blue-200 transition-all">
+                      <div className="aspect-[16/9] bg-gray-50 relative overflow-hidden">
+                        {relImg ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={relImg} alt={rel.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" loading="lazy" />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <Microscope className="w-8 h-8 text-gray-200" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">{rel.institution.split(' ').slice(0, 3).join(' ')}</div>
+                        <h3 className="font-heading font-bold text-gray-900 text-sm leading-snug line-clamp-2 group-hover:text-[#2563EB] transition-colors">
+                          {rel.name}
+                        </h3>
+                        <div className="mt-3 flex items-center gap-1 text-xs text-[#2563EB] font-semibold">
+                          Explore <ArrowRight className="w-3 h-3" />
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
 
       </div>
     </div>

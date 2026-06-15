@@ -1,50 +1,44 @@
 'use client';
 
 import { useState } from 'react';
-import { FlaskConical } from 'lucide-react';
+import { Microscope } from 'lucide-react';
 
 interface Props {
-  src: string;
+  src: string | null;
   alt: string;
   className?: string;
 }
 
-// Fallback placeholder when Drive image fails
-function Placeholder({ alt }: { alt: string }) {
-  const initials = alt.slice(0, 2).toUpperCase();
-  return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="w-12 h-12 rounded-xl bg-[#003F8A]/10 flex items-center justify-center mb-2">
-        <FlaskConical className="w-6 h-6 text-[#003F8A]/40" />
-      </div>
-      <span className="text-xs text-gray-400 font-medium px-4 text-center leading-tight">
-        {alt.length > 30 ? alt.slice(0, 30) + '…' : alt}
-      </span>
-    </div>
-  );
-}
-
+/**
+ * Technology image with inline fallback.
+ * Shows a professional placeholder if the URL is missing or fails to load.
+ */
 export default function TechImage({ src, alt, className = '' }: Props) {
   const [failed, setFailed] = useState(false);
-  const [loaded, setLoaded] = useState(false);
 
   if (!src || failed) {
-    return <Placeholder alt={alt} />;
+    return (
+      <div className={`absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#F8FAFF] ${className}`}>
+        <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center">
+          <Microscope className="w-8 h-8 text-blue-300" />
+        </div>
+        <span className="text-sm text-gray-400 font-medium text-center px-4">
+          Technology Image Will Be Updated
+        </span>
+      </div>
+    );
   }
 
   return (
-    <>
-      {!loaded && <Placeholder alt={alt} />}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt={alt}
-        onLoad={() => setLoaded(true)}
-        onError={() => setFailed(true)}
-        className={`${className} ${loaded ? 'opacity-100' : 'opacity-0 absolute'} transition-opacity duration-300`}
-        style={loaded ? {} : { position: 'absolute', width: 0, height: 0 }}
-        referrerPolicy="no-referrer"
-      />
-    </>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt={alt}
+      onError={() => setFailed(true)}
+      className={`w-full h-full object-cover ${className}`}
+      referrerPolicy="no-referrer"
+      loading="eager"
+      decoding="async"
+    />
   );
 }
