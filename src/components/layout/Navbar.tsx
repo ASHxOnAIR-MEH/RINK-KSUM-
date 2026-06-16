@@ -3,14 +3,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { Home, Building2, Info, X, Menu } from 'lucide-react';
+import { Home, Building2, Mail } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 
 const NAV_LINKS = [
   { label: 'Home',         href: '/',             icon: Home },
-  { label: 'Institutions', href: '/institutions',  icon: Building2 },
-  { label: 'About',        href: '/about',         icon: Info },
+  { label: 'Institutions', href: '/technologies', icon: Building2 },
+  { label: 'Contact',      href: '/#contact',     icon: Mail },
 ];
 
 export default function Navbar() {
@@ -40,26 +40,20 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16">
 
             {/* ── Logo ── */}
-            <Link href="/" className="flex items-center gap-3 flex-shrink-0 select-none" id="navbar-logo">
-              <div className="relative h-9 w-24">
+            <Link href="/" className="flex items-center gap-2.5 flex-shrink-0 select-none" id="navbar-logo">
+              <div className="relative h-9 sm:h-10 w-28 sm:w-40">
                 <Image
-                  src="/images/ksum-logo.png"
-                  alt="Kerala Startup Mission"
+                  src="/images/rink-logo.png"
+                  alt="Research Innovation Network Kerala"
                   fill
                   className="object-contain object-left"
                   priority
                 />
               </div>
-              <div className="h-6 w-px bg-gray-200" />
-              <div className="flex flex-col justify-center">
-                <span className="text-xs font-black text-gray-900 tracking-wider uppercase leading-tight font-heading">
-                  <span className="sm:hidden">RINK Portal</span>
-                  <span className="hidden sm:inline">RINK Technology Transfer Portal</span>
-                </span>
-                <span className="hidden sm:block text-[8px] font-semibold text-gray-500 tracking-widest uppercase leading-none mt-0.5">
-                  Research Innovation Network Kerala
-                </span>
-              </div>
+              <span className="hidden sm:block h-6 w-px bg-gray-200" />
+              <span className="hidden sm:block text-[10px] font-semibold text-gray-500 tracking-wide uppercase leading-tight">
+                Technology<br />Transfer Portal
+              </span>
             </Link>
 
             {/* ── Desktop Nav Links ── */}

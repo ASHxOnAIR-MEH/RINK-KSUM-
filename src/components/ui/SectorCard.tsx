@@ -356,7 +356,7 @@ export default function SectorCard({ sector }: Props) {
   const accentColor = SECTOR_ACCENTS[sector.slug] || '#10B981';
 
   return (
-    <Link href={`/sectors/${sector.slug}`} id={`sector-card-${sector.slug}`} className="block group">
+    <Link href={`/technologies?sector=${sector.slug}`} id={`sector-card-${sector.slug}`} className="block group">
       <div
         className="relative overflow-hidden rounded-md h-40 sm:h-52 flex flex-col justify-end cursor-pointer border border-gray-100 bg-gray-50 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-250"
         style={{ transition: 'all 0.25s ease' }}

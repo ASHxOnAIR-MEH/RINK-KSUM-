@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import type { Institution } from '@/types';
+import KeralaInnovationMap from './KeralaInnovationMap';
 
 // ── Local logo map: slug → local image path ───────────────────
 // Add new paths here as logos are uploaded
@@ -230,19 +231,22 @@ export default function PartnerInstitutionsSection({ institutions }: Props) {
         </svg>
       </div>
 
+      {/* Interactive Kerala innovation geographic map (ambient) */}
+      <KeralaInnovationMap />
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-4">
           <div>
             <div className="text-xs font-bold text-[#0A2164] uppercase tracking-widest mb-3">
               Partner Institutions
             </div>
             <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-3">
-              {institutions.length} Partner Institutes
+              23 Partner Institutions
             </h2>
-            <p className="text-sm text-gray-600 max-w-xl leading-relaxed font-sans">
-              Kerala's leading research and academic institutions contributing technologies for
-              startups, industry, and commercialization through RINK.
+            <p className="text-sm text-gray-600 max-w-2xl leading-relaxed font-sans">
+              Kerala&apos;s leading universities, research organisations, centres of excellence and
+              technology institutions contributing to the RINK ecosystem.
             </p>
           </div>
           <Link
@@ -253,6 +257,12 @@ export default function PartnerInstitutionsSection({ institutions }: Props) {
             All Institutions <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
+
+        {/* RINK network note */}
+        <p className="text-xs text-gray-500 italic max-w-2xl mb-12 font-sans">
+          These partner institutes support the overarching Research Innovation Network Kerala (RINK)
+          and are not exclusive to this portal.
+        </p>
 
         {/* A. Featured Institutions (top 6) */}
         <div className="mb-14">

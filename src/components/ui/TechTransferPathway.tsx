@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-
 const STEPS = [
   {
     id: 1,
@@ -89,8 +87,6 @@ interface Props {
 }
 
 export default function TechTransferPathway({ compact = false }: Props) {
-  const [activeStep, setActiveStep] = useState<number | null>(null);
-
   return (
     <section className={`relative bg-white border-b border-gray-100 ${compact ? 'py-14' : 'py-20'}`}>
       {/* Subtle circuit-trace background */}
@@ -157,65 +153,32 @@ export default function TechTransferPathway({ compact = false }: Props) {
                   <div className="md:hidden absolute left-1/2 top-[60px] -translate-x-1/2 w-[2px] h-8 bg-blue-200 z-0" />
                 )}
 
-                {/* Step button */}
-                <button
-                  onClick={() => setActiveStep(activeStep === step.id ? null : step.id)}
-                  className={`
-                    relative z-10 w-[52px] h-[52px] rounded-full border-2 flex items-center justify-center
-                    transition-all duration-200 cursor-pointer
-                    ${activeStep === step.id
-                      ? 'bg-[#0A2164] border-[#0A2164] text-white shadow-sm shadow-blue-200'
-                      : 'bg-white border-gray-200 text-gray-500 hover:border-[#0A2164] hover:text-[#0A2164] hover:shadow-md hover:scale-105'
-                    }
-                  `}
+                {/* Step node (non-interactive) */}
+                <div
+                  className="relative z-10 w-[52px] h-[52px] rounded-full border-2 flex items-center justify-center bg-white border-gray-200 text-[#0A2164]"
                   title={step.label}
-                  aria-label={`${step.label}: ${step.shortDesc}`}
+                  aria-label={step.label}
                 >
-                  <span className={activeStep === step.id ? 'text-white' : 'text-[#0A2164]'}>
+                  <span className="text-[#0A2164]">
                     {step.icon}
                   </span>
                   {/* Step number */}
-                  <span className={`
-                    absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-[9px] font-black flex items-center justify-center
-                    ${activeStep === step.id ? 'bg-white text-[#0A2164]' : 'bg-[#0A2164] text-white'}
-                  `}>
+                  <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-[9px] font-black flex items-center justify-center bg-[#0A2164] text-white">
                     {step.id}
                   </span>
-                </button>
+                </div>
 
                 {/* Label */}
-                <div className={`mt-3 text-center ${compact ? '' : ''}`}>
-                  <div className={`text-[13px] font-bold font-heading ${activeStep === step.id ? 'text-[#0A2164]' : 'text-gray-800'}`}>
+                <div className="mt-3 text-center">
+                  <div className="text-[13px] font-bold font-heading text-gray-800">
                     {step.label}
                   </div>
-                  {!compact && (
-                    <div className="text-[11px] text-gray-400 mt-0.5 leading-tight font-sans">
-                      {step.shortDesc}
-                    </div>
-                  )}
                 </div>
 
               </div>
             ))}
           </div>
-
-          {/* Dynamic detail card (Desktop & Mobile) - expands container naturally without clipping */}
-          {activeStep && (
-            <div className="mt-8 bg-blue-50 border border-blue-200 rounded-md p-5 text-center max-w-3xl mx-auto shadow-sm animate-fade-in">
-              <div className="text-sm md:text-lg font-bold text-[#0A2164] mb-2 font-heading">
-                {STEPS.find(s => s.id === activeStep)?.label}
-              </div>
-              <div className="text-sm md:text-base text-gray-700 leading-relaxed font-sans">
-                {STEPS.find(s => s.id === activeStep)?.detail}
-              </div>
-            </div>
-          )}
         </div>
-
-        {/* Hint text */}
-        <p className="text-center text-[11px] text-gray-400 mt-8 font-sans">
-          Tap any step to learn more · The pathway represents RINK's structured technology transfer process
-        </p>
       </div>
     </section>
   );
