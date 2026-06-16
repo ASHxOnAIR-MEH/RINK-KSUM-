@@ -47,10 +47,12 @@ export default async function HomePage() {
       <section className="relative overflow-hidden">
         {/* Background cover image */}
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-right"
           style={{ backgroundImage: "url('/images/hero-bg.png')" }}
           aria-hidden
         />
+        {/* Mobile fix base tint to ensure text contrast over the bright image */}
+        <div className="absolute inset-0 bg-[#030B1E]/70 md:bg-transparent" aria-hidden />
         {/* Cinematic gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#030B1E]/90 via-[#030B1E]/70 to-transparent" aria-hidden />
 
