@@ -4,6 +4,7 @@ import FeaturedCarousel from '@/components/ui/FeaturedCarousel';
 import TechTransferPathway from '@/components/ui/TechTransferPathway';
 import AIDiscoveryBar from '@/components/ui/AIDiscoveryBar';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, MapPin, Sparkles } from 'lucide-react';
 
 export const metadata = {
@@ -50,15 +51,25 @@ export default async function HomePage() {
           style={{ backgroundImage: "url('/images/hero-bg.png')" }}
           aria-hidden
         />
-        {/* Multi-layer contrast overlay for guaranteed text/input readability */}
+        {/* Solid dark-blue tint for text/input readability */}
         <div className="absolute inset-0 bg-[#0A2164]/75" aria-hidden />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A2164] via-[#0A2164]/90 to-transparent" aria-hidden />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24">
           <div className="max-w-3xl animate-fade-in">
+            {/* RINK Logo */}
+            <div className="relative h-12 sm:h-14 w-44 sm:w-56 mb-6">
+              <Image
+                src="/images/rink-logo.png"
+                alt="Research Innovation Network Kerala"
+                fill
+                className="object-contain object-left brightness-0 invert"
+                priority
+              />
+            </div>
+
             {/* Eyebrow */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white/10 border border-white/20 text-white text-[11px] sm:text-xs font-semibold tracking-wide font-sans mb-6 uppercase">
-              Research Innovation Network Kerala · Technology Transfer Portal
+              Technology Transfer Portal
             </div>
 
             {/* Headline */}
