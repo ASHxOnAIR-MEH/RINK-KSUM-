@@ -51,10 +51,10 @@ export default async function HomePage() {
           style={{ backgroundImage: "url('/images/hero-bg.png')" }}
           aria-hidden
         />
-        {/* Mobile fix base tint to ensure text contrast over the bright image */}
-        <div className="absolute inset-0 bg-[#030B1E]/70 md:bg-transparent" aria-hidden />
-        {/* Cinematic gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#030B1E]/90 via-[#030B1E]/70 to-transparent" aria-hidden />
+        {/* Solid dark blue tint overlay */}
+        <div className="absolute inset-0 bg-[#0A2164]/75" aria-hidden />
+        {/* Progressive scrim fade */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A2164] via-[#0A2164]/90 to-transparent" aria-hidden />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-28">
           <div className="max-w-3xl animate-fade-in">
