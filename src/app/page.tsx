@@ -2,10 +2,10 @@ import { getFeaturedTechnologies, getAllSectors } from '@/lib/db';
 import SectorCard from '@/components/ui/SectorCard';
 import FeaturedCarousel from '@/components/ui/FeaturedCarousel';
 import TechTransferPathway from '@/components/ui/TechTransferPathway';
-import AIDiscoveryBar from '@/components/ui/AIDiscoveryBar';
+import HeroSearch from '@/components/ui/HeroSearch';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, MapPin, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export const metadata = {
   title: 'RINK Technology Transfer Portal — Kerala Startup Mission',
@@ -51,13 +51,13 @@ export default async function HomePage() {
           style={{ backgroundImage: "url('/images/hero-bg.png')" }}
           aria-hidden
         />
-        {/* Solid dark-blue tint for text/input readability */}
-        <div className="absolute inset-0 bg-[#0A2164]/75" aria-hidden />
+        {/* Cinematic gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#030B1E]/90 via-[#030B1E]/70 to-transparent" aria-hidden />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-28">
           <div className="max-w-3xl animate-fade-in">
             {/* RINK Logo */}
-            <div className="relative h-12 sm:h-14 w-44 sm:w-56 mb-6">
+            <div className="relative h-12 sm:h-14 w-44 sm:w-56 mb-8">
               <Image
                 src="/images/rink-logo.png"
                 alt="Research Innovation Network Kerala"
@@ -67,64 +67,42 @@ export default async function HomePage() {
               />
             </div>
 
-            {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white/10 border border-white/20 text-white text-[11px] sm:text-xs font-semibold tracking-wide font-sans mb-6 uppercase">
-              Technology Transfer Portal
-            </div>
-
-            {/* Headline */}
-            <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.14] tracking-tight mb-5">
+            {/* Title */}
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white font-bold leading-[1.12] tracking-tight">
               Find the Right Technology
             </h1>
 
-            {/* Subheading */}
-            <p className="text-blue-100 text-base md:text-lg leading-relaxed max-w-2xl font-sans mb-8">
+            {/* Subtitle */}
+            <p className="font-sans text-lg text-slate-300 max-w-2xl mt-5 mb-8 leading-relaxed">
               Browse innovations developed by Kerala&apos;s research institutions and identify
               technologies aligned with your business or startup needs.
             </p>
 
-            {/* AI Discovery search panel (flat bright white base) */}
-            <div className="bg-white border border-slate-200 rounded-md p-4 sm:p-5 shadow-sm">
-              <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-9 h-9 rounded-md bg-[#0A2164] flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-5 h-5 text-[#F5B400]" />
-                </div>
-                <div>
-                  <h2 className="font-serif text-base font-bold text-slate-900 leading-tight">
-                    AI Technology Discovery
-                  </h2>
-                  <p className="text-xs text-slate-500 font-sans">
-                    Describe your startup idea — our AI searches the live RINK database for relevant technologies.
-                  </p>
-                </div>
-              </div>
-              <AIDiscoveryBar />
-            </div>
+            {/* Search */}
+            <HeroSearch />
           </div>
 
-          {/* Live Metrics Card */}
-          <div className="mt-8 max-w-3xl bg-white border border-slate-200 rounded-md p-5 sm:p-6 shadow-sm">
-            <div className="grid grid-cols-3 divide-x divide-slate-200">
-              {[
-                { num: '160+', label: 'Technologies' },
-                { num: '10+', label: 'Research Institutions' },
-                { num: '11+', label: 'Sectors' },
-              ].map((m) => (
-                <div key={m.label} className="px-2 text-center">
-                  <div className="font-serif text-2xl sm:text-3xl font-bold text-[#0A2164] leading-none">
-                    {m.num}
-                  </div>
-                  <div className="text-[11px] sm:text-xs text-slate-500 font-sans mt-1.5">
-                    {m.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 pt-4 border-t border-slate-200 flex items-center justify-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-red-dot flex-shrink-0" />
-              <span className="text-xs font-semibold text-slate-500 font-sans">
-                Prototype stage continuously updated
-              </span>
+          {/* Integrated Metrics Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-4 max-w-4xl mt-12 bg-white/5 border border-white/10 backdrop-blur-sm rounded-md divide-y md:divide-y-0 md:divide-x divide-white/10">
+            {[
+              { num: '160+', label: 'Technologies' },
+              { num: '10+', label: 'Research Institutions' },
+              { num: '11+', label: 'Sectors' },
+            ].map((m) => (
+              <div key={m.label} className="p-6 text-center">
+                <div className="font-serif text-3xl font-bold text-white leading-none">{m.num}</div>
+                <div className="text-sm text-slate-300 font-sans mt-2">{m.label}</div>
+              </div>
+            ))}
+            {/* Live status cell */}
+            <div className="p-6 text-center flex flex-col items-center justify-center">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-red-dot flex-shrink-0" />
+                <span className="font-serif text-lg font-bold text-white leading-none">Live</span>
+              </div>
+              <div className="text-xs text-slate-300 font-sans mt-2 leading-snug">
+                Prototype stage<br />continuously updated
+              </div>
             </div>
           </div>
         </div>
@@ -195,52 +173,6 @@ export default async function HomePage() {
 
       {/* ── 4. TECHNOLOGY TRANSFER PATHWAY ───────────────────── */}
       <TechTransferPathway compact={true} />
-
-      {/* ── 5. ABOUT RINK (minimalist) ───────────────────────── */}
-      <section className="py-16 bg-white border-b border-slate-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <div className="text-xs font-bold text-[#0A2164] uppercase tracking-widest mb-4">About RINK</div>
-          <p className="text-base md:text-lg text-slate-700 leading-relaxed font-sans">
-            The RINK Technology Transfer Portal, an initiative of Research Innovation Network Kerala (RINK)
-            under Kerala Startup Mission (KSUM), showcases commercially viable technologies from Kerala&apos;s
-            leading research institutions. As a single platform for technology discovery, technology transfer,
-            and startup creation, it enables startups, entrepreneurs, and industry stakeholders to identify and
-            adopt research-backed innovations, accelerating technology commercialization and innovation-driven
-            entrepreneurship across Kerala.
-          </p>
-          <a
-            href="https://rink.startupmission.in/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 mt-7 px-6 py-3 rounded-md bg-[#0A2164] text-white text-sm font-bold font-sans hover:bg-[#081A52] transition-colors"
-          >
-            Learn More <ArrowRight className="w-4 h-4" />
-          </a>
-        </div>
-      </section>
-
-      {/* ── 6. CONTACT RINK ──────────────────────────────────── */}
-      <section id="contact" className="py-16 bg-[#F4F6F9] border-b border-slate-200 scroll-mt-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="text-xs font-bold text-[#0A2164] uppercase tracking-widest mb-3">Contact RINK</div>
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-3">
-            Connect With Kerala&apos;s Research Ecosystem
-          </h2>
-          <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-2xl font-sans mb-6">
-            Research Innovation Network Kerala (RINK) connects startups, industry, investors and innovators
-            with Kerala&apos;s leading research and academic institutions.
-          </p>
-          <div className="flex items-start gap-3">
-            <MapPin className="w-5 h-5 text-[#0A2164] mt-0.5 flex-shrink-0" />
-            <address className="not-italic text-sm md:text-base text-slate-700 leading-relaxed font-sans">
-              Kerala Startup Mission<br />
-              G3B, Thejaswini, Technopark Campus<br />
-              Kariyavattom, Thiruvananthapuram<br />
-              Kerala 695581
-            </address>
-          </div>
-        </div>
-      </section>
 
     </div>
   );
