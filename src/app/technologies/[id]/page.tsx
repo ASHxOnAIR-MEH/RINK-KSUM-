@@ -2,7 +2,7 @@ import { getTechnologyById, getAllTechnologies } from '@/lib/db';
 import { fetchAllTechnologies } from '@/lib/sheets';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronRight, ExternalLink, ArrowRight, FileText, Microscope } from 'lucide-react';
+import { ChevronRight, ExternalLink, ArrowRight, FileText, Microscope, Lightbulb } from 'lucide-react';
 import TechImage from '@/components/ui/TechImage';
 
 const GOOGLE_FORM_URL =
@@ -107,7 +107,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
             href={GOOGLE_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-3.5 rounded bg-blue-600 text-white font-semibold text-sm"
+            className="flex items-center justify-center gap-2 w-full py-3.5 rounded-md bg-[#0A2164] text-white font-semibold text-sm"
           >
             <FileText className="w-4 h-4" />
             Request Licensing
@@ -121,60 +121,60 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
         {/* ══════════════════════════════════════════════════════
             SECTION 1 — HERO
         ══════════════════════════════════════════════════════ */}
-        <section className="border-b border-gray-200 bg-gray-50/50">
+        <section className="border-b border-slate-200 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-12">
-            
+
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-xs text-gray-500 flex-wrap mb-8">
-              <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
-              <ChevronRight className="w-3 h-3 text-gray-300" />
-              <Link href="/technologies" className="hover:text-blue-600 transition-colors">Technologies</Link>
-              <ChevronRight className="w-3 h-3 text-gray-300" />
-              <Link href={`/sectors/${tech.sector_slug}`} className="hover:text-blue-600 transition-colors">{tech.sector}</Link>
-              <ChevronRight className="w-3 h-3 text-gray-300" />
-              <span className="text-gray-900 font-medium truncate max-w-[200px] sm:max-w-sm">{tech.name}</span>
+            <nav className="flex items-center gap-1.5 text-xs text-slate-500 flex-wrap mb-8">
+              <Link href="/" className="hover:text-[#0A2164] transition-colors">Home</Link>
+              <ChevronRight className="w-3 h-3 text-slate-300" />
+              <Link href="/technologies" className="hover:text-[#0A2164] transition-colors">Technologies</Link>
+              <ChevronRight className="w-3 h-3 text-slate-300" />
+              <Link href={`/sectors/${tech.sector_slug}`} className="hover:text-[#0A2164] transition-colors">{tech.sector}</Link>
+              <ChevronRight className="w-3 h-3 text-slate-300" />
+              <span className="text-slate-900 font-medium truncate max-w-[200px] sm:max-w-sm">{tech.name}</span>
             </nav>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              
+
               {/* LEFT COLUMN */}
-              <div className="flex flex-col gap-6">
-                
-                {/* Badges */}
+              <div className="flex flex-col gap-5">
+
+                {/* Category chips */}
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 rounded bg-gray-200 text-gray-800 text-xs font-bold uppercase tracking-wider">
+                  <span className="bg-slate-50 border border-slate-200 text-slate-700 rounded-sm text-xs px-3 py-1 font-sans font-semibold">
                     {tech.sector}
                   </span>
                   {techTypes.map((t, i) => (
-                    <span key={i} className="px-3 py-1 rounded border border-gray-300 text-gray-600 text-xs font-semibold">
+                    <span key={i} className="bg-slate-50 border border-slate-200 text-slate-700 rounded-sm text-xs px-3 py-1 font-sans">
                       {t}
                     </span>
                   ))}
                 </div>
 
                 {/* Title */}
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 leading-tight font-heading">
+                <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0A2164] leading-tight">
                   {tech.name}
                 </h1>
 
                 {/* Institution + ID */}
                 <div className="flex flex-wrap items-center gap-4 text-sm">
-                  <Link href={`/institutions/${tech.institution_slug}`} className="font-bold text-blue-600 hover:underline">
+                  <Link href={`/institutions/${tech.institution_slug}`} className="font-bold text-[#0A2164] hover:underline">
                     {tech.institution}
                   </Link>
-                  <span className="text-gray-300">|</span>
-                  <span className="font-mono text-gray-500">ID: {tech.id}</span>
+                  <span className="text-slate-300">|</span>
+                  <span className="font-mono text-slate-500">ID: {tech.id}</span>
                 </div>
 
-                {/* Short Summary (Problem Being Solved) */}
-                <p className="text-gray-600 text-lg leading-relaxed">
+                {/* Short Summary */}
+                <p className="text-slate-700 text-lg leading-relaxed font-sans">
                   {opportunitySummary}
                 </p>
               </div>
 
               {/* RIGHT COLUMN — Technology Image */}
               <div>
-                <div className="rounded-md overflow-hidden border border-gray-200 shadow-sm aspect-[16/9] w-full relative bg-white">
+                <div className="rounded-md overflow-hidden border border-slate-200 shadow-sm aspect-[16/9] w-full relative bg-white">
                   <TechImage src={displayImage} alt={tech.name} />
                 </div>
               </div>
@@ -184,102 +184,122 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
         </section>
 
         {/* ══════════════════════════════════════════════════════
-            MAIN CONTENT — SINGLE COLUMN PROFILE
+            MAIN CONTENT — TWO-COLUMN GRID
         ══════════════════════════════════════════════════════ */}
         <section className="py-16">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-16">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-            {/* TECHNOLOGY OVERVIEW */}
-            <div className="border-b border-gray-200 pb-12">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6 font-heading">Technology Overview</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/80 p-8 rounded-md border border-gray-100">
-                <div className="space-y-8">
-                  {hasProblem && (
-                    <div>
-                      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Problem Being Solved</h3>
-                      <p className="text-gray-800 text-sm leading-relaxed">{tech.problem_solved}</p>
+              {/* LEFT / MAIN COLUMN */}
+              <div className="lg:col-span-2 space-y-8">
+
+                {/* Problem Being Solved */}
+                {hasProblem && (
+                  <div className="bg-orange-50/40 border border-orange-100 rounded-md p-6">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Lightbulb className="w-5 h-5 text-orange-500 flex-shrink-0" />
+                      <h2 className="font-serif text-lg font-bold text-slate-900">Problem Being Solved</h2>
                     </div>
-                  )}
-                  {hasApps && (
-                    <div>
-                      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Applications</h3>
-                      <ul className="list-disc list-inside text-gray-800 text-sm space-y-1.5">
-                        {tech.applications.map((app, i) => (
-                          <li key={i}>{app}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-                <div className="space-y-8">
-                  <div>
-                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Institution</h3>
-                    <p className="text-gray-800 text-sm font-medium">{tech.institution}</p>
+                    <p className="text-slate-700 leading-relaxed font-sans text-sm md:text-base">
+                      {tech.problem_solved}
+                    </p>
                   </div>
+                )}
+
+                {/* Description */}
+                {hasDesc && (
                   <div>
-                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Technology ID</h3>
-                    <p className="text-gray-800 text-sm font-mono inline-block bg-white border border-gray-200 px-2 py-1 rounded">{tech.id}</p>
+                    <h2 className="font-serif text-xl font-bold text-[#0A2164] mb-4">Technology Description</h2>
+                    <p className="text-slate-700 leading-relaxed font-sans whitespace-pre-line">
+                      {tech.description}
+                    </p>
                   </div>
+                )}
+
+                {/* Applications */}
+                {hasApps && (
+                  <div>
+                    <h2 className="font-serif text-xl font-bold text-[#0A2164] mb-4">Applications</h2>
+                    <ul className="list-disc list-inside space-y-1.5 text-slate-700 font-sans leading-relaxed">
+                      {tech.applications.map((app, i) => (
+                        <li key={i}>{app}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* CTA */}
+                <div className="bg-slate-50 border border-slate-200 rounded-md p-8 text-center">
+                  <h3 className="font-serif text-xl font-bold text-slate-900 mb-3">Interested in this technology?</h3>
+                  <p className="text-slate-600 mb-6 max-w-2xl mx-auto text-sm leading-relaxed font-sans">
+                    Submit an inquiry through RINK to explore licensing, technology transfer, or commercialization
+                    opportunities with <strong>{tech.institution}</strong>.
+                  </p>
+                  <a
+                    href={GOOGLE_FORM_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-md bg-[#0A2164] text-white font-semibold text-sm hover:bg-[#081A52] transition-colors"
+                  >
+                    <FileText className="w-4 h-4" />
+                    Request Licensing / Transfer
+                    <ExternalLink className="w-3.5 h-3.5 opacity-75" />
+                  </a>
                 </div>
+
               </div>
+
+              {/* RIGHT SIDE-CARD COLUMN */}
+              <div className="lg:col-span-1">
+                {(trlLevel > 0 || clean(tech.patent_status) || clean(tech.institution)) && (
+                  <div className="bg-white border border-slate-200 p-5 rounded-md space-y-6">
+                    {trlLevel > 0 && (
+                      <div>
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                          Technology Readiness Level (TRL)
+                        </div>
+                        <div className="text-lg font-bold text-[#0A2164]">TRL {trlLevel}</div>
+                        <div className="text-sm text-slate-600 font-sans">{trlLabel}</div>
+                      </div>
+                    )}
+                    {clean(tech.patent_status) && (
+                      <div>
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                          IP / Patent Status
+                        </div>
+                        <div className="text-sm font-semibold text-slate-900 leading-snug font-sans">
+                          {clean(tech.patent_status)}
+                        </div>
+                      </div>
+                    )}
+                    {clean(tech.commercialization_status) && (
+                      <div>
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                          Licensing
+                        </div>
+                        <div className="text-sm font-semibold text-slate-900 leading-snug font-sans">
+                          {clean(tech.commercialization_status)}
+                        </div>
+                      </div>
+                    )}
+                    {clean(tech.institution) && (
+                      <div>
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                          Partner Institution
+                        </div>
+                        <Link
+                          href={`/institutions/${tech.institution_slug}`}
+                          className="text-sm font-semibold text-[#0A2164] hover:underline font-sans"
+                        >
+                          {tech.institution}
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
             </div>
-
-            {/* DESCRIPTION */}
-            {hasDesc && (
-              <div className="border-b border-gray-200 pb-12">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6 font-heading">Description</h2>
-                <div className="prose prose-gray max-w-none prose-p:leading-relaxed prose-p:text-gray-700">
-                  <p>{tech.description}</p>
-                </div>
-              </div>
-            )}
-
-            {/* COMMERCIALIZATION STATUS */}
-            {(trlLevel > 0 || clean(tech.patent_status) || clean(tech.commercialization_status)) && (
-              <div className="border-b border-gray-200 pb-12">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6 font-heading">Commercialization Status</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                  {trlLevel > 0 && (
-                    <div className="bg-white border border-gray-200 p-6 rounded-md shadow-sm">
-                      <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">TRL Level</div>
-                      <div className="text-xl font-bold text-gray-900">TRL {trlLevel}</div>
-                      <div className="text-sm text-gray-600 mt-1">{trlLabel}</div>
-                    </div>
-                  )}
-                  {clean(tech.patent_status) && (
-                    <div className="bg-white border border-gray-200 p-6 rounded-md shadow-sm">
-                      <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Patent Status</div>
-                      <div className="text-base font-semibold text-gray-900 mt-1 leading-snug">{clean(tech.patent_status)}</div>
-                    </div>
-                  )}
-                  {clean(tech.commercialization_status) && (
-                    <div className="bg-white border border-gray-200 p-6 rounded-md shadow-sm">
-                      <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Licensing</div>
-                      <div className="text-base font-semibold text-gray-900 mt-1 leading-snug">{clean(tech.commercialization_status)}</div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* CALL TO ACTION */}
-            <div className="bg-gray-50 border border-gray-200 rounded-md p-8 md:p-12 text-center">
-              <h3 className="text-xl font-bold text-gray-900 mb-3 font-heading">Interested in this technology?</h3>
-              <p className="text-gray-600 mb-8 max-w-2xl mx-auto text-sm leading-relaxed">
-                Submit an inquiry through RINK to explore licensing, technology transfer, or commercialization opportunities with <strong>{tech.institution}</strong>.
-              </p>
-              <a
-                href={GOOGLE_FORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-colors"
-              >
-                <FileText className="w-4 h-4" />
-                Request Licensing / Transfer
-                <ExternalLink className="w-3.5 h-3.5 opacity-75" />
-              </a>
-            </div>
-
           </div>
         </section>
 

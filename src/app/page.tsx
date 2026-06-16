@@ -1,11 +1,10 @@
-import { getFeaturedTechnologies, getAllSectors, getAllInstitutions } from '@/lib/db';
+import { getFeaturedTechnologies, getAllSectors } from '@/lib/db';
 import SectorCard from '@/components/ui/SectorCard';
 import FeaturedCarousel from '@/components/ui/FeaturedCarousel';
 import TechTransferPathway from '@/components/ui/TechTransferPathway';
-import PartnerInstitutionsSection from '@/components/ui/PartnerInstitutionsSection';
-import HeroSearch from '@/components/ui/HeroSearch';
+import AIDiscoveryBar from '@/components/ui/AIDiscoveryBar';
 import Link from 'next/link';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, MapPin, Sparkles } from 'lucide-react';
 
 export const metadata = {
   title: 'RINK Technology Transfer Portal — Kerala Startup Mission',
@@ -33,10 +32,9 @@ const localFloatingAssets = [
 ];
 
 export default async function HomePage() {
-  const [featuredTechs, sectors, institutions] = await Promise.all([
+  const [featuredTechs, sectors] = await Promise.all([
     getFeaturedTechnologies(20),
     getAllSectors(),
-    getAllInstitutions(),
   ]);
 
   const topSectors = sectors.slice(0, 8);
@@ -45,29 +43,21 @@ export default async function HomePage() {
     <div className="min-h-screen bg-white">
 
       {/* ── 1. HERO ──────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#0A2164]">
-        {/* Subtle geometric network motif */}
+      <section className="relative overflow-hidden">
+        {/* Background cover image */}
         <div
-          className="absolute inset-0 pointer-events-none opacity-[0.06]"
-          style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '34px 34px' }}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/images/hero-bg.png')" }}
+          aria-hidden
         />
-        <div className="absolute inset-0 pointer-events-none opacity-[0.05] flex items-center justify-end">
-          <svg viewBox="0 0 600 600" fill="none" stroke="#FFFFFF" strokeWidth="0.6" className="h-full w-auto">
-            <circle cx="300" cy="300" r="120" />
-            <circle cx="300" cy="300" r="200" strokeDasharray="6 6" />
-            <circle cx="300" cy="300" r="280" strokeDasharray="10 10" />
-            <line x1="300" y1="20" x2="300" y2="580" />
-            <line x1="20" y1="300" x2="580" y2="300" />
-            <circle cx="300" cy="100" r="4" fill="#F5B400" stroke="none" />
-            <circle cx="480" cy="300" r="4" fill="#F5B400" stroke="none" />
-            <circle cx="300" cy="500" r="4" fill="#F5B400" stroke="none" />
-          </svg>
-        </div>
+        {/* Multi-layer contrast overlay for guaranteed text/input readability */}
+        <div className="absolute inset-0 bg-[#0A2164]/75" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A2164] via-[#0A2164]/90 to-transparent" aria-hidden />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24">
-          <div className="max-w-3xl mx-auto text-center animate-fade-in">
+          <div className="max-w-3xl animate-fade-in">
             {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white/10 border border-white/20 text-white/90 text-[11px] sm:text-xs font-semibold tracking-wide font-sans mb-6 uppercase">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white/10 border border-white/20 text-white text-[11px] sm:text-xs font-semibold tracking-wide font-sans mb-6 uppercase">
               Research Innovation Network Kerala · Technology Transfer Portal
             </div>
 
@@ -77,17 +67,32 @@ export default async function HomePage() {
             </h1>
 
             {/* Subheading */}
-            <p className="text-blue-100/85 text-base md:text-lg leading-relaxed max-w-2xl mx-auto font-sans mb-8">
+            <p className="text-blue-100 text-base md:text-lg leading-relaxed max-w-2xl font-sans mb-8">
               Browse innovations developed by Kerala&apos;s research institutions and identify
               technologies aligned with your business or startup needs.
             </p>
 
-            {/* Search */}
-            <HeroSearch />
+            {/* AI Discovery search panel (flat bright white base) */}
+            <div className="bg-white border border-slate-200 rounded-md p-4 sm:p-5 shadow-sm">
+              <div className="flex items-center gap-2.5 mb-4">
+                <div className="w-9 h-9 rounded-md bg-[#0A2164] flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-5 h-5 text-[#F5B400]" />
+                </div>
+                <div>
+                  <h2 className="font-serif text-base font-bold text-slate-900 leading-tight">
+                    AI Technology Discovery
+                  </h2>
+                  <p className="text-xs text-slate-500 font-sans">
+                    Describe your startup idea — our AI searches the live RINK database for relevant technologies.
+                  </p>
+                </div>
+              </div>
+              <AIDiscoveryBar />
+            </div>
           </div>
 
           {/* Live Metrics Card */}
-          <div className="mt-10 max-w-3xl mx-auto bg-white border border-slate-200 rounded-md p-5 sm:p-6">
+          <div className="mt-8 max-w-3xl bg-white border border-slate-200 rounded-md p-5 sm:p-6 shadow-sm">
             <div className="grid grid-cols-3 divide-x divide-slate-200">
               {[
                 { num: '160+', label: 'Technologies' },
@@ -225,9 +230,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* ── 7. PARTNER INSTITUTIONS + MAP ────────────────────── */}
-      <PartnerInstitutionsSection institutions={institutions} />
 
     </div>
   );

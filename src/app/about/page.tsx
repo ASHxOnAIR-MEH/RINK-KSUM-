@@ -221,6 +221,57 @@ export default async function AboutPage() {
         </div>
       </section>
 
+      {/* ── Our Locations ─────────────────────────────────────── */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#0A2164] text-center mb-4">
+            Our Locations
+          </h2>
+          <p className="font-sans text-slate-700 leading-relaxed text-center mb-12 max-w-4xl mx-auto">
+            Kerala Startup Mission is having its incubation centers and associated incubators all over
+            Kerala. Our main head office is located at Technopark Thiruvananthapuram. Other than incubation
+            facility and meet up spaces, Fab Lab, Future Lab etc are also operating under Kerala Startup Mission.
+          </p>
+
+          <div className="bg-white border border-slate-200 rounded-md overflow-hidden shadow-sm max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3">
+            {/* Left — Map Embed */}
+            <div className="lg:col-span-2">
+              <iframe
+                src="https://www.google.com/maps?q=Kerala%20Startup%20Mission,%20Thejaswini,%20Technopark%20Campus,%20Thiruvananthapuram&output=embed"
+                className="w-full h-full min-h-[350px] lg:min-h-[400px] border-none"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Kerala Startup Mission - Head Office location"
+              />
+            </div>
+
+            {/* Right — Contact Details */}
+            <div className="lg:col-span-1 p-8 lg:p-10 flex flex-col justify-center bg-white border-t lg:border-t-0 lg:border-l border-slate-200">
+              <h3 className="font-sans font-bold text-lg text-slate-900 mb-6">
+                Kerala Startup Mission - Head Office
+              </h3>
+              <div className="space-y-5">
+                <div className="flex items-start space-x-3">
+                  <MapPin className="w-5 h-5 text-[#0A2164] flex-shrink-0 mt-0.5" />
+                  <span className="font-sans text-slate-700 leading-relaxed">
+                    G3B, Thejaswini, Technopark Campus, Kariyavattom, Trivandrum, Kerala 695581
+                  </span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <Phone className="w-5 h-5 text-[#0A2164] flex-shrink-0 mt-0.5" />
+                  <span className="font-sans text-slate-700 leading-relaxed">08047180470</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <Phone className="w-5 h-5 text-[#0A2164] flex-shrink-0 mt-0.5" />
+                  <span className="font-sans text-slate-700 leading-relaxed">0471-2700270</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
