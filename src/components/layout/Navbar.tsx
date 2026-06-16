@@ -40,20 +40,16 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16">
 
             {/* ── Logo ── */}
-            <Link href="/" className="flex items-center gap-2.5 flex-shrink-0 select-none" id="navbar-logo">
-              <div className="relative h-9 sm:h-10 w-28 sm:w-40">
+            <Link href="/" className="flex items-center flex-shrink-0 select-none" id="navbar-logo">
+              <div className="relative h-10 sm:h-12 w-48 sm:w-60">
                 <Image
-                  src="/images/rink-logo.png"
+                  src="/images/rink_ksum_logo_1779777831320.png"
                   alt="Research Innovation Network Kerala"
                   fill
                   className="object-contain object-left"
                   priority
                 />
               </div>
-              <span className="hidden sm:block h-6 w-px bg-gray-200" />
-              <span className="hidden sm:block text-[10px] font-semibold text-gray-500 tracking-wide uppercase leading-tight">
-                Technology<br />Transfer Portal
-              </span>
             </Link>
 
             {/* ── Desktop Nav Links ── */}
