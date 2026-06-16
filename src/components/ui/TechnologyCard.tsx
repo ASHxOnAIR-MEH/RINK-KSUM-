@@ -94,18 +94,21 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
   const cardMotion = prefersReduced
     ? {}
     : {
-        whileHover: { y: -4, transition: { duration: 0.2, ease: 'easeOut' as const } },
+        initial: { opacity: 0, y: 8 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, margin: '-40px' },
+        transition: { duration: 0.4, ease: 'easeOut' as const },
       };
 
   if (compact) {
     return (
       <Link href={`/technologies/${technology.id}`} className="block group" id={`tech-card-compact-${technology.id}`}>
         <motion.div
-          className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 hover:shadow-md hover:border-blue-200 transition-all duration-250"
+          className="bg-white rounded-md border border-gray-100 shadow-sm p-4 hover:shadow-md hover:border-blue-200 transition-all duration-250"
           {...cardMotion}
         >
           <div className="flex gap-4">
-            <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-gray-50 border border-gray-100 relative">
+            <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0 bg-gray-50 border border-gray-100 relative">
               {hasImage ? (
                 <img
                   src={displayImage}
@@ -117,15 +120,15 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
                 />
               ) : (
                 <div className="w-full h-full opacity-30">
-                  <SectorIllustration slug={technology.sector_slug} accentColor={SECTOR_ACCENTS[technology.sector_slug] || '#2563EB'} />
+                  <SectorIllustration slug={technology.sector_slug} accentColor={SECTOR_ACCENTS[technology.sector_slug] || '#0A2164'} />
                 </div>
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <span className="inline-block text-[9px] font-bold text-[#2563EB] uppercase tracking-wider mb-1">
+              <span className="inline-block text-[9px] font-bold text-[#0A2164] uppercase tracking-wider mb-1">
                 {technology.sector}
               </span>
-              <h4 className="font-heading font-bold text-gray-900 text-[14px] leading-tight line-clamp-2 group-hover:text-[#2563EB] transition-colors">
+              <h4 className="font-heading font-bold text-gray-900 text-[14px] leading-tight line-clamp-2 group-hover:text-[#0A2164] transition-colors">
                 {technology.name}
               </h4>
               <div className="flex items-center gap-1.5 mt-2">
@@ -141,7 +144,7 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
   return (
     <Link href={`/technologies/${technology.id}`} className="block group h-full" id={`tech-card-${technology.id}`}>
       <motion.div
-        className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden h-full flex flex-col hover:shadow-md hover:border-blue-200 transition-all duration-250"
+        className="bg-white rounded-md border border-gray-100 shadow-sm overflow-hidden h-full flex flex-col hover:shadow-md hover:border-blue-200 transition-all duration-250"
         {...cardMotion}
       >
         {/* Banner Frame */}
@@ -168,7 +171,7 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
             </>
           ) : (
             <div className="absolute inset-0 w-full h-full opacity-25 z-0">
-              <SectorIllustration slug={technology.sector_slug} accentColor={SECTOR_ACCENTS[technology.sector_slug] || '#2563EB'} />
+              <SectorIllustration slug={technology.sector_slug} accentColor={SECTOR_ACCENTS[technology.sector_slug] || '#0A2164'} />
               <div
                 className="absolute inset-0 pointer-events-none z-1"
                 style={{
@@ -196,7 +199,7 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
           </div>
 
           {/* Name */}
-          <h3 className="font-heading font-bold text-gray-900 text-[16px] leading-snug mb-3 group-hover:text-[#2563EB] transition-colors line-clamp-2">
+          <h3 className="font-heading font-bold text-gray-900 text-[16px] leading-snug mb-3 group-hover:text-[#0A2164] transition-colors line-clamp-2">
             {technology.name}
           </h3>
 
@@ -213,7 +216,7 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
               ID: {technology.id}
             </span>
             <motion.span
-              className="flex items-center gap-1 text-[11px] font-bold text-[#2563EB]"
+              className="flex items-center gap-1 text-[11px] font-bold text-[#0A2164]"
               whileHover={prefersReduced ? {} : { x: 3 }}
               transition={{ duration: 0.15 }}
             >

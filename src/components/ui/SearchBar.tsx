@@ -160,7 +160,7 @@ export default function SearchBar({ size = 'md', defaultValue = '', autoFocus = 
       {/* Dropdown */}
       {open && suggestions.length > 0 && (
         <div
-          className="absolute top-full left-0 right-0 mt-1.5 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden"
+          className="absolute top-full left-0 right-0 mt-1.5 bg-card border border-border rounded-md shadow-sm z-50 overflow-hidden"
           role="listbox"
         >
           <div className="px-3 py-2 border-b border-border flex items-center justify-between">

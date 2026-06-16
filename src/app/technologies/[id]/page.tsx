@@ -174,7 +174,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
 
               {/* RIGHT COLUMN — Technology Image */}
               <div>
-                <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm aspect-[16/9] w-full relative bg-white">
+                <div className="rounded-md overflow-hidden border border-gray-200 shadow-sm aspect-[16/9] w-full relative bg-white">
                   <TechImage src={displayImage} alt={tech.name} />
                 </div>
               </div>
@@ -192,7 +192,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
             {/* TECHNOLOGY OVERVIEW */}
             <div className="border-b border-gray-200 pb-12">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 font-heading">Technology Overview</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/80 p-8 rounded-xl border border-gray-100">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/80 p-8 rounded-md border border-gray-100">
                 <div className="space-y-8">
                   {hasProblem && (
                     <div>
@@ -240,20 +240,20 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 font-heading">Commercialization Status</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   {trlLevel > 0 && (
-                    <div className="bg-white border border-gray-200 p-6 rounded-xl shadow-sm">
+                    <div className="bg-white border border-gray-200 p-6 rounded-md shadow-sm">
                       <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">TRL Level</div>
                       <div className="text-xl font-bold text-gray-900">TRL {trlLevel}</div>
                       <div className="text-sm text-gray-600 mt-1">{trlLabel}</div>
                     </div>
                   )}
                   {clean(tech.patent_status) && (
-                    <div className="bg-white border border-gray-200 p-6 rounded-xl shadow-sm">
+                    <div className="bg-white border border-gray-200 p-6 rounded-md shadow-sm">
                       <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Patent Status</div>
                       <div className="text-base font-semibold text-gray-900 mt-1 leading-snug">{clean(tech.patent_status)}</div>
                     </div>
                   )}
                   {clean(tech.commercialization_status) && (
-                    <div className="bg-white border border-gray-200 p-6 rounded-xl shadow-sm">
+                    <div className="bg-white border border-gray-200 p-6 rounded-md shadow-sm">
                       <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Licensing</div>
                       <div className="text-base font-semibold text-gray-900 mt-1 leading-snug">{clean(tech.commercialization_status)}</div>
                     </div>
@@ -263,7 +263,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
             )}
 
             {/* CALL TO ACTION */}
-            <div className="bg-gray-50 border border-gray-200 rounded-xl p-8 md:p-12 text-center">
+            <div className="bg-gray-50 border border-gray-200 rounded-md p-8 md:p-12 text-center">
               <h3 className="text-xl font-bold text-gray-900 mb-3 font-heading">Interested in this technology?</h3>
               <p className="text-gray-600 mb-8 max-w-2xl mx-auto text-sm leading-relaxed">
                 Submit an inquiry through RINK to explore licensing, technology transfer, or commercialization opportunities with <strong>{tech.institution}</strong>.
@@ -305,7 +305,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                   const relImg = rel.image_embed_url || rel.technology_image_embed_url || rel.image_url || rel.technology_image || null;
                   return (
                     <Link key={rel.id} href={`/technologies/${rel.id}`}
-                      className="group bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md hover:border-blue-300 transition-all">
+                      className="group bg-white rounded-md border border-gray-200 shadow-sm overflow-hidden hover:shadow-md hover:border-blue-300 transition-all">
                       <div className="aspect-[16/9] bg-gray-100 relative overflow-hidden">
                         {relImg ? (
                           // eslint-disable-next-line @next/next/no-img-element

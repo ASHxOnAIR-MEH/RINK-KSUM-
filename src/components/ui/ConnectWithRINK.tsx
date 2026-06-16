@@ -23,7 +23,7 @@ export default function ConnectWithRINK() {
     <section className="relative py-20 bg-white overflow-hidden border-b border-gray-100">
       {/* Subtle blueprint network backdrop */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.02] flex items-center justify-center">
-        <svg viewBox="0 0 1000 400" fill="none" className="w-full h-full text-[#2563EB]" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 1000 400" fill="none" className="w-full h-full text-[#0A2164]" xmlns="http://www.w3.org/2000/svg">
           <circle cx="200" cy="200" r="120" stroke="currentColor" strokeWidth="1" strokeDasharray="6 6" />
           <circle cx="200" cy="200" r="60" stroke="currentColor" strokeWidth="1" />
           <circle cx="800" cy="200" r="100" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
@@ -38,7 +38,7 @@ export default function ConnectWithRINK() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
 
         {/* Section label */}
-        <div className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-4 text-center">
+        <div className="text-xs font-bold text-[#0A2164] uppercase tracking-widest mb-4 text-center">
           Connect With RINK
         </div>
 
@@ -62,17 +62,17 @@ export default function ConnectWithRINK() {
             {/* Contact Us */}
             <a
               href="mailto:rink@startupmission.in"
-              className="group flex items-center gap-5 p-5 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-200"
+              className="group flex items-center gap-5 p-5 bg-white rounded-md border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-200"
               id="connect-contact-link"
             >
-              <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center flex-shrink-0 group-hover:bg-[#2563EB] transition-colors duration-200">
-                <Mail className="w-5 h-5 text-[#2563EB] group-hover:text-white transition-colors duration-200" />
+              <div className="w-12 h-12 rounded-md bg-blue-50 border border-blue-200 flex items-center justify-center flex-shrink-0 group-hover:bg-[#0A2164] transition-colors duration-200">
+                <Mail className="w-5 h-5 text-[#0A2164] group-hover:text-white transition-colors duration-200" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-bold text-gray-900 mb-0.5 font-heading">Contact Us</div>
                 <div className="text-xs text-gray-500 font-sans">Reach the RINK team for technology licensing, partnerships, and collaborations</div>
               </div>
-              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#2563EB] group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
+              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#0A2164] group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
             </a>
 
             {/* View Location */}
@@ -80,10 +80,10 @@ export default function ConnectWithRINK() {
               href={GOOGLE_MAPS_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-5 p-5 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-200"
+              className="group flex items-center gap-5 p-5 bg-white rounded-md border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-200"
               id="connect-location-link"
             >
-              <div className="w-12 h-12 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center flex-shrink-0 group-hover:bg-green-600 transition-colors duration-200">
+              <div className="w-12 h-12 rounded-md bg-green-50 border border-green-200 flex items-center justify-center flex-shrink-0 group-hover:bg-green-600 transition-colors duration-200">
                 <MapPin className="w-5 h-5 text-green-600 group-hover:text-white transition-colors duration-200" />
               </div>
               <div className="flex-1 min-w-0">
@@ -101,10 +101,10 @@ export default function ConnectWithRINK() {
               href={LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-5 p-5 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-[#0A66C2]/30 transition-all duration-200"
+              className="group flex items-center gap-5 p-5 bg-white rounded-md border border-gray-100 shadow-sm hover:shadow-md hover:border-[#0A66C2]/30 transition-all duration-200"
               id="connect-linkedin-link"
             >
-              <div className="w-12 h-12 rounded-xl bg-[#EFF6FF] border border-[#0A66C2]/20 flex items-center justify-center flex-shrink-0 group-hover:bg-[#0A66C2] transition-colors duration-200">
+              <div className="w-12 h-12 rounded-md bg-[#EFF6FF] border border-[#0A66C2]/20 flex items-center justify-center flex-shrink-0 group-hover:bg-[#0A66C2] transition-colors duration-200">
               <LinkedInIcon className="w-5 h-5 text-[#0A66C2] group-hover:text-white transition-colors duration-200" />
               </div>
               <div className="flex-1 min-w-0">
@@ -116,7 +116,7 @@ export default function ConnectWithRINK() {
           </div>
 
           {/* Right: Map + Address Card */}
-          <div className="rounded-2xl overflow-hidden border border-gray-100 shadow-sm h-full min-h-[340px] flex flex-col">
+          <div className="rounded-md overflow-hidden border border-gray-100 shadow-sm h-full min-h-[340px] flex flex-col">
             {/* Embedded map iframe */}
             <div className="flex-1 relative">
               <iframe
@@ -134,7 +134,7 @@ export default function ConnectWithRINK() {
 
             {/* Address strip */}
             <div className="bg-gray-50 border-t border-gray-100 px-5 py-4 flex items-start gap-3">
-              <MapPin className="w-4 h-4 text-[#2563EB] flex-shrink-0 mt-0.5" />
+              <MapPin className="w-4 h-4 text-[#0A2164] flex-shrink-0 mt-0.5" />
               <div>
                 <div className="text-xs font-bold text-gray-900 mb-0.5">Kerala Startup Mission</div>
                 <div className="text-xs text-gray-500 leading-relaxed font-sans">
@@ -146,7 +146,7 @@ export default function ConnectWithRINK() {
                 href={GOOGLE_MAPS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-auto flex-shrink-0 text-[11px] font-bold text-[#2563EB] hover:text-[#1D4ED8] transition-colors whitespace-nowrap"
+                className="ml-auto flex-shrink-0 text-[11px] font-bold text-[#0A2164] hover:text-[#081A52] transition-colors whitespace-nowrap"
               >
                 Open Maps →
               </a>
@@ -162,7 +162,7 @@ export default function ConnectWithRINK() {
           </div>
           <Link
             href="/technologies"
-            className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#2563EB] text-white font-bold text-sm hover:bg-[#1D4ED8] transition-colors font-heading shadow-sm"
+            className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#0A2164] text-white font-bold text-sm hover:bg-[#081A52] transition-colors font-heading shadow-sm"
             id="connect-browse-btn"
           >
             Browse Technologies <ArrowRight className="w-4 h-4" />

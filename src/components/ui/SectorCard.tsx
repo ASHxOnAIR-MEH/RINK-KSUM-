@@ -358,7 +358,7 @@ export default function SectorCard({ sector }: Props) {
   return (
     <Link href={`/sectors/${sector.slug}`} id={`sector-card-${sector.slug}`} className="block group">
       <div
-        className="relative overflow-hidden rounded-2xl h-40 sm:h-52 flex flex-col justify-end cursor-pointer border border-gray-100 bg-gray-50 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-250"
+        className="relative overflow-hidden rounded-md h-40 sm:h-52 flex flex-col justify-end cursor-pointer border border-gray-100 bg-gray-50 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-250"
         style={{ transition: 'all 0.25s ease' }}
       >
         {/* Sector illustration artwork */}
@@ -382,7 +382,7 @@ export default function SectorCard({ sector }: Props) {
 
         {/* Title & Info panel — clean semi-transparent white */}
         <div
-          className="relative z-10 p-2.5 sm:p-3.5 m-2 sm:m-2.5 rounded-xl border border-white/20"
+          className="relative z-10 p-2.5 sm:p-3.5 m-2 sm:m-2.5 rounded-md border border-white/20"
           style={{
             background: 'rgba(255, 255, 255, 0.18)',
             backdropFilter: 'blur(8px)',

@@ -72,8 +72,8 @@ export default function Navbar() {
                     className={clsx(
                       'px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-150 font-sans',
                       pathname === link.href
-                        ? 'text-[#2563EB] bg-blue-50'
-                        : 'text-gray-600 hover:text-[#2563EB] hover:bg-blue-50'
+                        ? 'text-[#0A2164] bg-blue-50'
+                        : 'text-gray-600 hover:text-[#0A2164] hover:bg-blue-50'
                     )}
                   >
                     {link.label}
@@ -82,7 +82,7 @@ export default function Navbar() {
               </div>
               <Link
                 href="/technologies"
-                className="ml-2 px-4 py-2 text-sm font-semibold rounded-lg bg-[#2563EB] text-white hover:bg-[#1D4ED8] transition-colors duration-150 font-heading"
+                className="ml-2 px-4 py-2 text-sm font-semibold rounded-lg bg-[#0A2164] text-white hover:bg-[#081A52] transition-colors duration-150 font-heading"
               >
                 Browse Technologies
               </Link>
@@ -92,7 +92,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2 md:hidden">
               <Link
                 href="/technologies"
-                className="px-3 py-2 text-xs font-bold rounded-lg bg-[#2563EB] text-white hover:bg-[#1D4ED8] transition-colors font-heading"
+                className="px-3 py-2 text-xs font-bold rounded-lg bg-[#0A2164] text-white hover:bg-[#081A52] transition-colors font-heading"
               >
                 Browse
               </Link>
@@ -119,12 +119,12 @@ export default function Navbar() {
                 className={clsx(
                   'flex flex-col items-center justify-center flex-1 gap-1 py-3 min-h-[64px] transition-all duration-200 select-none relative',
                   isActive
-                    ? 'text-[#2563EB]'
-                    : 'text-gray-500 hover:text-[#2563EB]'
+                    ? 'text-[#0A2164]'
+                    : 'text-gray-500 hover:text-[#0A2164]'
                 )}
               >
                 {isActive && (
-                  <span className="absolute top-0 inset-x-4 h-1 bg-[#2563EB] rounded-b-md shadow-[0_2px_8px_rgba(37,99,235,0.4)]" />
+                  <span className="absolute top-0 inset-x-4 h-1 bg-[#0A2164] rounded-b-md shadow-[0_2px_8px_rgba(10,33,100,0.4)]" />
                 )}
                 <Icon
                   className={clsx(
@@ -135,7 +135,7 @@ export default function Navbar() {
                 />
                 <span className={clsx(
                   'text-[11px] font-bold tracking-wide transition-colors',
-                  isActive ? 'text-[#2563EB]' : 'text-gray-500'
+                  isActive ? 'text-[#0A2164]' : 'text-gray-500'
                 )}>
                   {link.label}
                 </span>
@@ -150,12 +150,12 @@ export default function Navbar() {
             className={clsx(
               'flex flex-col items-center justify-center flex-1 gap-1 py-3 min-h-[64px] transition-all duration-200 select-none relative',
               pathname.startsWith('/technologies')
-                ? 'text-[#2563EB]'
-                : 'text-gray-500 hover:text-[#2563EB]'
+                ? 'text-[#0A2164]'
+                : 'text-gray-500 hover:text-[#0A2164]'
             )}
           >
             {pathname.startsWith('/technologies') && (
-              <span className="absolute top-0 inset-x-4 h-1 bg-[#2563EB] rounded-b-md shadow-[0_2px_8px_rgba(37,99,235,0.4)]" />
+              <span className="absolute top-0 inset-x-4 h-1 bg-[#0A2164] rounded-b-md shadow-[0_2px_8px_rgba(10,33,100,0.4)]" />
             )}
             <svg
               className={clsx(
@@ -172,7 +172,7 @@ export default function Navbar() {
             </svg>
             <span className={clsx(
               'text-[11px] font-bold tracking-wide',
-              pathname.startsWith('/technologies') ? 'text-[#2563EB]' : 'text-gray-500'
+              pathname.startsWith('/technologies') ? 'text-[#0A2164]' : 'text-gray-500'
             )}>
               Technologies
             </span>

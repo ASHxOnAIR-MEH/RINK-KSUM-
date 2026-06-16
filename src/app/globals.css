@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 
 /* ============================================================
@@ -23,17 +23,17 @@
   --border: #E5E7EB;
 
   /* ── Electric Blue Accent (Primary) ── */
-  --accent: #2563EB;
-  --accent-hover: #1D4ED8;
-  --accent-light: #EFF6FF;
-  --accent-secondary: #D97706;
+  --accent: #0A2164;
+  --accent-hover: #081A52;
+  --accent-light: #EEF2FB;
+  --accent-secondary: #F5B400;
 
   /* ── Legacy fallback references ── */
   --bg-app: var(--background);
   --bg-card: var(--card);
   --bg-card-hover: var(--card-secondary);
   --border-card: var(--border);
-  --border-card-hover: rgba(37, 99, 235, 0.35);
+  --border-card-hover: rgba(10, 33, 100, 0.35);
   --text-title: var(--heading);
   --text-body: var(--text-primary);
   --text-muted: var(--text-secondary);
@@ -54,21 +54,21 @@
 
   /* ── Assistant Bubble Variables ── */
   --bg-assistant-bubble: rgba(248, 250, 255, 0.95);
-  --border-assistant-bubble: rgba(37, 99, 235, 0.12);
+  --border-assistant-bubble: rgba(10, 33, 100, 0.12);
   --text-assistant-bubble: #1F2937;
 
   /* ── Hero ── */
   --bg-hero: linear-gradient(135deg, #F0F6FF 0%, #EEF4FF 50%, #F5F9FF 100%);
-  --border-hero: rgba(37, 99, 235, 0.08);
+  --border-hero: rgba(10, 33, 100, 0.08);
 
-  /* ── Shadows (flat, clean) ── */
-  --shadow-card: 0 1px 3px rgba(17, 24, 39, 0.06), 0 1px 2px rgba(17, 24, 39, 0.04);
-  --shadow-card-hover: 0 8px 24px rgba(37, 99, 235, 0.10), 0 4px 8px rgba(17, 24, 39, 0.06);
-  --shadow-navbar: 0 1px 0 rgba(17, 24, 39, 0.06), 0 2px 8px rgba(17, 24, 39, 0.04);
+  /* ── Shadows (flat, institutional) ── */
+  --shadow-card: 0 0 0 1px rgba(15, 23, 42, 0.04);
+  --shadow-card-hover: 0 0 0 1px rgba(10, 33, 100, 0.25);
+  --shadow-navbar: 0 1px 0 rgba(15, 23, 42, 0.08);
 
   /* ── Brand Colors ── */
-  --color-brand-blue: #2563EB;
-  --color-brand-blue-dark: #1D4ED8;
+  --color-brand-blue: #0A2164;
+  --color-brand-blue-dark: #081A52;
   --color-brand-blue-mid: #3B82F6;
   --color-brand-blue-light: #EFF6FF;
   --color-brand-green: #059669;
@@ -78,9 +78,9 @@
   --color-brand-gold-light: rgba(217, 119, 6, 0.08);
 
   /* ── Border Radii ── */
-  --radius-card: 12px;
-  --radius-badge: 6px;
-  --radius-button: 8px;
+  --radius-card: 6px;
+  --radius-badge: 4px;
+  --radius-button: 6px;
 }
 
 /* ── @theme inline (Tailwind CSS v4 token mapping) ── */
@@ -145,7 +145,7 @@
 
   /* Fonts */
   --font-sans:    'Inter', sans-serif;
-  --font-heading: 'Poppins', 'Montserrat', sans-serif;
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
 
   /* Shadows */
   --shadow-card:       var(--shadow-card);
@@ -158,9 +158,9 @@
   --animate-slide-in: slideIn 0.3s ease-out;
 
   /* Border radius */
-  --radius-card:   12px;
-  --radius-badge:  6px;
-  --radius-button: 8px;
+  --radius-card:   6px;
+  --radius-badge:  4px;
+  --radius-button: 6px;
 }
 
 /* ── Global Reset ── */
@@ -239,8 +239,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes glow-pulse-blue {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.30), 0 8px 24px rgba(37, 99, 235, 0.15); }
-  50%       { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0), 0 8px 32px rgba(37, 99, 235, 0.08); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(10, 33, 100, 0.30), 0 8px 24px rgba(10, 33, 100, 0.15); }
+  50%       { box-shadow: 0 0 0 10px rgba(10, 33, 100, 0), 0 8px 32px rgba(10, 33, 100, 0.08); }
 }
 
 @keyframes slide-fade-in {
@@ -312,13 +312,11 @@ h1, h2, h3, h4, h5, h6 {
   background: #FFFFFF;
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
-  transition: all 0.25s ease;
+  box-shadow: none;
+  transition: border-color 0.2s ease;
 }
 .card:hover {
-  box-shadow: var(--shadow-card-hover);
-  transform: translateY(-4px);
-  border-color: rgba(37, 99, 235, 0.25);
+  border-color: rgba(10, 33, 100, 0.45);
 }
 
 /* ── Badges ── */
@@ -327,12 +325,12 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   gap: 4px;
   padding: 3px 10px;
-  border-radius: 100px;
+  border-radius: var(--radius-badge);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
-.badge-blue   { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+.badge-blue   { background: #EFF6FF; color: #081A52; border: 1px solid #BFDBFE; }
 .badge-green  { background: #F0FDF4; color: #065F46; border: 1px solid #A7F3D0; }
 .badge-gold   { background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; }
 .badge-gray   { background: #F9FAFB; color: #4B5563; border: 1px solid #E5E7EB; }
@@ -353,12 +351,11 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 14px;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 1px 3px rgba(10, 33, 100, 0.3);
 }
 .btn-primary:hover {
   background: var(--accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  box-shadow: none;
 }
 
 .btn-secondary {
@@ -406,20 +403,20 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 16px;
   background: #FFFFFF;
   border: 1px solid #E5E7EB;
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.06), 0 1px 4px rgba(17, 24, 39, 0.04);
+  box-shadow: 0 4px 16px rgba(10, 33, 100, 0.06), 0 1px 4px rgba(17, 24, 39, 0.04);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .glass-search-container:focus-within {
-  border-color: rgba(37, 99, 235, 0.4);
-  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.12), 0 0 0 3px rgba(37, 99, 235, 0.08);
+  border-color: rgba(10, 33, 100, 0.4);
+  box-shadow: 0 4px 20px rgba(10, 33, 100, 0.12), 0 0 0 3px rgba(10, 33, 100, 0.08);
 }
 
 .search-glow-container {
   transition: all 0.3s ease;
 }
 .search-glow-container:focus-within {
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-  border-color: rgba(37, 99, 235, 0.4) !important;
+  box-shadow: 0 0 0 3px rgba(10, 33, 100, 0.1);
+  border-color: rgba(10, 33, 100, 0.4) !important;
 }
 
 .search-input {
@@ -436,7 +433,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .search-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(10, 33, 100, 0.1);
 }
 .search-input::placeholder { color: var(--text-secondary); }
 
@@ -505,7 +502,7 @@ h1, h2, h3, h4, h5, h6 {
   right: -20%;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(37,99,235,0.04) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(10,33,100,0.04) 0%, transparent 70%);
   border-radius: 50%;
 }
 .hero-section::after {
@@ -554,9 +551,9 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: var(--shadow-card);
 }
 .sector-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-card-hover);
-  border-color: rgba(37, 99, 235, 0.25);
+  transform: none;
+  box-shadow: none;
+  border-color: rgba(10, 33, 100, 0.45);
 }
 .sector-card::before {
   content: '';
@@ -609,10 +606,10 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ── Global card hover override ── */
 .card:hover, .sector-card:hover, [id^="tech-card-"]:hover, [id^="inst-card-"]:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.10), 0 4px 8px rgba(17, 24, 39, 0.06) !important;
-  border-color: rgba(37, 99, 235, 0.25) !important;
-  transition: all 0.25s ease !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: rgba(10, 33, 100, 0.45) !important;
+  transition: border-color 0.2s ease !important;
 }
 
 /* ── Keyframes for floating assets and pipeline flow ── */
@@ -634,14 +631,14 @@ h1, h2, h3, h4, h5, h6 {
 .rink-chip {
   background: #EFF6FF !important;
   border: 1px solid #BFDBFE !important;
-  color: #1D4ED8 !important;
+  color: #081A52 !important;
 }
 
 /* ── Quick Prompt chips ── */
 [id^="quick-prompt-"] {
   background-color: #EFF6FF !important;
   border-color: #BFDBFE !important;
-  color: #1D4ED8 !important;
+  color: #081A52 !important;
 }
 
 /* ── Stats numbers ── */

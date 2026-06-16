@@ -22,7 +22,7 @@ export default function InnovationAmbientLayer() {
       top: '12%',
       duration: '25s',
       delay: '0s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <rect x="4" y="2" width="16" height="20" rx="2" />
@@ -37,7 +37,7 @@ export default function InnovationAmbientLayer() {
       top: '8%',
       duration: '32s',
       delay: '-5s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -52,7 +52,7 @@ export default function InnovationAmbientLayer() {
       top: '45%',
       duration: '28s',
       delay: '-10s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <path d="M9 3h6M12 3v5M6 21h12L12 8z" />
@@ -66,7 +66,7 @@ export default function InnovationAmbientLayer() {
       top: '52%',
       duration: '38s',
       delay: '-15s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <path d="M12 2v3M5 21h14M16 21a4 4 0 0 0-4-4h-2a4 4 0 0 0-4 4M10 17v-3M14 17v-3M8 14h8M12 5v9M9 5h6" />
@@ -80,7 +80,7 @@ export default function InnovationAmbientLayer() {
       top: '28%',
       duration: '22s',
       delay: '-2s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <rect x="5" y="5" width="14" height="14" rx="1.5" />
@@ -95,7 +95,7 @@ export default function InnovationAmbientLayer() {
       top: '80%',
       duration: '35s',
       delay: '-12s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <circle cx="6" cy="6" r="2.5" />
@@ -111,7 +111,7 @@ export default function InnovationAmbientLayer() {
       top: '72%',
       duration: '24s',
       delay: '-8s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <circle cx="12" cy="12" r="4" />
@@ -126,7 +126,7 @@ export default function InnovationAmbientLayer() {
       top: '85%',
       duration: '39s',
       delay: '-22s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <rect x="4" y="4" width="16" height="16" rx="1" />
@@ -141,7 +141,7 @@ export default function InnovationAmbientLayer() {
       top: '70%',
       duration: '27s',
       delay: '-6s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <path d="M17 3 L21 7 L17 11 M3 7 H21 M7 21 L3 17 L7 13 M21 17 H3" />
@@ -155,7 +155,7 @@ export default function InnovationAmbientLayer() {
       top: '18%',
       duration: '30s',
       delay: '-18s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <circle cx="12" cy="12" r="8" strokeDasharray="2 2" />
@@ -171,7 +171,7 @@ export default function InnovationAmbientLayer() {
       top: '85%',
       duration: '40s',
       delay: '-25s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <circle cx="12" cy="6" r="2.5" />
@@ -189,7 +189,7 @@ export default function InnovationAmbientLayer() {
       top: '8%',
       duration: '31s',
       delay: '-3s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-10 h-10" strokeWidth="1">
           <path d="M12 2v20M2 12h20M12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2z" strokeDasharray="3 3" />

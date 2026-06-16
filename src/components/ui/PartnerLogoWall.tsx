@@ -36,7 +36,7 @@ function LogoTile({ inst }: { inst: typeof ALL_23_INSTITUTIONS[0] }) {
   return (
     <Link
       href={`/institutions/${inst.slug}`}
-      className="group flex flex-col items-center justify-center bg-white border border-gray-100 rounded-xl p-[20px] h-[140px] hover:border-blue-400 hover:shadow-md hover:scale-[1.03] transition-all duration-200"
+      className="group flex flex-col items-center justify-center bg-white border border-gray-100 rounded-md p-[20px] h-[140px] hover:border-blue-400 hover:shadow-md hover:scale-[1.03] transition-all duration-200"
       title={inst.name}
       aria-label={`View ${inst.name} technologies`}
     >
@@ -51,7 +51,7 @@ function LogoTile({ inst }: { inst: typeof ALL_23_INSTITUTIONS[0] }) {
         />
       ) : (
         <div className="flex flex-col items-center justify-center gap-1 w-full h-full">
-          <span className="text-xl font-black text-[#2563EB] leading-none">{inst.acronym}</span>
+          <span className="text-xl font-black text-[#0A2164] leading-none">{inst.acronym}</span>
           <span className="text-[10px] text-gray-400 text-center line-clamp-2 leading-tight px-2">{inst.name}</span>
         </div>
       )}
@@ -73,7 +73,7 @@ export default function PartnerLogoWall({ institutions, showMarquee }: Props) {
         <svg width="100%" height="100%">
           <defs>
             <pattern id="logo-wall-dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
-              <circle cx="1.5" cy="1.5" r="1" fill="#2563EB" />
+              <circle cx="1.5" cy="1.5" r="1" fill="#0A2164" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#logo-wall-dots)" />
@@ -84,7 +84,7 @@ export default function PartnerLogoWall({ institutions, showMarquee }: Props) {
 
         {/* Header */}
         <div className="mb-8">
-          <div className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-3">
+          <div className="text-xs font-bold text-[#0A2164] uppercase tracking-widest mb-3">
             Partner Institutions
           </div>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">

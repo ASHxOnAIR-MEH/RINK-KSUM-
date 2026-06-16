@@ -52,7 +52,7 @@ export default function InstitutionFilterView({ initialTechnologies }: Props) {
               <button
                 key={tab.value}
                 onClick={() => setActiveTab(tab.value)}
-                className={`flex-shrink-0 px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-xl border transition-all duration-200 cursor-pointer ${
+                className={`flex-shrink-0 px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-md border transition-all duration-200 cursor-pointer ${
                   isActive
                     ? 'bg-accent text-[#04142B] border-accent shadow-md shadow-accent/15'
                     : 'bg-card border-border text-text-secondary hover:text-text-primary hover:border-text-secondary/20'
@@ -67,7 +67,7 @@ export default function InstitutionFilterView({ initialTechnologies }: Props) {
 
       {/* Grid */}
       {filteredTechs.length === 0 ? (
-        <div className="text-center py-20 bg-card rounded-3xl border border-border">
+        <div className="text-center py-20 bg-card rounded-md border border-border">
           <FlaskConical className="w-12 h-12 text-text-secondary/50 mx-auto mb-4 animate-pulse" />
           <h3 className="font-heading font-bold text-heading text-lg mb-1">No Technologies Found</h3>
           <p className="text-text-secondary text-sm">

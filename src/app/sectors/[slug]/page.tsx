@@ -48,7 +48,7 @@ export default async function SectorDetailPage({ params }: Props) {
           </Link>
           <div className="flex items-center gap-3">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+              className="w-10 h-10 rounded-md flex items-center justify-center flex-shrink-0"
               style={{ background: `${sector.color}15` }}
             >
               {getSectorIcon(sector.slug, 'var(--accent)', 24)}

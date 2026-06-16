@@ -22,7 +22,7 @@ export default function FloatingResearchAssets() {
       top: '18%',
       duration: '28s',
       delay: '0s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
           <rect x="4" y="2" width="16" height="20" rx="2" />
@@ -39,7 +39,7 @@ export default function FloatingResearchAssets() {
       top: '22%',
       duration: '34s',
       delay: '-4s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
           <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -56,7 +56,7 @@ export default function FloatingResearchAssets() {
       top: '68%',
       duration: '31s',
       delay: '-8s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
           <path d="M9 3h6M12 3v5M6 21h12L12 8z" />
@@ -72,7 +72,7 @@ export default function FloatingResearchAssets() {
       top: '55%',
       duration: '38s',
       delay: '-12s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
           <rect x="5" y="5" width="14" height="14" rx="2" />
@@ -88,7 +88,7 @@ export default function FloatingResearchAssets() {
       top: '28%',
       duration: '26s',
       delay: '-2s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
           <circle cx="12" cy="12" r="5" />
@@ -104,7 +104,7 @@ export default function FloatingResearchAssets() {
       top: '78%',
       duration: '39s',
       delay: '-18s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
           <circle cx="6" cy="6" r="3" />
@@ -120,7 +120,7 @@ export default function FloatingResearchAssets() {
       top: '84%',
       duration: '35s',
       delay: '-10s',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
       svg: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-12 h-12" strokeWidth="1.2">
           <path d="M12 2v3M5 21h14M16 21a4 4 0 0 0-4-4h-2a4 4 0 0 0-4 4M10 17v-3M14 17v-3M8 14h8M12 5v9M9 5h6" />

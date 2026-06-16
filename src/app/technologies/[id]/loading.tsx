@@ -39,8 +39,8 @@ export default function TechnologyDetailLoading() {
           </div>
           {/* Title */}
           <div className="space-y-3 mb-6">
-            <div className="h-12 w-full max-w-2xl rounded-xl bg-white/10 animate-pulse" />
-            <div className="h-12 w-3/4 max-w-xl rounded-xl bg-white/10 animate-pulse" />
+            <div className="h-12 w-full max-w-2xl rounded-md bg-white/10 animate-pulse" />
+            <div className="h-12 w-3/4 max-w-xl rounded-md bg-white/10 animate-pulse" />
           </div>
           {/* Institution strip */}
           <div className="flex gap-3">
@@ -64,8 +64,8 @@ export default function TechnologyDetailLoading() {
 
             {/* Title */}
             <div className="space-y-3">
-              <div className="h-11 w-full rounded-xl bg-slate-200 animate-pulse" />
-              <div className="h-11 w-4/5 rounded-xl bg-slate-200 animate-pulse" />
+              <div className="h-11 w-full rounded-md bg-slate-200 animate-pulse" />
+              <div className="h-11 w-4/5 rounded-md bg-slate-200 animate-pulse" />
             </div>
 
             {/* Institution strip */}
@@ -75,9 +75,9 @@ export default function TechnologyDetailLoading() {
             </div>
 
             {/* Problem callout card */}
-            <div className="rounded-2xl bg-amber-50 border border-amber-100 p-6">
+            <div className="rounded-md bg-amber-50 border border-amber-100 p-6">
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-xl bg-amber-200 animate-pulse flex-shrink-0" />
+                <div className="w-9 h-9 rounded-md bg-amber-200 animate-pulse flex-shrink-0" />
                 <div className="flex-1 space-y-2.5 pt-1">
                   <div className="h-3 w-36 rounded bg-amber-200 animate-pulse" />
                   <div className="h-4 w-full rounded bg-slate-200 animate-pulse" />
@@ -88,7 +88,7 @@ export default function TechnologyDetailLoading() {
             </div>
 
             {/* Description card */}
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 space-y-4"
+            <div className="bg-white rounded-md border border-slate-100 p-6 space-y-4"
               style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-blue-100 animate-pulse" />
@@ -103,7 +103,7 @@ export default function TechnologyDetailLoading() {
             </div>
 
             {/* Applications card */}
-            <div className="bg-white rounded-2xl border border-slate-100 p-6"
+            <div className="bg-white rounded-md border border-slate-100 p-6"
               style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-8 h-8 rounded-lg bg-emerald-100 animate-pulse" />
@@ -116,7 +116,7 @@ export default function TechnologyDetailLoading() {
                 {[130, 100, 150, 90, 120, 110].map((w, i) => (
                   <div
                     key={i}
-                    className="h-10 rounded-xl bg-emerald-50 border border-emerald-100 animate-pulse"
+                    className="h-10 rounded-md bg-emerald-50 border border-emerald-100 animate-pulse"
                     style={{ width: w }}
                   />
                 ))}
@@ -129,7 +129,7 @@ export default function TechnologyDetailLoading() {
             <div className="lg:sticky lg:top-24 space-y-4">
 
               {/* Main action card */}
-              <div className="rounded-2xl bg-white/80 backdrop-blur-md border border-white/60 p-6 space-y-5"
+              <div className="rounded-md bg-white/80 backdrop-blur-md border border-white/60 p-6 space-y-5"
                 style={{ boxShadow: '0 4px 6px -1px rgba(0,0,0,0.04), 0 20px 50px rgba(0,0,0,0.06)' }}>
 
                 {/* TRL section */}
@@ -165,7 +165,7 @@ export default function TechnologyDetailLoading() {
                 </div>
 
                 {/* CTA button */}
-                <div className="h-14 w-full rounded-xl bg-emerald-200 animate-pulse" />
+                <div className="h-14 w-full rounded-md bg-emerald-200 animate-pulse" />
                 <div className="space-y-1.5 px-1">
                   <div className="h-3 w-full rounded bg-slate-100 animate-pulse" />
                   <div className="h-3 w-5/6 rounded bg-slate-100 animate-pulse" />
@@ -174,7 +174,7 @@ export default function TechnologyDetailLoading() {
               </div>
 
               {/* Contact card */}
-              <div className="rounded-2xl bg-white border border-slate-100 p-5 space-y-3">
+              <div className="rounded-md bg-white border border-slate-100 p-5 space-y-3">
                 <div className="h-3 w-28 rounded bg-slate-200 animate-pulse" />
                 <div className="h-4 w-48 rounded bg-slate-200 animate-pulse" />
                 <div className="h-4 w-40 rounded bg-slate-100 animate-pulse" />
@@ -182,8 +182,8 @@ export default function TechnologyDetailLoading() {
               </div>
 
               {/* Link cards */}
-              <div className="h-14 rounded-xl bg-white border border-slate-100 animate-pulse" />
-              <div className="h-14 rounded-xl bg-white border border-slate-100 animate-pulse" />
+              <div className="h-14 rounded-md bg-white border border-slate-100 animate-pulse" />
+              <div className="h-14 rounded-md bg-white border border-slate-100 animate-pulse" />
             </div>
           </div>
 

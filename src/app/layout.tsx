@@ -2,8 +2,6 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import RinkAIAssistant from '@/components/ai/RinkAIAssistant';
-import InnovationAmbientLayer from '@/components/ui/InnovationAmbientLayer';
 
 export const metadata: Metadata = {
   title: 'RINK Technology Transfer Portal | Research Innovation Network Kerala',
@@ -26,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -34,10 +32,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <main className="flex-1 relative z-10">{children}</main>
         <Footer />
-        {/* Global ambient background layer */}
-        <InnovationAmbientLayer />
-        {/* AI Discovery Assistant — floating widget on all pages */}
-        <RinkAIAssistant />
       </body>
     </html>
   );

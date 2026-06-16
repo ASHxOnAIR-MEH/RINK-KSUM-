@@ -72,7 +72,7 @@ function LogoPill({ inst }: { inst: Institution }) {
   const acronym = getAcronym(inst.name);
 
   return (
-    <div className="flex-shrink-0 mx-3 flex items-center gap-3 px-5 py-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-200 min-w-[180px] max-w-[220px]">
+    <div className="flex-shrink-0 mx-3 flex items-center gap-3 px-5 py-3 bg-white rounded-md border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-200 min-w-[180px] max-w-[220px]">
       <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-50 border border-gray-100 flex-shrink-0 flex items-center justify-center">
         {logo && !imgError ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -84,7 +84,7 @@ function LogoPill({ inst }: { inst: Institution }) {
             loading="lazy"
           />
         ) : (
-          <span className="text-[10px] font-black text-[#2563EB] leading-none text-center px-0.5">
+          <span className="text-[10px] font-black text-[#0A2164] leading-none text-center px-0.5">
             {acronym}
           </span>
         )}
@@ -105,13 +105,13 @@ function FeaturedInstitutionCard({ inst }: { inst: Institution }) {
 
   return (
     <Link href={`/institutions/${inst.slug}`} className="block group">
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-blue-200 transition-all duration-250 overflow-hidden h-full flex flex-col">
+      <div className="bg-white rounded-md border border-gray-100 shadow-sm hover:shadow-sm hover:border-blue-200 transition-all duration-250 overflow-hidden h-full flex flex-col">
         {/* Top stripe */}
-        <div className="h-1.5 bg-gradient-to-r from-[#2563EB] to-[#60A5FA]" />
+        <div className="h-1.5 bg-gradient-to-r from-[#0A2164] to-[#60A5FA]" />
 
         {/* Logo area */}
         <div className="flex items-center justify-center pt-8 pb-4 px-6">
-          <div className="w-24 h-24 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center shadow-sm">
+          <div className="w-24 h-24 rounded-md overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center shadow-sm">
             {logo && !imgError ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -123,7 +123,7 @@ function FeaturedInstitutionCard({ inst }: { inst: Institution }) {
               />
             ) : (
               <div className="flex flex-col items-center justify-center w-full h-full bg-blue-50">
-                <span className="text-lg font-black text-[#2563EB] leading-none">{acronym}</span>
+                <span className="text-lg font-black text-[#0A2164] leading-none">{acronym}</span>
               </div>
             )}
           </div>
@@ -131,13 +131,13 @@ function FeaturedInstitutionCard({ inst }: { inst: Institution }) {
 
         {/* Body */}
         <div className="px-5 pb-5 flex flex-col flex-1">
-          <h3 className="text-[14px] font-heading font-bold text-gray-900 text-center leading-snug mb-2 group-hover:text-[#2563EB] transition-colors line-clamp-2 min-h-[40px]">
+          <h3 className="text-[14px] font-heading font-bold text-gray-900 text-center leading-snug mb-2 group-hover:text-[#0A2164] transition-colors line-clamp-2 min-h-[40px]">
             {inst.name}
           </h3>
 
           {/* Tech count badge */}
           <div className="flex items-center justify-center mb-4">
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] border border-blue-200">
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full bg-blue-50 text-[#0A2164] border border-blue-200">
               <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <rect x="3" y="3" width="18" height="18" rx="2" />
                 <path d="M9 9h6M9 13h6M9 17h4" />
@@ -148,7 +148,7 @@ function FeaturedInstitutionCard({ inst }: { inst: Institution }) {
 
           {/* CTA */}
           <div className="mt-auto">
-            <div className="w-full h-9 flex items-center justify-center gap-1.5 rounded-xl bg-blue-50 border border-blue-200 text-[#2563EB] text-xs font-bold group-hover:bg-[#2563EB] group-hover:text-white group-hover:border-transparent transition-all duration-200">
+            <div className="w-full h-9 flex items-center justify-center gap-1.5 rounded-md bg-blue-50 border border-blue-200 text-[#0A2164] text-xs font-bold group-hover:bg-[#0A2164] group-hover:text-white group-hover:border-transparent transition-all duration-200">
               Discover <ArrowRight className="w-3 h-3" />
             </div>
           </div>
@@ -223,7 +223,7 @@ export default function PartnerInstitutionsSection({ institutions }: Props) {
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="partner-dots" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
-              <circle cx="2" cy="2" r="1" fill="#2563EB" />
+              <circle cx="2" cy="2" r="1" fill="#0A2164" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#partner-dots)" />
@@ -234,7 +234,7 @@ export default function PartnerInstitutionsSection({ institutions }: Props) {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
-            <div className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-3">
+            <div className="text-xs font-bold text-[#0A2164] uppercase tracking-widest mb-3">
               Partner Institutions
             </div>
             <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-3">
@@ -247,7 +247,7 @@ export default function PartnerInstitutionsSection({ institutions }: Props) {
           </div>
           <Link
             href="/institutions"
-            className="flex-shrink-0 flex items-center gap-1.5 text-sm font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition-colors font-sans"
+            className="flex-shrink-0 flex items-center gap-1.5 text-sm font-semibold text-[#0A2164] hover:text-[#081A52] transition-colors font-sans"
             id="all-partner-institutes-link"
           >
             All Institutions <ArrowRight className="w-4 h-4" />

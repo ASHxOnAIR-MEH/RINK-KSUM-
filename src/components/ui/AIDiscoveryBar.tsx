@@ -44,7 +44,7 @@ function ResultCard({ r }: { r: AISearchResult }) {
 
   return (
     <div
-      className="group bg-card rounded-2xl border border-border p-5 hover:border-accent/30 hover:shadow-lg transition-all duration-300"
+      className="group bg-card rounded-md border border-border p-5 hover:border-accent/30 hover:shadow-sm transition-all duration-300"
       style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}
     >
       {/* Name */}
@@ -157,7 +157,7 @@ export default function AIDiscoveryBar() {
 
       {/* ── Search box ── */}
       <form onSubmit={handleSubmit} className="w-full">
-        <div className="flex flex-row items-stretch w-full rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 search-glow-container">
+        <div className="flex flex-row items-stretch w-full rounded-md overflow-hidden shadow-sm transition-all duration-300 search-glow-container">
           {/* Input container */}
           <div
             className={`flex-1 flex items-center bg-card border-2 rounded-l-2xl border-r-0 px-3 py-2.5 sm:px-4 sm:py-3.5 transition-all duration-300 ${
@@ -209,7 +209,7 @@ export default function AIDiscoveryBar() {
             disabled={!query.trim() || loading}
             className={`flex-shrink-0 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2.5 sm:py-3.5 rounded-r-2xl font-semibold text-xs sm:text-sm transition-all duration-200 border-2 border-transparent ${
               query.trim() && !loading
-                ? 'bg-accent text-[#04142B] hover:opacity-90 cursor-pointer'
+                ? 'bg-accent text-white hover:opacity-90 cursor-pointer'
                 : 'bg-card-secondary text-text-secondary/40 border-border cursor-not-allowed'
             }`}
             id="ai-discover-btn"
@@ -231,7 +231,7 @@ export default function AIDiscoveryBar() {
             </div>
           </div>
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="bg-card rounded-2xl border border-border p-5 animate-pulse">
+            <div key={i} className="bg-card rounded-md border border-border p-5 animate-pulse">
               <div className="h-4 bg-card-secondary rounded w-3/4 mb-4" />
               <div className="flex gap-2 mb-4">
                 <div className="h-6 bg-card-secondary rounded-lg w-28" />
@@ -280,7 +280,7 @@ export default function AIDiscoveryBar() {
               <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link
                   href={`/technologies?q=${encodeURIComponent(activeQuery)}`}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-accent-secondary border border-accent-secondary/20 bg-card hover:bg-card-secondary transition-colors"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-md text-sm font-semibold text-accent-secondary border border-accent-secondary/20 bg-card hover:bg-card-secondary transition-colors"
                   id="ai-view-all-btn"
                 >
                   <Search size={14} />

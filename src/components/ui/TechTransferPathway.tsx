@@ -96,19 +96,19 @@ export default function TechTransferPathway({ compact = false }: Props) {
       {/* Subtle circuit-trace background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.025]">
         <svg viewBox="0 0 1200 300" fill="none" className="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-          <path d="M0 150 H200 V80 H500 V220 H800 V100 H1200" stroke="#2563EB" strokeWidth="1" strokeDasharray="6 4" />
-          <circle cx="200" cy="150" r="5" fill="#2563EB" />
-          <circle cx="500" cy="80" r="5" fill="#2563EB" />
-          <circle cx="800" cy="220" r="5" fill="#2563EB" />
-          <path d="M0 80 H100 V200 H300" stroke="#2563EB" strokeWidth="0.5" strokeDasharray="3 3" />
-          <path d="M900 50 H1200" stroke="#2563EB" strokeWidth="0.5" strokeDasharray="4 4" />
+          <path d="M0 150 H200 V80 H500 V220 H800 V100 H1200" stroke="#0A2164" strokeWidth="1" strokeDasharray="6 4" />
+          <circle cx="200" cy="150" r="5" fill="#0A2164" />
+          <circle cx="500" cy="80" r="5" fill="#0A2164" />
+          <circle cx="800" cy="220" r="5" fill="#0A2164" />
+          <path d="M0 80 H100 V200 H300" stroke="#0A2164" strokeWidth="0.5" strokeDasharray="3 3" />
+          <path d="M900 50 H1200" stroke="#0A2164" strokeWidth="0.5" strokeDasharray="4 4" />
         </svg>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className={`text-center ${compact ? 'mb-10' : 'mb-14'}`}>
-          <div className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-3">
+          <div className="text-xs font-bold text-[#0A2164] uppercase tracking-widest mb-3">
             Technology Transfer Process
           </div>
           <h2 className={`font-heading font-bold text-gray-900 ${compact ? 'text-2xl md:text-3xl' : 'text-3xl md:text-4xl'} mb-3`}>
@@ -126,7 +126,7 @@ export default function TechTransferPathway({ compact = false }: Props) {
 
           {/* Desktop: horizontal line connector */}
           <div className="hidden md:block absolute top-[52px] left-[calc(8.33%+20px)] right-[calc(8.33%+20px)] h-[2px] z-0">
-            <div className="w-full h-full bg-gradient-to-r from-blue-200 via-[#2563EB] to-blue-200 opacity-40 rounded-full" />
+            <div className="w-full h-full bg-gradient-to-r from-blue-200 via-[#0A2164] to-blue-200 opacity-40 rounded-full" />
             <style>{`
               @keyframes pathway-scan {
                 0% { transform: translateX(-100%); }
@@ -140,7 +140,7 @@ export default function TechTransferPathway({ compact = false }: Props) {
               }
             `}</style>
             <div className="absolute inset-0 overflow-hidden rounded-full">
-              <div className="pathway-scan absolute top-0 bottom-0 w-1/4 bg-gradient-to-r from-transparent via-[#2563EB] to-transparent opacity-60 rounded-full" />
+              <div className="pathway-scan absolute top-0 bottom-0 w-1/4 bg-gradient-to-r from-transparent via-[#0A2164] to-transparent opacity-60 rounded-full" />
             </div>
           </div>
 
@@ -164,20 +164,20 @@ export default function TechTransferPathway({ compact = false }: Props) {
                     relative z-10 w-[52px] h-[52px] rounded-full border-2 flex items-center justify-center
                     transition-all duration-200 cursor-pointer
                     ${activeStep === step.id
-                      ? 'bg-[#2563EB] border-[#2563EB] text-white shadow-lg shadow-blue-200'
-                      : 'bg-white border-gray-200 text-gray-500 hover:border-[#2563EB] hover:text-[#2563EB] hover:shadow-md hover:scale-105'
+                      ? 'bg-[#0A2164] border-[#0A2164] text-white shadow-sm shadow-blue-200'
+                      : 'bg-white border-gray-200 text-gray-500 hover:border-[#0A2164] hover:text-[#0A2164] hover:shadow-md hover:scale-105'
                     }
                   `}
                   title={step.label}
                   aria-label={`${step.label}: ${step.shortDesc}`}
                 >
-                  <span className={activeStep === step.id ? 'text-white' : 'text-[#2563EB]'}>
+                  <span className={activeStep === step.id ? 'text-white' : 'text-[#0A2164]'}>
                     {step.icon}
                   </span>
                   {/* Step number */}
                   <span className={`
                     absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-[9px] font-black flex items-center justify-center
-                    ${activeStep === step.id ? 'bg-white text-[#2563EB]' : 'bg-[#2563EB] text-white'}
+                    ${activeStep === step.id ? 'bg-white text-[#0A2164]' : 'bg-[#0A2164] text-white'}
                   `}>
                     {step.id}
                   </span>
@@ -185,7 +185,7 @@ export default function TechTransferPathway({ compact = false }: Props) {
 
                 {/* Label */}
                 <div className={`mt-3 text-center ${compact ? '' : ''}`}>
-                  <div className={`text-[13px] font-bold font-heading ${activeStep === step.id ? 'text-[#2563EB]' : 'text-gray-800'}`}>
+                  <div className={`text-[13px] font-bold font-heading ${activeStep === step.id ? 'text-[#0A2164]' : 'text-gray-800'}`}>
                     {step.label}
                   </div>
                   {!compact && (
@@ -201,8 +201,8 @@ export default function TechTransferPathway({ compact = false }: Props) {
 
           {/* Dynamic detail card (Desktop & Mobile) - expands container naturally without clipping */}
           {activeStep && (
-            <div className="mt-8 bg-blue-50 border border-blue-200 rounded-xl p-5 text-center max-w-3xl mx-auto shadow-sm animate-fade-in">
-              <div className="text-sm md:text-lg font-bold text-[#2563EB] mb-2 font-heading">
+            <div className="mt-8 bg-blue-50 border border-blue-200 rounded-md p-5 text-center max-w-3xl mx-auto shadow-sm animate-fade-in">
+              <div className="text-sm md:text-lg font-bold text-[#0A2164] mb-2 font-heading">
                 {STEPS.find(s => s.id === activeStep)?.label}
               </div>
               <div className="text-sm md:text-base text-gray-700 leading-relaxed font-sans">

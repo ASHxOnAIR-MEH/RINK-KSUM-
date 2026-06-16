@@ -69,12 +69,12 @@ export default async function InstitutionDetailPage({ params }: Props) {
           <div className="flex items-center gap-3">
             {/* Visual Identity logo or fallback sector icon */}
             {logoSrc ? (
-              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center flex-shrink-0 overflow-hidden border border-border shadow-sm p-1.5">
+              <div className="w-12 h-12 rounded-md bg-white flex items-center justify-center flex-shrink-0 overflow-hidden border border-border shadow-sm p-1.5">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={logoSrc} alt={institution.name} className="w-full h-full object-contain" />
               </div>
             ) : (
-              <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0 border border-accent/20">
+              <div className="w-12 h-12 rounded-md bg-accent/10 flex items-center justify-center flex-shrink-0 border border-accent/20">
                 {getSectorIcon(primarySectorSlug, 'var(--accent)', 26)}
               </div>
             )}

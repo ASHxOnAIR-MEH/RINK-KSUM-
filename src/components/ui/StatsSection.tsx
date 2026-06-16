@@ -113,7 +113,7 @@ export default function StatsSection({ totalCount = 160, sectorsCount = 11, inst
     {
       value: `${techs}+`,
       label: 'Technologies Available',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
     },
     {
       value: `${insts}+`,
@@ -123,7 +123,7 @@ export default function StatsSection({ totalCount = 160, sectorsCount = 11, inst
     {
       value: `${sectors}+`,
       label: 'Technology Sectors',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
     },
     {
       value: 'Live',
@@ -133,7 +133,7 @@ export default function StatsSection({ totalCount = 160, sectorsCount = 11, inst
     {
       value: 'Kerala',
       label: 'Research Network',
-      color: 'text-[#2563EB]',
+      color: 'text-[#0A2164]',
     },
   ];
 
@@ -147,7 +147,7 @@ export default function StatsSection({ totalCount = 160, sectorsCount = 11, inst
         {floatingIcons.map((icon) => (
           <div
             key={icon.id}
-            className="absolute animate-float-asset text-[#2563EB]"
+            className="absolute animate-float-asset text-[#0A2164]"
             style={{
               left: icon.left,
               top: icon.top,
@@ -179,7 +179,7 @@ export default function StatsSection({ totalCount = 160, sectorsCount = 11, inst
           {stats.map((stat, i) => (
             <div
               key={i}
-              className="bg-white border border-gray-100 rounded-2xl p-5 flex flex-col items-center justify-center shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-250"
+              className="bg-white border border-gray-100 rounded-md p-5 flex flex-col items-center justify-center shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-250"
             >
               <div className={`text-3xl md:text-4xl font-heading font-black mb-1.5 ${stat.color}`}>
                 {stat.value}

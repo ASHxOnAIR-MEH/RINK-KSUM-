@@ -44,7 +44,7 @@ interface ChatMessage {
 // ── Typing indicator ──────────────────────────────────────────
 function TypingIndicator() {
   return (
-    <div className="flex items-center gap-2 px-4 py-3 rounded-2xl rounded-tl-sm border"
+    <div className="flex items-center gap-2 px-4 py-3 rounded-md rounded-tl-sm border"
       style={{
         background: 'var(--bg-assistant-bubble)',
         borderColor: 'var(--border-assistant-bubble)',
