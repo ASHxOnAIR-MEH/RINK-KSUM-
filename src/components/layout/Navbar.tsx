@@ -43,7 +43,7 @@ export default function Navbar() {
             <Link href="/" className="flex items-center flex-shrink-0 select-none" id="navbar-logo">
               <div className="relative h-10 sm:h-12 w-48 sm:w-60">
                 <Image
-                  src="/images/rink_ksum_logo_1779777831320.png"
+                  src="/images/rink_logo.png"
                   alt="Research Innovation Network Kerala"
                   fill
                   className="object-contain object-left"
