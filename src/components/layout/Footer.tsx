@@ -6,8 +6,7 @@ const NAV_LINKS = [
   { label: 'Home', href: '/' },
   { label: 'Institutions', href: '/institutions' },
   { label: 'Browse Technologies', href: '/technologies' },
-  { label: 'About RINK', href: '/about' },
-  { label: 'Contact', href: '/about#contact' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export default function Footer() {
@@ -17,19 +16,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
 
           {/* ── Left: Logos ── */}
-          <div className="flex items-center gap-5">
-            <div className="relative h-12 w-28 flex-shrink-0">
+          <div className="flex items-center">
+            <div className="relative h-12 w-48 sm:w-60 flex-shrink-0">
               <Image
-                src="/images/ksum-logo.png"
-                alt="Kerala Startup Mission"
-                fill
-                className="object-contain object-left"
-              />
-            </div>
-            <div className="h-12 w-px bg-slate-300" />
-            <div className="relative h-12 w-28 flex-shrink-0">
-              <Image
-                src="/images/rink-logo.png"
+                src="/images/rink_logo.png"
                 alt="Research Innovation Network Kerala"
                 fill
                 className="object-contain object-left"

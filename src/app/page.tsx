@@ -59,9 +59,9 @@ export default async function HomePage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-28">
           <div className="max-w-3xl animate-fade-in">
             {/* RINK Logo */}
-            <div className="relative h-12 sm:h-14 w-44 sm:w-56 mb-8">
+            <div className="relative h-12 sm:h-14 w-56 sm:w-72 mb-8">
               <Image
-                src="/images/rink-logo.png"
+                src="/images/rink_logo.png"
                 alt="Research Innovation Network Kerala"
                 fill
                 className="object-contain object-left brightness-0 invert"
