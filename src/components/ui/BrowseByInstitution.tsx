@@ -8,8 +8,8 @@ const LOCAL_LOGOS: Record<string, string> = {
   'cpcri': '/images/institutions/cpcri.jpg',
   'icar-ctcri': '/images/institutions/ctcri.jpg',
   'ctcri': '/images/institutions/ctcri.jpg',
-  'csir-niist': '/images/institutions/csir-niist.jpg',
-  'niist': '/images/institutions/csir-niist.jpg',
+  'csir-niist': '/images/institutions/csir-niist.png',
+  'niist': '/images/institutions/csir-niist.png',
   'cift': '/images/institutions/cift.jpg',
   'icar-cift': '/images/institutions/cift.jpg',
   'kufos': '/images/institutions/kufos-kochi.jpg',
@@ -18,6 +18,11 @@ const LOCAL_LOGOS: Record<string, string> = {
   'iiser-thiruvananthapuram': '/images/institutions/iiser-thiruvananthapuram.jpg',
   'iiser': '/images/institutions/iiser-thiruvananthapuram.jpg',
   'iit-palakkad': '/images/institutions/iit-palakkad.jpg',
+  'sctimst': '/images/institutions/sctimst.png',
+  'c-met': '/images/institutions/c-met.png',
+  'cmet': '/images/institutions/c-met.png',
+  'cdac': '/images/institutions/cdac.png',
+  'c-dac': '/images/institutions/cdac.png',
 };
 
 function getLogo(inst: Institution): string | null {
