@@ -4,15 +4,16 @@ import type { Institution } from '@/types';
 
 // Local logo map: slug (or partial) → local image path
 const LOCAL_LOGOS: Record<string, string> = {
-  'icar-cpcri': '/images/institutions/cpcri.jpg',
-  'cpcri': '/images/institutions/cpcri.jpg',
-  'icar-ctcri': '/images/institutions/ctcri.jpg',
-  'ctcri': '/images/institutions/ctcri.jpg',
+  'icar-cpcri': '/images/institutions/cpcri.png',
+  'cpcri': '/images/institutions/cpcri.png',
+  'icar-ctcri': '/images/institutions/ctcri.png',
+  'ctcri': '/images/institutions/ctcri.png',
   'csir-niist': '/images/institutions/csir-niist.png',
   'niist': '/images/institutions/csir-niist.png',
   'cift': '/images/institutions/cift.jpg',
   'icar-cift': '/images/institutions/cift.jpg',
-  'kufos': '/images/institutions/kufos-kochi.jpg',
+  'kufos': '/images/institutions/kufos-kochi.png',
+  'kerala-university-of-fisheries-and-ocean-studies-kufos': '/images/institutions/kufos-kochi.png',
   'kscste-jntbgri': '/images/institutions/kscste-jntbgri.jpg',
   'jntbgri': '/images/institutions/kscste-jntbgri.jpg',
   'iiser-thiruvananthapuram': '/images/institutions/iiser-thiruvananthapuram.jpg',
@@ -23,6 +24,12 @@ const LOCAL_LOGOS: Record<string, string> = {
   'cmet': '/images/institutions/c-met.png',
   'cdac': '/images/institutions/cdac.png',
   'c-dac': '/images/institutions/cdac.png',
+  'icar-iisr': '/images/institutions/iisr.png',
+  'iisr': '/images/institutions/iisr.png',
+  'indian-institute-of-spices-research': '/images/institutions/iisr.png',
+  'icar-sugarcane-breeding-institute': '/images/institutions/sugarcane-breeding.png',
+  'sugarcane-breeding-institute': '/images/institutions/sugarcane-breeding.png',
+  'sugarcane': '/images/institutions/sugarcane-breeding.png',
 };
 
 function getLogo(inst: Institution): string | null {
