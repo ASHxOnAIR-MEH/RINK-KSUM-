@@ -2,7 +2,7 @@ import { getTechnologyById, getAllTechnologies } from '@/lib/db';
 import { fetchAllTechnologies } from '@/lib/sheets';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronRight, ExternalLink, ArrowRight, FileText, Microscope, Lightbulb } from 'lucide-react';
+import { ChevronRight, ExternalLink, ArrowRight, FileText, Microscope } from 'lucide-react';
 import TechImage from '@/components/ui/TechImage';
 
 const GOOGLE_FORM_URL =
@@ -84,7 +84,6 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
   const trlLabel = getTRLLabel(trlLevel);
 
   const hasDesc = !!clean(tech.description);
-  const hasProblem = !!clean(tech.problem_solved);
   const hasApps = tech.applications.length > 0 && clean(tech.applications[0]);
 
   // Related technologies: same sector, different ID, max 4
@@ -93,9 +92,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
     .slice(0, 4);
 
   // Opportunity summary (used in hero)
-  const opportunitySummary = hasProblem
-    ? tech.problem_solved.slice(0, 150) + (tech.problem_solved.length > 150 ? '…' : '')
-    : `Developed by ${tech.institution}, this technology offers commercial potential in the ${tech.sector} sector.`;
+  const opportunitySummary = `Developed by ${tech.institution}, this technology offers commercial potential in the ${tech.sector} sector.`;
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#071428] text-gray-900 dark:text-white font-sans">
@@ -110,7 +107,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
             className="flex items-center justify-center gap-2 w-full py-3.5 rounded-md bg-[#0A2164] dark:bg-[#3B82F6] text-white font-semibold text-sm"
           >
             <FileText className="w-4 h-4" />
-            Request Licensing
+            Start Transfer Process
             <ExternalLink className="w-3.5 h-3.5 opacity-75" />
           </a>
         </div>
@@ -193,19 +190,6 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
               {/* LEFT / MAIN COLUMN */}
               <div className="lg:col-span-2 space-y-8">
 
-                {/* Problem Being Solved */}
-                {hasProblem && (
-                  <div className="bg-orange-50/40 dark:bg-orange-400/10 border border-orange-100 dark:border-orange-400/20 rounded-md p-6">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Lightbulb className="w-5 h-5 text-orange-500 dark:text-orange-400 flex-shrink-0" />
-                      <h2 className="font-serif text-lg font-bold text-slate-900">Problem Being Solved</h2>
-                    </div>
-                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-sans text-sm md:text-base">
-                      {tech.problem_solved}
-                    </p>
-                  </div>
-                )}
-
                 {/* Description */}
                 {hasDesc && (
                   <div>
@@ -216,10 +200,10 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                   </div>
                 )}
 
-                {/* Applications */}
+                {/* Applications & Industrial Potential */}
                 {hasApps && (
                   <div>
-                    <h2 className="font-serif text-xl font-bold text-[#0A2164] mb-4">Applications</h2>
+                    <h2 className="font-serif text-xl font-bold text-[#0A2164] mb-4">Applications &amp; Industrial Potential</h2>
                     <ul className="list-disc list-inside space-y-1.5 text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
                       {tech.applications.map((app, i) => (
                         <li key={i}>{app}</li>
@@ -230,10 +214,10 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
 
                 {/* CTA */}
                 <div className="bg-slate-50 dark:bg-[#0A1D37] border border-slate-200 dark:border-white/10 rounded-md p-8 text-center">
-                  <h3 className="font-serif text-xl font-bold text-slate-900 mb-3">Interested in this technology?</h3>
+                  <h3 className="font-serif text-xl font-bold text-slate-900 mb-3">Interested in this Technology?</h3>
                   <p className="text-slate-600 dark:text-slate-300 mb-6 max-w-2xl mx-auto text-sm leading-relaxed font-sans">
-                    Submit an inquiry through RINK to explore licensing, technology transfer, or commercialization
-                    opportunities with <strong>{tech.institution}</strong>.
+                    Submit a request through RINK to initiate technology transfer, licensing discussions,
+                    startup creation opportunities, or commercialization pathways related to this technology.
                   </p>
                   <a
                     href={GOOGLE_FORM_URL}
@@ -242,7 +226,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                     className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-md bg-[#0A2164] dark:bg-[#3B82F6] text-white font-semibold text-sm hover:bg-[#081A52] dark:hover:bg-[#2563EB] transition-colors"
                   >
                     <FileText className="w-4 h-4" />
-                    Request Licensing / Transfer
+                    Start Technology Transfer Process
                     <ExternalLink className="w-3.5 h-3.5 opacity-75" />
                   </a>
                 </div>
@@ -251,52 +235,45 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
 
               {/* RIGHT SIDE-CARD COLUMN */}
               <div className="lg:col-span-1">
-                {(trlLevel > 0 || clean(tech.patent_status) || clean(tech.institution)) && (
-                  <div className="bg-white dark:bg-[#0A1D37] border border-slate-200 dark:border-white/10 p-5 rounded-md space-y-6">
-                    {trlLevel > 0 && (
-                      <div>
-                        <div className="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-widest mb-2">
-                          Technology Readiness Level (TRL)
-                        </div>
+                <div className="bg-white dark:bg-[#0A1D37] border border-slate-200 dark:border-white/10 p-5 rounded-md space-y-6">
+                  {/* TRL */}
+                  <div>
+                    <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                      Technology Readiness Level (TRL)
+                    </div>
+                    {trlLevel > 0 ? (
+                      <>
                         <div className="text-lg font-bold text-[#0A2164] dark:text-[#60A5FA]">TRL {trlLevel}</div>
                         <div className="text-sm text-slate-600 dark:text-slate-300 font-sans">{trlLabel}</div>
-                      </div>
-                    )}
-                    {clean(tech.patent_status) && (
-                      <div>
-                        <div className="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-widest mb-2">
-                          IP / Patent Status
-                        </div>
-                        <div className="text-sm font-semibold text-slate-900 dark:text-white leading-snug font-sans">
-                          {clean(tech.patent_status)}
-                        </div>
-                      </div>
-                    )}
-                    {clean(tech.commercialization_status) && (
-                      <div>
-                        <div className="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-widest mb-2">
-                          Licensing
-                        </div>
-                        <div className="text-sm font-semibold text-slate-900 dark:text-white leading-snug font-sans">
-                          {clean(tech.commercialization_status)}
-                        </div>
-                      </div>
-                    )}
-                    {clean(tech.institution) && (
-                      <div>
-                        <div className="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-widest mb-2">
-                          Partner Institution
-                        </div>
-                        <Link
-                          href={`/institutions/${tech.institution_slug}`}
-                          className="text-sm font-semibold text-[#0A2164] dark:text-[#60A5FA] hover:underline font-sans"
-                        >
-                          {tech.institution}
-                        </Link>
-                      </div>
+                      </>
+                    ) : (
+                      <div className="text-sm text-slate-600 dark:text-slate-300 font-sans">TRL level will be updated soon</div>
                     )}
                   </div>
-                )}
+
+                  {/* IP Status */}
+                  <div>
+                    <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                      IP Status
+                    </div>
+                    <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10">
+                      {clean(tech.patent_status) || 'Not Specified'}
+                    </span>
+                  </div>
+
+                  {/* Partner Institution */}
+                  <div>
+                    <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                      Partner Institution
+                    </div>
+                    <Link
+                      href={`/institutions/${tech.institution_slug}`}
+                      className="text-sm font-semibold text-[#0A2164] dark:text-[#60A5FA] hover:underline font-sans"
+                    >
+                      {tech.institution}
+                    </Link>
+                  </div>
+                </div>
               </div>
 
             </div>

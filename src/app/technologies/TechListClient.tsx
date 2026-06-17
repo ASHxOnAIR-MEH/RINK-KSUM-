@@ -221,13 +221,22 @@ export default function TechListClient({
                   options={technologyTypes}
                 />
 
-                <FilterSelect
-                  id="filter-patent"
-                  label="Patent"
-                  value={filters.patent}
-                  onChange={v => applyFilter('patent', v)}
-                  options={patentStatuses}
-                />
+                <div className="filter-group">
+                  <label htmlFor="filter-patent" className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                    IP Status
+                  </label>
+                  <select
+                    id="filter-patent"
+                    value={filters.patent}
+                    onChange={e => applyFilter('patent', e.target.value)}
+                    className="w-full text-sm border border-border rounded-lg px-3 py-2 text-text-primary bg-card focus:outline-none focus:border-accent-secondary focus:ring-1 focus:ring-accent-secondary/20"
+                  >
+                    <option value="">All IP Status</option>
+                    {patentStatuses.map(opt => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                </div>
 
                 <div className="filter-group">
                   <label htmlFor="filter-potential" className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">

@@ -56,20 +56,11 @@ export default async function HomePage() {
 
           {/* Heading */}
           <h1
-            className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] tracking-tight max-w-5xl"
+            className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] tracking-tight max-w-5xl mb-10"
             style={{ color: '#FFFFFF', textShadow: '0 2px 12px rgba(0,0,0,0.35)' }}
           >
-            Browse and Adopt Technologies from Kerala&apos;s Leading Research Institutions
+            Discover Technologies from Kerala&apos;s Leading Research Institutions
           </h1>
-
-          {/* Description */}
-          <p
-            className="font-sans text-base md:text-lg max-w-3xl mt-5 mb-10 leading-relaxed"
-            style={{ color: 'rgba(255,255,255,0.92)', textShadow: '0 2px 12px rgba(0,0,0,0.35)' }}
-          >
-            Discover commercially viable technologies from Kerala&apos;s leading research institutions
-            and explore opportunities for technology transfer, licensing, startup creation, and commercialization.
-          </p>
 
           {/* Search — the centerpiece */}
           <div className="w-full hero-search-breathe">

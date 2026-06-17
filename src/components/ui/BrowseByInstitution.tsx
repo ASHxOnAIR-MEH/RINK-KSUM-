@@ -41,10 +41,7 @@ export default function BrowseByInstitution({ institutions }: Props) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="mb-12">
           <div className="text-xs font-bold text-[#0A2164] dark:text-[#60A5FA] uppercase tracking-widest mb-3">Browse by Institution</div>
-          <h2 className="text-3xl font-heading font-bold text-gray-900 mb-3">Browse by Institution</h2>
-          <p className="text-gray-600 dark:text-slate-300 text-base font-sans">
-            Explore technologies from Kerala&apos;s leading research institutions.
-          </p>
+          <h2 className="text-3xl font-heading font-bold text-gray-900">Technologies From Kerala&apos;s Leading Research Institutions</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

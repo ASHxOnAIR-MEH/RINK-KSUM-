@@ -607,6 +607,13 @@ h1, h2, h3, h4, h5, h6 {
   padding-top: 20px;
   border-top: 1px solid var(--border);
 }
+/* Dark-mode filter panel (premium glass) */
+.dark .filter-sidebar {
+  background: rgba(10, 29, 55, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-color: rgba(255, 255, 255, 0.08);
+}
 
 /* ── Sector Card ── */
 .sector-card {
