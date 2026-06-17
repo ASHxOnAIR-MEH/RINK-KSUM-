@@ -20,16 +20,17 @@ const LOCAL_LOGOS: Record<string, string> = {
   'iiser': '/images/institutions/iiser-thiruvananthapuram.jpg',
   'iit-palakkad': '/images/institutions/iit-palakkad.jpg',
   'sctimst': '/images/institutions/sctimst.png',
-  'c-met': '/images/institutions/c-met.png',
-  'cmet': '/images/institutions/c-met.png',
   'cdac': '/images/institutions/cdac.png',
   'c-dac': '/images/institutions/cdac.png',
+  'centre-for-development-of-advanced-computing': '/images/institutions/cdac.png',
   'icar-iisr': '/images/institutions/iisr.png',
   'iisr': '/images/institutions/iisr.png',
   'indian-institute-of-spices-research': '/images/institutions/iisr.png',
   'icar-sugarcane-breeding-institute': '/images/institutions/sugarcane-breeding.png',
   'sugarcane-breeding-institute': '/images/institutions/sugarcane-breeding.png',
   'sugarcane': '/images/institutions/sugarcane-breeding.png',
+  'kerala-agricultural-university': '/images/institutions/kau.png',
+  'kau': '/images/institutions/kau.png',
 };
 
 function getLogo(inst: Institution): string | null {
