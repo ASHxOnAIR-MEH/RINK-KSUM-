@@ -81,7 +81,11 @@ export default function HeroAISearch() {
 
   return (
     <div className="w-full max-w-3xl">
-      <label htmlFor="hero-ai-input" className="block text-white font-sans text-base md:text-lg font-medium mb-3">
+      <label
+        htmlFor="hero-ai-input"
+        className="block font-sans text-base md:text-lg font-medium mb-3"
+        style={{ color: '#FFFFFF', textShadow: '0 2px 12px rgba(0,0,0,0.35)' }}
+      >
         Describe your idea, product, industry, challenge, or opportunity...
       </label>
       <form onSubmit={handleSubmit} className="relative">
