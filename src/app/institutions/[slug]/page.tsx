@@ -62,7 +62,7 @@ export default async function InstitutionDetailPage({ params }: Props) {
         <InstitutionEcosystemBackground />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-          <Link href="/institutions" className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-accent transition-colors mb-2">
+          <Link href="/#institutions" className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-accent transition-colors mb-2">
             <ArrowLeft className="w-3.5 h-3.5" />
             All Institutions
           </Link>

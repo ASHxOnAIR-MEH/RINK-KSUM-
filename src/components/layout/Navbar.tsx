@@ -3,15 +3,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { Home, Building2, Mail } from 'lucide-react';
+import { Home, Layers, Mail } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import ThemeToggle from './ThemeToggle';
 
 const NAV_LINKS = [
-  { label: 'Home',         href: '/',             icon: Home },
-  { label: 'Institutions', href: '/institutions', icon: Building2 },
-  { label: 'Contact',      href: '/contact',      icon: Mail },
+  { label: 'Home',     href: '/',         icon: Home },
+  { label: 'Sectors',  href: '/#sectors', icon: Layers },
+  { label: 'Contact',  href: '/contact',  icon: Mail },
 ];
 
 export default function Navbar() {

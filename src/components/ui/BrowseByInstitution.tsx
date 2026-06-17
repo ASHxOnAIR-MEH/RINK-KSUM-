@@ -37,7 +37,7 @@ export default function BrowseByInstitution({ institutions }: Props) {
   const sorted = [...institutions].sort((a, b) => b.tech_count - a.tech_count);
 
   return (
-    <section className="relative py-20 bg-white dark:bg-[#071428] border-b border-gray-100 dark:border-white/10">
+    <section id="institutions" className="relative scroll-mt-20 py-20 bg-white dark:bg-[#071428] border-b border-gray-100 dark:border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="mb-12">
           <div className="text-xs font-bold text-[#0A2164] dark:text-[#60A5FA] uppercase tracking-widest mb-3">Browse by Institution</div>

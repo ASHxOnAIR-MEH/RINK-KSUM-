@@ -55,7 +55,7 @@ export default async function HomePage() {
         />
         {/* Contrast overlay for guaranteed text readability */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 hero-breathe"
           style={{ background: 'linear-gradient(rgba(7,20,40,0.82), rgba(7,20,40,0.72))' }}
           aria-hidden
         />
@@ -64,6 +64,14 @@ export default async function HomePage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-24 md:py-32">
           <div className="max-w-3xl animate-fade-in">
+            {/* Premium label badge */}
+            <div
+              className="inline-flex items-center px-3.5 py-1.5 rounded-md bg-white/10 border border-white/20 backdrop-blur-sm text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.18em] mb-6"
+              style={{ color: '#FFFFFF' }}
+            >
+              Research Innovation Network Kerala — Technology Transfer Portal
+            </div>
+
             {/* Title */}
             <h1
               className="font-serif text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] tracking-tight"
@@ -82,7 +90,9 @@ export default async function HomePage() {
             </p>
 
             {/* AI Assistive Search */}
-            <HeroAISearch />
+            <div className="hero-search-breathe">
+              <HeroAISearch />
+            </div>
           </div>
         </div>
       </section>
@@ -123,7 +133,7 @@ export default async function HomePage() {
       <BrowseByInstitution institutions={institutions} />
 
       {/* ── 4. EXPLORE BY SECTOR ─────────────────────────────── */}
-      <section className="relative py-20 bg-[#F8FAFF] dark:bg-[#0A1D37] overflow-hidden border-b border-gray-100 dark:border-white/10">
+      <section id="sectors" className="relative scroll-mt-20 py-20 bg-[#F8FAFF] dark:bg-[#0A1D37] overflow-hidden border-b border-gray-100 dark:border-white/10">
         {/* Hexagon grid background */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.02] flex items-center justify-center select-none z-0">
           <svg viewBox="0 0 800 400" className="w-full max-w-4xl h-full text-[#0A2164]" fill="none">

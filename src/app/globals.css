@@ -727,6 +727,22 @@ h1, h2, h3, h4, h5, h6 {
 }
 .animate-red-dot { animation: red-dot-pulse 2s infinite ease-in-out; }
 
+/* ── Hero breathing effects (living innovation ecosystem) ── */
+@keyframes hero-breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
+}
+@keyframes hero-search-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.012); }
+}
+.hero-breathe { animation: hero-breathe 9s ease-in-out infinite; }
+.hero-search-breathe { animation: hero-search-breathe 7s ease-in-out infinite; transform-origin: center; }
+.hero-search-breathe:focus-within { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-breathe, .hero-search-breathe { animation: none; }
+}
+
 /* ── AI suggestion dropdown (light only) ── */
 html:not(.dark) .absolute.bg-white {
   background-color: #FFFFFF !important;
