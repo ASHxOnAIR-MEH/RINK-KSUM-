@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Sector } from '@/types';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -354,6 +355,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
 export default function SectorCard({ sector }: Props) {
   const subsectors = SECTOR_SUBSECTORS[sector.slug] || SECTOR_SUBSECTORS['default'];
   const accentColor = SECTOR_ACCENTS[sector.slug] || '#10B981';
+  const [imgFailed, setImgFailed] = useState(false);
 
   return (
     <Link href={`/technologies?sector=${sector.slug}`} id={`sector-card-${sector.slug}`} className="block group">
@@ -361,9 +363,20 @@ export default function SectorCard({ sector }: Props) {
         className="relative overflow-hidden rounded-md h-40 sm:h-52 flex flex-col justify-end cursor-pointer border border-gray-100 bg-gray-50 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-250"
         style={{ transition: 'all 0.25s ease' }}
       >
-        {/* Sector illustration artwork */}
+        {/* Sector image with SVG illustration fallback */}
         <div className="absolute inset-0 w-full h-full select-none z-0">
-          <SectorIllustration slug={sector.slug} accentColor={accentColor} />
+          {!imgFailed ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={`/images/sectors/${sector.slug}.png`}
+              alt={sector.name}
+              className="w-full h-full object-cover"
+              onError={() => setImgFailed(true)}
+              loading="lazy"
+            />
+          ) : (
+            <SectorIllustration slug={sector.slug} accentColor={accentColor} />
+          )}
         </div>
 
         {/* Gradient overlay — light to ensure text readability */}

@@ -1,8 +1,9 @@
-import { getFeaturedTechnologies, getAllSectors } from '@/lib/db';
+import { getFeaturedTechnologies, getAllSectors, getAllInstitutions } from '@/lib/db';
 import SectorCard from '@/components/ui/SectorCard';
 import FeaturedCarousel from '@/components/ui/FeaturedCarousel';
 import HeroAISearch from '@/components/ui/HeroAISearch';
 import HeroMetrics from '@/components/ui/HeroMetrics';
+import BrowseByInstitution from '@/components/ui/BrowseByInstitution';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
@@ -32,9 +33,10 @@ const localFloatingAssets = [
 ];
 
 export default async function HomePage() {
-  const [featuredTechs, sectors] = await Promise.all([
+  const [featuredTechs, sectors, institutions] = await Promise.all([
     getFeaturedTechnologies(20),
     getAllSectors(),
+    getAllInstitutions(),
   ]);
 
   const topSectors = sectors.slice(0, 8);
@@ -50,20 +52,22 @@ export default async function HomePage() {
           style={{ backgroundImage: "url('/images/hero-bg.png')" }}
           aria-hidden
         />
-        {/* Solid dark blue tint overlay */}
-        <div className="absolute inset-0 bg-[#0A2164]/75" aria-hidden />
-        {/* Progressive scrim fade */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A2164] via-[#0A2164]/90 to-transparent" aria-hidden />
+        {/* Contrast overlay for guaranteed text readability */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(rgba(7,20,40,0.78), rgba(7,20,40,0.72))' }}
+          aria-hidden
+        />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-24 md:py-32">
           <div className="max-w-3xl animate-fade-in">
             {/* Title */}
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white font-bold leading-[1.12] tracking-tight">
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white font-extrabold leading-[1.12] tracking-tight">
               Browse and Adopt Technologies from Kerala&apos;s Leading Research Institutions
             </h1>
 
             {/* Subtext */}
-            <p className="font-sans text-lg text-slate-300 max-w-2xl mt-6 mb-8 leading-relaxed">
+            <p className="font-sans text-lg text-[#E5E7EB] max-w-2xl mt-6 mb-8 leading-relaxed">
               Discover commercially viable technologies from Kerala&apos;s leading research institutions
               and explore opportunities for technology transfer, licensing, startup creation, and commercialization.
             </p>
@@ -106,7 +110,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── 3. EXPLORE BY SECTOR ─────────────────────────────── */}
+      {/* ── 3. BROWSE BY INSTITUTION ─────────────────────────── */}
+      <BrowseByInstitution institutions={institutions} />
+
+      {/* ── 4. EXPLORE BY SECTOR ─────────────────────────────── */}
       <section className="relative py-20 bg-[#F8FAFF] overflow-hidden border-b border-gray-100">
         {/* Hexagon grid background */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.02] flex items-center justify-center select-none z-0">

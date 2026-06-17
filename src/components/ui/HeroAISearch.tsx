@@ -81,29 +81,33 @@ export default function HeroAISearch() {
 
   return (
     <div className="w-full max-w-3xl">
+      <label htmlFor="hero-ai-input" className="block text-white font-sans text-base md:text-lg font-medium mb-3">
+        Describe your idea, product, industry, challenge, or opportunity...
+      </label>
       <form onSubmit={handleSubmit} className="relative">
         {/* Ripple rings */}
         <span aria-hidden className="hero-ripple hero-ripple-1" />
         <span aria-hidden className="hero-ripple hero-ripple-2" />
 
-        <div className="relative z-10 flex items-center w-full bg-[#0A2164]/30 backdrop-blur-md border border-white/20 rounded-md shadow-2xl overflow-hidden transition-all duration-300 focus-within:border-[#F5B400]/60 focus-within:shadow-[0_0_30px_rgba(245,180,0,0.22)]">
-          <span className="pl-4 flex-shrink-0 text-slate-300">
+        <div className="relative z-10 flex items-center w-full bg-white border border-slate-200 rounded-md shadow-2xl overflow-hidden transition-all duration-300 focus-within:border-[#F5B400] focus-within:ring-2 focus-within:ring-[#F5B400]/50 focus-within:shadow-[0_0_34px_rgba(245,180,0,0.4)]">
+          <span className="pl-4 flex-shrink-0 text-slate-500">
             <Search className="w-5 h-5" />
           </span>
           <input
+            id="hero-ai-input"
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Describe your idea, problem, product, industry, or opportunity..."
-            aria-label="Describe your idea, problem, product, industry, or opportunity"
-            className="w-full py-4 px-4 bg-transparent text-white placeholder:text-slate-400 focus:outline-none font-sans text-base md:text-lg min-w-0"
+            placeholder="Type a keyword, idea, sector, or problem..."
+            aria-label="Search technologies"
+            className="w-full py-4 px-4 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none font-sans text-base md:text-lg min-w-0"
           />
           {(query || result) && !loading && (
             <button
               type="button"
               onClick={reset}
               title="Clear"
-              className="flex-shrink-0 p-2 mr-1 text-slate-300 hover:text-white transition-colors"
+              className="flex-shrink-0 p-2 mr-1 text-slate-400 hover:text-slate-700 transition-colors"
             >
               <RotateCcw className="w-4 h-4" />
             </button>
