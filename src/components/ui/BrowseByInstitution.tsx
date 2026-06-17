@@ -23,6 +23,8 @@ const LOCAL_LOGOS: Record<string, string> = {
   'cdac': '/images/institutions/cdac.png',
   'c-dac': '/images/institutions/cdac.png',
   'centre-for-development-of-advanced-computing': '/images/institutions/cdac.png',
+  'c-met': '/images/institutions/c-met.png',
+  'cmet': '/images/institutions/c-met.png',
   'icar-iisr': '/images/institutions/iisr.png',
   'iisr': '/images/institutions/iisr.png',
   'indian-institute-of-spices-research': '/images/institutions/iisr.png',
