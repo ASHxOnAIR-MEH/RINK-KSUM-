@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 
+/* Class-based dark mode (toggled via .dark on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ============================================================
    RINK Technology Transfer Portal — Premium Light-Mode Design System
    Kerala Startup Mission | Research Innovation Network Kerala
@@ -81,6 +84,73 @@
   --radius-card: 6px;
   --radius-badge: 4px;
   --radius-button: 6px;
+}
+
+/* ============================================================
+   DARK THEME (default) — premium research innovation palette
+   ============================================================ */
+.dark {
+  --background: #071428;
+  --card: #0A1D37;
+  --card-secondary: #102B52;
+  --bg-section-b: #0A1D37;
+  --bg-section-c: #071428;
+
+  --text-primary: #FFFFFF;
+  --text-secondary: #C8D4E5;
+  --heading: #FFFFFF;
+
+  --border: rgba(255, 255, 255, 0.08);
+
+  --accent: #3B82F6;
+  --accent-hover: #2563EB;
+  --accent-light: rgba(59, 130, 246, 0.14);
+  --accent-secondary: #FFC107;
+
+  /* Legacy fallback aliases */
+  --bg-app: #071428;
+  --bg-card: #0A1D37;
+  --bg-card-hover: #102B52;
+  --border-card: rgba(255, 255, 255, 0.08);
+  --border-card-hover: rgba(59, 130, 246, 0.45);
+  --text-title: #FFFFFF;
+  --text-body: #FFFFFF;
+  --text-muted: #C8D4E5;
+  --bg-navbar: rgba(7, 20, 40, 0.92);
+  --border-navbar: rgba(255, 255, 255, 0.08);
+  --bg-section: #0A1D37;
+  --bg-badge-gray: rgba(255, 255, 255, 0.08);
+  --text-badge-gray: #E5E7EB;
+  --bg-select: #102B52;
+  --text-select: #FFFFFF;
+  --border-input: rgba(255, 255, 255, 0.14);
+
+  /* Callout / alert */
+  --bg-amber-callout: rgba(255, 193, 7, 0.10);
+  --border-amber-callout: rgba(255, 193, 7, 0.30);
+  --text-amber-callout: #FCD34D;
+  --text-amber-body: #E5E7EB;
+
+  /* Assistant bubbles */
+  --bg-assistant-bubble: rgba(16, 43, 82, 0.85);
+  --border-assistant-bubble: rgba(255, 255, 255, 0.10);
+  --text-assistant-bubble: #E5E7EB;
+
+  /* Shadows — flat in dark */
+  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --shadow-card-hover: 0 0 0 1px rgba(59, 130, 246, 0.40);
+  --shadow-navbar: 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  /* Brand color aliases that map to surfaces */
+  --color-brand-blue-light: rgba(59, 130, 246, 0.14);
+}
+
+/* Dark-mode tuning for the global card-hover override */
+.dark .card:hover,
+.dark .sector-card:hover,
+.dark [id^="tech-card-"]:hover,
+.dark [id^="inst-card-"]:hover {
+  border-color: rgba(59, 130, 246, 0.55) !important;
 }
 
 /* ── @theme inline (Tailwind CSS v4 token mapping) ── */
@@ -657,22 +727,44 @@ h1, h2, h3, h4, h5, h6 {
 }
 .animate-red-dot { animation: red-dot-pulse 2s infinite ease-in-out; }
 
-/* ── AI suggestion dropdown ── */
-.absolute.bg-white {
+/* ── AI suggestion dropdown (light only) ── */
+html:not(.dark) .absolute.bg-white {
   background-color: #FFFFFF !important;
   border-color: #E5E7EB !important;
 }
 
-/* ── Inputs / Select ── */
-select, input:not(.bg-transparent), textarea:not(.bg-transparent) {
+/* ── Inputs / Select (light only) ── */
+html:not(.dark) select,
+html:not(.dark) input:not(.bg-transparent),
+html:not(.dark) textarea:not(.bg-transparent) {
   background-color: #FFFFFF !important;
   color: var(--text-primary) !important;
   border-color: #E5E7EB !important;
 }
-input::placeholder, textarea::placeholder { color: var(--text-secondary) !important; }
+html:not(.dark) input::placeholder,
+html:not(.dark) textarea::placeholder { color: var(--text-secondary) !important; }
+
+/* ── Inputs / Select (dark) — excludes intentional white inputs (.bg-white) ── */
+.dark select,
+.dark input:not(.bg-transparent):not(.bg-white),
+.dark textarea:not(.bg-transparent):not(.bg-white) {
+  background-color: #102B52 !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+.dark input:not(.bg-white)::placeholder,
+.dark textarea:not(.bg-white)::placeholder { color: #C8D4E5 !important; }
+.dark .absolute.bg-white:not(.keep-white) {
+  background-color: #0A1D37 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
 
 /* ── Invert logo in light mode ── */
 #navbar-logo img {
   filter: none !important;
   mix-blend-mode: normal !important;
+}
+/* ── Dark mode: render the navbar logo white for visibility ── */
+.dark #navbar-logo img {
+  filter: brightness(0) invert(1) !important;
 }

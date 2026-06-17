@@ -360,7 +360,7 @@ export default function SectorCard({ sector }: Props) {
   return (
     <Link href={`/technologies?sector=${sector.slug}`} id={`sector-card-${sector.slug}`} className="block group">
       <div
-        className="relative overflow-hidden rounded-md h-40 sm:h-52 flex flex-col justify-end cursor-pointer border border-gray-100 bg-gray-50 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-250"
+        className="relative overflow-hidden rounded-md h-40 sm:h-52 flex flex-col justify-end cursor-pointer border border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-[#102B52] shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-[#3B82F6]/50 dark:hover:shadow-[0_0_26px_rgba(59,130,246,0.18)] transition-all duration-250"
         style={{ transition: 'all 0.25s ease' }}
       >
         {/* Sector image with SVG illustration fallback */}
@@ -370,7 +370,7 @@ export default function SectorCard({ sector }: Props) {
             <img
               src={`/images/sectors/${sector.slug}.png`}
               alt={sector.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               onError={() => setImgFailed(true)}
               loading="lazy"
             />

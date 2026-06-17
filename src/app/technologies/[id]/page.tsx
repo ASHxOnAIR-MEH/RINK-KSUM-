@@ -98,16 +98,16 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
     : `Developed by ${tech.institution}, this technology offers commercial potential in the ${tech.sector} sector.`;
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans">
+    <div className="min-h-screen bg-white dark:bg-[#071428] text-gray-900 dark:text-white font-sans">
 
       {/* ── MOBILE STICKY BOTTOM CTA ───────────────────────── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-        <div className="bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-4 pt-3 pb-5">
+        <div className="bg-white dark:bg-[#0A1D37] border-t border-gray-200 dark:border-white/10 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-4 pt-3 pb-5">
           <a
             href={GOOGLE_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-3.5 rounded-md bg-[#0A2164] text-white font-semibold text-sm"
+            className="flex items-center justify-center gap-2 w-full py-3.5 rounded-md bg-[#0A2164] dark:bg-[#3B82F6] text-white font-semibold text-sm"
           >
             <FileText className="w-4 h-4" />
             Request Licensing
@@ -121,18 +121,18 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
         {/* ══════════════════════════════════════════════════════
             SECTION 1 — HERO
         ══════════════════════════════════════════════════════ */}
-        <section className="border-b border-slate-200 bg-white">
+        <section className="border-b border-slate-200 dark:border-white/10 bg-white dark:bg-[#071428]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-12">
 
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-xs text-slate-500 flex-wrap mb-8">
-              <Link href="/" className="hover:text-[#0A2164] transition-colors">Home</Link>
-              <ChevronRight className="w-3 h-3 text-slate-300" />
-              <Link href="/technologies" className="hover:text-[#0A2164] transition-colors">Technologies</Link>
-              <ChevronRight className="w-3 h-3 text-slate-300" />
-              <Link href={`/sectors/${tech.sector_slug}`} className="hover:text-[#0A2164] transition-colors">{tech.sector}</Link>
-              <ChevronRight className="w-3 h-3 text-slate-300" />
-              <span className="text-slate-900 font-medium truncate max-w-[200px] sm:max-w-sm">{tech.name}</span>
+            <nav className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 flex-wrap mb-8">
+              <Link href="/" className="hover:text-[#0A2164] dark:hover:text-[#60A5FA] transition-colors">Home</Link>
+              <ChevronRight className="w-3 h-3 text-slate-300 dark:text-slate-600" />
+              <Link href="/technologies" className="hover:text-[#0A2164] dark:hover:text-[#60A5FA] transition-colors">Technologies</Link>
+              <ChevronRight className="w-3 h-3 text-slate-300 dark:text-slate-600" />
+              <Link href={`/sectors/${tech.sector_slug}`} className="hover:text-[#0A2164] dark:hover:text-[#60A5FA] transition-colors">{tech.sector}</Link>
+              <ChevronRight className="w-3 h-3 text-slate-300 dark:text-slate-600" />
+              <span className="text-slate-900 dark:text-white font-medium truncate max-w-[200px] sm:max-w-sm">{tech.name}</span>
             </nav>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -142,11 +142,11 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
 
                 {/* Category chips */}
                 <div className="flex flex-wrap gap-2">
-                  <span className="bg-slate-50 border border-slate-200 text-slate-700 rounded-sm text-xs px-3 py-1 font-sans font-semibold">
+                  <span className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 rounded-sm text-xs px-3 py-1 font-sans font-semibold">
                     {tech.sector}
                   </span>
                   {techTypes.map((t, i) => (
-                    <span key={i} className="bg-slate-50 border border-slate-200 text-slate-700 rounded-sm text-xs px-3 py-1 font-sans">
+                    <span key={i} className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 rounded-sm text-xs px-3 py-1 font-sans">
                       {t}
                     </span>
                   ))}
@@ -159,22 +159,22 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
 
                 {/* Institution + ID */}
                 <div className="flex flex-wrap items-center gap-4 text-sm">
-                  <Link href={`/institutions/${tech.institution_slug}`} className="font-bold text-[#0A2164] hover:underline">
+                  <Link href={`/institutions/${tech.institution_slug}`} className="font-bold text-[#0A2164] dark:text-[#60A5FA] hover:underline">
                     {tech.institution}
                   </Link>
-                  <span className="text-slate-300">|</span>
-                  <span className="font-mono text-slate-500">ID: {tech.id}</span>
+                  <span className="text-slate-300 dark:text-slate-600">|</span>
+                  <span className="font-mono text-slate-500 dark:text-slate-400">ID: {tech.id}</span>
                 </div>
 
                 {/* Short Summary */}
-                <p className="text-slate-700 text-lg leading-relaxed font-sans">
+                <p className="text-slate-700 dark:text-slate-300 text-lg leading-relaxed font-sans">
                   {opportunitySummary}
                 </p>
               </div>
 
               {/* RIGHT COLUMN — Technology Image */}
               <div>
-                <div className="rounded-md overflow-hidden border border-slate-200 shadow-sm aspect-[16/9] w-full relative bg-white">
+                <div className="rounded-md overflow-hidden border border-slate-200 dark:border-white/10 shadow-sm aspect-[16/9] w-full relative bg-white dark:bg-[#102B52]">
                   <TechImage src={displayImage} alt={tech.name} />
                 </div>
               </div>
@@ -195,12 +195,12 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
 
                 {/* Problem Being Solved */}
                 {hasProblem && (
-                  <div className="bg-orange-50/40 border border-orange-100 rounded-md p-6">
+                  <div className="bg-orange-50/40 dark:bg-orange-400/10 border border-orange-100 dark:border-orange-400/20 rounded-md p-6">
                     <div className="flex items-center gap-2 mb-3">
-                      <Lightbulb className="w-5 h-5 text-orange-500 flex-shrink-0" />
+                      <Lightbulb className="w-5 h-5 text-orange-500 dark:text-orange-400 flex-shrink-0" />
                       <h2 className="font-serif text-lg font-bold text-slate-900">Problem Being Solved</h2>
                     </div>
-                    <p className="text-slate-700 leading-relaxed font-sans text-sm md:text-base">
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-sans text-sm md:text-base">
                       {tech.problem_solved}
                     </p>
                   </div>
@@ -210,7 +210,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                 {hasDesc && (
                   <div>
                     <h2 className="font-serif text-xl font-bold text-[#0A2164] mb-4">Technology Description</h2>
-                    <p className="text-slate-700 leading-relaxed font-sans whitespace-pre-line">
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-sans whitespace-pre-line">
                       {tech.description}
                     </p>
                   </div>
@@ -220,7 +220,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                 {hasApps && (
                   <div>
                     <h2 className="font-serif text-xl font-bold text-[#0A2164] mb-4">Applications</h2>
-                    <ul className="list-disc list-inside space-y-1.5 text-slate-700 font-sans leading-relaxed">
+                    <ul className="list-disc list-inside space-y-1.5 text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
                       {tech.applications.map((app, i) => (
                         <li key={i}>{app}</li>
                       ))}
@@ -229,9 +229,9 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                 )}
 
                 {/* CTA */}
-                <div className="bg-slate-50 border border-slate-200 rounded-md p-8 text-center">
+                <div className="bg-slate-50 dark:bg-[#0A1D37] border border-slate-200 dark:border-white/10 rounded-md p-8 text-center">
                   <h3 className="font-serif text-xl font-bold text-slate-900 mb-3">Interested in this technology?</h3>
-                  <p className="text-slate-600 mb-6 max-w-2xl mx-auto text-sm leading-relaxed font-sans">
+                  <p className="text-slate-600 dark:text-slate-300 mb-6 max-w-2xl mx-auto text-sm leading-relaxed font-sans">
                     Submit an inquiry through RINK to explore licensing, technology transfer, or commercialization
                     opportunities with <strong>{tech.institution}</strong>.
                   </p>
@@ -239,7 +239,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                     href={GOOGLE_FORM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-md bg-[#0A2164] text-white font-semibold text-sm hover:bg-[#081A52] transition-colors"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-md bg-[#0A2164] dark:bg-[#3B82F6] text-white font-semibold text-sm hover:bg-[#081A52] dark:hover:bg-[#2563EB] transition-colors"
                   >
                     <FileText className="w-4 h-4" />
                     Request Licensing / Transfer
@@ -252,44 +252,44 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
               {/* RIGHT SIDE-CARD COLUMN */}
               <div className="lg:col-span-1">
                 {(trlLevel > 0 || clean(tech.patent_status) || clean(tech.institution)) && (
-                  <div className="bg-white border border-slate-200 p-5 rounded-md space-y-6">
+                  <div className="bg-white dark:bg-[#0A1D37] border border-slate-200 dark:border-white/10 p-5 rounded-md space-y-6">
                     {trlLevel > 0 && (
                       <div>
-                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                        <div className="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-widest mb-2">
                           Technology Readiness Level (TRL)
                         </div>
-                        <div className="text-lg font-bold text-[#0A2164]">TRL {trlLevel}</div>
-                        <div className="text-sm text-slate-600 font-sans">{trlLabel}</div>
+                        <div className="text-lg font-bold text-[#0A2164] dark:text-[#60A5FA]">TRL {trlLevel}</div>
+                        <div className="text-sm text-slate-600 dark:text-slate-300 font-sans">{trlLabel}</div>
                       </div>
                     )}
                     {clean(tech.patent_status) && (
                       <div>
-                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                        <div className="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-widest mb-2">
                           IP / Patent Status
                         </div>
-                        <div className="text-sm font-semibold text-slate-900 leading-snug font-sans">
+                        <div className="text-sm font-semibold text-slate-900 dark:text-white leading-snug font-sans">
                           {clean(tech.patent_status)}
                         </div>
                       </div>
                     )}
                     {clean(tech.commercialization_status) && (
                       <div>
-                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                        <div className="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-widest mb-2">
                           Licensing
                         </div>
-                        <div className="text-sm font-semibold text-slate-900 leading-snug font-sans">
+                        <div className="text-sm font-semibold text-slate-900 dark:text-white leading-snug font-sans">
                           {clean(tech.commercialization_status)}
                         </div>
                       </div>
                     )}
                     {clean(tech.institution) && (
                       <div>
-                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                        <div className="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-widest mb-2">
                           Partner Institution
                         </div>
                         <Link
                           href={`/institutions/${tech.institution_slug}`}
-                          className="text-sm font-semibold text-[#0A2164] hover:underline font-sans"
+                          className="text-sm font-semibold text-[#0A2164] dark:text-[#60A5FA] hover:underline font-sans"
                         >
                           {tech.institution}
                         </Link>
@@ -307,15 +307,15 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
             SECTION 9 — RELATED TECHNOLOGIES
         ══════════════════════════════════════════════════════ */}
         {related.length > 0 && (
-          <section className="border-t border-gray-200 bg-gray-50/50 py-16">
+          <section className="border-t border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-[#0A1D37] py-16">
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
                 <div>
-                  <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">More from {tech.sector}</div>
+                  <div className="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-widest mb-2">More from {tech.sector}</div>
                   <h2 className="text-2xl font-bold text-gray-900 font-heading">Related Technologies</h2>
                 </div>
                 <Link href={`/sectors/${tech.sector_slug}`}
-                  className="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:underline">
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-[#0A2164] dark:text-[#60A5FA] hover:underline">
                   View all <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -325,23 +325,23 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                   const relImg = rel.image_embed_url || rel.technology_image_embed_url || rel.image_url || rel.technology_image || null;
                   return (
                     <Link key={rel.id} href={`/technologies/${rel.id}`}
-                      className="group bg-white rounded-md border border-gray-200 shadow-sm overflow-hidden hover:shadow-md hover:border-blue-300 transition-all">
-                      <div className="aspect-[16/9] bg-gray-100 relative overflow-hidden">
+                      className="group bg-white dark:bg-[#102B52] rounded-md border border-gray-200 dark:border-white/10 shadow-sm overflow-hidden hover:shadow-md hover:border-blue-300 dark:hover:border-[#3B82F6]/50 transition-all">
+                      <div className="aspect-[16/9] bg-gray-100 dark:bg-[#0A1D37] relative overflow-hidden">
                         {relImg ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img src={relImg} alt={rel.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" loading="lazy" />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <Microscope className="w-8 h-8 text-gray-300" />
+                            <Microscope className="w-8 h-8 text-gray-300 dark:text-slate-600" />
                           </div>
                         )}
                       </div>
                       <div className="p-5">
-                        <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">{rel.institution.split(' ').slice(0, 3).join(' ')}</div>
-                        <h3 className="font-heading font-bold text-gray-900 text-sm leading-relaxed line-clamp-2 group-hover:text-blue-600 transition-colors">
+                        <div className="text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider mb-1.5">{rel.institution.split(' ').slice(0, 3).join(' ')}</div>
+                        <h3 className="font-heading font-bold text-gray-900 text-sm leading-relaxed line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-[#60A5FA] transition-colors">
                           {rel.name}
                         </h3>
-                        <div className="mt-4 flex items-center gap-1.5 text-xs text-blue-600 font-semibold">
+                        <div className="mt-4 flex items-center gap-1.5 text-xs text-[#0A2164] dark:text-[#60A5FA] font-semibold">
                           Explore <ArrowRight className="w-3 h-3" />
                         </div>
                       </div>

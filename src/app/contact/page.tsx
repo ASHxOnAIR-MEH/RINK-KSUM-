@@ -9,16 +9,16 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <section className="bg-white py-16 md:py-24">
+    <section className="bg-white dark:bg-[#071428] py-16 md:py-24">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Left Column — About & Contact Info */}
-        <div>
+        <div className="bg-white dark:bg-[#0A1D37] lg:bg-transparent lg:dark:bg-transparent rounded-md">
           <h1 className="font-serif text-3xl md:text-4xl font-bold text-[#0A2164] mb-6">
             Contact RINK
           </h1>
 
-          <p className="font-sans text-slate-700 leading-relaxed mb-4 max-w-xl">
+          <p className="font-sans text-slate-700 dark:text-slate-300 leading-relaxed mb-4 max-w-xl">
             The RINK Technology Transfer Portal, an initiative of Research Innovation Network Kerala (RINK)
             under Kerala Startup Mission (KSUM), showcases commercially viable technologies from Kerala&apos;s
             leading research institutions.
@@ -28,18 +28,18 @@ export default function ContactPage() {
             href="https://rink.startupmission.in/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#0A2164] border border-[#0A2164] px-6 py-2 rounded-md inline-block mt-4 mb-10 font-sans font-semibold hover:bg-[#0A2164] hover:text-white transition-colors"
+            className="text-[#0A2164] dark:text-[#60A5FA] border border-[#0A2164] dark:border-[#60A5FA] px-6 py-2 rounded-md inline-block mt-4 mb-10 font-sans font-semibold hover:bg-[#0A2164] hover:text-white dark:hover:bg-[#60A5FA] dark:hover:text-[#071428] transition-colors"
           >
             Learn More
           </a>
 
-          {/* Address */}
+          {/* Contact details */}
           <div className="space-y-5">
             <div className="flex items-start space-x-3">
-              <MapPin className="w-5 h-5 text-[#0A2164] flex-shrink-0 mt-0.5" />
+              <MapPin className="w-5 h-5 text-[#0A2164] dark:text-[#60A5FA] flex-shrink-0 mt-0.5" />
               <div>
-                <div className="font-sans font-bold text-slate-900 mb-1">Kerala Startup Mission — Head Office</div>
-                <address className="not-italic font-sans text-slate-700 leading-relaxed">
+                <div className="font-sans font-bold text-slate-900 dark:text-white mb-1">Kerala Startup Mission — Head Office</div>
+                <address className="not-italic font-sans text-slate-700 dark:text-slate-300 leading-relaxed">
                   G3B, Thejaswini, Technopark Campus, Kariyavattom,
                   Thiruvananthapuram, Kerala 695581
                 </address>
@@ -47,29 +47,29 @@ export default function ContactPage() {
             </div>
 
             <div className="flex items-start space-x-3">
-              <Mail className="w-5 h-5 text-[#0A2164] flex-shrink-0 mt-0.5" />
+              <Mail className="w-5 h-5 text-[#0A2164] dark:text-[#60A5FA] flex-shrink-0 mt-0.5" />
               <a
                 href="mailto:rink@startupmission.in"
-                className="font-sans text-[#0A2164] font-semibold hover:underline leading-relaxed"
+                className="font-sans text-[#0A2164] dark:text-[#60A5FA] font-semibold hover:underline leading-relaxed"
               >
                 rink@startupmission.in
               </a>
             </div>
 
             <div className="flex items-start space-x-3">
-              <Phone className="w-5 h-5 text-[#0A2164] flex-shrink-0 mt-0.5" />
-              <div className="font-sans text-slate-700 leading-relaxed">
-                <a href="tel:08047180470" className="hover:text-[#0A2164] hover:underline block">080 4718 0470</a>
-                <a href="tel:04712700270" className="hover:text-[#0A2164] hover:underline block">0471-2700270</a>
+              <Phone className="w-5 h-5 text-[#0A2164] dark:text-[#60A5FA] flex-shrink-0 mt-0.5" />
+              <div className="font-sans text-slate-700 dark:text-slate-300 leading-relaxed">
+                <a href="tel:08047180470" className="hover:text-[#0A2164] dark:hover:text-[#60A5FA] hover:underline block">080 4718 0470</a>
+                <a href="tel:04712700270" className="hover:text-[#0A2164] dark:hover:text-[#60A5FA] hover:underline block">0471-2700270</a>
               </div>
             </div>
           </div>
         </div>
 
         {/* Right Column — Google Maps */}
-        <div className="w-full h-full min-h-[450px] rounded-md border border-slate-200 overflow-hidden shadow-sm">
+        <div className="w-full h-full min-h-[450px] rounded-md border border-slate-200 dark:border-white/10 overflow-hidden shadow-sm">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3945.409471731474!2d76.8819826!3d8.556565500000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b05befa945e2447%3A0x9622564b6e405dce!2sKerala%20Startup%20Mission!5e0!3m2!1sen!2sin!4v1781634573711!5m2!1sen!2sin"
+            src="https://www.google.com/maps?q=Kerala%20Startup%20Mission,%20Thejaswini,%20Technopark%20Campus,%20Thiruvananthapuram&output=embed"
             width="100%"
             height="100%"
             style={{ border: 0 }}
