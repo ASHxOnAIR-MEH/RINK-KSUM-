@@ -2,7 +2,7 @@ import { getTechnologyById, getAllTechnologies } from '@/lib/db';
 import { fetchAllTechnologies } from '@/lib/sheets';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronRight, ExternalLink, ArrowRight, FileText, Microscope } from 'lucide-react';
+import { ChevronRight, ExternalLink, ArrowRight, FileText, Microscope, Lightbulb, Building2 } from 'lucide-react';
 import TechImage from '@/components/ui/TechImage';
 
 const GOOGLE_FORM_URL =
@@ -84,15 +84,13 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
   const trlLabel = getTRLLabel(trlLevel);
 
   const hasDesc = !!clean(tech.description);
+  const hasProblem = !!clean(tech.problem_solved);
   const hasApps = tech.applications.length > 0 && clean(tech.applications[0]);
 
   // Related technologies: same sector, different ID, max 4
   const related = allTechs
     .filter(t => t.sector_slug === tech.sector_slug && t.id !== tech.id)
     .slice(0, 4);
-
-  // Opportunity summary (used in hero)
-  const opportunitySummary = `Developed by ${tech.institution}, this technology offers commercial potential in the ${tech.sector} sector.`;
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#071428] text-gray-900 dark:text-white font-sans">
@@ -164,8 +162,8 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                 </div>
 
                 {/* Short Summary */}
-                <p className="text-slate-700 dark:text-slate-300 text-lg leading-relaxed font-sans">
-                  {opportunitySummary}
+                <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed font-sans">
+                  Developed by {tech.institution}, this technology offers commercial potential in the {tech.sector} sector.
                 </p>
               </div>
 
@@ -183,95 +181,138 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
         {/* ══════════════════════════════════════════════════════
             MAIN CONTENT — TWO-COLUMN GRID
         ══════════════════════════════════════════════════════ */}
-        <section className="py-16">
+        <section className="py-12 md:py-16">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-              {/* LEFT / MAIN COLUMN */}
+              {/* ── LEFT / MAIN COLUMN ── */}
               <div className="lg:col-span-2 space-y-8">
 
-                {/* Description */}
+                {/* ── 💡 PROBLEM SOLVED CARD ── */}
+                {hasProblem && (
+                  <div className="relative rounded-xl overflow-hidden">
+                    {/* Gradient border effect */}
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/30 via-indigo-500/20 to-cyan-500/20 p-px">
+                      <div className="h-full w-full rounded-xl bg-[#0A1D37]/5 dark:bg-[#0A1D37]" />
+                    </div>
+                    {/* Soft glow */}
+                    <div className="absolute -inset-1 bg-blue-500/10 blur-2xl rounded-2xl" />
+                    {/* Card body */}
+                    <div className="relative rounded-xl border border-blue-200/60 dark:border-blue-500/20 bg-gradient-to-br from-blue-50 to-indigo-50/60 dark:from-[#071B3A] dark:to-[#0A1D37] p-6 shadow-sm">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-blue-600/10 dark:bg-blue-500/20 flex items-center justify-center border border-blue-200/50 dark:border-blue-500/20">
+                          <Lightbulb className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <h2 className="font-serif text-lg font-bold text-blue-900 dark:text-blue-200 tracking-tight">
+                          Problem Being Solved
+                        </h2>
+                      </div>
+                      <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-sans text-[15px]">
+                        {tech.problem_solved}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── TECHNOLOGY DESCRIPTION ── */}
                 {hasDesc && (
-                  <div>
-                    <h2 className="font-serif text-xl font-bold text-[#0A2164] mb-4">Technology Description</h2>
+                  <div className="space-y-3">
+                    <h2 className="font-serif text-xl font-bold text-[#0A2164] dark:text-white">Technology Description</h2>
                     <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-sans whitespace-pre-line">
                       {tech.description}
                     </p>
                   </div>
                 )}
 
-                {/* Applications & Industrial Potential */}
+                {/* ── APPLICATIONS & INDUSTRIAL POTENTIAL ── */}
                 {hasApps && (
-                  <div>
-                    <h2 className="font-serif text-xl font-bold text-[#0A2164] mb-4">Applications &amp; Industrial Potential</h2>
-                    <ul className="list-disc list-inside space-y-1.5 text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
+                  <div className="space-y-3">
+                    <h2 className="font-serif text-xl font-bold text-[#0A2164] dark:text-white">Applications &amp; Industrial Potential</h2>
+                    <ul className="space-y-2">
                       {tech.applications.map((app, i) => (
-                        <li key={i}>{app}</li>
+                        <li key={i} className="flex items-start gap-3 text-slate-700 dark:text-slate-300 font-sans text-[15px]">
+                          <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#0A2164] dark:bg-blue-400" />
+                          {app}
+                        </li>
                       ))}
                     </ul>
                   </div>
                 )}
 
-                {/* CTA */}
-                <div className="bg-slate-50 dark:bg-[#0A1D37] border border-slate-200 dark:border-white/10 rounded-md p-8 text-center">
-                  <h3 className="font-serif text-xl font-bold text-slate-900 mb-3">Interested in this Technology?</h3>
-                  <p className="text-slate-600 dark:text-slate-300 mb-6 max-w-2xl mx-auto text-sm leading-relaxed font-sans">
-                    Submit a request through RINK to initiate technology transfer, licensing discussions,
-                    startup creation opportunities, or commercialization pathways related to this technology.
-                  </p>
-                  <a
-                    href={GOOGLE_FORM_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-md bg-[#0A2164] dark:bg-[#3B82F6] text-white font-semibold text-sm hover:bg-[#081A52] dark:hover:bg-[#2563EB] transition-colors"
-                  >
-                    <FileText className="w-4 h-4" />
-                    Start Technology Transfer Process
-                    <ExternalLink className="w-3.5 h-3.5 opacity-75" />
-                  </a>
-                </div>
-
               </div>
 
-              {/* RIGHT SIDE-CARD COLUMN */}
+              {/* ── RIGHT SIDEBAR ── */}
               <div className="lg:col-span-1">
-                <div className="bg-white dark:bg-[#0A1D37] border border-slate-200 dark:border-white/10 p-5 rounded-md space-y-6">
-                  {/* TRL */}
-                  <div>
-                    <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
-                      Technology Readiness Level (TRL)
-                    </div>
-                    {trlLevel > 0 ? (
-                      <>
-                        <div className="text-lg font-bold text-[#0A2164] dark:text-[#60A5FA]">TRL {trlLevel}</div>
-                        <div className="text-sm text-slate-600 dark:text-slate-300 font-sans">{trlLabel}</div>
-                      </>
-                    ) : (
-                      <div className="text-sm text-slate-600 dark:text-slate-300 font-sans">TRL level will be updated soon</div>
-                    )}
-                  </div>
+                <div className="lg:sticky lg:top-24 space-y-4">
 
-                  {/* IP Status */}
-                  <div>
-                    <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
-                      IP Status
-                    </div>
-                    <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10">
-                      {clean(tech.patent_status) || 'Not Specified'}
-                    </span>
-                  </div>
+                  {/* Sidebar Card */}
+                  <div className="bg-white dark:bg-[#0A1D37] border border-slate-200 dark:border-white/10 rounded-xl shadow-sm overflow-hidden">
 
-                  {/* Partner Institution */}
-                  <div>
-                    <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
-                      Partner Institution
+                    {/* TRL */}
+                    <div className="p-5 border-b border-slate-100 dark:border-white/10">
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                        Technology Readiness Level
+                      </div>
+                      {trlLevel > 0 ? (
+                        <div className="flex items-center gap-3">
+                          <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#0A2164]/10 dark:bg-blue-500/20 flex items-center justify-center">
+                            <span className="text-sm font-black text-[#0A2164] dark:text-blue-400">{trlLevel}</span>
+                          </div>
+                          <div>
+                            <div className="text-sm font-bold text-slate-900 dark:text-white">TRL {trlLevel}</div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400">{trlLabel}</div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-sm text-slate-500 dark:text-slate-400 font-sans italic">Will be updated soon</div>
+                      )}
                     </div>
-                    <Link
-                      href={`/institutions/${tech.institution_slug}`}
-                      className="text-sm font-semibold text-[#0A2164] dark:text-[#60A5FA] hover:underline font-sans"
-                    >
-                      {tech.institution}
-                    </Link>
+
+                    {/* IP Status */}
+                    <div className="p-5 border-b border-slate-100 dark:border-white/10">
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                        IP / Patent Status
+                      </div>
+                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
+                        {clean(tech.patent_status) || 'Not Specified'}
+                      </span>
+                    </div>
+
+                    {/* Partner Institution */}
+                    <div className="p-5 border-b border-slate-100 dark:border-white/10">
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                        Partner Institution
+                      </div>
+                      <Link
+                        href={`/institutions/${tech.institution_slug}`}
+                        className="group flex items-center gap-2 text-sm font-semibold text-[#0A2164] dark:text-[#60A5FA] hover:underline font-sans"
+                      >
+                        <Building2 className="w-4 h-4 text-slate-400 group-hover:text-[#0A2164] dark:group-hover:text-[#60A5FA] transition-colors flex-shrink-0" />
+                        {tech.institution}
+                      </Link>
+                    </div>
+
+                    {/* ── CTA ── */}
+                    <div className="p-5 bg-gradient-to-br from-[#0A2164] to-[#0d3285] dark:from-[#0A2164] dark:to-[#0d2870]">
+                      <h3 className="font-serif text-base font-bold text-white mb-2">
+                        Interested in this Technology?
+                      </h3>
+                      <p className="text-blue-200 text-xs leading-relaxed font-sans mb-4">
+                        Submit a request through RINK to initiate technology transfer, licensing discussions, startup creation, or commercialization pathways.
+                      </p>
+                      <a
+                        href={GOOGLE_FORM_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-[#F5B400] hover:bg-yellow-400 text-slate-900 font-bold text-sm transition-all duration-200 hover:shadow-lg hover:shadow-yellow-500/20"
+                      >
+                        <FileText className="w-4 h-4 flex-shrink-0" />
+                        Start Technology Transfer
+                        <ExternalLink className="w-3 h-3 opacity-75 flex-shrink-0" />
+                      </a>
+                    </div>
+
                   </div>
                 </div>
               </div>
