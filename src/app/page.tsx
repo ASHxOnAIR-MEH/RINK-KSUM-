@@ -84,6 +84,18 @@ export default async function HomePage() {
       <HeroMetrics />
 
       {/* ══════════════════════════════════════════════════════════
+          FEATURED TECHNOLOGIES
+      ══════════════════════════════════════════════════════════ */}
+      <section className="relative py-20 bg-white dark:bg-[#071428] overflow-hidden border-b border-gray-100 dark:border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="mb-12">
+            <h2 className="text-3xl font-heading font-bold text-gray-900">Featured Technologies</h2>
+          </div>
+          <FeaturedCarousel technologies={featuredTechs} />
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════
           BROWSE BY INSTITUTION
       ══════════════════════════════════════════════════════════ */}
       <BrowseByInstitution institutions={institutions} />
@@ -108,18 +120,6 @@ export default async function HomePage() {
           <Link href="/sectors" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0A2164] dark:text-[#60A5FA] hover:text-[#081A52] dark:hover:text-[#93C5FD] transition-colors font-sans" id="all-sectors-link">
             Browse all {sectors.length} sectors <ArrowRight className="w-3.5 h-3.5" />
           </Link>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════
-          FEATURED TECHNOLOGIES
-      ══════════════════════════════════════════════════════════ */}
-      <section className="relative py-20 bg-white dark:bg-[#071428] overflow-hidden border-b border-gray-100 dark:border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="mb-12">
-            <h2 className="text-3xl font-heading font-bold text-gray-900">Featured Technologies</h2>
-          </div>
-          <FeaturedCarousel technologies={featuredTechs} />
         </div>
       </section>
 
