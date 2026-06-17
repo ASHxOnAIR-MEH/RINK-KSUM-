@@ -25,6 +25,7 @@ export const SECTOR_ACCENTS: Record<string, string> = {
   'manufacturing-industrial-technologies':    '#6366F1', // Indigo
   'advanced-materials-chemicals':             '#8B5CF6', // Purple
   'consumer-products-cosmetics-lifestyle':    '#E9C46A', // Gold
+  'consumer-lifestyle-products':              '#E9C46A', // Gold (actual slug from sheet)
   'infrastructure-construction-smart-cities': '#F97316', // Orange
 };
 
