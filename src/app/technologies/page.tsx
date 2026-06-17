@@ -30,7 +30,7 @@ export default async function TechnologiesPage({ searchParams }: Props) {
         institution: params.institution,
         technology_type: params.type,
         patent_status: params.patent,
-        startup_potential: params.potential as 'High' | 'Medium' | 'Low' | undefined,
+        featured: params.potential as 'featured' | 'non-featured' | undefined,
       },
       page,
       12

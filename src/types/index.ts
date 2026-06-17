@@ -68,6 +68,7 @@ export interface TechnologyFilters {
   technology_type?: string;
   patent_status?: string;
   startup_potential?: StartupPotential;
+  featured?: 'featured' | 'non-featured';
 }
 
 export interface SearchResult {

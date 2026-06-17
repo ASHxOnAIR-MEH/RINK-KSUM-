@@ -1,10 +1,9 @@
 import { getFeaturedTechnologies, getAllSectors } from '@/lib/db';
 import SectorCard from '@/components/ui/SectorCard';
 import FeaturedCarousel from '@/components/ui/FeaturedCarousel';
-import TechTransferPathway from '@/components/ui/TechTransferPathway';
-import HeroSearch from '@/components/ui/HeroSearch';
+import HeroAISearch from '@/components/ui/HeroAISearch';
+import HeroMetrics from '@/components/ui/HeroMetrics';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 
 export const metadata = {
@@ -56,59 +55,27 @@ export default async function HomePage() {
         {/* Progressive scrim fade */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A2164] via-[#0A2164]/90 to-transparent" aria-hidden />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-28">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-24 md:py-32">
           <div className="max-w-3xl animate-fade-in">
-            {/* RINK Logo */}
-            <div className="relative h-12 sm:h-14 w-56 sm:w-72 mb-8">
-              <Image
-                src="/images/rink_logo.png"
-                alt="Research Innovation Network Kerala"
-                fill
-                className="object-contain object-left brightness-0 invert"
-                priority
-              />
-            </div>
-
             {/* Title */}
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white font-bold leading-[1.12] tracking-tight">
-              Find the Right Technology
+              Browse and Adopt Technologies from Kerala&apos;s Leading Research Institutions
             </h1>
 
-            {/* Subtitle */}
-            <p className="font-sans text-lg text-slate-300 max-w-2xl mt-5 mb-8 leading-relaxed">
-              Browse innovations developed by Kerala&apos;s research institutions and identify
-              technologies aligned with your business or startup needs.
+            {/* Subtext */}
+            <p className="font-sans text-lg text-slate-300 max-w-2xl mt-6 mb-8 leading-relaxed">
+              Discover commercially viable technologies from Kerala&apos;s leading research institutions
+              and explore opportunities for technology transfer, licensing, startup creation, and commercialization.
             </p>
 
-            {/* Search */}
-            <HeroSearch />
-          </div>
-
-          {/* Integrated Metrics Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-4 max-w-4xl mt-12 bg-white/5 border border-white/10 backdrop-blur-sm rounded-md divide-y md:divide-y-0 md:divide-x divide-white/10">
-            {[
-              { num: '160+', label: 'Technologies' },
-              { num: '10+', label: 'Research Institutions' },
-              { num: '11+', label: 'Sectors' },
-            ].map((m) => (
-              <div key={m.label} className="p-6 text-center">
-                <div className="font-serif text-3xl font-bold text-white leading-none">{m.num}</div>
-                <div className="text-sm text-slate-300 font-sans mt-2">{m.label}</div>
-              </div>
-            ))}
-            {/* Live status cell */}
-            <div className="p-6 text-center flex flex-col items-center justify-center">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-red-dot flex-shrink-0" />
-                <span className="font-serif text-lg font-bold text-white leading-none">Live</span>
-              </div>
-              <div className="text-xs text-slate-300 font-sans mt-2 leading-snug">
-                Prototype stage<br />continuously updated
-              </div>
-            </div>
+            {/* AI Assistive Search */}
+            <HeroAISearch />
           </div>
         </div>
       </section>
+
+      {/* ── PREMIUM METRICS ──────────────────────────────────── */}
+      <HeroMetrics />
 
       {/* ── 2. FEATURED TECHNOLOGIES ─────────────────────────── */}
       <section className="relative py-20 bg-white overflow-hidden border-b border-gray-100">
@@ -132,11 +99,8 @@ export default async function HomePage() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
-            <div>
-              <div className="text-xs font-bold text-[#0A2164] uppercase tracking-widest mb-3">Featured Technologies</div>
-              <h2 className="text-3xl font-heading font-bold text-gray-900">Technologies Ready for Commercialization</h2>
-            </div>
+          <div className="mb-12">
+            <h2 className="text-3xl font-heading font-bold text-gray-900">Featured Technologies</h2>
           </div>
           <FeaturedCarousel technologies={featuredTechs} />
         </div>
@@ -172,9 +136,6 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
-
-      {/* ── 4. TECHNOLOGY TRANSFER PATHWAY ───────────────────── */}
-      <TechTransferPathway compact={true} />
 
     </div>
   );

@@ -231,7 +231,7 @@ export default function TechListClient({
 
                 <div className="filter-group">
                   <label htmlFor="filter-potential" className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
-                    Recommendation
+                    Featured
                   </label>
                   <select
                     id="filter-potential"
@@ -239,10 +239,9 @@ export default function TechListClient({
                     onChange={e => applyFilter('potential', e.target.value)}
                     className="w-full text-sm border border-border rounded-lg px-3 py-2 text-text-primary bg-card focus:outline-none focus:border-accent-secondary focus:ring-1 focus:ring-accent-secondary/20"
                   >
-                    <option value="">All Technologies</option>
-                    <option value="High">Recommended</option>
-                    <option value="Medium">Standard</option>
-                    <option value="Low">Exploratory</option>
+                    <option value="">All</option>
+                    <option value="featured">Featured</option>
+                    <option value="non-featured">Non Featured</option>
                   </select>
                 </div>
 

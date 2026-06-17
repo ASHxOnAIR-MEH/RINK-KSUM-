@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { MapPin, Mail } from 'lucide-react';
+import { MapPin, Mail, Phone } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Contact RINK | Research Innovation Network Kerala',
@@ -54,6 +54,14 @@ export default function ContactPage() {
               >
                 rink@startupmission.in
               </a>
+            </div>
+
+            <div className="flex items-start space-x-3">
+              <Phone className="w-5 h-5 text-[#0A2164] flex-shrink-0 mt-0.5" />
+              <div className="font-sans text-slate-700 leading-relaxed">
+                <a href="tel:08047180470" className="hover:text-[#0A2164] hover:underline block">080 4718 0470</a>
+                <a href="tel:04712700270" className="hover:text-[#0A2164] hover:underline block">0471-2700270</a>
+              </div>
             </div>
           </div>
         </div>

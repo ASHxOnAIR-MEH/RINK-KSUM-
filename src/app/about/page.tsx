@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllInstitutions } from '@/lib/db';
 import { Lightbulb, Target, Users, Building2, ArrowRight, CheckCircle, Globe, MapPin, Phone, Mail } from 'lucide-react';
-import TechTransferPathway from '@/components/ui/TechTransferPathway';
 import PartnerLogoWall from '@/components/ui/PartnerLogoWall';
 
 export const metadata: Metadata = {
@@ -102,9 +101,6 @@ export default async function AboutPage() {
         </div>
 
       </div>
-
-      {/* ── Technology Transfer Pathway (full) ───────────────── */}
-      <TechTransferPathway compact={false} />
 
       {/* ── Partner Institutions Logo Wall ───────────────────── */}
       <PartnerLogoWall institutions={institutions} showMarquee={true} />

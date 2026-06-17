@@ -101,6 +101,17 @@ export async function searchTechnologies(
   if (filters.startup_potential) {
     results = results.filter(t => t.startup_potential === filters.startup_potential);
   }
+  if (filters.featured) {
+    const isFeatured = (t: Technology) => {
+      const pot = (t.startup_potential || '').toLowerCase();
+      return pot === 'high' || pot === 'featured' || pot === 'very high';
+    };
+    if (filters.featured === 'featured') {
+      results = results.filter(isFeatured);
+    } else if (filters.featured === 'non-featured') {
+      results = results.filter(t => !isFeatured(t));
+    }
+  }
 
   const total = results.length;
   const paginated = results.slice((page - 1) * perPage, page * perPage);
