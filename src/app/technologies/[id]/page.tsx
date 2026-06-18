@@ -105,8 +105,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
             className="flex items-center justify-center gap-2 w-full py-3.5 rounded-md bg-[#0A2164] dark:bg-[#3B82F6] text-white font-semibold text-sm"
           >
             <FileText className="w-4 h-4" />
-            Start Transfer Process
-            <ExternalLink className="w-3.5 h-3.5 opacity-75" />
+            Submit Expression of Interest
           </a>
         </div>
       </div>
@@ -299,17 +298,16 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                         Interested in this Technology?
                       </h3>
                       <p className="text-blue-200 text-xs leading-relaxed font-sans mb-4">
-                        Submit a request through RINK to initiate technology transfer, licensing discussions, startup creation, or commercialization pathways.
+                        Submit an Expression of Interest (EOI) through RINK to explore technology transfer, licensing, startup creation, and commercialization opportunities related to this technology.
                       </p>
                       <a
                         href={GOOGLE_FORM_URL}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-[#F5B400] hover:bg-yellow-400 text-slate-900 font-bold text-sm transition-all duration-200 hover:shadow-lg hover:shadow-yellow-500/20"
+                        className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-[#F5B400] hover:bg-yellow-400 text-slate-900 font-bold text-sm transition-all duration-200 hover:shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-0.5"
                       >
                         <FileText className="w-4 h-4 flex-shrink-0" />
-                        Start Technology Transfer
-                        <ExternalLink className="w-3 h-3 opacity-75 flex-shrink-0" />
+                        Submit Expression of Interest
                       </a>
                     </div>
 

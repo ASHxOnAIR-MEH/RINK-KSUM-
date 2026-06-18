@@ -13,16 +13,6 @@ const PLACEHOLDERS = [
   'Find startup-ready research technologies...',
 ];
 
-const POPULAR_SEARCHES = [
-  'Breast Cancer Screening',
-  'Food Technology',
-  'Agriculture',
-  'AI & Software',
-  'Renewable Energy',
-  'Water Technology',
-  'Biotechnology',
-];
-
 function Bold({ text }: { text: string }) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
   return (
@@ -102,11 +92,6 @@ export default function HeroAISearch() {
     search(query);
   }
 
-  function handleChip(term: string) {
-    setQuery(term);
-    search(term);
-  }
-
   function reset() {
     setResult(null);
     setQuery('');
@@ -164,23 +149,6 @@ export default function HeroAISearch() {
           </button>
         </div>
       </form>
-
-      {/* Popular searches */}
-      {!result && !loading && (
-        <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
-          <span className="text-xs text-slate-400 font-sans mr-1">Popular:</span>
-          {POPULAR_SEARCHES.map((term) => (
-            <button
-              key={term}
-              type="button"
-              onClick={() => handleChip(term)}
-              className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white/8 border border-white/12 text-slate-200 hover:bg-white/15 hover:border-white/25 hover:text-white transition-all cursor-pointer"
-            >
-              {term}
-            </button>
-          ))}
-        </div>
-      )}
 
       {/* Loading */}
       {loading && (
