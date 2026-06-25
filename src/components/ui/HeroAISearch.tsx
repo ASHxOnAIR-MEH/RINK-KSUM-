@@ -6,7 +6,7 @@ import { Search, Loader2, ArrowRight, Building2, Layers, RotateCcw } from 'lucid
 import type { AISearchResponse, AISearchResult } from '@/lib/aiSearch';
 
 const PLACEHOLDERS = [
-  'Describe your idea, challenge, product or opportunity...',
+  'Describe your startup idea...',
   'Looking for breast cancer screening technologies?',
   'Search food processing technologies...',
   'Explore renewable energy innovations...',
@@ -101,10 +101,93 @@ export default function HeroAISearch() {
 
   return (
     <div className="w-full flex flex-col items-center">
+      {/* Mobile-only premium styles */}
+      <style>{`
+        @media (max-width: 767px) {
+          .hero-search-container {
+            width: calc(100% - 32px) !important;
+            max-width: none !important;
+            height: 68px !important;
+            border-radius: 24px !important;
+            background: rgba(255,255,255,0.08) !important;
+            backdrop-filter: blur(22px) !important;
+            -webkit-backdrop-filter: blur(22px) !important;
+            border: 1px solid rgba(255,255,255,0.15) !important;
+            box-shadow: 0 10px 40px rgba(15,23,42,0.18) !important;
+            margin-top: 28px;
+            animation: hero-search-entrance 700ms ease-out both;
+          }
+          .hero-search-container.focused {
+            border-color: #E9C46A !important;
+            box-shadow: 0 0 35px rgba(233,196,106,0.25) !important;
+          }
+          .hero-search-icon { width: 26px !important; height: 26px !important; color: #9CA3AF !important; }
+          .hero-search-input {
+            font-size: 18px !important;
+            font-weight: 500 !important;
+          }
+          .hero-search-input::placeholder {
+            color: rgba(255,255,255,0.72) !important;
+          }
+          .hero-search-btn {
+            height: 52px !important;
+            width: 82px !important;
+            border-radius: 18px !important;
+            padding: 0 !important;
+            margin-right: 8px !important;
+            background: linear-gradient(180deg, #E9C46A 0%, #D4A017 100%) !important;
+            font-weight: 700 !important;
+            font-size: 14px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+          }
+          .hero-search-btn:active {
+            transform: scale(0.96) !important;
+            box-shadow: 0 0 20px rgba(233,196,106,0.30) !important;
+          }
+          /* Breathing glow */
+          @keyframes hero-mobile-breathe {
+            0%, 100% { box-shadow: 0 10px 40px rgba(15,23,42,0.18); }
+            50% { box-shadow: 0 10px 40px rgba(15,23,42,0.18), 0 0 20px rgba(233,196,106,0.12); }
+          }
+          .hero-search-container:not(.focused) {
+            animation: hero-search-entrance 700ms ease-out both, hero-mobile-breathe 5s ease-in-out infinite 1s;
+          }
+          /* Ripple */
+          .hero-search-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            pointer-events: none;
+            opacity: 0;
+          }
+          .hero-search-container.focused::after {
+            animation: hero-mobile-ripple 700ms ease-out forwards;
+          }
+          @keyframes hero-mobile-ripple {
+            0% { box-shadow: inset 0 0 0 0 rgba(233,196,106,0.25); opacity: 1; }
+            100% { box-shadow: inset 0 0 0 40px rgba(233,196,106,0); opacity: 0; }
+          }
+          /* Entrance */
+          @keyframes hero-search-entrance {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        }
+        @media (min-width: 768px) {
+          .hero-search-container { animation: none !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-search-container { animation: none !important; }
+        }
+      `}</style>
+
       {/* Search container */}
-      <form onSubmit={handleSubmit} className="w-full max-w-[1000px]">
+      <form onSubmit={handleSubmit} className="w-full max-w-[1000px] flex justify-center">
         <div
-          className="relative flex items-center w-full rounded-[28px] overflow-hidden transition-all duration-300"
+          className={`hero-search-container relative flex items-center w-full rounded-[28px] overflow-hidden transition-all duration-300 ${focused ? 'focused' : ''}`}
           style={{
             height: 90,
             background: 'rgba(10,29,55,0.75)',
@@ -116,8 +199,8 @@ export default function HeroAISearch() {
               : '0 10px 40px rgba(0,0,0,0.25)',
           }}
         >
-          <span className="pl-7 flex-shrink-0 text-slate-400">
-            <Search className="w-6 h-6" />
+          <span className="pl-5 md:pl-7 flex-shrink-0 text-slate-400">
+            <Search className="hero-search-icon w-6 h-6 transition-colors" />
           </span>
           <input
             ref={inputRef}
@@ -128,7 +211,7 @@ export default function HeroAISearch() {
             onBlur={() => setFocused(false)}
             placeholder={PLACEHOLDERS[placeholderIdx]}
             aria-label="Search technologies"
-            className="w-full h-full py-4 px-5 bg-transparent text-white text-lg md:text-xl placeholder:text-slate-400 focus:outline-none font-sans min-w-0 placeholder:transition-opacity placeholder:duration-500"
+            className="hero-search-input w-full h-full py-4 px-4 md:px-5 bg-transparent text-white text-lg md:text-xl placeholder:text-slate-400 focus:outline-none font-sans min-w-0 placeholder:transition-opacity placeholder:duration-500"
           />
           {(query || result) && !loading && (
             <button
@@ -143,9 +226,9 @@ export default function HeroAISearch() {
           <button
             type="submit"
             disabled={loading || !query.trim()}
-            className="flex-shrink-0 h-full px-7 sm:px-10 bg-[#F5B400] hover:bg-yellow-500 disabled:opacity-60 text-slate-900 font-bold text-base md:text-lg transition-colors flex items-center gap-2"
+            className="hero-search-btn flex-shrink-0 h-full px-7 sm:px-10 bg-[#F5B400] hover:bg-yellow-500 disabled:opacity-60 text-slate-900 font-bold text-base md:text-lg transition-all flex items-center gap-2"
           >
-            {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : 'Search'}
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Search'}
           </button>
         </div>
       </form>
