@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Building2 } from 'lucide-react';
 import type { Institution } from '@/types';
 
 function getLogo(inst: Institution): string | null {
@@ -28,24 +28,41 @@ export default function BrowseByInstitution({ institutions }: Props) {
               <Link
                 key={inst.slug}
                 href={`/technologies?institution=${encodeURIComponent(inst.slug)}`}
-                className="group flex items-center gap-4 bg-white border border-[rgba(15,23,42,0.08)] rounded-md p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[#1B4D9B]/30"
+                className="group flex items-center gap-[18px] bg-white border border-[rgba(15,23,42,0.08)] rounded-md p-4 transition-all duration-250 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(15,23,42,0.10)] hover:border-[#1B4D9B]/25"
                 id={`browse-inst-${inst.slug}`}
               >
-                <div className="w-14 h-14 rounded-md border border-slate-100 bg-slate-50 flex items-center justify-center overflow-hidden flex-shrink-0">
+                {/* Premium logo tile */}
+                <div
+                  className="flex-shrink-0 flex items-center justify-center overflow-hidden transition-all duration-250 group-hover:-translate-y-0.5 group-hover:shadow-[0_8px_24px_rgba(15,23,42,0.10)]"
+                  style={{
+                    width: 84,
+                    height: 84,
+                    borderRadius: 14,
+                    background: '#FFFFFF',
+                    border: '1px solid #E5E7EB',
+                    boxShadow: '0 2px 10px rgba(15,23,42,0.05)',
+                  }}
+                >
                   {logo ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={logo}
                       alt={inst.name}
-                      className="w-full h-full object-contain p-1.5"
+                      className="object-contain"
+                      style={{ width: 64, height: 64, padding: 2 }}
                       loading="lazy"
                     />
                   ) : (
-                    <span className="text-[8px] font-semibold text-slate-400 text-center px-1 leading-tight">
-                      Logo will be updated
-                    </span>
+                    <div className="flex flex-col items-center justify-center gap-1">
+                      <Building2 className="w-6 h-6 text-slate-300" />
+                      <span className="text-[8px] font-semibold text-slate-400 text-center leading-tight">
+                        Institution Logo<br />Coming Soon
+                      </span>
+                    </div>
                   )}
                 </div>
+
+                {/* Text */}
                 <div className="min-w-0 flex-1">
                   <div className="font-heading font-bold text-[#0F172A] text-sm leading-snug line-clamp-2 group-hover:text-[#1B4D9B] transition-colors">
                     {inst.name}
@@ -54,7 +71,9 @@ export default function BrowseByInstitution({ institutions }: Props) {
                     {inst.tech_count} {inst.tech_count === 1 ? 'technology' : 'technologies'}
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#1B4D9B] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+
+                {/* Arrow */}
+                <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#1B4D9B] group-hover:translate-x-1 transition-all duration-250 flex-shrink-0" />
               </Link>
             );
           })}
