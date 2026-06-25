@@ -496,7 +496,7 @@ export async function fetchInstitutionDetails(): Promise<InstitutionDetailRow[]>
       const name = getVal(['institutionname', 'name', 'institution']);
       if (!name) continue;
 
-      const logoRaw = getVal(['institutionlogo', 'logo', 'logourl', 'institutionimage', 'image']);
+      const logoRaw = getVal(['institutionlogourl', 'institutionlogo', 'logo', 'logourl', 'institutionimage', 'image']);
       const logoEmbed = toDriveEmbedUrl(logoRaw);
 
       details.push({
@@ -505,7 +505,7 @@ export async function fetchInstitutionDetails(): Promise<InstitutionDetailRow[]>
         logo_url: logoRaw,
         logo_embed_url: logoEmbed,
         address: getVal(['address', 'location', 'institutionaddress']),
-        website: getVal(['website', 'officialwebsite', 'url', 'institutionwebsite']),
+        website: getVal(['locationwebsitelink', 'website', 'officialwebsite', 'url', 'institutionwebsite']),
         contact_email: getVal(['email', 'contactemail']),
         contact_phone: getVal(['phone', 'contactphone']),
       });
@@ -543,16 +543,26 @@ export async function fetchMergedInstitutions(): Promise<Institution[]> {
     }
   }
 
-  // Build details lookup by slug
+  // Build details lookup by slug (also index by partial slug for fuzzy matching)
   const detailsMap = new Map<string, InstitutionDetailRow>();
   for (const d of details) {
     detailsMap.set(d.slug, d);
   }
 
+  // Fuzzy match: if exact slug doesn't match, try finding a detail whose slug is contained in or contains the tech slug
+  function findDetail(slug: string): InstitutionDetailRow | undefined {
+    const exact = detailsMap.get(slug);
+    if (exact) return exact;
+    for (const [dSlug, d] of detailsMap.entries()) {
+      if (slug.includes(dSlug) || dSlug.includes(slug)) return d;
+    }
+    return undefined;
+  }
+
   // Merge: start from countMap (ensures every institution with technologies is included)
   const merged: Institution[] = [];
   for (const [slug, info] of countMap.entries()) {
-    const detail = detailsMap.get(slug);
+    const detail = findDetail(slug);
     merged.push({
       slug,
       name: detail?.name || info.name,
