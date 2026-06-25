@@ -11,7 +11,7 @@ interface Metric {
 const METRICS: Metric[] = [
   { target: 160, suffix: '+', label: 'Available Technologies' },
   { target: 11, suffix: '+', label: 'Technology Domains' },
-  { target: 10, suffix: '+', label: 'Research Institutions' },
+  { target: 20, suffix: '+', label: 'Research Institutions' },
 ];
 
 function easeOutCubic(t: number): number {
