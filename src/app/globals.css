@@ -1,9 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@500;600;700;800;900&display=swap");
 @import "tailwindcss";
 
-/* Class-based dark mode (toggled via .dark on <html>) */
-@custom-variant dark (&:where(.dark, .dark *));
-
 /* ============================================================
    RINK Technology Transfer Portal — Premium Light-Mode Design System
    Kerala Startup Mission | Research Innovation Network Kerala
@@ -11,25 +8,25 @@
 
 :root {
   /* ── Core Backgrounds ── */
-  --background: #FFFFFF;
-  --card: #F8FAFF;
+  --background: #F6F8FC;
+  --card: #FFFFFF;
   --card-secondary: #F1F5FB;
-  --bg-section-b: #F8FAFF;
-  --bg-section-c: #F3F4F6;
+  --bg-section-b: #F6F8FC;
+  --bg-section-c: #F1F5FB;
 
   /* ── Text ── */
-  --text-primary: #111827;
-  --text-secondary: #6B7280;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
   --heading: #0F172A;
 
   /* ── Borders ── */
-  --border: #E5E7EB;
+  --border: rgba(15, 23, 42, 0.08);
 
-  /* ── Electric Blue Accent (Primary) ── */
-  --accent: #0A2164;
-  --accent-hover: #081A52;
+  /* ── Primary Blue ── */
+  --accent: #1B4D9B;
+  --accent-hover: #153E7C;
   --accent-light: #EEF2FB;
-  --accent-secondary: #F5B400;
+  --accent-secondary: #F5B301;
 
   /* ── Legacy fallback references ── */
   --bg-app: var(--background);
@@ -751,44 +748,16 @@ h1, h2, h3, h4, h5, h6 {
   .hero-breathe, .hero-search-breathe { animation: none; }
 }
 
-/* ── AI suggestion dropdown (light only) ── */
-html:not(.dark) .absolute.bg-white {
-  background-color: #FFFFFF !important;
-  border-color: #E5E7EB !important;
-}
-
-/* ── Inputs / Select (light only) ── */
-html:not(.dark) select,
-html:not(.dark) input:not(.bg-transparent),
-html:not(.dark) textarea:not(.bg-transparent) {
+/* ── Inputs / Select ── */
+select, input:not(.bg-transparent), textarea:not(.bg-transparent) {
   background-color: #FFFFFF !important;
   color: var(--text-primary) !important;
-  border-color: #E5E7EB !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
 }
-html:not(.dark) input::placeholder,
-html:not(.dark) textarea::placeholder { color: var(--text-secondary) !important; }
+input::placeholder, textarea::placeholder { color: var(--text-secondary) !important; }
 
-/* ── Inputs / Select (dark) — excludes intentional white inputs (.bg-white) ── */
-.dark select,
-.dark input:not(.bg-transparent):not(.bg-white),
-.dark textarea:not(.bg-transparent):not(.bg-white) {
-  background-color: #102B52 !important;
-  color: #FFFFFF !important;
-  border-color: rgba(255, 255, 255, 0.14) !important;
-}
-.dark input:not(.bg-white)::placeholder,
-.dark textarea:not(.bg-white)::placeholder { color: #C8D4E5 !important; }
-.dark .absolute.bg-white:not(.keep-white) {
-  background-color: #0A1D37 !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-/* ── Invert logo in light mode ── */
+/* ── Navbar logo ── */
 #navbar-logo img {
   filter: none !important;
   mix-blend-mode: normal !important;
-}
-/* ── Dark mode: render the navbar logo white for visibility ── */
-.dark #navbar-logo img {
-  filter: brightness(0) invert(1) !important;
 }

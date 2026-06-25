@@ -52,7 +52,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
   // 1. AGRICULTURE
   if (s.includes('agriculture') || s.includes('agritech')) {
     return (
-      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10">
         {/* Soft mountain/hill silhouettes */}
         <path d="M-50 210 C 50 150, 150 170, 250 140 C 320 120, 370 140, 450 210 Z" fill={accentColor} className="opacity-15" />
         <path d="M100 210 C 180 160, 260 180, 320 150 C 370 120, 420 140, 480 210 Z" fill={accentColor} className="opacity-20" />
@@ -83,7 +83,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
   // 2. FOOD TECHNOLOGY
   if (s.includes('food') || s.includes('processing')) {
     return (
-      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10">
         {/* Processing machinery / Lab tanks */}
         <rect x="50" y="80" width="45" height="70" rx="6" stroke="currentColor" strokeWidth="1.5" />
         <line x1="50" y1="110" x2="95" y2="110" stroke="currentColor" strokeWidth="1" />
@@ -111,7 +111,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
   // 3. BIOTECHNOLOGY
   if (s.includes('biotech') || s.includes('life')) {
     return (
-      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10">
         {/* DNA Helix Illustration */}
         <g transform="translate(80, 50)" className="opacity-80">
           <path d="M10 20 C 30 40, 50 40, 70 20 C 90 0, 110 0, 130 20 C 150 40, 170 40, 190 20" stroke={accentColor} strokeWidth="2" strokeLinecap="round" />
@@ -134,7 +134,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
   // 4. MEDTECH
   if (s.includes('medtech') || s.includes('health')) {
     return (
-      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10">
         {/* Diagnostics / Heart rate rhythm */}
         <path d="M30 110 H70 L80 85 L90 135 L100 100 L110 115 L120 110 H160" stroke={accentColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         
@@ -158,7 +158,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
   // 5. ENERGY
   if (s.includes('energy') || s.includes('climate') || s.includes('sustain')) {
     return (
-      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10">
         {/* Solar Panel grid */}
         <g transform="translate(50, 90)">
           <polygon points="0,50 80,50 100,0 20,0" stroke="currentColor" strokeWidth="1.5" fill="var(--background)" />
@@ -185,7 +185,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
   // 6. DIGITAL / AI
   if (s.includes('digital') || s.includes('software') || s.includes('ai') || s.includes('computer')) {
     return (
-      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10">
         {/* Neural Innovation Network / AI connections */}
         <g transform="translate(20, 20)">
           <path d="M50 80 L140 50 L110 120 L230 90 L260 140" stroke="currentColor" strokeWidth="1.2" strokeDasharray="3 3" />
@@ -207,7 +207,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
   // 7. ADVANCED MATERIALS
   if (s.includes('materials') || s.includes('chemical')) {
     return (
-      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10">
         {/* Molecular Hexagon clusters / Advanced manufacturing */}
         <g transform="translate(100, 95)" className="opacity-80">
           <polygon points="0,-30 26,-15 26,15 0,30 -26,15 -26,-15" stroke="currentColor" strokeWidth="1.5" />
@@ -230,7 +230,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
   // 8. WATER / ENVIRONMENT (Kerala Rivers & Hydrology)
   if (s.includes('water') || s.includes('env') || s.includes('aquaculture')) {
     return (
-      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10">
         {/* Wave structures (Sine curves representing Rivers) */}
         <path d="M-20 120 C 80 80, 150 160, 250 120 C 330 90, 380 140, 420 120" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
         <path d="M-20 140 C 80 100, 150 180, 250 140 C 330 110, 380 160, 420 140" stroke={accentColor} strokeWidth="1.5" strokeDasharray="6 3" />
@@ -253,7 +253,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
   // 9. ROBOTICS / DRONES
   if (s.includes('robot') || s.includes('automation') || s.includes('drone') || s.includes('manufactur')) {
     return (
-      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10">
         {/* Drone outlines (Kerala Innovation themed) */}
         <g transform="translate(80, 80)">
           {/* Center chassis */}
@@ -285,7 +285,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
   // 10. INFRASTRUCTURE, CONSTRUCTION & SMART CITIES
   if (s.includes('infrastructure') || s.includes('construct') || s.includes('cities')) {
     return (
-      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10">
         <path d="M50 160 L50 40 L160 40 M50 70 L90 40 M90 40 L90 160" stroke="currentColor" strokeWidth="1.5" />
         <path d="M140 40 L140 80 L160 85 L150 40" stroke="currentColor" strokeWidth="1" />
         <line x1="50" y1="160" x2="180" y2="160" stroke="currentColor" strokeWidth="2" />
@@ -300,7 +300,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
   // 11. MANUFACTURING & INDUSTRIAL TECHNOLOGIES
   if (s.includes('manufactur') || s.includes('industrial') || s.includes('gear')) {
     return (
-      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10">
         <g transform="translate(120, 100)">
           <circle cx="0" cy="0" r="30" stroke="currentColor" strokeWidth="1.5" />
           <circle cx="0" cy="0" r="10" stroke="currentColor" strokeWidth="1" />
@@ -322,7 +322,7 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
   // 12. CONSUMER PRODUCTS, COSMETICS & LIFESTYLE
   if (s.includes('consumer') || s.includes('cosmetic') || s.includes('lifestyle') || s.includes('product')) {
     return (
-      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10 dark:text-white/5">
+      <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white/10">
         <g transform="translate(100, 100)">
           <rect x="-15" y="-15" width="30" height="30" rx="8" stroke="currentColor" strokeWidth="1.5" fill="var(--background)" />
           <circle cx="0" cy="0" r="8" stroke={accentColor} strokeWidth="1.2" />
@@ -361,7 +361,7 @@ export default function SectorCard({ sector }: Props) {
   return (
     <Link href={`/technologies?sector=${sector.slug}`} id={`sector-card-${sector.slug}`} className="block group">
       <div
-        className="relative overflow-hidden rounded-md h-40 sm:h-52 flex flex-col justify-end cursor-pointer border border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-[#102B52] shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-[#3B82F6]/50 dark:hover:shadow-[0_0_26px_rgba(59,130,246,0.18)] transition-all duration-250"
+        className="relative overflow-hidden rounded-md h-40 sm:h-52 flex flex-col justify-end cursor-pointer border border-gray-100 bg-gray-50 shadow-sm hover:shadow-md hover:border-blue-200,130,246,0.18)] transition-all duration-250"
         style={{ transition: 'all 0.25s ease' }}
       >
         {/* Sector image with SVG illustration fallback */}
@@ -380,11 +380,11 @@ export default function SectorCard({ sector }: Props) {
           )}
         </div>
 
-        {/* Gradient overlay — light to ensure text readability */}
+        {/* Gradient overlay — strong bottom for text readability */}
         <div
           className="absolute inset-0 pointer-events-none z-1"
           style={{
-            background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.40) 45%, rgba(0,0,0,0.10) 100%)',
+            background: 'linear-gradient(to bottom, transparent 30%, rgba(10,20,40,0.75) 70%, rgba(5,15,30,0.92) 100%)',
           }}
         />
 

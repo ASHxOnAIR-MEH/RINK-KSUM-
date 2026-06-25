@@ -9,7 +9,7 @@ import {
   Technology, Sector, Institution, TechnologyFilters, SearchResult, SearchIndexItem, StartupPotential
 } from '@/types';
 import {
-  fetchAllTechnologies, fetchSectors, fetchInstitutions
+  fetchAllTechnologies, fetchSectors, fetchMergedInstitutions
 } from '@/lib/sheets';
 
 // ── Search helper ─────────────────────────────────────────────
@@ -158,7 +158,7 @@ export async function getSectorBySlug(slug: string): Promise<Sector | null> {
 // ── Institutions ──────────────────────────────────────────────
 
 export async function getAllInstitutions(): Promise<(Institution & { specializations?: string[] })[]> {
-  const insts = await fetchInstitutions();
+  const insts = await fetchMergedInstitutions();
   const techs = await fetchAllTechnologies();
 
   return insts.map(inst => {
@@ -171,20 +171,10 @@ export async function getAllInstitutions(): Promise<(Institution & { specializat
       .sort((a, b) => b[1] - a[1])
       .slice(0, 3)
       .map(([name]) => name);
-    
-    // Apply curated sectors for KAU & CPCRI to ensure premium branding:
-    let specs = sortedSectors;
-    if (inst.slug.includes('kau')) {
-      specs = ['Agriculture', 'Food Processing', 'Machinery'];
-    } else if (inst.slug.includes('cpcri')) {
-      specs = ['Coconut Technologies', 'Food Tech', 'Biotechnology'];
-    } else if (specs.length === 0) {
-      specs = ['General Technology'];
-    }
 
     return {
       ...inst,
-      specializations: specs,
+      specializations: sortedSectors.length > 0 ? sortedSectors : ['General Technology'],
     };
   });
 }
@@ -194,10 +184,15 @@ export async function getInstitutionBySlug(slug: string): Promise<(Institution &
   return insts.find(i => i.slug === slug) ?? null;
 }
 
+export async function getInstitutionTechnologyCount(slug: string): Promise<number> {
+  const techs = await fetchAllTechnologies();
+  return techs.filter(t => t.institution_slug === slug).length;
+}
+
 // ── Stats ─────────────────────────────────────────────────────
 export async function getPlatformStats() {
   const techs = await fetchAllTechnologies();
-  const insts = await fetchInstitutions();
+  const insts = await fetchMergedInstitutions();
   const sectors = await fetchSectors();
 
   return {

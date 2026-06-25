@@ -11,7 +11,7 @@ const NAV_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-[#071428] border-t border-slate-200 dark:border-white/10 mt-auto">
+    <footer className="bg-white border-t border-slate-200 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
 
@@ -22,13 +22,13 @@ export default function Footer() {
                 src="/images/rink_logo.png"
                 alt="Research Innovation Network Kerala"
                 fill
-                className="object-contain object-left dark:brightness-0 dark:invert"
+                className="object-contain object-left"
               />
             </div>
           </div>
 
           {/* ── Center: Navigation Directory ── */}
-          <div className="md:px-6 md:border-x md:border-slate-200 dark:md:border-white/10">
+          <div className="md:px-6 md:border-x md:border-slate-200">
             <h4 className="font-serif text-base font-bold text-slate-900 mb-4">
               Explore
             </h4>
@@ -37,7 +37,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-600 dark:text-slate-300 hover:text-[#0A2164] dark:hover:text-[#60A5FA] transition-colors font-sans"
+                    className="text-sm text-slate-600 hover:text-[#0A2164] transition-colors font-sans"
                   >
                     {link.label}
                   </Link>
@@ -52,18 +52,18 @@ export default function Footer() {
               For more details
             </h4>
             <div className="flex items-start gap-2.5 mb-3">
-              <MapPin className="w-4 h-4 text-[#0A2164] dark:text-[#60A5FA] mt-0.5 flex-shrink-0" />
-              <address className="not-italic text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
+              <MapPin className="w-4 h-4 text-[#0A2164] mt-0.5 flex-shrink-0" />
+              <address className="not-italic text-sm text-slate-600 leading-relaxed font-sans">
                 Kerala Startup Mission, G3B, Thejaswini,
                 Technopark Campus, Kariyavattom,
                 Thiruvananthapuram, Kerala
               </address>
             </div>
             <div className="flex items-center gap-2.5">
-              <Mail className="w-4 h-4 text-[#0A2164] dark:text-[#60A5FA] flex-shrink-0" />
+              <Mail className="w-4 h-4 text-[#0A2164] flex-shrink-0" />
               <a
                 href="mailto:rink@startupmission.in"
-                className="text-sm font-semibold text-[#0A2164] dark:text-[#60A5FA] hover:underline font-sans"
+                className="text-sm font-semibold text-[#0A2164] hover:underline font-sans"
               >
                 rink@startupmission.in
               </a>
@@ -73,9 +73,9 @@ export default function Footer() {
       </div>
 
       {/* ── Bottom Copyright Strip ── */}
-      <div className="border-t border-slate-200 dark:border-white/10">
+      <div className="border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5">
-          <p className="text-xs text-slate-500 dark:text-slate-400 text-center font-sans">
+          <p className="text-xs text-slate-500 text-center font-sans">
             © 2026 Research Innovation Network Kerala (RINK). An initiative of Kerala Startup Mission.
           </p>
         </div>

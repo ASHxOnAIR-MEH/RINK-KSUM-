@@ -42,14 +42,14 @@ function MetricCard({ target, suffix, label, run, delay }: Metric & { run: boole
 
   return (
     <div
-      className="hero-metric-card bg-white/5 border border-white/10 backdrop-blur-md rounded-md p-7 text-center transition-all duration-300 hover:border-[#F5B400]/40 hover:shadow-[0_0_30px_rgba(245,180,0,0.15)] hover:-translate-y-1"
+      className="hero-metric-card bg-white border border-[rgba(15,23,42,0.08)] rounded-md p-7 text-center transition-all duration-300 hover:border-[#1B4D9B]/30 hover:shadow-md hover:-translate-y-1"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className="font-serif text-4xl md:text-5xl font-bold text-white leading-none">
+      <div className="font-heading text-4xl md:text-5xl font-bold text-[#1B4D9B] leading-none">
         {val}
-        <span className="text-[#F5B400]">{suffix}</span>
+        <span className="text-[#F5B301]">{suffix}</span>
       </div>
-      <div className="text-sm text-slate-300 font-sans mt-3 tracking-wide">{label}</div>
+      <div className="text-sm text-[#475569] font-sans mt-3 tracking-wide">{label}</div>
     </div>
   );
 }
@@ -77,7 +77,7 @@ export default function HeroMetrics() {
   return (
     <section
       ref={ref}
-      className="bg-gradient-to-b from-[#071428] to-[#0A1D37] py-16 md:py-20"
+      className="bg-white py-16 md:py-20 border-b border-slate-100"
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
         {METRICS.map((m, i) => (

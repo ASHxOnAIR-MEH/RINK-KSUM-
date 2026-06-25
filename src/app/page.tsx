@@ -24,7 +24,7 @@ export default async function HomePage() {
   const topSectors = sectors.slice(0, 8);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#071428]">
+    <div className="min-h-screen bg-[#F6F8FC]">
 
       {/* ══════════════════════════════════════════════════════════
           HERO — Search-first experience
@@ -77,10 +77,10 @@ export default async function HomePage() {
       {/* ══════════════════════════════════════════════════════════
           FEATURED TECHNOLOGIES
       ══════════════════════════════════════════════════════════ */}
-      <section className="relative py-20 bg-white dark:bg-[#071428] overflow-hidden border-b border-gray-100 dark:border-white/10">
+      <section className="relative py-20 bg-white overflow-hidden border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="mb-12">
-            <h2 className="text-3xl font-heading font-bold text-gray-900">Featured Technologies</h2>
+            <h2 className="text-3xl font-heading font-bold text-[#0F172A]">Featured Technologies</h2>
           </div>
           <FeaturedCarousel technologies={featuredTechs} />
         </div>
@@ -94,12 +94,12 @@ export default async function HomePage() {
       {/* ══════════════════════════════════════════════════════════
           BROWSE BY SECTOR
       ══════════════════════════════════════════════════════════ */}
-      <section id="sectors" className="relative scroll-mt-20 py-20 bg-[#F8FAFF] dark:bg-[#0A1D37] overflow-hidden border-b border-gray-100 dark:border-white/10">
+      <section id="sectors" className="relative scroll-mt-20 py-20 bg-[#F6F8FC] overflow-hidden border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-xl mb-12">
-            <div className="text-xs font-bold text-[#0A2164] dark:text-[#60A5FA] uppercase tracking-widest mb-3">Explore by Sector</div>
-            <h2 className="text-3xl font-heading font-bold text-gray-900 mb-3">Browse Technologies by Domain</h2>
-            <p className="text-gray-600 dark:text-slate-300 text-base font-sans">Explore opportunities by industry domain and discover technologies ready for commercialization.</p>
+            <div className="text-xs font-bold text-[#1B4D9B] uppercase tracking-widest mb-3">Explore by Sector</div>
+            <h2 className="text-3xl font-heading font-bold text-[#0F172A] mb-3">Browse Technologies by Domain</h2>
+            <p className="text-[#475569] text-base font-sans">Explore opportunities by industry domain and discover technologies ready for commercialization.</p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-10">
@@ -108,7 +108,7 @@ export default async function HomePage() {
             ))}
           </div>
 
-          <Link href="/sectors" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0A2164] dark:text-[#60A5FA] hover:text-[#081A52] dark:hover:text-[#93C5FD] transition-colors font-sans" id="all-sectors-link">
+          <Link href="/sectors" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#1B4D9B] hover:text-[#153E7C] transition-colors font-sans" id="all-sectors-link">
             Browse all {sectors.length} sectors <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>

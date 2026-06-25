@@ -21,9 +21,9 @@ export default function FloatingParticles({ count = 15 }: Props) {
   useEffect(() => {
     // Generate random particle parameters on mount to avoid hydration mismatch
     const colors = [
-      'bg-[#00FA9A]/[0.03] dark:bg-[#00FA9A]/[0.025]', // Neon Emerald tint
-      'bg-[#E9C46A]/[0.03] dark:bg-[#E9C46A]/[0.025]', // Warm Gold tint
-      'bg-emerald-500/[0.03] dark:bg-emerald-500/[0.025]'
+      'bg-[#00FA9A]/[0.03]', // Neon Emerald tint
+      'bg-[#E9C46A]/[0.03]', // Warm Gold tint
+      'bg-emerald-500/[0.03]'
     ];
 
     const items: Particle[] = Array.from({ length: count }).map((_, i) => {

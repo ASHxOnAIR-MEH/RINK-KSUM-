@@ -55,35 +55,35 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
 
   if (showFeaturedBadge) {
     badges.push(
-      <span key="featured" className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200 dark:bg-[#FFC107]/15 dark:text-[#FFC107] dark:border-[#FFC107]/40">
+      <span key="featured" className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
         ★ FEATURED
       </span>
     );
   }
   if (technology.last_updated) {
     badges.push(
-      <span key="new" className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-400/15 dark:text-emerald-300 dark:border-emerald-400/30">
+      <span key="new" className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
         NEW
       </span>
     );
   }
   if (trlDisplay) {
     badges.push(
-      <span key="trl" className="inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-400/15 dark:text-blue-300 dark:border-blue-400/30">
+      <span key="trl" className="inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
         {trlDisplay}
       </span>
     );
   }
   if (patentDisplay) {
     badges.push(
-      <span key="patent" className="inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-400/15 dark:text-amber-300 dark:border-amber-400/30">
+      <span key="patent" className="inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
         {patentDisplay}
       </span>
     );
   }
   if (commDisplay) {
     badges.push(
-      <span key="commercialization" className="inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200 dark:bg-teal-400/15 dark:text-teal-300 dark:border-teal-400/30">
+      <span key="commercialization" className="inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
         {commDisplay}
       </span>
     );
@@ -104,11 +104,11 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
     return (
       <Link href={`/technologies/${technology.id}`} className="block group" id={`tech-card-compact-${technology.id}`}>
         <motion.div
-          className="bg-white dark:bg-[#0A1D37] rounded-md border border-gray-100 dark:border-white/10 shadow-sm p-4 hover:shadow-md hover:border-blue-200 dark:hover:border-[#3B82F6]/50 transition-all duration-250"
+          className="bg-white rounded-md border border-gray-100 shadow-sm p-4 hover:shadow-md hover:border-blue-200 transition-all duration-250"
           {...cardMotion}
         >
           <div className="flex gap-4">
-            <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0 bg-gray-50 dark:bg-[#102B52] border border-gray-100 dark:border-white/10 relative">
+            <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0 bg-gray-50 border border-gray-100 relative">
               {hasImage ? (
                 <img
                   src={displayImage}
@@ -125,14 +125,14 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <span className="inline-block text-[9px] font-bold text-[#0A2164] dark:text-[#60A5FA] uppercase tracking-wider mb-1">
+              <span className="inline-block text-[9px] font-bold text-[#0A2164] uppercase tracking-wider mb-1">
                 {technology.sector}
               </span>
-              <h4 className="font-heading font-bold text-gray-900 text-[14px] leading-tight line-clamp-2 group-hover:text-[#0A2164] dark:group-hover:text-[#60A5FA] transition-colors">
+              <h4 className="font-heading font-bold text-gray-900 text-[14px] leading-tight line-clamp-2 group-hover:text-[#0A2164] transition-colors">
                 {technology.name}
               </h4>
               <div className="flex items-center gap-1.5 mt-2">
-                <span className="text-[10px] text-gray-500 dark:text-slate-400 line-clamp-1">{technology.institution}</span>
+                <span className="text-[10px] text-gray-500 line-clamp-1">{technology.institution}</span>
               </div>
             </div>
           </div>
@@ -144,11 +144,11 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
   return (
     <Link href={`/technologies/${technology.id}`} className="block group h-full" id={`tech-card-${technology.id}`}>
       <motion.div
-        className="bg-white dark:bg-[#0A1D37] rounded-md border border-gray-100 dark:border-white/10 shadow-sm overflow-hidden h-full flex flex-col hover:shadow-md hover:border-blue-200 dark:hover:border-[#3B82F6]/50 transition-all duration-250"
+        className="bg-white rounded-md border border-gray-100 shadow-sm overflow-hidden h-full flex flex-col hover:shadow-md hover:border-blue-200 transition-all duration-250"
         {...cardMotion}
       >
         {/* Banner Frame */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden flex-shrink-0 bg-gray-50 dark:bg-[#102B52] border-b border-gray-100 dark:border-white/10">
+        <div className="relative aspect-[16/9] w-full overflow-hidden flex-shrink-0 bg-gray-50 border-b border-gray-100">
           {hasImage ? (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -192,14 +192,14 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
         <div className="flex flex-col flex-1 p-5">
           {/* Institution */}
           <div className="flex items-center gap-1.5 mb-2.5">
-            <Building2 className="w-3.5 h-3.5 text-gray-400 dark:text-slate-500 flex-shrink-0" />
-            <span className="text-xs text-gray-500 dark:text-slate-400 font-medium uppercase tracking-wider line-clamp-1">
+            <Building2 className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+            <span className="text-xs text-gray-500 font-medium uppercase tracking-wider line-clamp-1">
               {technology.institution}
             </span>
           </div>
 
           {/* Name */}
-          <h3 className="font-heading font-bold text-gray-900 text-[16px] leading-snug mb-3 group-hover:text-[#0A2164] dark:group-hover:text-[#60A5FA] transition-colors line-clamp-2">
+          <h3 className="font-heading font-bold text-gray-900 text-[16px] leading-snug mb-3 group-hover:text-[#0A2164] transition-colors line-clamp-2">
             {technology.name}
           </h3>
 
@@ -211,12 +211,12 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
           )}
 
           {/* CTA Footer */}
-          <div className="mt-auto pt-3 border-t border-gray-100 dark:border-white/10 flex items-center justify-between">
-            <span className="text-[11px] text-gray-400 dark:text-slate-500 font-medium">
+          <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
+            <span className="text-[11px] text-gray-400 font-medium">
               ID: {technology.id}
             </span>
             <motion.span
-              className="flex items-center gap-1 text-[11px] font-bold text-[#0A2164] dark:text-[#60A5FA]"
+              className="flex items-center gap-1 text-[11px] font-bold text-[#0A2164]"
               whileHover={prefersReduced ? {} : { x: 3 }}
               transition={{ duration: 0.15 }}
             >

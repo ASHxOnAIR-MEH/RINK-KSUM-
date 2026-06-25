@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 import { Home, Layers, Building2, Mail } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import ThemeToggle from './ThemeToggle';
 
 const NAV_LINKS = [
   { label: 'Home',          href: '/',               icon: Home },
@@ -30,7 +29,7 @@ export default function Navbar() {
       {/* ── TOP NAVIGATION BAR ── */}
       <nav
         className={clsx(
-          'sticky top-0 z-50 bg-white/95 dark:bg-[#071428]/95 backdrop-blur-md border-b border-gray-100 dark:border-white/10 transition-shadow duration-300',
+          'sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-shadow duration-300',
           scrolled && 'shadow-sm'
         )}
       >
@@ -60,8 +59,8 @@ export default function Navbar() {
                     className={clsx(
                       'px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-150 font-sans',
                       pathname === link.href
-                        ? 'text-[#0A2164] bg-blue-50 dark:text-white dark:bg-white/10'
-                        : 'text-gray-600 hover:text-[#0A2164] hover:bg-blue-50 dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/5'
+                        ? 'text-[#0A2164] bg-blue-50'
+                        : 'text-gray-600 hover:text-[#0A2164] hover:bg-blue-50'
                     )}
                   >
                     {link.label}
@@ -70,19 +69,19 @@ export default function Navbar() {
               </div>
               <Link
                 href="/technologies"
-                className="ml-1 px-4 py-2 text-sm font-semibold rounded-lg bg-[#0A2164] text-white hover:bg-[#081A52] dark:bg-[#3B82F6] dark:hover:bg-[#2563EB] transition-colors duration-150 font-heading"
+                className="ml-1 px-4 py-2 text-sm font-semibold rounded-lg bg-[#0A2164] text-white hover:bg-[#081A52] transition-colors duration-150 font-heading"
               >
                 Browse Technologies
               </Link>
-              <ThemeToggle />
+              
             </div>
 
             {/* ── Mobile actions ── */}
             <div className="flex items-center gap-2 md:hidden">
-              <ThemeToggle />
+              
               <Link
                 href="/technologies"
-                className="px-3 py-2 text-xs font-bold rounded-lg bg-[#0A2164] text-white hover:bg-[#081A52] dark:bg-[#3B82F6] dark:hover:bg-[#2563EB] transition-colors font-heading"
+                className="px-3 py-2 text-xs font-bold rounded-lg bg-[#0A2164] text-white hover:bg-[#081A52] transition-colors font-heading"
               >
                 Browse
               </Link>
@@ -94,7 +93,7 @@ export default function Navbar() {
       {/* ── MOBILE BOTTOM NAVIGATION BAR ── */}
       <nav
         aria-label="Mobile navigation"
-        className="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white dark:bg-[#071428] border-t border-gray-100 dark:border-white/10 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]"
+        className="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]"
         style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       >
         <div className="flex items-stretch">
@@ -109,12 +108,12 @@ export default function Navbar() {
                 className={clsx(
                   'flex flex-col items-center justify-center flex-1 gap-1 py-3 min-h-[64px] transition-all duration-200 select-none relative',
                   isActive
-                    ? 'text-[#0A2164] dark:text-[#60A5FA]'
-                    : 'text-gray-500 hover:text-[#0A2164] dark:text-slate-400 dark:hover:text-[#60A5FA]'
+                    ? 'text-[#0A2164]'
+                    : 'text-gray-500 hover:text-[#0A2164]'
                 )}
               >
                 {isActive && (
-                  <span className="absolute top-0 inset-x-4 h-1 bg-[#0A2164] dark:bg-[#60A5FA] rounded-b-md shadow-[0_2px_8px_rgba(10,33,100,0.4)]" />
+                  <span className="absolute top-0 inset-x-4 h-1 bg-[#0A2164] rounded-b-md shadow-[0_2px_8px_rgba(10,33,100,0.4)]" />
                 )}
                 <Icon
                   className={clsx(
@@ -125,7 +124,7 @@ export default function Navbar() {
                 />
                 <span className={clsx(
                   'text-[11px] font-bold tracking-wide transition-colors',
-                  isActive ? 'text-[#0A2164] dark:text-[#60A5FA]' : 'text-gray-500 dark:text-slate-400'
+                  isActive ? 'text-[#0A2164]' : 'text-gray-500'
                 )}>
                   {link.label}
                 </span>
@@ -140,12 +139,12 @@ export default function Navbar() {
             className={clsx(
               'flex flex-col items-center justify-center flex-1 gap-1 py-3 min-h-[64px] transition-all duration-200 select-none relative',
               pathname.startsWith('/technologies')
-                ? 'text-[#0A2164] dark:text-[#60A5FA]'
-                : 'text-gray-500 hover:text-[#0A2164] dark:text-slate-400 dark:hover:text-[#60A5FA]'
+                ? 'text-[#0A2164]'
+                : 'text-gray-500 hover:text-[#0A2164]'
             )}
           >
             {pathname.startsWith('/technologies') && (
-              <span className="absolute top-0 inset-x-4 h-1 bg-[#0A2164] dark:bg-[#60A5FA] rounded-b-md shadow-[0_2px_8px_rgba(10,33,100,0.4)]" />
+              <span className="absolute top-0 inset-x-4 h-1 bg-[#0A2164] rounded-b-md shadow-[0_2px_8px_rgba(10,33,100,0.4)]" />
             )}
             <svg
               className={clsx(
@@ -162,7 +161,7 @@ export default function Navbar() {
             </svg>
             <span className={clsx(
               'text-[11px] font-bold tracking-wide',
-              pathname.startsWith('/technologies') ? 'text-[#0A2164] dark:text-[#60A5FA]' : 'text-gray-500 dark:text-slate-400'
+              pathname.startsWith('/technologies') ? 'text-[#0A2164]' : 'text-gray-500'
             )}>
               Technologies
             </span>

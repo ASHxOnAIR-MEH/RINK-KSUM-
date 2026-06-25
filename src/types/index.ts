@@ -57,6 +57,13 @@ export interface Institution {
   institution_image?: string;
   institution_image_embed_url?: string;
   last_updated?: string;
+  // Fields from Institution Details sheet
+  logo_url?: string;
+  logo_embed_url?: string;
+  address?: string;
+  website?: string;
+  contact_email?: string;
+  contact_phone?: string;
 }
 
 // ── Search & Filter Types ───────────────────────────────────

@@ -436,3 +436,156 @@ export async function fetchInstitutions(): Promise<Institution[]> {
     }))
     .sort((a, b) => b.tech_count - a.tech_count);
 }
+
+
+// ── Institution Details Sheet ─────────────────────────────────
+// Fetches structured institution information from a dedicated tab
+// (gid=1979443544) and merges with technology counts from the main sheet.
+
+const INSTITUTION_DETAILS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=1979443544`;
+
+interface InstitutionDetailRow {
+  name: string;
+  slug: string;
+  logo_url: string;
+  logo_embed_url: string;
+  address: string;
+  website: string;
+  contact_email: string;
+  contact_phone: string;
+}
+
+let _instDetailsCache: { data: InstitutionDetailRow[]; ts: number } | null = null;
+
+export async function fetchInstitutionDetails(): Promise<InstitutionDetailRow[]> {
+  if (_instDetailsCache && Date.now() - _instDetailsCache.ts < CACHE_TTL) {
+    return _instDetailsCache.data;
+  }
+
+  const fetchOptions: RequestInit =
+    process.env.NODE_ENV === 'development'
+      ? { cache: 'no-store' }
+      : { next: { revalidate: 60 } } as RequestInit;
+
+  try {
+    const res = await fetch(INSTITUTION_DETAILS_URL, fetchOptions);
+    if (!res.ok) {
+      console.error(`[RINK] Institution Details sheet fetch failed: ${res.status}`);
+      return _instDetailsCache?.data ?? [];
+    }
+
+    const text = await res.text();
+    const rows = parseCSV(text);
+    if (rows.length === 0) return [];
+
+    const headerMap = getHeaderMap(rows[0]);
+    const details: InstitutionDetailRow[] = [];
+
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      const getVal = (keys: string[], fallback = ''): string => {
+        for (const key of keys) {
+          const idx = headerMap[key];
+          if (idx !== undefined && row[idx] !== undefined && row[idx].trim() !== '') {
+            return row[idx].trim();
+          }
+        }
+        return fallback;
+      };
+
+      const name = getVal(['institutionname', 'name', 'institution']);
+      if (!name) continue;
+
+      const logoRaw = getVal(['institutionlogo', 'logo', 'logourl', 'institutionimage', 'image']);
+      const logoEmbed = toDriveEmbedUrl(logoRaw);
+
+      details.push({
+        name,
+        slug: toSlug(name),
+        logo_url: logoRaw,
+        logo_embed_url: logoEmbed,
+        address: getVal(['address', 'location', 'institutionaddress']),
+        website: getVal(['website', 'officialwebsite', 'url', 'institutionwebsite']),
+        contact_email: getVal(['email', 'contactemail']),
+        contact_phone: getVal(['phone', 'contactphone']),
+      });
+    }
+
+    _instDetailsCache = { data: details, ts: Date.now() };
+    console.log(`[RINK] Loaded ${details.length} institution details from sheet`);
+    return details;
+  } catch (err) {
+    console.error('[RINK] Failed to fetch institution details:', err);
+    return _instDetailsCache?.data ?? [];
+  }
+}
+
+// ── Merged institution data (Details + Technology counts) ─────
+export async function fetchMergedInstitutions(): Promise<Institution[]> {
+  const [techs, details] = await Promise.all([
+    fetchAllTechnologies(),
+    fetchInstitutionDetails(),
+  ]);
+
+  // Build tech count map from main sheet
+  const countMap = new Map<string, { name: string; count: number; image?: string; imageEmbed?: string }>();
+  for (const t of techs) {
+    const existing = countMap.get(t.institution_slug);
+    if (existing) {
+      existing.count++;
+    } else {
+      countMap.set(t.institution_slug, {
+        name: t.institution,
+        count: 1,
+        image: t.institution_image,
+        imageEmbed: t.institution_image_embed_url,
+      });
+    }
+  }
+
+  // Build details lookup by slug
+  const detailsMap = new Map<string, InstitutionDetailRow>();
+  for (const d of details) {
+    detailsMap.set(d.slug, d);
+  }
+
+  // Merge: start from countMap (ensures every institution with technologies is included)
+  const merged: Institution[] = [];
+  for (const [slug, info] of countMap.entries()) {
+    const detail = detailsMap.get(slug);
+    merged.push({
+      slug,
+      name: detail?.name || info.name,
+      tech_count: info.count,
+      institution_image: detail?.logo_url || info.image,
+      institution_image_embed_url: detail?.logo_embed_url || info.imageEmbed,
+      logo_url: detail?.logo_url,
+      logo_embed_url: detail?.logo_embed_url,
+      address: detail?.address,
+      website: detail?.website,
+      contact_email: detail?.contact_email,
+      contact_phone: detail?.contact_phone,
+    });
+  }
+
+  // Also include institutions from details that have no technologies yet
+  for (const d of details) {
+    if (!countMap.has(d.slug)) {
+      merged.push({
+        slug: d.slug,
+        name: d.name,
+        tech_count: 0,
+        logo_url: d.logo_url,
+        logo_embed_url: d.logo_embed_url,
+        institution_image: d.logo_url,
+        institution_image_embed_url: d.logo_embed_url,
+        address: d.address,
+        website: d.website,
+        contact_email: d.contact_email,
+        contact_phone: d.contact_phone,
+      });
+    }
+  }
+
+  return merged.sort((a, b) => b.tech_count - a.tech_count);
+}

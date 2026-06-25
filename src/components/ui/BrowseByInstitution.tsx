@@ -2,46 +2,8 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import type { Institution } from '@/types';
 
-// Local logo map: slug (or partial) → local image path
-const LOCAL_LOGOS: Record<string, string> = {
-  'icar-cpcri': '/images/institutions/cpcri.png',
-  'cpcri': '/images/institutions/cpcri.png',
-  'icar-ctcri': '/images/institutions/ctcri.png',
-  'ctcri': '/images/institutions/ctcri.png',
-  'csir-niist': '/images/institutions/csir-niist.png',
-  'niist': '/images/institutions/csir-niist.png',
-  'cift': '/images/institutions/cift.jpg',
-  'icar-cift': '/images/institutions/cift.jpg',
-  'kufos': '/images/institutions/kufos-kochi.png',
-  'kerala-university-of-fisheries-and-ocean-studies-kufos': '/images/institutions/kufos-kochi.png',
-  'kscste-jntbgri': '/images/institutions/kscste-jntbgri.jpg',
-  'jntbgri': '/images/institutions/kscste-jntbgri.jpg',
-  'iiser-thiruvananthapuram': '/images/institutions/iiser-thiruvananthapuram.jpg',
-  'iiser': '/images/institutions/iiser-thiruvananthapuram.jpg',
-  'iit-palakkad': '/images/institutions/iit-palakkad.jpg',
-  'sctimst': '/images/institutions/sctimst.png',
-  'cdac': '/images/institutions/cdac.png',
-  'c-dac': '/images/institutions/cdac.png',
-  'centre-for-development-of-advanced-computing': '/images/institutions/cdac.png',
-  'c-met': '/images/institutions/c-met.png',
-  'cmet': '/images/institutions/c-met.png',
-  'icar-iisr': '/images/institutions/iisr.png',
-  'iisr': '/images/institutions/iisr.png',
-  'indian-institute-of-spices-research': '/images/institutions/iisr.png',
-  'icar-sugarcane-breeding-institute': '/images/institutions/sugarcane-breeding.png',
-  'sugarcane-breeding-institute': '/images/institutions/sugarcane-breeding.png',
-  'sugarcane': '/images/institutions/sugarcane-breeding.png',
-  'kerala-agricultural-university': '/images/institutions/kau.png',
-  'kau': '/images/institutions/kau.png',
-};
-
 function getLogo(inst: Institution): string | null {
-  const s = inst.slug.toLowerCase();
-  if (LOCAL_LOGOS[s]) return LOCAL_LOGOS[s];
-  for (const key of Object.keys(LOCAL_LOGOS)) {
-    if (s.includes(key)) return LOCAL_LOGOS[key];
-  }
-  return inst.institution_image_embed_url || inst.institution_image || inst.image || null;
+  return inst.logo_embed_url || inst.institution_image_embed_url || inst.institution_image || inst.image || null;
 }
 
 interface Props {
@@ -52,11 +14,11 @@ export default function BrowseByInstitution({ institutions }: Props) {
   const sorted = [...institutions].sort((a, b) => b.tech_count - a.tech_count);
 
   return (
-    <section id="institutions" className="relative scroll-mt-20 py-20 bg-white dark:bg-[#071428] border-b border-gray-100 dark:border-white/10">
+    <section id="institutions" className="relative scroll-mt-20 py-20 bg-white border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="mb-12">
-          <div className="text-xs font-bold text-[#0A2164] dark:text-[#60A5FA] uppercase tracking-widest mb-3">Browse by Institution</div>
-          <h2 className="text-3xl font-heading font-bold text-gray-900">Technologies From Kerala&apos;s Leading Research Institutions</h2>
+          <div className="text-xs font-bold text-[#1B4D9B] uppercase tracking-widest mb-3">Browse by Institution</div>
+          <h2 className="text-3xl font-heading font-bold text-[#0F172A]">Technologies From Kerala&apos;s Leading Research Institutions</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -66,10 +28,10 @@ export default function BrowseByInstitution({ institutions }: Props) {
               <Link
                 key={inst.slug}
                 href={`/technologies?institution=${encodeURIComponent(inst.slug)}`}
-                className="group flex items-center gap-4 bg-white dark:bg-[#0A1D37] border border-gray-200 dark:border-white/10 rounded-md p-4 transition-all duration-200 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-[#0A2164]/40 hover:shadow-sm dark:hover:border-[#3B82F6]/50 dark:hover:shadow-[0_0_26px_rgba(59,130,246,0.18)]"
+                className="group flex items-center gap-4 bg-white border border-[rgba(15,23,42,0.08)] rounded-md p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[#1B4D9B]/30"
                 id={`browse-inst-${inst.slug}`}
               >
-                <div className="w-16 h-16 rounded-md border border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
+                <div className="w-14 h-14 rounded-md border border-slate-100 bg-slate-50 flex items-center justify-center overflow-hidden flex-shrink-0">
                   {logo ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -79,20 +41,20 @@ export default function BrowseByInstitution({ institutions }: Props) {
                       loading="lazy"
                     />
                   ) : (
-                    <span className="text-[9px] font-semibold text-gray-400 dark:text-slate-400 text-center px-1 leading-tight">
+                    <span className="text-[8px] font-semibold text-slate-400 text-center px-1 leading-tight">
                       Logo will be updated
                     </span>
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="font-heading font-bold text-gray-900 dark:text-white text-sm leading-snug line-clamp-2 group-hover:text-[#0A2164] dark:group-hover:text-[#60A5FA] transition-colors">
+                  <div className="font-heading font-bold text-[#0F172A] text-sm leading-snug line-clamp-2 group-hover:text-[#1B4D9B] transition-colors">
                     {inst.name}
                   </div>
-                  <div className="text-xs font-bold text-[#0A2164] dark:text-[#60A5FA] mt-1.5">
+                  <div className="text-xs font-bold text-[#1B4D9B] mt-1.5">
                     {inst.tech_count} {inst.tech_count === 1 ? 'technology' : 'technologies'}
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-gray-300 dark:text-slate-600 group-hover:text-[#0A2164] dark:group-hover:text-[#60A5FA] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+                <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#1B4D9B] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
               </Link>
             );
           })}
