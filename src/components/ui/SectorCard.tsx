@@ -354,9 +354,9 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
 }
 
 export default function SectorCard({ sector }: Props) {
-  const subsectors = sector.top_tags && sector.top_tags.length > 0
-    ? sector.top_tags
-    : (SECTOR_SUBSECTORS[sector.slug] || SECTOR_SUBSECTORS['default']);
+  const tags = sector.top_tags && sector.top_tags.length > 0
+    ? sector.top_tags.slice(0, 2)
+    : (SECTOR_SUBSECTORS[sector.slug] || SECTOR_SUBSECTORS['default']).slice(0, 2);
   const accentColor = SECTOR_ACCENTS[sector.slug] || '#10B981';
   const [imgFailed, setImgFailed] = useState(false);
 
@@ -366,16 +366,18 @@ export default function SectorCard({ sector }: Props) {
       id={`sector-card-${sector.slug}`}
       className="block group"
     >
-      <div className="relative overflow-hidden rounded-xl h-40 sm:h-52 cursor-pointer bg-slate-900 shadow-md hover:shadow-xl transition-shadow duration-300">
+      {/* ── Card shell ── */}
+      <div className="relative overflow-hidden rounded-2xl h-44 sm:h-56 cursor-pointer bg-[#0A0F1E] shadow-lg group-hover:shadow-2xl transition-all duration-300 ease-out">
 
         {/* ── Background image ── */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 overflow-hidden">
           {!imgFailed ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={`/images/sectors/${sector.slug}.png`}
-              alt={sector.name}
-              className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+              alt=""
+              aria-hidden="true"
+              className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-500 ease-out"
               onError={() => setImgFailed(true)}
               loading="lazy"
             />
@@ -384,102 +386,86 @@ export default function SectorCard({ sector }: Props) {
           )}
         </div>
 
-        {/* ── Full-card dark overlay (mandatory for readability) ── */}
+        {/* ── Gradient overlay: transparent top → dark bottom ── */}
         <div
-          className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-300"
-          aria-hidden
+          className="absolute inset-0 z-10 pointer-events-none"
           style={{
-            background: 'linear-gradient(160deg, rgba(4,9,22,0.62) 0%, rgba(4,9,22,0.72) 50%, rgba(4,9,22,0.85) 100%)',
+            background: 'linear-gradient(to bottom, rgba(5,8,20,0.08) 0%, rgba(5,8,20,0.30) 40%, rgba(5,8,20,0.82) 75%, rgba(5,8,20,0.97) 100%)',
           }}
         />
-        {/* Darker scrim on hover */}
+
+        {/* ── Hover scrim: intensifies on hover ── */}
         <div
           className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          aria-hidden
-          style={{
-            background: 'rgba(4,9,22,0.18)',
-          }}
+          style={{ background: 'rgba(5,8,20,0.22)' }}
         />
 
-        {/* ── Centered content ── */}
-        <div className="relative z-20 h-full flex flex-col items-center justify-center gap-0 px-6 py-6 text-center">
-
-          {/* ① Sector Name */}
-          <h3
-            className="font-sans font-bold text-white line-clamp-2 text-[18px] sm:text-[20px] md:text-[24px] w-full"
-            style={{
-              lineHeight: 1.2,
-              textShadow: '0 2px 10px rgba(0,0,0,0.55)',
-            }}
-          >
-            {sector.name}
-          </h3>
-
-          {/* ② Optional centered tags */}
-          {subsectors.length > 0 && (
-            <div className="hidden sm:flex flex-wrap justify-center gap-2 mt-3">
-              {subsectors.slice(0, 2).map((sub, i) => (
-                <span
-                  key={i}
-                  className="font-semibold text-white"
-                  style={{
-                    background: 'rgba(255,255,255,0.16)',
-                    border: '1px solid rgba(255,255,255,0.18)',
-                    borderRadius: 999,
-                    padding: '4px 12px',
-                    fontSize: 12,
-                    lineHeight: '24px',
-                    height: 32,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  {sub}
-                </span>
-              ))}
-            </div>
-          )}
-
-          {/* ③ Prominent Count */}
-          <div
-            className="font-sans font-bold mt-4 transition-all duration-300 group-hover:drop-shadow-[0_0_14px_rgba(255,213,74,0.65)]"
-            style={{
-              fontSize: 'clamp(40px, 6vw, 54px)',
-              lineHeight: 1,
-              color: '#FFD54A',
-              textShadow: '0 2px 20px rgba(255,213,74,0.25)',
-            }}
-          >
+        {/* ── Count badge — top-right ── */}
+        <div
+          className="absolute top-4 right-4 z-20 flex items-center gap-1.5 rounded-full px-3 py-1"
+          style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.12)' }}
+        >
+          <span className="font-bold text-[#FFD54A] text-sm leading-none tabular-nums">
             {sector.tech_count}
-          </div>
-
-          {/* ④ "Technologies" label */}
-          <p
-            className="font-sans font-semibold text-white mt-1"
-            style={{
-              fontSize: 16,
-              lineHeight: 1.4,
-              textShadow: '0 1px 6px rgba(0,0,0,0.45)',
-              letterSpacing: '0.02em',
-            }}
-          >
-            {sector.tech_count === 1 ? 'Technology' : 'Technologies'}
-          </p>
-
+          </span>
+          <span className="text-white/70 text-xs leading-none font-medium">
+            {sector.tech_count === 1 ? 'Tech' : 'Techs'}
+          </span>
         </div>
 
-        {/* ── Corner arrow indicator ── */}
-        <span
-          className="absolute bottom-4 right-4 z-20 flex items-center justify-center rounded-full transition-all duration-300 group-hover:bg-[#FFD54A] group-hover:translate-x-1"
-          style={{ width: 36, height: 36, background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.18)' }}
-          aria-hidden="true"
-        >
-          <ArrowRight
-            className="w-4 h-4 text-white group-hover:text-[#001B44] transition-colors duration-300"
-            aria-hidden="true"
-          />
-        </span>
+        {/* ── Bottom content panel ── */}
+        <div className="absolute bottom-0 left-0 right-0 z-20 px-5 pb-5 pt-3 flex flex-col gap-2.5">
 
+          {/* Tags row */}
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag, i) => (
+              <span
+                key={i}
+                className="text-white/90 font-semibold leading-none"
+                style={{
+                  fontSize: 11,
+                  background: 'rgba(255,255,255,0.13)',
+                  border: '1px solid rgba(255,255,255,0.16)',
+                  borderRadius: 999,
+                  padding: '4px 10px',
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Sector name + arrow */}
+          <div className="flex items-end justify-between gap-3">
+            <h3
+              className="font-bold text-white leading-tight line-clamp-2 text-base sm:text-lg md:text-[20px] flex-1 min-w-0"
+              style={{ textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
+            >
+              {sector.name}
+            </h3>
+
+            {/* Arrow */}
+            <span
+              className="flex-shrink-0 flex items-center justify-center rounded-full transition-all duration-300 group-hover:scale-110"
+              style={{
+                width: 34,
+                height: 34,
+                background: 'rgba(255,255,255,0.15)',
+                border: '1px solid rgba(255,255,255,0.20)',
+              }}
+              aria-hidden="true"
+            >
+              <ArrowRight className="w-3.5 h-3.5 text-white group-hover:text-[#FFD54A] transition-colors duration-300" />
+            </span>
+          </div>
+
+          {/* Accent underline that slides in on hover */}
+          <div
+            className="h-[2px] w-0 group-hover:w-full rounded-full transition-all duration-300 ease-out"
+            style={{ background: `linear-gradient(to right, ${accentColor}, transparent)` }}
+          />
+
+        </div>
       </div>
     </Link>
   );
