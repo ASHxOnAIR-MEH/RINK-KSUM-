@@ -416,25 +416,6 @@ export default function SectorCard({ sector }: Props) {
         {/* ── Bottom content panel ── */}
         <div className="absolute bottom-0 left-0 right-0 z-20 px-5 pb-5 pt-3 flex flex-col gap-2.5">
 
-          {/* Tags row */}
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag, i) => (
-              <span
-                key={i}
-                className="text-white/90 font-semibold leading-none"
-                style={{
-                  fontSize: 11,
-                  background: 'rgba(255,255,255,0.13)',
-                  border: '1px solid rgba(255,255,255,0.16)',
-                  borderRadius: 999,
-                  padding: '4px 10px',
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
           {/* Sector name + arrow */}
           <div className="flex items-end justify-between gap-3">
             <h3
