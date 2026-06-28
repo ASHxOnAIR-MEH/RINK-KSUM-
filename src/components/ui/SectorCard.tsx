@@ -409,7 +409,7 @@ export default function SectorCard({ sector }: Props) {
             {sector.tech_count}
           </span>
           <span className="text-white/70 text-xs leading-none font-medium">
-            {sector.tech_count === 1 ? 'Tech' : 'Techs'}
+            {sector.tech_count === 1 ? 'Technology' : 'Technologies'}
           </span>
         </div>
 
@@ -438,8 +438,8 @@ export default function SectorCard({ sector }: Props) {
           {/* Sector name + arrow */}
           <div className="flex items-end justify-between gap-3">
             <h3
-              className="font-bold text-white leading-tight line-clamp-2 text-base sm:text-lg md:text-[20px] flex-1 min-w-0"
-              style={{ textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
+              className="font-bold leading-tight line-clamp-2 text-base sm:text-lg md:text-[20px] flex-1 min-w-0"
+              style={{ color: '#ffffff', textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
             >
               {sector.name}
             </h3>
