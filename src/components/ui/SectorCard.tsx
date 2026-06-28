@@ -379,27 +379,30 @@ export default function SectorCard({ sector }: Props) {
           )}
         </div>
 
-        {/* Premium bottom gradient — no blur, clean fade into dark */}
+        {/* Premium bottom gradient — guarantees text readability, no blur/glass */}
         <div
-          className="absolute inset-0 pointer-events-none z-1"
+          className="absolute inset-0 pointer-events-none z-1 transition-opacity duration-300 group-hover:opacity-90"
           aria-hidden
           style={{
-            background: 'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.20) 55%, rgba(0,0,0,0.65) 75%, rgba(8,15,30,0.96) 100%)',
+            background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(8,15,30,0.35) 40%, rgba(8,15,30,0.75) 72%, rgba(8,15,30,0.95) 100%)',
           }}
         />
 
         {/* Content panel — positioned at bottom */}
-        <div className="relative z-10 p-3.5 sm:p-4 flex flex-col gap-2 transition-transform duration-300 group-hover:-translate-y-1.5">
+        <div className="relative z-10 p-3.5 sm:p-4 flex flex-col gap-2.5">
           {/* Icon badge + Sector name */}
           <div className="flex items-center gap-2.5">
             <div
               className="flex items-center justify-center rounded-full flex-shrink-0"
-              style={{ width: 42, height: 42, background: 'rgba(255,255,255,0.18)' }}
+              style={{ width: 40, height: 40, background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.15)' }}
               aria-hidden="true"
             >
               {getSectorIcon(sector.slug, '#ffffff', 20)}
             </div>
-            <h3 className="font-heading font-bold text-white leading-tight text-[17px] sm:text-[22px]">
+            <h3
+              className="font-heading font-bold text-white text-[17px] sm:text-[22px]"
+              style={{ lineHeight: 1.2 }}
+            >
               {sector.name}
             </h3>
           </div>
@@ -409,8 +412,14 @@ export default function SectorCard({ sector }: Props) {
             {subsectors.slice(0, 2).map((sub, i) => (
               <span
                 key={i}
-                className="text-[10px] font-semibold text-white px-3 py-1 rounded-full"
-                style={{ background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.15)' }}
+                className="font-medium text-white"
+                style={{
+                  background: 'rgba(255,255,255,0.14)',
+                  border: '1px solid rgba(255,255,255,0.18)',
+                  borderRadius: 999,
+                  padding: '6px 12px',
+                  fontSize: 13,
+                }}
               >
                 {sub}
               </span>
@@ -418,15 +427,15 @@ export default function SectorCard({ sector }: Props) {
           </div>
 
           {/* Footer: count + arrow */}
-          <div className="flex items-center justify-between pt-1">
-            <span className="text-sm font-semibold text-[#FFD54A] transition-colors duration-300 group-hover:text-white">
+          <div className="flex items-center justify-between pt-0.5">
+            <span className="text-[15px] sm:text-[18px] font-bold text-[#FFD54A] transition-colors duration-300 group-hover:text-white">
               {sector.tech_count} {sector.tech_count === 1 ? 'Technology' : 'Technologies'}
             </span>
             <span
-              className="flex items-center justify-center rounded-full transition-all duration-300 group-hover:bg-[#FFD54A] group-hover:translate-x-1.5"
-              style={{ width: 28, height: 28, background: 'rgba(255,255,255,0.12)' }}
+              className="flex items-center justify-center rounded-full transition-all duration-300 group-hover:bg-[#FFD54A] group-hover:translate-x-1.5 flex-shrink-0"
+              style={{ width: 40, height: 40, background: 'rgba(255,255,255,0.15)' }}
             >
-              <ArrowRight className="w-4 h-4 text-white group-hover:text-[#0F172A] transition-colors duration-300" aria-hidden="true" />
+              <ArrowRight className="w-4 h-4 text-white group-hover:text-[#001B44] transition-colors duration-300" aria-hidden="true" />
             </span>
           </div>
         </div>
