@@ -42,7 +42,7 @@ export default function FeaturedCarousel({ technologies }: Props) {
             }
           }
           .animate-marquee-infinite {
-            animation: marquee-infinite 200s linear infinite;
+            animation: marquee-infinite 60s linear infinite;
           }
           .marquee-card-item {
             width: 290px;
