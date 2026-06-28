@@ -116,6 +116,14 @@ export function toDriveEmbedUrl(url: string): string {
   return trimmed;
 }
 
+// ── Startup potential normalizer ──────────────────────────────
+// Strips emoji prefixes and whitespace, returns lowercase plain text
+export function normalizeStartupPotential(raw: string): string {
+  if (!raw) return 'not specified';
+  // Remove emoji and non-ASCII characters, then trim and lowercase
+  return raw.replace(/[^\x20-\x7E]/g, '').trim().toLowerCase() || 'not specified';
+}
+
 // ── Startup potential mapping ─────────────────────────────────
 function potentialScore(level: string): number {
   const l = level.toLowerCase();
@@ -274,7 +282,15 @@ function rowToTechnology(row: string[], headerMap: Record<string, number>): Tech
   if (process.env.NODE_ENV === 'development' && !imageUrl) {
     console.warn(`[RINK] No image URL for tech: ${id} — "${name}"`);
   }
-  const startupPotentialRaw = getVal(['startuppotential', 'potential'], 'Not Specified') as StartupPotential;
+  const startupPotentialRaw = getVal(['startuppotential', 'potential'], 'Not Specified');
+  const startupPotentialNormalized = normalizeStartupPotential(startupPotentialRaw);
+  // Map normalized value back to a canonical StartupPotential type
+  const startupPotentialCanonical: StartupPotential =
+    startupPotentialNormalized === 'high' ? 'High' :
+    startupPotentialNormalized === 'medium' ? 'Medium' :
+    startupPotentialNormalized === 'low' ? 'Low' :
+    startupPotentialNormalized === 'emerging' ? 'Medium' :
+    'Not Specified';
 
   const keywordsRaw = getVal(['keywords', 'tags']);
   const keywords = keywordsRaw
@@ -321,8 +337,8 @@ function rowToTechnology(row: string[], headerMap: Record<string, number>): Tech
     problem_solved: getVal(['problemsolved', 'problem'], 'Information being updated'),
     description: getVal(['description', 'desc'], 'Information being updated'),
     applications: applications.length ? applications : ['Information being updated'],
-    startup_potential: startupPotentialRaw,
-    startup_potential_score: potentialScore(startupPotentialRaw),
+    startup_potential: startupPotentialCanonical,
+    startup_potential_score: potentialScore(startupPotentialCanonical),
     trl,
     patent_status,
     commercialization_status,
@@ -333,7 +349,7 @@ function rowToTechnology(row: string[], headerMap: Record<string, number>): Tech
     image_url: imageUrl,
     image_embed_url: embedUrl,
     institution_website: getVal(['institutionwebsite', 'website', 'url']),
-    featured: ['featured', 'very high', 'high'].includes(startupPotentialRaw.toLowerCase()),
+    featured: startupPotentialNormalized === 'high',
     technology_image: techImage,
     technology_image_embed_url: techImageEmbedUrl,
     institution_image: instImage,
