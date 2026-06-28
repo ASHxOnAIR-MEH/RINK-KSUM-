@@ -211,6 +211,37 @@ function getHeaderMap(headers: string[]): Record<string, number> {
   return map;
 }
 
+// ── Application Text Normalizer ───────────────────────────────
+// Handles all inconsistent formatting from Google Sheet:
+// comma, semicolon, bullet, dot, dash, newlines, multiple spaces
+export function normalizeApplications(raw: string | undefined | null): string[] {
+  if (!raw || !raw.trim()) return [];
+
+  // Split by: newlines, semicolons, commas, bullets (•), dashes at line start, dots used as separators
+  const items = raw
+    .split(/[\n\r]+|[;]|[,]|[•]|(?:^|\n)\s*[-–—]\s*|(?:^|\n)\s*\d+[.)]\s*/gm)
+    .map(item =>
+      item
+        .replace(/^\s*[-–—•.)\d]+\s*/, '') // strip leading bullets/numbers
+        .replace(/\s+/g, ' ')              // collapse multiple spaces
+        .trim()
+    )
+    .filter(item => item.length > 2);      // remove empty/tiny fragments
+
+  // Deduplicate (case-insensitive)
+  const seen = new Set<string>();
+  const unique: string[] = [];
+  for (const item of items) {
+    const key = item.toLowerCase();
+    if (!seen.has(key)) {
+      seen.add(key);
+      unique.push(item);
+    }
+  }
+
+  return unique;
+}
+
 function rowToTechnology(row: string[], headerMap: Record<string, number>): Technology | null {
   const getVal = (keys: string[], fallback: string = ''): string => {
     for (const key of keys) {
@@ -228,7 +259,10 @@ function rowToTechnology(row: string[], headerMap: Record<string, number>): Tech
   if (!id || !name || id === 'Technology ID') return null;
 
   const institution = getVal(['institution']) || 'Unknown Institution';
-  const sector = getVal(['sector']) || 'General';
+  // primary_sector is now the master sector field; fallback to legacy 'sector'
+  const sector = getVal(['primarysector', 'primary_sector', 'sector']) || 'General';
+  // secondary_sector available for search enrichment
+  const secondarySector = getVal(['secondarysector', 'secondary_sector'], '');
   
   const phone = getVal(['phone', 'contactno', 'contactphone', 'mobile'], '')
     .replace(/[\r\n]+/g, '')
@@ -248,12 +282,7 @@ function rowToTechnology(row: string[], headerMap: Record<string, number>): Tech
     : [];
 
   const applicationsRaw = getVal(['applications', 'usecases']);
-  const applications = applicationsRaw
-    ? applicationsRaw
-        .split(/[\n\r]+|[,;]/)
-        .map(a => a.trim())
-        .filter(a => a.length > 0)
-    : [];
+  const applications = normalizeApplications(applicationsRaw);
 
   const sectorSlug = toSlug(sector);
   const institutionSlug = toSlug(institution);
