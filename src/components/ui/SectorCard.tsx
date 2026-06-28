@@ -381,7 +381,7 @@ export default function SectorCard({ sector }: Props) {
 
         {/* Premium bottom gradient — guarantees text readability, no blur/glass */}
         <div
-          className="absolute inset-0 pointer-events-none z-1 transition-opacity duration-300 group-hover:opacity-90"
+          className="absolute inset-0 pointer-events-none z-1 transition-opacity duration-300 group-hover:opacity-95"
           aria-hidden
           style={{
             background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(8,15,30,0.35) 40%, rgba(8,15,30,0.75) 72%, rgba(8,15,30,0.95) 100%)',
@@ -389,36 +389,37 @@ export default function SectorCard({ sector }: Props) {
         />
 
         {/* Content panel — positioned at bottom */}
-        <div className="relative z-10 p-3.5 sm:p-4 flex flex-col gap-2.5">
+        <div className="relative z-10 p-5 sm:p-6 flex flex-col gap-3">
           {/* Icon badge + Sector name */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-start gap-3">
             <div
-              className="flex items-center justify-center rounded-full flex-shrink-0"
-              style={{ width: 40, height: 40, background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.15)' }}
+              className="flex items-center justify-center rounded-full flex-shrink-0 mt-0.5"
+              style={{ width: 36, height: 36, background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.20)' }}
               aria-hidden="true"
             >
-              {getSectorIcon(sector.slug, '#ffffff', 20)}
+              {getSectorIcon(sector.slug, '#ffffff', 18)}
             </div>
             <h3
-              className="font-heading font-bold text-white text-[17px] sm:text-[22px]"
-              style={{ lineHeight: 1.2 }}
+              className="font-heading font-bold text-white line-clamp-2 text-[18px] sm:text-[20px] md:text-[24px]"
+              style={{ lineHeight: 1.2, textShadow: '0 2px 10px rgba(0,0,0,0.45)' }}
             >
               {sector.name}
             </h3>
           </div>
 
           {/* Tags row */}
-          <div className="hidden sm:flex flex-wrap gap-1.5">
+          <div className="hidden sm:flex flex-wrap gap-2">
             {subsectors.slice(0, 2).map((sub, i) => (
               <span
                 key={i}
-                className="font-medium text-white"
+                className="font-semibold text-white"
                 style={{
-                  background: 'rgba(255,255,255,0.14)',
+                  background: 'rgba(255,255,255,0.18)',
                   border: '1px solid rgba(255,255,255,0.18)',
                   borderRadius: 999,
-                  padding: '6px 12px',
+                  padding: '8px 14px',
                   fontSize: 13,
+                  lineHeight: 1,
                 }}
               >
                 {sub}
@@ -427,13 +428,15 @@ export default function SectorCard({ sector }: Props) {
           </div>
 
           {/* Footer: count + arrow */}
-          <div className="flex items-center justify-between pt-0.5">
-            <span className="text-[15px] sm:text-[18px] font-bold text-[#FFD54A] transition-colors duration-300 group-hover:text-white">
+          <div className="flex items-center justify-between mt-1.5">
+            <span
+              className="font-bold text-[#FFD54A] text-[16px] sm:text-[18px] transition-all duration-300 group-hover:drop-shadow-[0_0_6px_rgba(255,213,74,0.45)]"
+            >
               {sector.tech_count} {sector.tech_count === 1 ? 'Technology' : 'Technologies'}
             </span>
             <span
               className="flex items-center justify-center rounded-full transition-all duration-300 group-hover:bg-[#FFD54A] group-hover:translate-x-1.5 flex-shrink-0"
-              style={{ width: 40, height: 40, background: 'rgba(255,255,255,0.15)' }}
+              style={{ width: 42, height: 42, background: 'rgba(255,255,255,0.15)' }}
             >
               <ArrowRight className="w-4 h-4 text-white group-hover:text-[#001B44] transition-colors duration-300" aria-hidden="true" />
             </span>
