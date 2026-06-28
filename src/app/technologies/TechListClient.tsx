@@ -197,21 +197,39 @@ export default function TechListClient({
                   )}
                 </div>
 
-                <FilterSelect
-                  id="filter-sector"
-                  label="Sector"
-                  value={filters.sector}
-                  onChange={v => applyFilter('sector', v)}
-                  options={sectors.map(s => s.slug)}
-                />
+                <div className="filter-group">
+                  <label htmlFor="filter-sector" className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                    Sector
+                  </label>
+                  <select
+                    id="filter-sector"
+                    value={filters.sector}
+                    onChange={e => applyFilter('sector', e.target.value)}
+                    className="w-full text-sm border border-border rounded-lg px-3 py-2 text-text-primary bg-card focus:outline-none focus:border-accent-secondary focus:ring-1 focus:ring-accent-secondary/20"
+                  >
+                    <option value="">All Sectors</option>
+                    {[...sectors].sort((a, b) => a.name.localeCompare(b.name)).map(s => (
+                      <option key={s.slug} value={s.slug}>{s.name}</option>
+                    ))}
+                  </select>
+                </div>
 
-                <FilterSelect
-                  id="filter-institution"
-                  label="Institution"
-                  value={filters.institution}
-                  onChange={v => applyFilter('institution', v)}
-                  options={institutions.map(i => i.slug)}
-                />
+                <div className="filter-group">
+                  <label htmlFor="filter-institution" className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                    Institution
+                  </label>
+                  <select
+                    id="filter-institution"
+                    value={filters.institution}
+                    onChange={e => applyFilter('institution', e.target.value)}
+                    className="w-full text-sm border border-border rounded-lg px-3 py-2 text-text-primary bg-card focus:outline-none focus:border-accent-secondary focus:ring-1 focus:ring-accent-secondary/20"
+                  >
+                    <option value="">All Institutions</option>
+                    {[...institutions].sort((a, b) => a.name.localeCompare(b.name)).map(inst => (
+                      <option key={inst.slug} value={inst.slug}>{inst.name}</option>
+                    ))}
+                  </select>
+                </div>
 
                 <FilterSelect
                   id="filter-type"
