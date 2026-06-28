@@ -423,24 +423,42 @@ export async function fetchAllTechnologies(): Promise<Technology[]> {
 
 export async function fetchSectors(): Promise<Sector[]> {
   const techs = await fetchAllTechnologies();
-  const map = new Map<string, { name: string; count: number }>();
+  const map = new Map<string, { name: string; count: number; types: Map<string, number> }>();
 
   for (const t of techs) {
-    const existing = map.get(t.sector_slug);
-    if (existing) {
-      existing.count++;
-    } else {
-      map.set(t.sector_slug, { name: t.sector, count: 1 });
+    let existing = map.get(t.sector_slug);
+    if (!existing) {
+      existing = { name: t.sector, count: 0, types: new Map<string, number>() };
+      map.set(t.sector_slug, existing);
+    }
+    
+    existing.count++;
+    
+    // Track technology types for dynamic tags
+    if (t.technology_type && t.technology_type !== 'Not Specified' && t.technology_type !== 'NA') {
+      const types = t.technology_type.split(/[,;]/).map(type => type.trim()).filter(type => type.length > 0);
+      for (const type of types) {
+        existing.types.set(type, (existing.types.get(type) || 0) + 1);
+      }
     }
   }
 
   return Array.from(map.entries())
-    .map(([slug, { name, count }]) => ({
-      slug,
-      name,
-      tech_count: count,
-      ...getSectorMeta(slug),
-    }))
+    .map(([slug, { name, count, types }]) => {
+      // Pick top 2 most frequent tech types for tags
+      const top_tags = Array.from(types.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 2)
+        .map(([type]) => type);
+
+      return {
+        slug,
+        name,
+        tech_count: count,
+        top_tags: top_tags.length > 0 ? top_tags : ['Research', 'Innovation'],
+        ...getSectorMeta(slug),
+      };
+    })
     .sort((a, b) => b.tech_count - a.tech_count);
 }
 

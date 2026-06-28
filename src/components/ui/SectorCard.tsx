@@ -354,7 +354,9 @@ export function SectorIllustration({ slug, accentColor }: { slug: string; accent
 }
 
 export default function SectorCard({ sector }: Props) {
-  const subsectors = SECTOR_SUBSECTORS[sector.slug] || SECTOR_SUBSECTORS['default'];
+  const subsectors = sector.top_tags && sector.top_tags.length > 0 
+    ? sector.top_tags 
+    : (SECTOR_SUBSECTORS[sector.slug] || SECTOR_SUBSECTORS['default']);
   const accentColor = SECTOR_ACCENTS[sector.slug] || '#10B981';
   const [imgFailed, setImgFailed] = useState(false);
 
@@ -389,7 +391,7 @@ export default function SectorCard({ sector }: Props) {
         />
 
         {/* Content panel — positioned at bottom */}
-        <div className="relative z-10 p-5 sm:p-6 flex flex-col gap-3">
+        <div className="relative z-10 p-6 flex flex-col gap-3 h-full justify-end">
           {/* Icon badge + Sector name */}
           <div className="flex items-start gap-3">
             <div
@@ -428,7 +430,7 @@ export default function SectorCard({ sector }: Props) {
           </div>
 
           {/* Footer: count + arrow */}
-          <div className="flex items-center justify-between mt-1.5">
+          <div className="flex items-center justify-between mt-[18px]">
             <span
               className="font-bold text-[#FFD54A] text-[16px] sm:text-[18px] transition-all duration-300 group-hover:drop-shadow-[0_0_6px_rgba(255,213,74,0.45)]"
             >

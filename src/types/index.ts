@@ -45,6 +45,7 @@ export interface Sector {
   tech_count: number;
   icon: string;
   color: string;
+  top_tags?: string[];
 }
 
 export interface Institution {
