@@ -361,8 +361,7 @@ export default function SectorCard({ sector }: Props) {
   return (
     <Link href={`/technologies?sector=${sector.slug}`} id={`sector-card-${sector.slug}`} className="block group">
       <div
-        className="relative overflow-hidden rounded-md h-40 sm:h-52 flex flex-col justify-end cursor-pointer border border-gray-100 bg-gray-50 shadow-sm hover:shadow-md hover:border-blue-200,130,246,0.18)] transition-all duration-250"
-        style={{ transition: 'all 0.25s ease' }}
+        className="relative overflow-hidden rounded-md h-40 sm:h-52 flex flex-col justify-end cursor-pointer border border-[rgba(15,23,42,0.08)] bg-slate-900 transition-all duration-300 hover:shadow-md"
       >
         {/* Sector image with SVG illustration fallback */}
         <div className="absolute inset-0 w-full h-full select-none z-0">
@@ -371,7 +370,7 @@ export default function SectorCard({ sector }: Props) {
             <img
               src={`/images/sectors/${sector.slug}.png`}
               alt={sector.name}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               onError={() => setImgFailed(true)}
               loading="lazy"
             />
@@ -380,60 +379,55 @@ export default function SectorCard({ sector }: Props) {
           )}
         </div>
 
-        {/* Gradient overlay — strong bottom for text readability */}
+        {/* Premium bottom gradient — no blur, clean fade into dark */}
         <div
           className="absolute inset-0 pointer-events-none z-1"
+          aria-hidden
           style={{
-            background: 'linear-gradient(to bottom, transparent 30%, rgba(10,20,40,0.75) 70%, rgba(5,15,30,0.92) 100%)',
+            background: 'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.20) 55%, rgba(0,0,0,0.65) 75%, rgba(8,15,30,0.96) 100%)',
           }}
         />
 
-        {/* Subtle hover color tint */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-[0.06] transition-opacity duration-300 z-2"
-          style={{ background: accentColor }}
-        />
-
-        {/* Title & Info panel — clean semi-transparent white */}
-        <div
-          className="relative z-10 p-2.5 sm:p-3.5 m-2 sm:m-2.5 rounded-md border border-white/20"
-          style={{
-            background: 'rgba(255, 255, 255, 0.18)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-          }}
-        >
-          {/* Header row: Icon & Sector Title */}
-          <div className="flex items-center gap-2 mb-1.5">
+        {/* Content panel — positioned at bottom */}
+        <div className="relative z-10 p-3.5 sm:p-4 flex flex-col gap-2 transition-transform duration-300 group-hover:-translate-y-1.5">
+          {/* Icon badge + Sector name */}
+          <div className="flex items-center gap-2.5">
             <div
-              className="w-7 h-7 rounded-lg flex items-center justify-center border border-white/30"
-              style={{ background: 'rgba(255,255,255,0.25)' }}
+              className="flex items-center justify-center rounded-full flex-shrink-0"
+              style={{ width: 42, height: 42, background: 'rgba(255,255,255,0.18)' }}
+              aria-hidden="true"
             >
-              {getSectorIcon(sector.slug, '#ffffff', 14)}
+              {getSectorIcon(sector.slug, '#ffffff', 20)}
             </div>
-            <h3 className="font-heading font-black text-xs text-white leading-tight uppercase tracking-wider drop-shadow-sm">
+            <h3 className="font-heading font-bold text-white leading-tight text-[17px] sm:text-[22px]">
               {sector.name}
             </h3>
           </div>
 
-          {/* Sub-sector badges */}
-          <div className="hidden sm:flex flex-wrap gap-1 mb-2.5">
+          {/* Tags row */}
+          <div className="hidden sm:flex flex-wrap gap-1.5">
             {subsectors.slice(0, 2).map((sub, i) => (
-              <span key={i} className="text-[8.5px] font-bold tracking-wide text-white/90 bg-white/20 px-1.5 py-0.5 rounded">
+              <span
+                key={i}
+                className="text-[10px] font-semibold text-white px-3 py-1 rounded-full"
+                style={{ background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.15)' }}
+              >
                 {sub}
               </span>
             ))}
           </div>
 
-          {/* Footer row */}
-          <div className="flex items-center justify-between pt-2 border-t border-white/20">
-            <span className="text-[9.5px] font-bold text-white/90 drop-shadow-sm">
-              {sector.tech_count} {sector.tech_count === 1 ? 'technology' : 'technologies'}
+          {/* Footer: count + arrow */}
+          <div className="flex items-center justify-between pt-1">
+            <span className="text-sm font-semibold text-[#FFD54A] transition-colors duration-300 group-hover:text-white">
+              {sector.tech_count} {sector.tech_count === 1 ? 'Technology' : 'Technologies'}
             </span>
-            <ArrowRight
-              className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-200 drop-shadow-sm"
-              style={{ color: '#ffffff' }}
-            />
+            <span
+              className="flex items-center justify-center rounded-full transition-all duration-300 group-hover:bg-[#FFD54A] group-hover:translate-x-1.5"
+              style={{ width: 28, height: 28, background: 'rgba(255,255,255,0.12)' }}
+            >
+              <ArrowRight className="w-4 h-4 text-white group-hover:text-[#0F172A] transition-colors duration-300" aria-hidden="true" />
+            </span>
           </div>
         </div>
 

@@ -162,20 +162,23 @@ export function WaterEnvIcon({ color = '#2563eb', size = 24 }: IconProps) {
 }
 
 // Map sector slug → icon component
+// Lucide-based sector icons for the premium card redesign
+import { Sprout, UtensilsCrossed, HeartPulse, Dna, Cpu, Leaf, Droplets, Atom, ShoppingBag, Bot, Building2, Cog } from 'lucide-react';
+
 export function getSectorIcon(slug: string, color: string, size = 24) {
   const s = slug.toLowerCase();
-  if (s.includes('agriculture') || s.includes('agri')) return <AgricultureIcon color={color} size={size} />;
-  if (s.includes('biotech') || s.includes('life-science')) return <BiotechIcon color={color} size={size} />;
-  if (s.includes('food')) return <FoodTechIcon color={color} size={size} />;
-  if (s.includes('material') || s.includes('chemical')) return <MaterialsIcon color={color} size={size} />;
-  if (s.includes('medtech') || s.includes('health') || s.includes('medical')) return <MedTechIcon color={color} size={size} />;
-  if (s.includes('robot') || s.includes('drone') || s.includes('automat')) return <RoboticsIcon color={color} size={size} />;
-  if (s.includes('infra') || s.includes('construct') || s.includes('smart-cit') || s.includes('city')) return <InfrastructureIcon color={color} size={size} />;
-  if (s.includes('digital') || s.includes('software') || s.includes('ict') || s.includes('ai') || s.includes('tech')) return <DigitalTechIcon color={color} size={size} />;
-  if (s.includes('manufactur') || s.includes('industrial')) return <ManufacturingIcon color={color} size={size} />;
-  if (s.includes('consumer') || s.includes('cosmet') || s.includes('lifestyle')) return <ConsumerIcon color={color} size={size} />;
-  if (s.includes('energy') || s.includes('climate') || s.includes('sustainab') || s.includes('renewable')) return <EnergyIcon color={color} size={size} />;
-  if (s.includes('water') || s.includes('environ') || s.includes('waste')) return <WaterEnvIcon color={color} size={size} />;
-  // Default fallback
-  return <ManufacturingIcon color={color} size={size} />;
+  const props = { color, size, strokeWidth: 1.8 };
+  if (s.includes('agriculture') || s.includes('agri')) return <Sprout {...props} />;
+  if (s.includes('food')) return <UtensilsCrossed {...props} />;
+  if (s.includes('medtech') || s.includes('health') || s.includes('medical')) return <HeartPulse {...props} />;
+  if (s.includes('biotech') || s.includes('life-science')) return <Dna {...props} />;
+  if (s.includes('digital') || s.includes('software') || s.includes('ai') || s.includes('ict')) return <Cpu {...props} />;
+  if (s.includes('energy') || s.includes('climate') || s.includes('sustainab') || s.includes('renewable')) return <Leaf {...props} />;
+  if (s.includes('water') || s.includes('environ') || s.includes('waste')) return <Droplets {...props} />;
+  if (s.includes('material') || s.includes('chemical')) return <Atom {...props} />;
+  if (s.includes('consumer') || s.includes('cosmet') || s.includes('lifestyle')) return <ShoppingBag {...props} />;
+  if (s.includes('robot') || s.includes('drone') || s.includes('automat')) return <Bot {...props} />;
+  if (s.includes('infra') || s.includes('construct') || s.includes('smart-cit') || s.includes('city')) return <Building2 {...props} />;
+  if (s.includes('manufactur') || s.includes('industrial')) return <Cog {...props} />;
+  return <Cpu {...props} />;
 }
