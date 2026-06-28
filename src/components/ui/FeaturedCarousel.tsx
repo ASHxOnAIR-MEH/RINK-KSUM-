@@ -9,7 +9,11 @@ interface Props {
 
 export default function FeaturedCarousel({ technologies }: Props) {
   if (!technologies || technologies.length === 0) {
-    return null;
+    return (
+      <div className="text-center py-12">
+        <p className="text-[#475569] text-sm font-sans">No featured technologies available.</p>
+      </div>
+    );
   }
 
   // Repeat technologies to ensure the marquee track is long enough to fill large desktop viewports

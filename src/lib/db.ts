@@ -40,10 +40,10 @@ export async function getTechnologyById(id: string): Promise<Technology | null> 
 
 export async function getFeaturedTechnologies(limit = 100): Promise<Technology[]> {
   const techs = await fetchAllTechnologies();
-  return techs.filter(t => {
-    const pot = (t.startup_potential || '').toLowerCase();
-    return pot === 'high' || pot === 'featured';
-  });
+  return techs
+    .filter(t => (t.startup_potential || '').toLowerCase() === 'high')
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .slice(0, limit);
 }
 
 export async function getRecentTechnologies(limit = 8): Promise<Technology[]> {
@@ -102,14 +102,10 @@ export async function searchTechnologies(
     results = results.filter(t => t.startup_potential === filters.startup_potential);
   }
   if (filters.featured) {
-    const isFeatured = (t: Technology) => {
-      const pot = (t.startup_potential || '').toLowerCase();
-      return pot === 'high' || pot === 'featured' || pot === 'very high';
-    };
     if (filters.featured === 'featured') {
-      results = results.filter(isFeatured);
+      results = results.filter(t => (t.startup_potential || '').toLowerCase() === 'high');
     } else if (filters.featured === 'non-featured') {
-      results = results.filter(t => !isFeatured(t));
+      results = results.filter(t => (t.startup_potential || '').toLowerCase() !== 'high');
     }
   }
 

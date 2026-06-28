@@ -28,8 +28,8 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
     null;
   const hasImage = !!displayImage && !imageFailed;
 
-  // Show FEATURED badge only for 'High' or 'Featured'
-  const showFeaturedBadge = ['featured', 'high'].includes(technology.startup_potential?.toLowerCase() || '');
+  // Startup potential badge logic
+  const potentialLevel = (technology.startup_potential || '').toLowerCase();
 
   const sanitize = (val: string | null | undefined): string => {
     if (!val) return '';
@@ -53,10 +53,23 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
 
   const badges: React.ReactNode[] = [];
 
-  if (showFeaturedBadge) {
+  // Premium startup potential badge
+  if (potentialLevel === 'high') {
     badges.push(
-      <span key="featured" className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
-        ★ FEATURED
+      <span key="potential" className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-[0_0_6px_rgba(16,185,129,0.25)]">
+        ★ High Startup Potential
+      </span>
+    );
+  } else if (potentialLevel === 'medium') {
+    badges.push(
+      <span key="potential" className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+        Medium Startup Potential
+      </span>
+    );
+  } else if (potentialLevel === 'low') {
+    badges.push(
+      <span key="potential" className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-50 text-slate-500 border border-slate-200">
+        Low Startup Potential
       </span>
     );
   }
