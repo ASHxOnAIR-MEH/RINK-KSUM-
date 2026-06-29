@@ -159,11 +159,6 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                   <span className="text-slate-300">|</span>
                   <span className="font-mono text-slate-500">ID: {tech.id}</span>
                 </div>
-
-                {/* Short Summary */}
-                <p className="text-slate-600 text-base leading-relaxed font-sans">
-                  Developed by {tech.institution}, this technology offers commercial potential in the {tech.sector} sector.
-                </p>
               </div>
 
               {/* RIGHT COLUMN — Technology Image */}
