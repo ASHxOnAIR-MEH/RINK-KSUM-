@@ -17,7 +17,8 @@ export interface Technology {
   startup_potential: StartupPotential; // High / Medium / Low
   startup_potential_score: number;     // 5 / 3 / 2 for star display
   trl: string;              // TRL (sourced directly or fallback)
-  patent_status: string;    // Patent Status (sourced directly or fallback)
+  patent_status: string;    // Patent Status — COMPLETE legal text (e.g. "GRANTED (Patent No: 394501)")
+  ip_status: string;        // IP Status for frontend — normalized value (Patented/Published/Filed/Patent Pending/Not Patented/Not Available)
   commercialization_status: string; // Commercialization Status (sourced directly or fallback)
   contact_person: string;   // Contact Person
   phone: string;            // Phone
@@ -75,6 +76,7 @@ export interface TechnologyFilters {
   institution?: string;
   technology_type?: string;
   patent_status?: string;
+  ip_status?: string;
   startup_potential?: StartupPotential;
   featured?: 'featured' | 'non-featured';
 }

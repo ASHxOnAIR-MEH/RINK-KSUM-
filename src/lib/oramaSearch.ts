@@ -23,6 +23,7 @@ const SCHEMA = {
   keywords: 'string' as const,
   trl: 'string' as const,
   patent_status: 'string' as const,
+  ip_status: 'string' as const,
 };
 
 // ── Singleton index ──────────────────────────────────────────
@@ -57,6 +58,7 @@ async function getIndex() {
       keywords: tech.keywords.join(', '),
       trl: tech.trl,
       patent_status: tech.patent_status,
+      ip_status: tech.ip_status,
     });
   }
 
@@ -104,7 +106,7 @@ export async function oramaSearch(
     if (filters?.sector) filtered = filtered.filter(t => t.sector_slug === filters.sector);
     if (filters?.institution) filtered = filtered.filter(t => t.institution_slug === filters.institution);
     if (filters?.type) filtered = filtered.filter(t => t.technology_type.toLowerCase() === filters.type!.toLowerCase());
-    if (filters?.patent) filtered = filtered.filter(t => t.patent_status.toLowerCase() === filters.patent!.toLowerCase());
+    if (filters?.patent) filtered = filtered.filter(t => t.ip_status.toLowerCase() === filters.patent!.toLowerCase());
     if (filters?.potential) {
       if (filters.potential === 'featured') filtered = filtered.filter(t => t.startup_potential === 'High');
       else if (filters.potential === 'non-featured') filtered = filtered.filter(t => t.startup_potential !== 'High');
@@ -153,7 +155,7 @@ export async function oramaSearch(
   if (filters?.sector) results = results.filter(r => r.technology.sector_slug === filters.sector);
   if (filters?.institution) results = results.filter(r => r.technology.institution_slug === filters.institution);
   if (filters?.type) results = results.filter(r => r.technology.technology_type.toLowerCase() === filters.type!.toLowerCase());
-  if (filters?.patent) results = results.filter(r => r.technology.patent_status.toLowerCase() === filters.patent!.toLowerCase());
+  if (filters?.patent) results = results.filter(r => r.technology.ip_status.toLowerCase() === filters.patent!.toLowerCase());
   if (filters?.potential) {
     if (filters.potential === 'featured') results = results.filter(r => r.technology.startup_potential === 'High');
     else if (filters.potential === 'non-featured') results = results.filter(r => r.technology.startup_potential !== 'High');

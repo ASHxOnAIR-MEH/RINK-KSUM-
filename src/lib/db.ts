@@ -94,8 +94,9 @@ export async function searchTechnologies(
     );
   }
   if (filters.patent_status) {
+    // Filter by the normalized IP status (frontend column), NOT the legal patent_status text
     results = results.filter(t =>
-      t.patent_status.toLowerCase() === filters.patent_status!.toLowerCase()
+      t.ip_status.toLowerCase() === filters.patent_status!.toLowerCase()
     );
   }
   if (filters.startup_potential) {
@@ -221,7 +222,33 @@ export async function getTechnologyTypes(): Promise<string[]> {
 }
 
 export async function getPatentStatuses(): Promise<string[]> {
+  // Returns the normalized IP Status values (from the "IP Status for frontend" column)
+  // in canonical order, limited to values that actually exist in the data.
+  // Used to populate the "IP Status" filter dropdown — NEVER exposes patent numbers.
+  const CANONICAL_ORDER = [
+    'Patented',
+    'Published',
+    'Filed',
+    'Patent Pending',
+    'Not Patented',
+    'Not Available',
+  ];
   const techs = await fetchAllTechnologies();
-  const statuses = new Set(techs.map(t => t.patent_status).filter(v => v && v !== 'Not Specified'));
-  return Array.from(statuses).sort();
+  const present = new Set(
+    techs
+      .map(t => (t.ip_status || '').trim())
+      .filter(Boolean)
+  );
+
+  // Order by canonical list first, then append any unexpected values alphabetically
+  const ordered: string[] = [];
+  for (const v of CANONICAL_ORDER) {
+    const match = Array.from(present).find(p => p.toLowerCase() === v.toLowerCase());
+    if (match) {
+      ordered.push(v);
+      present.delete(match);
+    }
+  }
+  const extras = Array.from(present).sort();
+  return [...ordered, ...extras];
 }

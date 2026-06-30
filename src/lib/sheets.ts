@@ -310,6 +310,10 @@ function rowToTechnology(row: string[], headerMap: Record<string, number>): Tech
   const patentVal = getVal(['patentstatus', 'patent']);
   const patent_status = patentVal && patentVal !== 'Not Specified' && patentVal !== 'NA' ? patentVal : 'Patent Status Not Available';
 
+  // IP Status for frontend — normalized value used ONLY for filtering + UI badges
+  const ipStatusVal = getVal(['ipstatusforfrontend', 'ipstatus', 'ipstatusfrontend'], '');
+  const ip_status = ipStatusVal && ipStatusVal !== 'Not Specified' && ipStatusVal !== 'NA' ? ipStatusVal : 'Not Available';
+
   const commVal = getVal(['commercializationstatus', 'commercialization', 'status']);
   const commercialization_status = commVal && commVal !== 'Not Specified' && commVal !== 'NA' ? commVal : 'Commercialization Status Not Available';
 
@@ -341,6 +345,7 @@ function rowToTechnology(row: string[], headerMap: Record<string, number>): Tech
     startup_potential_score: potentialScore(startupPotentialCanonical),
     trl,
     patent_status,
+    ip_status,
     commercialization_status,
     contact_person: getVal(['contactperson', 'contact'], 'Contact Institution'),
     phone,

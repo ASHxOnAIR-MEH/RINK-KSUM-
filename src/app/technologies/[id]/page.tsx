@@ -289,10 +289,10 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
 
                     {/* ── CTA ── */}
                     <div className="p-5 bg-gradient-to-br from-[#0A2164] to-[#0d3285]">
-                      <h3 className="font-serif text-base font-bold text-white mb-2">
+                      <h3 className="font-serif text-base font-bold mb-2" style={{ color: '#FFFFFF' }}>
                         Interested in this Technology?
                       </h3>
-                      <p className="text-blue-200 text-xs leading-relaxed font-sans mb-4">
+                      <p className="text-xs leading-relaxed font-sans mb-4" style={{ color: 'rgba(191,219,254,0.9)' }}>
                         Submit an Expression of Interest (EOI) through RINK to explore technology transfer, licensing, startup creation, and commercialization opportunities related to this technology.
                       </p>
                       <a

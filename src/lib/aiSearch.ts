@@ -569,8 +569,8 @@ export function runLocalSearchWithAnalysis(
     if (score > 0 && (needs.length === 0 || needsMatched > 0)) {
       // Apply TRL and patent filters if requested
       if (patentFilter) {
-        const ps = tech.patent_status.toLowerCase();
-        if (!ps.includes('patent') || ps.includes('not patent') || ps === 'not specified') continue;
+        const ps = tech.ip_status.toLowerCase();
+        if (!ps.includes('patent') || ps.includes('not patent') || ps === 'not available' || ps === 'not specified') continue;
       }
       if (trlFilter !== null) {
         const trlNum = parseInt(tech.trl?.replace(/[^0-9]/g, '') || '0');
