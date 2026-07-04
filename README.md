@@ -1,103 +1,294 @@
-# RINK Technology Explorer 🔬
+# RINK Technology Transfer Portal
 
-**Discover Research. Build Startups.**
-
-A sub-portal of the [Research Innovation Network Kerala (RINK)](https://startupmission.in) under the **Kerala Startup Mission (KSUM)**.
-DEV BY MUHAMMED ASHIK UKFCET
----
-
-## 🎯 Purpose
-
-RINK Technology Explorer helps early-stage startup founders discover commercializable technologies developed by Kerala research institutions and identify technologies suitable for building startups.
-
-> This is NOT a research repository. It's a **startup discovery platform**.
+A modern web platform developed for the **Research Innovation Network Kerala (RINK)** under **Kerala Startup Mission (KSUM)** to enable startup founders, entrepreneurs, researchers, investors, and industry partners to discover technologies available for technology transfer and commercialization.
 
 ---
 
-## 🌐 Live Demo
+## Project Overview
 
-Run locally:
+The RINK Technology Transfer Portal is designed to bridge the gap between research institutions and startups by providing a centralized technology discovery platform.
+
+The portal allows users to:
+
+- Discover technologies from leading research institutions
+- Search technologies using advanced full-text search
+- Browse technologies by sector
+- Explore participating institutions
+- View detailed technology information
+- Submit Expressions of Interest (EOI) for technology transfer
+- Identify commercialization opportunities
+
+---
+
+## Live Website
+
+https://rink-ksum.vercel.app
+
+---
+
+## Technology Stack
+
+### Frontend
+
+- Next.js 15
+- React
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+
+### Search Engine
+
+- Orama Search
+
+### Database
+
+- Google Sheets
+- Google Apps Script API
+
+### Deployment
+
+- Vercel
+
+---
+
+## Key Features
+
+### Technology Discovery
+
+- Full technology catalogue
+- Technology detail pages
+- Institution-wise browsing
+- Sector-wise browsing
+
+### Advanced Search
+
+Search by:
+
+- Technology Name
+- Technology ID
+- Keywords
+- Institution
+- Problem Solved
+- Applications
+- Technology Type
+- Primary Sector
+- Secondary Sector
+
+### Filtering
+
+Browse technologies using filters such as:
+
+- Institution
+- Sector
+- Technology Type
+- TRL
+- IP Status
+
+### Featured Technologies
+
+Homepage automatically displays technologies marked as:
+
+```
+startup_potential = High
+```
+
+This field is used internally only and is not displayed to users.
+
+### Technology Details
+
+Each technology page includes:
+
+- Technology Title
+- Institution
+- Technology ID
+- Sector
+- Problem Being Solved
+- Technology Description
+- Applications & Industrial Potential
+- Technology Readiness Level (TRL)
+- IP / Patent Status
+- Expression of Interest (EOI)
+
+---
+
+## Search Engine
+
+The portal uses **Orama Search** for fast local full-text searching.
+
+Indexed fields include:
+
+- technology_name
+- technology_id
+- institution
+- keywords
+- applications
+- problem_solved
+- description
+- technology_type
+- primary_sector
+- secondary_sector
+
+---
+
+## Data Source
+
+The application uses Google Sheets as the primary database.
+
+Main sheet contains fields including:
+
+- technology_id
+- technology_name
+- institution
+- primary_sector
+- secondary_sector
+- technology_type
+- problem_solved
+- description
+- applications
+- trl
+- patent_status
+- contact_person
+- email
+- source_pdf
+- page_no
+- keywords
+- image_url
+- startup_potential
+- ip_status_frontend
+
+---
+
+## Project Structure
+
+```
+app/
+components/
+hooks/
+lib/
+services/
+types/
+public/
+styles/
+```
+
+---
+
+## Installation
+
+Clone the repository
+
 ```bash
-cd rink-explorer
+git clone <repository-url>
+```
+
+Install dependencies
+
+```bash
 npm install
+```
+
+Run locally
+
+```bash
 npm run dev
-# Open http://localhost:3000
+```
+
+Production build
+
+```bash
+npm run build
 ```
 
 ---
 
-## 🏗️ Tech Stack
+## Environment Variables
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Next.js 16+ (App Router) |
-| Styling | Tailwind CSS v4 |
-| Language | TypeScript |
-| Data | Local JSON (Supabase-ready) |
-| Fonts | Inter + Outfit (Google Fonts) |
+Create a `.env.local` file.
 
----
+Example:
 
-## 📁 Project Structure
-
-```
-rink-explorer/
-├── src/
-│   ├── types/index.ts              ← TypeScript interfaces
-│   ├── data/
-│   │   ├── technologies.ts         ← 25 MVP technologies
-│   │   ├── sectors.ts              ← 10 sectors
-│   │   └── institutions.ts         ← 8 institutions
-│   ├── lib/db.ts                   ← DATA ACCESS LAYER (swap to Supabase here)
-│   ├── components/
-│   │   ├── layout/Navbar.tsx       ← KSUM + RINK logo, navigation
-│   │   ├── layout/Footer.tsx       ← Footer with CTA
-│   │   └── ui/                     ← All UI components
-│   └── app/                        ← All 52 pages
-└── supabase/schema.sql             ← Ready-to-run DB schema
+```env
+NEXT_PUBLIC_GOOGLE_SHEET_API=YOUR_API_ENDPOINT
+NEXT_PUBLIC_GOOGLE_SCRIPT_URL=YOUR_SCRIPT_URL
 ```
 
 ---
 
-## 🚀 Features
+## Deployment
 
-- ✅ **Homepage** — Hero, stats, sectors, featured technologies, startup discovery
-- ✅ **Technology Search** — Live search with 5 filters + sort
-- ✅ **25 Technologies** — Full dataset from CTCRI, CPCRI, NIIST, and more
-- ✅ **Startup Discovery** — "I Want To Build A Startup In..." with 9 categories
-- ✅ **Sector & Institution Browse** — Organized by domain and institution
-- ✅ **Contact Modal** — Direct institution contact (no form)
-- ✅ **Mobile Responsive** — Full mobile support
-- ✅ **Supabase Ready** — Only `src/lib/db.ts` needs to change for backend
+The application is deployed using Vercel.
 
----
+Deployment steps:
 
-## 🏛️ Partner Institutions
-
-CTCRI · CPCRI · NIIST · NCRMI · KSCSTE · KFRI · CWRDM · JNTBGRI
+1. Connect GitHub repository
+2. Configure environment variables
+3. Deploy
 
 ---
 
-## 🔄 Supabase Migration
+## Current Status
 
-When ready to move from local JSON to Supabase:
+Completed
 
-1. Run `supabase/schema.sql` in Supabase SQL editor
-2. Add `.env.local` with your Supabase keys
-3. Edit only `src/lib/db.ts` — uncomment Supabase blocks
-4. Zero frontend changes required ✨
-
----
-
-## 👥 Target Users
-
-- Early-stage startup founders
-- Student entrepreneurs  
-- MSMEs and innovators
-- Incubators and investors
+- Homepage
+- Browse Technologies
+- Technology Details
+- Institution Pages
+- Sector Pages
+- Advanced Search
+- Orama Integration
+- Responsive UI
+- Google Sheets Integration
+- Featured Technologies
+- EOI Workflow
 
 ---
 
-## 📄 License
+## Future Improvements
 
-© Kerala Startup Mission. Built for the RINK ecosystem.
+Potential enhancements include:
+
+- Admin Dashboard
+- Institution Login
+- Technology Analytics
+- AI-powered Recommendations
+- Saved Technologies
+- User Authentication
+- Technology Comparison
+- PDF Preview
+- Technology Transfer Workflow Tracking
+
+---
+
+## Developed By
+
+**Muhammed Ashik S**
+
+Academic Intern
+
+Research Innovation Network (RINK)
+
+Kerala Startup Mission
+
+
+
+---
+
+## Acknowledgements
+
+Research Innovation Network Kerala (RINK)
+
+Kerala Startup Mission (KSUM)
+
+Participating Research Institutions across Kerala
+
+---
+
+## License
+
+Developed as part of the Research Innovation Network (RINK) internship at Kerala Startup Mission.
+
+All institutional technology data belongs to the respective research institutions and Kerala Startup Mission.
+
+The source code should be used in accordance with Kerala Startup Mission's project guidelines.
+em.
