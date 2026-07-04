@@ -19,9 +19,17 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const sector = await getSectorBySlug(slug);
   if (!sector) return { title: 'Sector Not Found — RINK' };
+  
+  const metaDescription = `Browse ${sector.tech_count} commercializable technologies in ${sector.name}. Discover research breakthroughs from Kerala institutions ready for industry deployment.`;
+  
   return {
-    title: `${sector.name} Technologies — RINK Technology Transfer Portal`,
-    description: `Browse ${sector.tech_count} commercializable technologies in ${sector.name} from Kerala research institutions.`,
+    title: `${sector.name} Innovation & Technologies | RINK Kerala`,
+    description: metaDescription,
+    openGraph: {
+      title: `${sector.name} Innovation & Technologies | RINK Kerala`,
+      description: metaDescription,
+      type: 'website',
+    },
   };
 }
 

@@ -51,12 +51,20 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const tech = await getTechnologyById(id);
   if (!tech) return { title: 'Technology Not Found — RINK' };
+  
+  const shortDesc = tech.problem_solved || tech.description || 'Discover this technology on RINK.';
+  const contactStr = tech.contact_person && tech.contact_person !== 'Contact Institution' 
+    ? `Contact ${tech.contact_person} for details.` : 'Contact the institution for details.';
+    
+  const metaDescription = `Discover ${tech.name} developed by ${tech.institution} in the ${tech.sector} sector. Problem solved: ${shortDesc.slice(0, 80).trim()}... ${contactStr}`;
+
   return {
-    title: `${tech.name} — RINK Technology Transfer Portal`,
-    description: tech.problem_solved?.slice(0, 160),
+    title: `${tech.name} at ${tech.institution} | RINK Kerala`,
+    description: metaDescription,
     openGraph: {
-      title: tech.name,
-      description: tech.problem_solved?.slice(0, 160),
+      title: `${tech.name} at ${tech.institution}`,
+      description: metaDescription,
+      type: 'article',
     },
   };
 }
