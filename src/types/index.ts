@@ -92,8 +92,15 @@ export interface SearchIndexItem {
   id: string;
   name: string;
   institution: string;
+  institution_slug: string;
   sector: string;
+  sector_slug: string;
+  technology_type: string;
+  startup_potential: string;
+  ip_status: string;
+  trl: string;
   keywords: string[];
   applications: string[];
   problem_solved: string;
+  description: string;
 }

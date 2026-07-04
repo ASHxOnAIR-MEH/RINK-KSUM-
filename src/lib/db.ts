@@ -207,12 +207,20 @@ export async function getSearchIndex(): Promise<SearchIndexItem[]> {
     id: t.id,
     name: t.name,
     institution: t.institution,
+    institution_slug: t.institution_slug,
     sector: t.sector,
+    sector_slug: t.sector_slug,
+    technology_type: t.technology_type,
+    startup_potential: t.startup_potential,
+    ip_status: t.ip_status,
+    trl: t.trl,
     keywords: t.keywords,
     applications: t.applications,
     problem_solved: t.problem_solved,
+    description: t.description,
   }));
 }
+
 
 // ── Technology types list (for filter dropdown) ───────────────
 export async function getTechnologyTypes(): Promise<string[]> {
