@@ -77,22 +77,22 @@ export async function fetchAllTechnologies(): Promise<Technology[]> {
       : { next: { revalidate: 60 } } as RequestInit;
 
   try {
-    const res = await fetch(`${CDN_HOST}/technologies.json`, fetchOptions);
+    const res = await fetch(`${CDN_HOST}/rink_tech.json`, fetchOptions);
 
     if (!res.ok) {
       console.error(`[RINK] API fetch failed: ${res.status}`);
       return _cache?.data ?? [];
     }
 
-    const rawData: RawTechnology[] = await res.json();
+    const rawData = await res.json();
     
     // Support if JSON comes as an object map instead of flat array
     let tabRows: any[] = [];
     if (Array.isArray(rawData)) {
       tabRows = rawData;
     } else {
-      const firstKey = Object.keys(rawData)[0];
-      tabRows = (rawData as any)[firstKey] || [];
+      // Access the specific technologies tab from the backend response
+      tabRows = rawData.technologies || rawData[Object.keys(rawData)[0]] || [];
     }
 
     const technologies: Technology[] = tabRows
@@ -212,19 +212,19 @@ export async function fetchInstitutionDetails(): Promise<InstitutionDetailRow[]>
       : { next: { revalidate: 60 } } as RequestInit;
 
   try {
-    const res = await fetch(`${CDN_HOST}/institutions.json`, fetchOptions);
+    const res = await fetch(`${CDN_HOST}/rink_tech.json`, fetchOptions);
     if (!res.ok) {
       console.error(`[RINK] Institution API fetch failed: ${res.status}`);
       return _instDetailsCache?.data ?? [];
     }
 
-    const rawData: RawInstitutionDetail[] = await res.json();
+    const rawData = await res.json();
     let tabRows: any[] = [];
     if (Array.isArray(rawData)) {
       tabRows = rawData;
     } else {
-      const firstKey = Object.keys(rawData)[0];
-      tabRows = (rawData as any)[firstKey] || [];
+      // Access the specific institutions tab from the backend response
+      tabRows = rawData.institutions || rawData[Object.keys(rawData)[1]] || [];
     }
 
     const details: InstitutionDetailRow[] = tabRows

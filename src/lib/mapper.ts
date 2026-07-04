@@ -1,5 +1,6 @@
 import { Technology, StartupPotential } from '@/types';
 import { RawTechnology, RawInstitutionDetail } from '@/types/raw';
+import { CDN_HOST } from './config';
 
 // ── Slug helpers ─────────────────────────────────────────────
 export function toSlug(text: string): string {
@@ -16,6 +17,11 @@ export function toDriveEmbedUrl(url: string | null | undefined): string {
   if (!url || url === 'Not Specified' || url === 'NA' || url.trim() === '') return '';
 
   const trimmed = url.trim();
+
+  // If it's an internal asset from our rink-git-cron backend, prepend CDN_HOST
+  if (trimmed.startsWith('/assets/')) {
+    return `${CDN_HOST}${trimmed}`;
+  }
 
   if (trimmed.includes('drive.google.com/thumbnail')) return trimmed;
   if (trimmed.includes('drive.google.com/uc?')) {
