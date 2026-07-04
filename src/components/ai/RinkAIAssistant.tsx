@@ -21,14 +21,6 @@ const QUICK_ACTIONS = [
   { label: 'Patented Technologies',  icon: '📜', query: 'patented technologies' },
 ];
 
-// ── Featured badge — only shown for High (internal field, not exposed) ──────
-const POTENTIAL_STYLE: Record<string, { bg: string; text: string; label: string }> = {
-  'High':          { bg: 'var(--bg-amber-callout)', text: 'var(--text-amber-callout)', label: '★ Featured' },
-  'Medium':        { bg: 'transparent', text: 'transparent', label: '' },
-  'Low':           { bg: 'transparent', text: 'transparent', label: '' },
-  'Not Specified': { bg: 'transparent', text: 'transparent', label: '' },
-};
-
 // ── Message types ─────────────────────────────────────────────
 type MessageRole = 'user' | 'assistant' | 'results' | 'welcome';
 
@@ -65,7 +57,6 @@ function TypingIndicator() {
 // ── Tech Result Card ──────────────────────────────────────────
 function TechCard({ result }: { result: AISearchResult }) {
   const tech = result.technology;
-  const pot = POTENTIAL_STYLE[tech.startup_potential] ?? POTENTIAL_STYLE['Not Specified'];
 
   return (
     <div style={{
@@ -100,16 +91,8 @@ function TechCard({ result }: { result: AISearchResult }) {
         )}
       </div>
 
-      {/* Potential + CTA */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        {pot.label && (
-          <span style={{
-            fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
-            background: pot.bg, color: pot.text,
-          }}>
-            {pot.label}
-          </span>
-        )}
+      {/* CTA */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
         <Link href={`/technologies/${tech.id}`} target="_blank"
           style={{
             display: 'flex', alignItems: 'center', gap: 5,

@@ -8,13 +8,6 @@ import {
 } from 'lucide-react';
 import type { AISearchResponse, AISearchResult } from '@/lib/aiSearch';
 
-// ── Featured badge — only shown for High (internal field) ───────────────
-const POT: Record<string, { bg: string; text: string; dot: string; label: string }> = {
-  'High':          { bg: 'var(--bg-amber-callout)', text: 'var(--text-amber-callout)', dot: 'var(--text-amber-callout)', label: '★ Featured' },
-  'Medium':        { bg: 'transparent', text: 'transparent', dot: 'transparent', label: '' },
-  'Low':           { bg: 'transparent', text: 'transparent', dot: 'transparent', label: '' },
-  'Not Specified': { bg: 'transparent', text: 'transparent', dot: 'transparent', label: '' },
-};
 
 // ── Parse **bold** markdown ───────────────────────────────────
 function Bold({ text }: { text: string }) {
@@ -39,7 +32,6 @@ function parseTechTypes(raw: string): string[] {
 // ── Single result card ────────────────────────────────────────
 function ResultCard({ r }: { r: AISearchResult }) {
   const tech = r.technology;
-  const pot = POT[tech.startup_potential] ?? POT['Not Specified'];
   const techTypes = parseTechTypes(tech.technology_type);
 
   return (
@@ -69,16 +61,7 @@ function ResultCard({ r }: { r: AISearchResult }) {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between">
-        {pot.label && (
-          <span
-            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
-            style={{ background: pot.bg, color: pot.text }}
-          >
-            {pot.label}
-          </span>
-        )}
-
+      <div className="flex items-center justify-end">
         <Link
           href={`/technologies/${tech.id}`}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent bg-accent/10 hover:bg-accent/20 px-3 py-1.5 rounded-lg transition-colors"

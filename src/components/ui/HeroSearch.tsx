@@ -111,7 +111,7 @@ function SuggestionCard({
         </span>
       </div>
 
-      {/* Badges row */}
+      {/* Badges row — TRL and IP status only */}
       <div className="flex flex-wrap gap-1.5">
         {item.trl && item.trl !== 'TRL Not Available' && (
           <span
@@ -119,14 +119,6 @@ function SuggestionCard({
             style={{ background: 'rgba(59,130,246,0.15)', color: '#60A5FA', border: '1px solid rgba(59,130,246,0.25)' }}
           >
             {item.trl}
-          </span>
-        )}
-        {item.startup_potential && item.startup_potential !== 'Not Specified' && (
-          <span
-            className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-            style={{ background: 'rgba(245,180,0,0.12)', color: '#F5B400', border: '1px solid rgba(245,180,0,0.22)' }}
-          >
-            {item.startup_potential}
           </span>
         )}
         {item.ip_status && item.ip_status !== 'Not Available' && (
