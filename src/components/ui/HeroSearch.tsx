@@ -173,6 +173,7 @@ export default function HeroSearch() {
   const [searching, setSearching] = useState(false);
   const [showDrop, setShowDrop] = useState(false);
 
+  const [btnHovered, setBtnHovered] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -304,8 +305,32 @@ export default function HeroSearch() {
         input.hero-input:focus::placeholder{ opacity:.28; }
         .search-icon-idle   { color:rgba(255,255,255,.65); transition:color 250ms,transform 250ms; }
         .search-icon-focused{ color:#2563EB; transform:rotate(8deg); transition:color 250ms,transform 250ms; }
-        .hero-btn:hover{ filter:brightness(1.06); transform:translateY(-1px); }
-        .hero-btn:active{ transform:translateY(1px); }
+        @keyframes btn-icon-pulse {
+          0%   { transform: scale(1); }
+          50%  { transform: scale(1.15); }
+          100% { transform: scale(1); }
+        }
+        .hero-btn {
+          cursor: pointer;
+          transition: transform 250ms ease, filter 250ms ease, box-shadow 250ms ease;
+        }
+        .hero-btn:hover {
+          filter: brightness(1.05);
+          transform: translateY(-2px);
+          box-shadow: 0 18px 40px rgba(212,160,23,.35) !important;
+        }
+        .hero-btn:active {
+          transform: translateY(1px);
+          transition-duration: 150ms;
+        }
+        .hero-btn:focus-visible {
+          outline: none;
+          box-shadow: 0 0 0 4px rgba(37,99,235,.18) !important;
+        }
+        .hero-btn:disabled { cursor: not-allowed; }
+        .btn-icon-pulse {
+          animation: btn-icon-pulse 300ms ease both;
+        }
       `}</style>
 
       <div ref={containerRef} className="w-full flex flex-col items-center" style={{ position: 'relative' }}>
@@ -366,16 +391,36 @@ export default function HeroSearch() {
             <button
               type="button"
               onClick={() => { if (query.trim()) window.location.href = `/technologies?q=${encodeURIComponent(query.trim())}`; }}
+              onMouseEnter={() => setBtnHovered(true)}
+              onMouseLeave={() => setBtnHovered(false)}
               disabled={!query.trim()}
-              className="hero-btn flex-shrink-0 h-full px-7 sm:px-10 disabled:opacity-50 font-bold text-sm md:text-[15px] transition-all duration-200 flex items-center gap-2"
+              aria-label="Search technologies"
+              className="hero-btn flex-shrink-0 h-full disabled:opacity-50 flex items-center gap-[10px]"
               style={{
-                background: 'linear-gradient(180deg,#F5B400 0%,#D4970A 100%)',
-                color: '#0A1628',
-                borderRadius: '0 26px 26px 0',
-                minWidth: 100,
-                fontWeight: 700,
+                background: 'linear-gradient(180deg,#F5C242 0%,#E8B320 45%,#D49A00 100%)',
+                color: '#0F172A',
+                borderLeft: '1px solid rgba(255,255,255,0.12)',
+                borderRadius: '0 28px 28px 0',
+                minWidth: 120,
+                paddingLeft: 24,
+                paddingRight: 28,
+                fontWeight: 600,
+                fontSize: 18,
+                letterSpacing: '0.3px',
+                boxShadow: '0 12px 30px rgba(212,160,23,.28)',
               }}
             >
+              <Search
+                className={btnHovered ? 'btn-icon-pulse' : ''}
+                style={{
+                  width: 20,
+                  height: 20,
+                  color: focused ? '#1D4ED8' : '#0F172A',
+                  transition: 'color 250ms ease',
+                  flexShrink: 0,
+                }}
+                aria-hidden
+              />
               Search
             </button>
           </div>
