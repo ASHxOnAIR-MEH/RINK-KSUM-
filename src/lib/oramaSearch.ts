@@ -108,8 +108,8 @@ export async function oramaSearch(
     if (filters?.type) filtered = filtered.filter(t => t.technology_type.toLowerCase() === filters.type!.toLowerCase());
     if (filters?.patent) filtered = filtered.filter(t => t.ip_status.toLowerCase() === filters.patent!.toLowerCase());
     if (filters?.potential) {
-      if (filters.potential === 'featured') filtered = filtered.filter(t => t.startup_potential === 'High');
-      else if (filters.potential === 'non-featured') filtered = filtered.filter(t => t.startup_potential !== 'High');
+      if (filters.potential === 'featured') filtered = filtered.filter(t => t.featured);
+      else if (filters.potential === 'non-featured') filtered = filtered.filter(t => !t.featured);
     }
 
     return {
@@ -157,8 +157,8 @@ export async function oramaSearch(
   if (filters?.type) results = results.filter(r => r.technology.technology_type.toLowerCase() === filters.type!.toLowerCase());
   if (filters?.patent) results = results.filter(r => r.technology.ip_status.toLowerCase() === filters.patent!.toLowerCase());
   if (filters?.potential) {
-    if (filters.potential === 'featured') results = results.filter(r => r.technology.startup_potential === 'High');
-    else if (filters.potential === 'non-featured') results = results.filter(r => r.technology.startup_potential !== 'High');
+    if (filters.potential === 'featured') results = results.filter(r => r.technology.featured);
+    else if (filters.potential === 'non-featured') results = results.filter(r => !r.technology.featured);
   }
 
   return {

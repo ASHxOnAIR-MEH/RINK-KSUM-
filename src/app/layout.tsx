@@ -8,6 +8,17 @@ export const metadata: Metadata = {
   description:
     'Connecting Research • Innovation • Commercialization. Discover and license commercializable technologies developed by Kerala research institutions.',
   keywords: 'Kerala startup, research technology, technology transfer, KSUM, RINK, CTCRI, CPCRI, NIIST, commercialization, innovation',
+  icons: {
+    icon: [
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' }
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ]
+  },
+  manifest: '/site.webmanifest',
   openGraph: {
     title: 'RINK Technology Transfer Portal',
     description: 'Connecting Research • Innovation • Commercialization — Kerala Startup Mission',

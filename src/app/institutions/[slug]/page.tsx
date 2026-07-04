@@ -19,9 +19,17 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const inst = await getInstitutionBySlug(slug);
   if (!inst) return { title: 'Institution Not Found — RINK' };
+  
+  const metaDescription = `Explore ${inst.tech_count} commercializable technologies from ${inst.name}. Partner with top Kerala research institutions through the RINK Technology Transfer Portal.`;
+  
   return {
-    title: `${inst.name} Technologies — RINK Technology Transfer Portal`,
-    description: `Browse ${inst.tech_count} commercializable technologies from ${inst.name} on the RINK Technology Transfer Portal.`,
+    title: `${inst.name} Technologies | RINK Kerala`,
+    description: metaDescription,
+    openGraph: {
+      title: `${inst.name} Technologies | RINK Kerala`,
+      description: metaDescription,
+      type: 'website',
+    },
   };
 }
 
