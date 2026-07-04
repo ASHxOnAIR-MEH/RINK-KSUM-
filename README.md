@@ -3,7 +3,7 @@
 **Discover Research. Build Startups.**
 
 A sub-portal of the [Research Innovation Network Kerala (RINK)](https://startupmission.in) under the **Kerala Startup Mission (KSUM)**.
-
+DEV BY MUHAMMED ASHIK UKFCET
 ---
 
 ## 🎯 Purpose
