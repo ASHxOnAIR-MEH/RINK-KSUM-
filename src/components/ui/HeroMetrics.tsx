@@ -9,7 +9,7 @@ interface Metric {
 }
 
 const METRICS: Metric[] = [
-  { target: 270, suffix: '+', label: 'Available Technologies' },
+  { target: 400, suffix: '+', label: 'Available Technologies' },
   { target: 11, suffix: '+', label: 'Technology Domains' },
   { target: 20, suffix: '+', label: 'Research Institutions' },
 ];

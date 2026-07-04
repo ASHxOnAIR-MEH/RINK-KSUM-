@@ -1,7 +1,7 @@
 import { getFeaturedTechnologies, getAllSectors, getAllInstitutions } from '@/lib/db';
 import SectorCard from '@/components/ui/SectorCard';
 import FeaturedCarousel from '@/components/ui/FeaturedCarousel';
-import HeroAISearch from '@/components/ui/HeroAISearch';
+import HeroSearch from '@/components/ui/HeroSearch';
 import HeroMetrics from '@/components/ui/HeroMetrics';
 import BrowseByInstitution from '@/components/ui/BrowseByInstitution';
 import ResearchParticles from '@/components/ui/ResearchParticles';
@@ -64,7 +64,7 @@ export default async function HomePage() {
 
           {/* Search — the centerpiece */}
           <div className="w-full hero-search-breathe">
-            <HeroAISearch />
+            <HeroSearch />
           </div>
         </div>
       </section>
