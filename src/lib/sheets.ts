@@ -228,12 +228,24 @@ export function normalizeApplications(raw: string | undefined | null): string[] 
   // Split by: newlines, semicolons, commas, bullets (•), dashes at line start, dots used as separators
   const items = raw
     .split(/[\n\r]+|[;]|[,]|[•]|(?:^|\n)\s*[-–—]\s*|(?:^|\n)\s*\d+[.)]\s*/gm)
-    .map(item =>
-      item
+    .map(item => {
+      let cleaned = item
         .replace(/^\s*[-–—•.)\d]+\s*/, '') // strip leading bullets/numbers
         .replace(/\s+/g, ' ')              // collapse multiple spaces
-        .trim()
-    )
+        .trim();
+        
+      // Strip leading "and "
+      if (cleaned.toLowerCase().startsWith('and ')) {
+        cleaned = cleaned.substring(4).trim();
+      }
+      
+      // Capitalize first letter
+      if (cleaned.length > 0) {
+        cleaned = cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+      }
+      
+      return cleaned;
+    })
     .filter(item => item.length > 2);      // remove empty/tiny fragments
 
   // Deduplicate (case-insensitive)
