@@ -127,6 +127,8 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
   const startupPotentialNormalized = normalizeStartupPotential(startupPotentialRaw);
   
   const startupPotentialCanonical: StartupPotential =
+    startupPotentialNormalized === 'featured' ? 'Featured' :
+    startupPotentialNormalized === 'very high' ? 'Very High' :
     startupPotentialNormalized === 'high' ? 'High' :
     startupPotentialNormalized === 'medium' ? 'Medium' :
     startupPotentialNormalized === 'low' ? 'Low' :
