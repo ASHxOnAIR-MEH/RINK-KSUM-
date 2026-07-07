@@ -1,8 +1,10 @@
-import { getFeaturedTechnologies, getAllSectors, getAllInstitutions, getAllTechnologies } from '@/lib/db';
+import { getFeaturedTechnologies, getAllSectors, getAllInstitutions } from '@/lib/db';
 import SectorCard from '@/components/ui/SectorCard';
 import FeaturedCarousel from '@/components/ui/FeaturedCarousel';
-import TechnologiesHero from '@/components/ui/TechnologiesHero';
+import HeroSearch from '@/components/ui/HeroSearch';
+import HeroMetrics from '@/components/ui/HeroMetrics';
 import BrowseByInstitution from '@/components/ui/BrowseByInstitution';
+import ResearchParticles from '@/components/ui/ResearchParticles';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
@@ -13,22 +15,64 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const [featuredTechs, sectors, institutions, allTechs] = await Promise.all([
+  const [featuredTechs, sectors, institutions] = await Promise.all([
     getFeaturedTechnologies(20),
     getAllSectors(),
     getAllInstitutions(),
-    getAllTechnologies(),
   ]);
 
   const topSectors = sectors.slice(0, 8);
 
   return (
     <div className="min-h-screen bg-[#F6F8FC]">
-      <TechnologiesHero stats={{
-        techs: allTechs.length,
-        sectors: sectors.length,
-        institutions: institutions.length
-      }} />
+
+      {/* ══════════════════════════════════════════════════════════
+          HERO — Search-first experience
+      ══════════════════════════════════════════════════════════ */}
+      <section className="relative overflow-hidden">
+        {/* Background cover image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/images/hero-bg.png')" }}
+          aria-hidden
+        />
+        {/* Dark overlay */}
+        <div
+          className="absolute inset-0 hero-breathe"
+          style={{ background: 'linear-gradient(rgba(7,20,40,0.80), rgba(7,20,40,0.75))' }}
+          aria-hidden
+        />
+        {/* Research particles */}
+        <ResearchParticles />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-28 lg:py-32 flex flex-col items-center text-center">
+          {/* Portal identity heading */}
+          <div
+            className="text-[11px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.25em] mb-8"
+            style={{ color: 'rgba(255,255,255,0.75)' }}
+          >
+            RESEARCH INNOVATION NETWORK KERALA . TECHNOLOGY TRANSFER PORTAL
+          </div>
+
+          {/* Heading */}
+          <h1
+            className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] tracking-tight max-w-5xl mb-10"
+            style={{ color: '#FFFFFF', textShadow: '0 2px 12px rgba(0,0,0,0.35)' }}
+          >
+            Discover Technologies from Kerala&apos;s Leading Research Institutions
+          </h1>
+
+          {/* Search — the centerpiece */}
+          <div className="w-full hero-search-breathe">
+            <HeroSearch />
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════
+          METRICS
+      ══════════════════════════════════════════════════════════ */}
+      <HeroMetrics />
 
       {/* ══════════════════════════════════════════════════════════
           FEATURED TECHNOLOGIES
