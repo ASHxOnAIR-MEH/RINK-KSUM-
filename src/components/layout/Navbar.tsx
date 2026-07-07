@@ -29,7 +29,7 @@ export default function Navbar() {
       {/* ── TOP NAVIGATION BAR ── */}
       <nav
         className={clsx(
-          'sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-shadow duration-300',
+          'hidden md:block sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-shadow duration-300',
           scrolled && 'shadow-sm'
         )}
       >

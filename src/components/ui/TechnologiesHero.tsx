@@ -21,7 +21,17 @@ function formatTechnologyName(name: string) {
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-export default function TechnologiesHero() {
+interface TechnologiesHeroProps {
+  stats?: {
+    techs: number;
+    sectors: number;
+    institutions: number;
+  };
+}
+
+export default function TechnologiesHero({
+  stats: initialStats = { techs: 0, sectors: 0, institutions: 0 }
+}: TechnologiesHeroProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
   const [stats, setStats] = useState({ techs: 0, domains: 0, institutions: 0 });
@@ -47,17 +57,28 @@ export default function TechnologiesHero() {
     return () => clearInterval(interval);
   }, []);
 
-  // Animate stats
+  // Animate stats based on dynamic values
   useEffect(() => {
-    const counters = setInterval(() => {
-      setStats((prev) => ({
-        techs: Math.min(prev.techs + 15, 270),
-        domains: Math.min(prev.domains + 1, 11),
-        institutions: Math.min(prev.institutions + 2, 20),
-      }));
-    }, 40);
-    return () => clearInterval(counters);
-  }, []);
+    if (!initialStats.techs) return;
+    let start = 0;
+    const duration = 1500;
+    const steps = 60;
+    const intervalTime = duration / steps;
+    
+    const counter = setInterval(() => {
+      start += 1;
+      const progress = start / steps;
+      setStats({
+        techs: Math.min(Math.floor(initialStats.techs * progress), initialStats.techs),
+        domains: Math.min(Math.floor(initialStats.sectors * progress), initialStats.sectors),
+        institutions: Math.min(Math.floor(initialStats.institutions * progress), initialStats.institutions),
+      });
+      
+      if (start >= steps) clearInterval(counter);
+    }, intervalTime);
+    
+    return () => clearInterval(counter);
+  }, [initialStats]);
 
   // Precision Search hookup
   const runSearch = useCallback(async (q: string) => {
@@ -80,8 +101,11 @@ export default function TechnologiesHero() {
   }, [searchQuery, runSearch]);
 
   return (
-    <div className="w-full bg-[#F6F8FC] px-4 py-6 md:px-8">
-      <div className="max-w-[1400px] mx-auto bg-[#011a38] rounded-[24px] md:rounded-[32px] overflow-hidden relative shadow-xl min-h-[500px] md:min-h-[600px] flex items-center justify-center">
+    <div className="w-full bg-[#F6F8FC] px-2 py-4 sm:px-4 sm:py-6 md:px-8">
+      {/* 
+        Removed fixed height to allow natural fitting on mobile devices without vertical scroll 
+      */}
+      <div className="max-w-[1400px] mx-auto bg-[#011a38] rounded-[20px] md:rounded-[32px] overflow-hidden relative shadow-xl flex items-center justify-center min-h-fit">
         {/* Background Image Setup */}
         <div className="absolute inset-0 z-0">
           <Image 
@@ -91,30 +115,31 @@ export default function TechnologiesHero() {
             className="object-cover" 
             priority
           />
-          {/* Overlays to match the design (dark blue/cyan gradient overlay) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#003b73]/80 via-[#011a38]/70 to-[#011a38]/95 mix-blend-multiply"></div>
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#0060b8]/40 via-transparent to-[#011a38]/60"></div>
+          {/* Solid 60% dark overlay for guaranteed text readability */}
+          <div className="absolute inset-0 bg-[#071428]/60"></div>
+          {/* Subtle gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#003b73]/40 via-transparent to-[#011a38]/80 mix-blend-multiply"></div>
         </div>
 
-        <div className="w-full max-w-4xl mx-auto px-4 py-20 md:py-28 text-center relative z-10">
+        <div className="w-full max-w-4xl mx-auto px-3 sm:px-4 py-12 sm:py-16 md:py-24 text-center relative z-10 flex flex-col justify-center min-h-[100dvh] sm:min-h-fit">
           {/* Main Content */}
-          <div className="mb-10 md:mb-12 flex flex-col items-center">
+          <div className="mb-8 md:mb-10 flex flex-col items-center">
             {/* Portal Tagline */}
-            <p className="font-sans text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.2em] text-slate-400 font-bold mb-4">
+            <p className="font-sans text-[9px] sm:text-[10px] md:text-sm uppercase tracking-[0.2em] text-slate-300 font-bold mb-3 md:mb-4">
               RESEARCH INNOVATION NETWORK KERALA • TECHNOLOGY TRANSFER PORTAL
             </p>
-            {/* Main Title */}
-            <h1 className="font-serif text-3xl sm:text-4xl md:text-6xl lg:text-[56px] font-black text-white leading-tight tracking-tight">
+            {/* Main Title - Responsive fluid typography (Mobile: 28-34, Tablet: 42-48, Desktop: 56-64) */}
+            <h1 className="font-serif text-[28px] sm:text-[34px] md:text-[42px] lg:text-[56px] xl:text-[64px] font-black text-white leading-tight tracking-tight">
               Discover Technologies from
-              <span className="text-xl sm:text-2xl md:text-4xl lg:text-[38px] font-extrabold text-white/80 block mt-2 md:mt-3">
+              <span className="font-sans font-extrabold text-white block mt-1 sm:mt-2 md:mt-3 text-[14px] sm:text-[16px] md:text-[18px] lg:text-[20px] tracking-wide text-white/90">
                 Kerala&apos;s Leading Research Institutions
               </span>
             </h1>
           </div>
 
-          {/* Search Bar */}
-          <div className="max-w-3xl mx-auto mb-10 relative z-30">
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-[28px] px-6 py-4 md:py-5 flex items-center gap-4 transition-colors focus-within:bg-white/15 shadow-2xl relative">
+          {/* Search Bar - Responsive width */}
+          <div className="w-[95%] sm:w-[90%] md:w-full max-w-[720px] mx-auto mb-8 relative z-30">
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-[28px] px-4 sm:px-6 py-3.5 sm:py-4 md:py-5 flex items-center gap-3 md:gap-4 transition-colors focus-within:bg-white/15 shadow-2xl relative">
               <div className="flex-1 relative h-6 md:h-7 flex items-center">
                 {/* Animated Placeholder Text */}
                 {!searchQuery && !isFocused && (
@@ -126,7 +151,7 @@ export default function TechnologiesHero() {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -20, opacity: 0 }}
                         transition={{ duration: 0.4, ease: "easeInOut" }}
-                        className="text-white/60 font-sans text-[15px] md:text-[17px] truncate w-full text-left absolute"
+                        className="text-white/60 font-sans text-[13px] sm:text-[14px] md:text-[16px] truncate w-full text-left absolute"
                       >
                         {placeholders[currentPlaceholder]}
                       </motion.span>
@@ -140,7 +165,6 @@ export default function TechnologiesHero() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => {
-                    // Small delay to allow clicking suggestions
                     setTimeout(() => setIsFocused(false), 200);
                   }}
                   onKeyDown={(e) => {
@@ -148,14 +172,14 @@ export default function TechnologiesHero() {
                       window.location.href = `/technologies?q=${encodeURIComponent(searchQuery.trim())}`;
                     }
                   }}
-                  className="w-full h-full bg-transparent text-white font-sans text-[15px] md:text-[17px] outline-none z-10 relative"
+                  className="w-full h-full bg-transparent text-white font-sans text-[14px] sm:text-[15px] md:text-[17px] outline-none z-10 relative"
                 />
               </div>
               <Link
                 href={searchQuery.trim() ? `/technologies?q=${encodeURIComponent(searchQuery.trim())}` : '/technologies'}
-                className="text-white/80 hover:text-white transition-colors flex-shrink-0 z-10 relative"
+                className="text-white/80 hover:text-white transition-colors flex-shrink-0 z-10 relative flex items-center"
               >
-                <Search size={26} strokeWidth={2} />
+                <Search className="w-5 h-5 md:w-[26px] md:h-[26px]" strokeWidth={2} />
               </Link>
             </div>
             
@@ -166,23 +190,23 @@ export default function TechnologiesHero() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute top-[110%] left-0 right-0 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50 text-left flex flex-col max-h-[380px]"
+                  className="absolute top-[110%] left-0 right-0 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50 text-left flex flex-col max-h-[350px] sm:max-h-[380px]"
                 >
                   <div className="overflow-y-auto custom-scrollbar flex-1">
                     {suggestions.map((s, idx) => (
                       <Link 
                         key={idx}
                         href={`/technologies/${s.id}`}
-                        className="block px-6 py-4 hover:bg-[#eff9ff] transition-colors border-b border-gray-50"
+                        className="block px-4 sm:px-6 py-3 sm:py-4 hover:bg-[#eff9ff] transition-colors border-b border-gray-50"
                         onMouseDown={(e) => e.preventDefault()}
                       >
-                        <p className="font-sans font-semibold text-gray-800 text-[15px] line-clamp-2">
+                        <p className="font-sans font-semibold text-gray-800 text-[14px] sm:text-[15px] line-clamp-2">
                           {formatTechnologyName(s.name)}
                         </p>
-                        <p className="font-sans text-xs text-gray-500 mt-1.5 line-clamp-2 md:line-clamp-3">
+                        <p className="font-sans text-[11px] sm:text-xs text-gray-500 mt-1 sm:mt-1.5 line-clamp-2 md:line-clamp-3">
                            {s.description || s.problem_solved || 'No description available.'}
                         </p>
-                        <p className="font-sans text-xs text-[#1b60bb] mt-1.5 font-medium">
+                        <p className="font-sans text-[11px] sm:text-xs text-[#1b60bb] mt-1 sm:mt-1.5 font-medium">
                           {s.institution} • {s.sector}
                         </p>
                       </Link>
@@ -190,10 +214,10 @@ export default function TechnologiesHero() {
                   </div>
                   
                   {/* Sticky View All Button */}
-                  <div className="bg-[#f8fbff] p-3 md:p-4 border-t border-blue-100 text-center flex-shrink-0 z-10 shadow-[0_-4px_10px_rgb(0,0,0,0.02)]">
+                  <div className="bg-[#f8fbff] p-3 border-t border-blue-100 text-center flex-shrink-0 z-10 shadow-[0_-4px_10px_rgb(0,0,0,0.02)]">
                      <Link
                         href={`/technologies?q=${encodeURIComponent(searchQuery)}`}
-                        className="text-[#1b60bb] font-sans font-semibold text-sm hover:underline"
+                        className="text-[#1b60bb] font-sans font-semibold text-[13px] sm:text-sm hover:underline"
                         onMouseDown={(e) => e.preventDefault()}
                      >
                         View all results for "{searchQuery}"
@@ -205,32 +229,32 @@ export default function TechnologiesHero() {
           </div>
 
           {/* Stats Row Cards (Liquid Glass Effect) */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 max-w-3xl mx-auto mt-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 max-w-[95%] sm:max-w-[90%] md:max-w-3xl mx-auto mt-4 md:mt-6">
             {/* Card 1 */}
-            <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2 sm:p-4 md:p-5 shadow-[0_8px_32px_0_rgba(255,255,255,0.02)] hover:bg-white/15 hover:border-white/25 transition-all duration-300 flex flex-col justify-center">
-              <div className="font-serif text-lg sm:text-2xl md:text-3xl font-extrabold text-[#5cc4fe] mb-0.5 sm:mb-1">
+            <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 shadow-[0_8px_32px_0_rgba(255,255,255,0.02)] hover:bg-white/15 hover:border-white/25 transition-all duration-300 flex flex-col justify-center min-h-[70px] sm:min-h-[85px]">
+              <div className="font-serif text-[20px] sm:text-[24px] md:text-[28px] font-extrabold text-[#5cc4fe] mb-0.5 sm:mb-1 leading-none">
                 {stats.techs}+
               </div>
-              <div className="font-sans text-[9px] sm:text-xs text-white/85 font-medium leading-tight">
-                Available Technologies
+              <div className="font-sans text-[10px] sm:text-[11px] md:text-[12px] text-white/90 font-medium leading-tight">
+                Technologies
               </div>
             </div>
             {/* Card 2 */}
-            <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2 sm:p-4 md:p-5 shadow-[0_8px_32px_0_rgba(255,255,255,0.02)] hover:bg-white/15 hover:border-white/25 transition-all duration-300 flex flex-col justify-center">
-              <div className="font-serif text-lg sm:text-2xl md:text-3xl font-extrabold text-[#5cc4fe] mb-0.5 sm:mb-1">
+            <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 shadow-[0_8px_32px_0_rgba(255,255,255,0.02)] hover:bg-white/15 hover:border-white/25 transition-all duration-300 flex flex-col justify-center min-h-[70px] sm:min-h-[85px]">
+              <div className="font-serif text-[20px] sm:text-[24px] md:text-[28px] font-extrabold text-[#5cc4fe] mb-0.5 sm:mb-1 leading-none">
                 {stats.domains}+
               </div>
-              <div className="font-sans text-[9px] sm:text-xs text-white/85 font-medium leading-tight">
-                Technology Domains
+              <div className="font-sans text-[10px] sm:text-[11px] md:text-[12px] text-white/90 font-medium leading-tight">
+                Sectors
               </div>
             </div>
-            {/* Card 3 */}
-            <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2 sm:p-4 md:p-5 shadow-[0_8px_32px_0_rgba(255,255,255,0.02)] hover:bg-white/15 hover:border-white/25 transition-all duration-300 flex flex-col justify-center">
-              <div className="font-serif text-lg sm:text-2xl md:text-3xl font-extrabold text-[#5cc4fe] mb-0.5 sm:mb-1">
+            {/* Card 3 - spans 2 cols on mobile for balanced grid */}
+            <div className="col-span-2 md:col-span-1 bg-white/10 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 shadow-[0_8px_32px_0_rgba(255,255,255,0.02)] hover:bg-white/15 hover:border-white/25 transition-all duration-300 flex flex-col justify-center min-h-[70px] sm:min-h-[85px]">
+              <div className="font-serif text-[20px] sm:text-[24px] md:text-[28px] font-extrabold text-[#5cc4fe] mb-0.5 sm:mb-1 leading-none">
                 {stats.institutions}+
               </div>
-              <div className="font-sans text-[9px] sm:text-xs text-white/85 font-medium leading-tight">
-                Research Institutions
+              <div className="font-sans text-[10px] sm:text-[11px] md:text-[12px] text-white/90 font-medium leading-tight">
+                Institutions
               </div>
             </div>
           </div>

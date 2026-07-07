@@ -1,4 +1,4 @@
-import { getFeaturedTechnologies, getAllSectors, getAllInstitutions } from '@/lib/db';
+import { getFeaturedTechnologies, getAllSectors, getAllInstitutions, getAllTechnologies } from '@/lib/db';
 import SectorCard from '@/components/ui/SectorCard';
 import FeaturedCarousel from '@/components/ui/FeaturedCarousel';
 import TechnologiesHero from '@/components/ui/TechnologiesHero';
@@ -13,17 +13,22 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const [featuredTechs, sectors, institutions] = await Promise.all([
+  const [featuredTechs, sectors, institutions, allTechs] = await Promise.all([
     getFeaturedTechnologies(20),
     getAllSectors(),
     getAllInstitutions(),
+    getAllTechnologies(),
   ]);
 
   const topSectors = sectors.slice(0, 8);
 
   return (
     <div className="min-h-screen bg-[#F6F8FC]">
-      <TechnologiesHero />
+      <TechnologiesHero stats={{
+        techs: allTechs.length,
+        sectors: sectors.length,
+        institutions: institutions.length
+      }} />
 
       {/* ══════════════════════════════════════════════════════════
           FEATURED TECHNOLOGIES
