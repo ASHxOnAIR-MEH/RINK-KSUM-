@@ -1,4 +1,4 @@
-import { searchTechnologies, getAllSectors, getAllInstitutions, getTechnologyTypes, getPatentStatuses, getPlatformStats } from '@/lib/db';
+import { searchTechnologies, getAllSectors, getAllInstitutions, getPatentStatuses, getPlatformStats } from '@/lib/db';
 import TechListClient from './TechListClient';
 
 export const metadata = {
@@ -11,7 +11,7 @@ interface Props {
     q?: string;
     sector?: string;
     institution?: string;
-    type?: string;
+    trl?: string;
     patent?: string;
     potential?: string;
     page?: string;
@@ -22,13 +22,13 @@ export default async function TechnologiesPage({ searchParams }: Props) {
   const params = await searchParams;
   const page = parseInt(params.page ?? '1', 10);
 
-  const [result, sectors, institutions, types, patentStatuses, stats] = await Promise.all([
+  const [result, sectors, institutions, patentStatuses, stats] = await Promise.all([
     searchTechnologies(
       {
         query: params.q,
         sector: params.sector,
         institution: params.institution,
-        technology_type: params.type,
+        trl: params.trl,
         patent_status: params.patent,
         featured: params.potential as 'featured' | 'non-featured' | undefined,
       },
@@ -37,7 +37,6 @@ export default async function TechnologiesPage({ searchParams }: Props) {
     ),
     getAllSectors(),
     getAllInstitutions(),
-    getTechnologyTypes(),
     getPatentStatuses(),
     getPlatformStats(),
   ]);
@@ -47,14 +46,13 @@ export default async function TechnologiesPage({ searchParams }: Props) {
       initialResult={result}
       sectors={sectors}
       institutions={institutions}
-      technologyTypes={types}
       patentStatuses={patentStatuses}
       totalCount={stats.technology_count}
       initialFilters={{
         q: params.q ?? '',
         sector: params.sector ?? '',
         institution: params.institution ?? '',
-        type: params.type ?? '',
+        trl: params.trl ?? '',
         patent: params.patent ?? '',
         potential: params.potential ?? '',
       }}

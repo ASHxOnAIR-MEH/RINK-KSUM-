@@ -14,7 +14,7 @@ interface InitialFilters {
   q: string;
   sector: string;
   institution: string;
-  type: string;
+  trl: string;
   patent: string;
   potential: string;
 }
@@ -23,7 +23,6 @@ interface Props {
   initialResult: SearchResult;
   sectors: Sector[];
   institutions: Institution[];
-  technologyTypes: string[];
   patentStatuses: string[];
   totalCount: number;
   initialFilters: InitialFilters;
@@ -59,7 +58,7 @@ function FilterSelect({
 }
 
 export default function TechListClient({
-  initialResult, sectors, institutions, technologyTypes,
+  initialResult, sectors, institutions,
   patentStatuses, totalCount, initialFilters
 }: Props) {
   const router = useRouter();
@@ -76,7 +75,7 @@ export default function TechListClient({
     if (merged.q) params.set('q', merged.q);
     if (merged.sector) params.set('sector', merged.sector);
     if (merged.institution) params.set('institution', merged.institution);
-    if (merged.type) params.set('type', merged.type);
+    if (merged.trl) params.set('trl', merged.trl);
     if (merged.patent) params.set('patent', merged.patent);
     if (merged.potential) params.set('potential', merged.potential);
     const p = (overrides as { page?: string }).page;
@@ -93,7 +92,7 @@ export default function TechListClient({
   }
 
   function clearFilters() {
-    const empty: InitialFilters = { q: '', sector: '', institution: '', type: '', patent: '', potential: '' };
+    const empty: InitialFilters = { q: '', sector: '', institution: '', trl: '', patent: '', potential: '' };
     setFilters(empty);
     startTransition(() => router.push(pathname));
   }
@@ -231,13 +230,23 @@ export default function TechListClient({
                   </select>
                 </div>
 
-                <FilterSelect
-                  id="filter-type"
-                  label="Tech Type"
-                  value={filters.type}
-                  onChange={v => applyFilter('type', v)}
-                  options={technologyTypes}
-                />
+                <div className="filter-group">
+                  <label htmlFor="filter-trl" className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                    TRL
+                  </label>
+                  <select
+                    id="filter-trl"
+                    value={filters.trl}
+                    onChange={e => applyFilter('trl', e.target.value)}
+                    className="w-full text-sm border border-border rounded-lg px-3 py-2 text-text-primary bg-card focus:outline-none focus:border-accent-secondary focus:ring-1 focus:ring-accent-secondary/20"
+                  >
+                    <option value="">All TRL Levels</option>
+                    <option value="TRL 1-3">TRL 1–3</option>
+                    <option value="TRL 4-6">TRL 4–6</option>
+                    <option value="TRL 7-9">TRL 7–9</option>
+                    <option value="Not Specified">Not Specified</option>
+                  </select>
+                </div>
 
                 <div className="filter-group">
                   <label htmlFor="filter-patent" className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">

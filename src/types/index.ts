@@ -74,7 +74,7 @@ export interface TechnologyFilters {
   query?: string;
   sector?: string;
   institution?: string;
-  technology_type?: string;
+  trl?: string;
   patent_status?: string;
   ip_status?: string;
   startup_potential?: StartupPotential;

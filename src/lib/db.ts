@@ -88,9 +88,9 @@ export async function searchTechnologies(
   if (filters.institution) {
     results = results.filter(t => t.institution_slug === filters.institution);
   }
-  if (filters.technology_type) {
+  if (filters.trl) {
     results = results.filter(t =>
-      t.technology_type.toLowerCase() === filters.technology_type!.toLowerCase()
+      t.trl.toLowerCase() === filters.trl!.toLowerCase()
     );
   }
   if (filters.patent_status) {
@@ -222,12 +222,7 @@ export async function getSearchIndex(): Promise<SearchIndexItem[]> {
 }
 
 
-// ── Technology types list (for filter dropdown) ───────────────
-export async function getTechnologyTypes(): Promise<string[]> {
-  const techs = await fetchAllTechnologies();
-  const types = new Set(techs.map(t => t.technology_type).filter(v => v && v !== 'Not Specified'));
-  return Array.from(types).sort();
-}
+// ── Removed Technology types list (replaced by TRL) ───────────────
 
 export async function getPatentStatuses(): Promise<string[]> {
   // Returns the normalized IP Status values (from the "IP Status for frontend" column)
