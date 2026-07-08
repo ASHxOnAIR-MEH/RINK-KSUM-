@@ -14,7 +14,8 @@ interface Props {
 }
 
 export default function TechnologyCard({ technology, compact = false, featured = false }: Props) {
-  const [imageFailed, setImageFailed] = useState(false);
+  const [imageFailed, setImageFailed]   = useState(false);
+  const [imageLoaded, setImageLoaded]   = useState(false);
   const prefersReduced = useReducedMotion();
 
   // Resolve technology image source
@@ -133,12 +134,38 @@ export default function TechnologyCard({ technology, compact = false, featured =
         >
           {hasImage ? (
             <>
+              {/* Skeleton shimmer — visible while image loads */}
+              {!imageLoaded && (
+                <div
+                  className="absolute inset-0 z-10"
+                  style={{
+                    background: 'linear-gradient(90deg, #e8edf5 25%, #f0f4fb 50%, #e8edf5 75%)',
+                    backgroundSize: '200% 100%',
+                    animation: 'shimmer 1.4s ease-in-out infinite',
+                  }}
+                >
+                  <style>{`
+                    @keyframes shimmer {
+                      0%   { background-position: 200% 0; }
+                      100% { background-position: -200% 0; }
+                    }
+                  `}</style>
+                </div>
+              )}
+
+              {/* Actual technology image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={displayImage}
+                src={displayImage!}
                 alt={technology.name}
-                onError={() => setImageFailed(true)}
-                className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => { setImageFailed(true); setImageLoaded(true); }}
+                className="w-full h-full object-cover transition-all duration-500 ease-out group-hover:scale-[1.05] group-hover:brightness-[1.03]"
+                style={{
+                  opacity: imageLoaded ? 1 : 0,
+                  transition: 'opacity 0.4s ease-out, transform 0.5s ease-out, filter 0.5s ease-out',
+                  willChange: 'transform, opacity',
+                }}
                 referrerPolicy="no-referrer"
                 loading="lazy"
                 decoding="async"

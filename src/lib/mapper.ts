@@ -13,28 +13,43 @@ export function toSlug(text: string): string {
 }
 
 // ── Google Drive URL converter ────────────────────────────────
+// Converts any Google Drive sharing URL into an embeddable <img> src.
+// Primary: lh3.googleusercontent.com/d/FILE_ID  (CORS-safe, no auth required)
+// Fallback: drive.google.com/thumbnail?id=FILE_ID&sz=w800
 export function toDriveEmbedUrl(url: string | null | undefined): string {
   if (!url || url === 'Not Specified' || url === 'NA' || url.trim() === '') return '';
 
   const trimmed = url.trim();
 
-  // If it's an internal asset from our rink-git-cron backend, prepend CDN_HOST
+  // Already a CDN asset from our backend — just prepend host
   if (trimmed.startsWith('/assets/')) {
     return `${CDN_HOST}${trimmed}`;
   }
 
+  // Already a lh3 URL — use as-is
+  if (trimmed.includes('lh3.googleusercontent.com')) return trimmed;
+
+  // Already a thumbnail URL — use as-is
   if (trimmed.includes('drive.google.com/thumbnail')) return trimmed;
-  if (trimmed.includes('drive.google.com/uc?')) {
-    const idMatch = trimmed.match(/[?&]id=([^&]+)/);
-    if (idMatch) return `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w800`;
-    return trimmed;
-  }
+
+  // Extract FILE_ID from any standard Google Drive link format:
+  //   /file/d/FILE_ID/...
+  //   drive.google.com/uc?id=FILE_ID
+  //   drive.google.com/open?id=FILE_ID
   const fileMatch = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-  if (fileMatch) return `https://drive.google.com/thumbnail?id=${fileMatch[1]}&sz=w800`;
-  const openMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-  if (openMatch) return `https://drive.google.com/thumbnail?id=${openMatch[1]}&sz=w800`;
+  if (fileMatch) {
+    return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
+  }
+
+  const idMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (idMatch) {
+    return `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
+  }
+
+  // Skip folder or drive links — they don't contain a file ID
   if (trimmed.includes('drive.google.com/drive/')) return '';
 
+  // Non-Drive URL (direct link, CDN, etc.) — return as-is
   return trimmed;
 }
 
