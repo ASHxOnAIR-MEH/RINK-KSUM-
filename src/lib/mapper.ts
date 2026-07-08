@@ -127,7 +127,7 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
     .replace(/[\r\n]+/g, '')
     .trim();
   const email = getVal(['email', 'contactemail']);
-  const imageUrl = getVal(['imageurl', 'image', 'photourl', 'embedurl', 'imagelink', 'imgurl']);
+  const imageUrl = getVal(['imageurl', 'image', 'photourl', 'embedurl', 'imagelink', 'imgurl', 'q']);
 
   const startupPotentialRaw = getVal(['startuppotential', 'potential'], 'Not Specified');
   const startupPotentialNormalized = normalizeStartupPotential(startupPotentialRaw);
