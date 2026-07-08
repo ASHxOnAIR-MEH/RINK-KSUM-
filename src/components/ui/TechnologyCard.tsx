@@ -10,9 +10,10 @@ import { motion, useReducedMotion } from 'framer-motion';
 interface Props {
   technology: Technology;
   compact?: boolean;
+  featured?: boolean;   // shows the ★ Featured gold badge when true
 }
 
-export default function TechnologyCard({ technology, compact = false }: Props) {
+export default function TechnologyCard({ technology, compact = false, featured = false }: Props) {
   const [imageFailed, setImageFailed] = useState(false);
   const prefersReduced = useReducedMotion();
 
@@ -134,23 +135,22 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
   return (
     <Link href={`/technologies/${technology.id}`} className="block group h-full" id={`tech-card-${technology.id}`}>
       <motion.div
-        className="bg-white rounded-md border border-gray-100 shadow-sm overflow-hidden h-full flex flex-col hover:shadow-md hover:border-blue-200 transition-all duration-250"
+        className="bg-white rounded-xl border border-gray-100/80 shadow-md overflow-hidden h-full flex flex-col transition-all duration-300 ease-out group-hover:-translate-y-1.5 group-hover:shadow-xl group-hover:border-blue-200"
         {...cardMotion}
       >
         {/* Banner Frame */}
         <div className="relative aspect-[16/9] w-full overflow-hidden flex-shrink-0 bg-gray-50 border-b border-gray-100">
           {hasImage ? (
             <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={displayImage}
-                alt={technology.name}
-                onError={() => setImageFailed(true)}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                referrerPolicy="no-referrer"
-                loading="lazy"
-                decoding="async"
-              />
+                  src={displayImage}
+                  alt={technology.name}
+                  onError={() => setImageFailed(true)}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                  referrerPolicy="no-referrer"
+                  loading="lazy"
+                  decoding="async"
+                />
               {/* Light gradient overlay for badge readability */}
               <div
                 className="absolute inset-0 pointer-events-none z-1"
@@ -176,6 +176,15 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
               {technology.sector}
             </span>
           </div>
+
+          {/* ★ Featured badge — top-right corner */}
+          {featured && (
+            <div className="absolute top-2.5 right-2.5 z-10">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-amber-900 shadow-sm">
+                ★ Featured
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Body */}
@@ -203,11 +212,10 @@ export default function TechnologyCard({ technology, compact = false }: Props) {
           {/* CTA Footer */}
           <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-end">
             <motion.span
-              className="flex items-center gap-1 text-[11px] font-bold text-[#0A2164]"
-              whileHover={prefersReduced ? {} : { x: 3 }}
+              className="flex items-center gap-1 text-[11px] font-bold text-[#0A2164] group-hover:gap-2 transition-all duration-200"
               transition={{ duration: 0.15 }}
             >
-              Explore Opportunity <ArrowRight className="w-3.5 h-3.5" />
+              Explore Opportunity <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
             </motion.span>
           </div>
         </div>
