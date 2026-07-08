@@ -40,8 +40,12 @@ export async function getTechnologyById(id: string): Promise<Technology | null> 
 
 export async function getFeaturedTechnologies(limit = 100): Promise<Technology[]> {
   const techs = await fetchAllTechnologies();
+
+  const hasImage = (t: Technology) =>
+    !!(t.image_embed_url || t.technology_image_embed_url || t.image_url || t.technology_image);
+
   return techs
-    .filter(t => (t.startup_potential || '').toLowerCase() === 'high')
+    .filter(t => (t.startup_potential || '').toLowerCase() === 'high' && hasImage(t))
     .sort((a, b) => a.name.localeCompare(b.name))
     .slice(0, limit);
 }
