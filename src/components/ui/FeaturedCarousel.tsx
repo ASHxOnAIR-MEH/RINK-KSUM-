@@ -1,6 +1,8 @@
 'use client';
 
 import { useRef, useEffect, useState, useCallback } from 'react';
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 import { Technology } from '@/types';
 import TechnologyCard from './TechnologyCard';
 
@@ -9,156 +11,188 @@ interface Props {
 }
 
 export default function FeaturedCarousel({ technologies }: Props) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const animRef  = useRef<number | null>(null);
-  const posRef   = useRef(0);
-  const pausedRef = useRef(false);
-  // 0.055 px per ms ≈ ~40% slower than the previous 60s CSS animation for a 290px-wide card list
-  const SPEED = 0.055;
+  const containerRef   = useRef<HTMLDivElement>(null);
+  const isInteracting  = useRef(false);
+  const isVisible      = useRef(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // ── Build a tripled array so seamless looping works in both directions ──────
+  let base = technologies;
+  if (base.length < 10) {
+    while (base.length < 10) base = [...base, ...technologies];
+  }
+  const tripled = [...base, ...base, ...base];
+
+  useEffect(() => { setIsMounted(true); }, []);
+
+  // ── Intersection observer: pause when section is off-screen ─────────────────
+  useEffect(() => {
+    if (!isMounted) return;
+    const el = containerRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { isVisible.current = entry.isIntersecting; },
+      { threshold: 0.05 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [isMounted]);
+
+  const pause  = useCallback(() => { isInteracting.current = true;  }, []);
+  const resume = useCallback(() => { isInteracting.current = false; }, []);
+
+  // ── rAF infinite scroll via scrollLeft (matches reference architecture) ─────
+  useEffect(() => {
+    if (!isMounted || tripled.length === 0) return;
+    const el = containerRef.current;
+    if (!el) return;
+
+    // Start at the middle third so dragging backward still works
+    el.scrollLeft = el.scrollWidth / 3;
+
+    let animId: number;
+    let current = el.scrollLeft;
+    let lastTs  = performance.now();
+    const SPEED = 0.055; // px per ms — smooth & elegant
+
+    const tick = (now: number) => {
+      const dt = Math.min(now - lastTs, 32);
+      lastTs   = now;
+
+      if (!isInteracting.current && isVisible.current) {
+        current += SPEED * dt;
+        const third = el.scrollWidth / 3;
+        if (current >= third * 2) current -= third;
+        else if (current <= 0)    current += third;
+        el.scrollLeft = current;
+      } else {
+        current = el.scrollLeft; // sync on drag
+      }
+      animId = requestAnimationFrame(tick);
+    };
+
+    animId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animId);
+  }, [isMounted, tripled.length]);
 
   if (!technologies || technologies.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-[#475569] text-sm font-sans">No featured technologies available.</p>
+      <div className="text-center py-16">
+        <p className="text-white/60 text-sm font-sans">No featured technologies available.</p>
       </div>
     );
   }
 
-  // Pad to at least 10 items so the marquee fills wide viewports
-  let baseItems = technologies;
-  if (technologies.length < 10) {
-    while (baseItems.length < 10) {
-      baseItems = [...baseItems, ...technologies];
-    }
-  }
-  const doubleTechs = [...baseItems, ...baseItems];
+  if (!isMounted) return null;
 
   return (
-    <FeaturedCarouselInner
-      doubleTechs={doubleTechs}
-      baseTechs={technologies}
-      trackRef={trackRef}
-      animRef={animRef}
-      posRef={posRef}
-      pausedRef={pausedRef}
-      speed={SPEED}
-    />
-  );
-}
+    <div className="w-full relative">
 
-/** Separate inner component so we can use hooks safely */
-function FeaturedCarouselInner({
-  doubleTechs,
-  baseTechs,
-  trackRef,
-  animRef,
-  posRef,
-  pausedRef,
-  speed,
-}: {
-  doubleTechs: Technology[];
-  baseTechs: Technology[];
-  trackRef: React.RefObject<HTMLDivElement | null>;
-  animRef: React.MutableRefObject<number | null>;
-  posRef: React.MutableRefObject<number>;
-  pausedRef: React.MutableRefObject<boolean>;
-  speed: number;
-}) {
-  const lastTsRef = useRef<number | null>(null);
+      {/* ── Main Blue Gradient Section ── */}
+      <div
+        className="relative overflow-hidden flex flex-col justify-center"
+        style={{
+          minHeight: 700,
+          background: 'linear-gradient(180deg, #36a8fb 0%, #1b60bb 45%, #153156 100%)',
+        }}
+      >
 
-  const tick = useCallback((ts: number) => {
-    if (!pausedRef.current && trackRef.current) {
-      if (lastTsRef.current !== null) {
-        const delta = ts - lastTsRef.current;
-        posRef.current += speed * delta;
-
-        // Loop: reset when we've scrolled exactly half the track (the duplicated half)
-        const halfWidth = trackRef.current.scrollWidth / 2;
-        if (halfWidth > 0 && posRef.current >= halfWidth) {
-          posRef.current -= halfWidth;
-        }
-        trackRef.current.style.transform = `translate3d(-${posRef.current}px, 0, 0)`;
-      }
-      lastTsRef.current = ts;
-    } else {
-      lastTsRef.current = null;
-    }
-    animRef.current = requestAnimationFrame(tick);
-  }, [pausedRef, trackRef, posRef, speed, animRef]);
-
-  useEffect(() => {
-    animRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (animRef.current) cancelAnimationFrame(animRef.current);
-    };
-  }, [tick, animRef]);
-
-  const pause  = () => { pausedRef.current = true; };
-  const resume = () => { pausedRef.current = false; };
-
-  return (
-    <div className="w-full relative select-none">
-
-      {/* ── DESKTOP ONLY: rAF-driven marquee ── */}
-      <div className="hidden md:block w-full relative overflow-hidden py-6">
-
-        {/* Edge fade masks — match the section background (#0c1f45 or whatever page uses) */}
+        {/* ── TOP WHITE CURVED PANEL — contains section title ── */}
         <div
-          className="absolute inset-y-0 left-0 w-28 z-10 pointer-events-none"
+          className="absolute top-0 left-0 right-0 z-20 flex items-center justify-center"
           style={{
-            background: 'linear-gradient(to right, rgba(10,21,60,0.98) 0%, transparent 100%)',
+            height: 160,
+            background: '#F6F8FC',
+            borderBottomLeftRadius: '3rem',
+            borderBottomRightRadius: '3rem',
+            boxShadow: '0 6px 32px rgba(0,0,0,0.10)',
           }}
-        />
-        <div
-          className="absolute inset-y-0 right-0 w-28 z-10 pointer-events-none"
-          style={{
-            background: 'linear-gradient(to left, rgba(10,21,60,0.98) 0%, transparent 100%)',
-          }}
-        />
+        >
+          <div className="text-center px-4">
+            <span className="block text-[11px] font-bold uppercase tracking-[0.2em] text-[#1b60bb]/70 mb-2">
+              Innovation Showcase
+            </span>
+            <h2 className="font-serif font-black text-[28px] sm:text-[38px] md:text-[46px] text-[#1b60bb] tracking-wide leading-tight">
+              Featured Innovation Opportunities
+            </h2>
+          </div>
+        </div>
 
-        {/* Marquee Track */}
+        {/* ── CAROUSEL — native scrollLeft-based ── */}
         <div
-          ref={trackRef}
-          className="flex gap-6 w-max"
-          style={{ willChange: 'transform' }}
+          className="w-full relative z-10 mt-[160px] mb-[160px]"
           onMouseEnter={pause}
           onMouseLeave={resume}
+          onTouchStart={pause}
+          onTouchEnd={resume}
         >
-          {doubleTechs.map((tech, idx) => (
-            <div
-              key={`desktop-${tech.id}-${idx}`}
-              className="featured-carousel-card"
-              style={{ width: 290, flexShrink: 0 }}
-              onMouseEnter={pause}
-              onMouseLeave={resume}
-            >
-              <TechnologyCard technology={tech} featured />
-            </div>
-          ))}
-        </div>
-      </div>
+          {/* Left edge fade */}
+          <div
+            className="absolute inset-y-0 left-0 w-24 z-10 pointer-events-none"
+            style={{ background: 'linear-gradient(to right, rgba(27,96,187,0.55) 0%, transparent 100%)' }}
+          />
+          {/* Right edge fade */}
+          <div
+            className="absolute inset-y-0 right-0 w-24 z-10 pointer-events-none"
+            style={{ background: 'linear-gradient(to left, rgba(21,49,86,0.55) 0%, transparent 100%)' }}
+          />
 
-      {/* ── MOBILE ONLY: Native momentum swipe ── */}
-      <div className="block md:hidden w-full relative">
+          <div
+            ref={containerRef}
+            className="flex gap-5 overflow-x-auto py-8 px-[10vw] cursor-grab active:cursor-grabbing"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            }}
+          >
+            <style>{`
+              .featured-scroller::-webkit-scrollbar { display: none; }
+            `}</style>
+
+            {tripled.map((tech, idx) => (
+              <div
+                key={`${tech.id}-${idx}`}
+                className="flex-shrink-0"
+                style={{ width: 290, height: 420 }}
+                onMouseEnter={pause}
+                onMouseLeave={resume}
+              >
+                <TechnologyCard technology={tech} featured />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── BOTTOM WHITE CURVED PANEL — contains CTA ── */}
         <div
-          className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory py-4 px-4 scrollbar-none"
+          className="absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center justify-center px-4"
           style={{
-            WebkitOverflowScrolling: 'touch',
-            scrollbarWidth: 'none',
+            height: 160,
+            background: '#ffffff',
+            borderTopLeftRadius: '3rem',
+            borderTopRightRadius: '3rem',
+            boxShadow: '0 -6px 32px rgba(0,0,0,0.10)',
           }}
         >
-          {baseTechs.map((tech, idx) => (
-            <div
-              key={`mobile-${tech.id}-${idx}`}
-              className="snap-start"
-              style={{ width: 'calc(85vw - 12px)', flexShrink: 0 }}
-            >
-              <TechnologyCard technology={tech} featured />
-            </div>
-          ))}
+          <p className="text-[#1b60bb] text-[16px] md:text-[20px] font-medium text-center mb-4 leading-snug">
+            Ready to Discover Commercially Viable Technologies?
+          </p>
+          <Link
+            href="/technologies"
+            id="browse-all-featured-cta"
+            className="group/btn inline-flex items-center gap-2 bg-[#1b60bb] hover:bg-[#0d4a9a] text-white px-6 py-2.5 rounded-full font-semibold text-sm shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+          >
+            Browse All Technologies
+            <ArrowUpRight
+              size={16}
+              strokeWidth={2.5}
+              className="transition-transform duration-300 group-hover/btn:translate-x-[2px] group-hover/btn:-translate-y-[2px]"
+            />
+          </Link>
         </div>
-      </div>
 
+      </div>
     </div>
   );
 }
