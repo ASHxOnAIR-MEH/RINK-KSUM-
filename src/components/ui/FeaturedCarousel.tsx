@@ -154,7 +154,7 @@ export default function FeaturedCarousel({ technologies }: Props) {
               <div
                 key={`${tech.id}-${idx}`}
                 className="flex-shrink-0"
-                style={{ width: 290, height: 420 }}
+                style={{ width: 295, height: 450 }}
                 onMouseEnter={pause}
                 onMouseLeave={resume}
               >
