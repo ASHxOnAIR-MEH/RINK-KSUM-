@@ -199,22 +199,21 @@ export default function TechnologyCard({ technology, compact = false, featured =
           {/* ── ★ Featured ribbon — vertical bookmark ───────────────────── */}
           {featured && (
             <div
-              className="absolute top-0 left-4 z-10 flex flex-col items-center justify-start shadow-md transition-transform duration-300 group-hover:translate-y-1"
+              className="absolute top-0 right-4 z-10 flex flex-col items-center justify-start shadow-md transition-transform duration-300 group-hover:translate-y-1"
               style={{
-                width: 30,
+                width: 40,
                 height: '58%',
-                background: 'linear-gradient(180deg, #F59E0B 0%, #D97706 80%, #B45309 100%)',
+                background: '#F5B301',
                 clipPath: 'polygon(0 0, 100% 0, 100% 88%, 50% 100%, 0 88%)',
               }}
             >
               {/* Star at top */}
               <span
                 style={{
-                  fontSize: 13,
-                  color: '#7C2D12',
-                  marginTop: 7,
+                  fontSize: 15,
+                  color: '#000000',
+                  marginTop: 8,
                   lineHeight: 1,
-                  filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.15))',
                 }}
               >
                 ★
@@ -225,11 +224,11 @@ export default function TechnologyCard({ technology, compact = false, featured =
                   writingMode: 'vertical-rl',
                   textOrientation: 'mixed',
                   transform: 'rotate(180deg)',
-                  fontSize: 8,
-                  fontWeight: 800,
-                  color: '#7C2D12',
+                  fontSize: 10,
+                  fontWeight: 900,
+                  color: '#000000',
                   letterSpacing: '0.12em',
-                  marginTop: 6,
+                  marginTop: 8,
                   textTransform: 'uppercase',
                 }}
               >
