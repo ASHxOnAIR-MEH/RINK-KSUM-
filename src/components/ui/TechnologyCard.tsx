@@ -191,7 +191,7 @@ export default function TechnologyCard({ technology, compact = false, featured =
 
           {/* ── Sector pill ─────────── */}
           <div className="absolute bottom-3 left-3 z-10">
-            <span className="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-white/90 text-gray-800 border border-gray-200 backdrop-blur-sm uppercase tracking-wider shadow-sm">
+            <span className="inline-flex items-center px-3 py-1.5 rounded-full text-[11px] font-bold bg-white text-[#1b60bb] shadow-md tracking-wide">
               {technology.sector}
             </span>
           </div>
@@ -199,28 +199,29 @@ export default function TechnologyCard({ technology, compact = false, featured =
           {/* ── ★ Featured ribbon — vertical bookmark ───────────────────── */}
           {featured && (
             <div
-              className="absolute top-0 right-4 z-10 flex flex-col items-center justify-start shadow-md transition-transform duration-300 group-hover:translate-y-1"
+              className="absolute top-0 right-4 z-10 flex flex-col items-center justify-start shadow-sm transition-transform duration-300 group-hover:translate-y-1"
               style={{
-                width: 52,
-                height: 72,
+                width: 60,
+                height: 85,
                 background: '#F97316', // Orange matching image
-                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%)',
+                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%)',
               }}
             >
               {/* Check Circle Icon */}
               <CheckCircle 
-                style={{ width: 22, height: 22, color: '#FFFFFF', marginTop: 10, strokeWidth: 2.5 }}
+                style={{ width: 28, height: 28, color: '#FFFFFF', marginTop: 12, strokeWidth: 2.5 }}
               />
               {/* Text */}
               <span
                 className="text-center leading-[1.1]"
                 style={{
-                  fontSize: 10,
-                  fontWeight: 800,
+                  fontSize: 12,
+                  fontWeight: 900,
                   color: '#FFFFFF',
-                  letterSpacing: '0.05em',
+                  letterSpacing: '0.02em',
                   marginTop: 6,
                   textTransform: 'uppercase',
+                  fontFamily: 'Montserrat, sans-serif'
                 }}
               >
                 TOP<br/>TECH
