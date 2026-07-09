@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Technology } from '@/types';
 import Link from 'next/link';
-import { Building2, ArrowRight, FlaskConical, ShieldCheck } from 'lucide-react';
+import { Building2, ArrowRight, FlaskConical, ShieldCheck, CheckCircle } from 'lucide-react';
 import { SectorIllustration, SECTOR_ACCENTS } from './SectorCard';
 import { motion, useReducedMotion } from 'framer-motion';
 
@@ -201,38 +201,29 @@ export default function TechnologyCard({ technology, compact = false, featured =
             <div
               className="absolute top-0 right-4 z-10 flex flex-col items-center justify-start shadow-md transition-transform duration-300 group-hover:translate-y-1"
               style={{
-                width: 40,
-                height: '58%',
-                background: '#F5B301',
-                clipPath: 'polygon(0 0, 100% 0, 100% 88%, 50% 100%, 0 88%)',
+                width: 52,
+                height: 72,
+                background: '#F97316', // Orange matching image
+                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%)',
               }}
             >
-              {/* Star at top */}
+              {/* Check Circle Icon */}
+              <CheckCircle 
+                style={{ width: 22, height: 22, color: '#FFFFFF', marginTop: 10, strokeWidth: 2.5 }}
+              />
+              {/* Text */}
               <span
+                className="text-center leading-[1.1]"
                 style={{
-                  fontSize: 15,
-                  color: '#000000',
-                  marginTop: 8,
-                  lineHeight: 1,
-                }}
-              >
-                ★
-              </span>
-              {/* Vertical text */}
-              <span
-                style={{
-                  writingMode: 'vertical-rl',
-                  textOrientation: 'mixed',
-                  transform: 'rotate(180deg)',
                   fontSize: 10,
-                  fontWeight: 900,
-                  color: '#000000',
-                  letterSpacing: '0.12em',
-                  marginTop: 8,
+                  fontWeight: 800,
+                  color: '#FFFFFF',
+                  letterSpacing: '0.05em',
+                  marginTop: 6,
                   textTransform: 'uppercase',
                 }}
               >
-                Featured
+                FEA<br/>TURED
               </span>
             </div>
           )}
