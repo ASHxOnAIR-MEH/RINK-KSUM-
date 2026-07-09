@@ -207,23 +207,23 @@ export default function TechnologyCard({ technology, compact = false, featured =
                 clipPath: 'polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%)',
               }}
             >
-              {/* Star Icon */}
-              <Star 
-                style={{ width: 18, height: 18, color: '#FFFFFF', marginTop: 10, strokeWidth: 3, fill: '#FFFFFF' }}
+              {/* Check Circle Icon */}
+              <CheckCircle 
+                style={{ width: 22, height: 22, color: '#FFFFFF', marginTop: 10, strokeWidth: 2.5 }}
               />
               {/* Text */}
               <span
                 className="text-center leading-[1.1]"
                 style={{
-                  fontSize: 9,
-                  fontWeight: 900,
+                  fontSize: 10,
+                  fontWeight: 800,
                   color: '#FFFFFF',
-                  letterSpacing: '0.02em',
+                  letterSpacing: '0.05em',
                   marginTop: 6,
                   textTransform: 'uppercase',
                 }}
               >
-                FEATURED
+                TOP<br/>TECH
               </span>
             </div>
           )}
