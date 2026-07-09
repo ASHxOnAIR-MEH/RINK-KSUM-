@@ -82,7 +82,7 @@ async function getOramaDb(items: SearchIndexItem[]): Promise<AnyOrama> {
 
 // ── Normalise string for comparison ──────────────────────────────
 function norm(s: string): string {
-  return s.toLowerCase().trim();
+  return s.toLowerCase().replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 // ── Scored result ─────────────────────────────────────────────────
@@ -95,6 +95,7 @@ export interface ScoredItem extends SearchIndexItem {
 function scoreItem(item: SearchIndexItem, q: string): ScoredItem | null {
   const nq  = norm(q);
   if (!nq) return null;
+  const jQ = nq.replace(/\s+/g, ''); // Fully joined query (e.g. "sea weed" -> "seaweed")
 
   const nId          = norm(item.id);
   const nName        = norm(item.name);
@@ -103,6 +104,13 @@ function scoreItem(item: SearchIndexItem, q: string): ScoredItem | null {
   const nType        = norm(item.technology_type || '');
   const nProblem     = norm(item.problem_solved || '');
   const nKeywords    = item.keywords.map(norm);
+
+  const jId          = nId.replace(/\s+/g, '');
+  const jName        = nName.replace(/\s+/g, '');
+  const jInstitution = nInstitution.replace(/\s+/g, '');
+  const jSector      = nSector.replace(/\s+/g, '');
+  const jProblem     = nProblem.replace(/\s+/g, '');
+  const jType        = nType.replace(/\s+/g, '');
 
   // Safe regex: escape special chars
   let wordBoundary: RegExp;
@@ -113,19 +121,19 @@ function scoreItem(item: SearchIndexItem, q: string): ScoredItem | null {
   }
 
   // Tier 1: Exact ID
-  if (nId === nq || nId.replace(/-/g, '') === nq.replace(/-/g, '')) {
+  if (nId === nq || jId === jQ) {
     return { ...item, _score: 1000, _matchField: 'id_exact' };
   }
   // Tier 2: Partial ID (prefix or substring)
-  if (nId.startsWith(nq) || nId.includes(nq)) {
+  if (nId.startsWith(nq) || nId.includes(nq) || jId.includes(jQ)) {
     return { ...item, _score: 850, _matchField: 'id_partial' };
   }
   // Tier 3: Exact Name
-  if (nName === nq) {
+  if (nName === nq || jName === jQ) {
     return { ...item, _score: 900, _matchField: 'name_exact' };
   }
   // Tier 4: Prefix Name
-  if (nName.startsWith(nq)) {
+  if (nName.startsWith(nq) || jName.startsWith(jQ)) {
     return { ...item, _score: 700, _matchField: 'name_prefix' };
   }
   // Tier 5: Whole-word in Name
@@ -133,30 +141,31 @@ function scoreItem(item: SearchIndexItem, q: string): ScoredItem | null {
     return { ...item, _score: 500, _matchField: 'name_word' };
   }
   // Tier 6: Substring Name
-  if (nName.includes(nq)) {
+  if (nName.includes(nq) || jName.includes(jQ)) {
     return { ...item, _score: 420, _matchField: 'name_substr' };
   }
   // Tier 7: Institution
-  if (nInstitution === nq) return { ...item, _score: 380, _matchField: 'institution_exact' };
-  if (nInstitution.includes(nq)) return { ...item, _score: 350, _matchField: 'institution_substr' };
+  if (nInstitution === nq || jInstitution === jQ) return { ...item, _score: 380, _matchField: 'institution_exact' };
+  if (nInstitution.includes(nq) || jInstitution.includes(jQ)) return { ...item, _score: 350, _matchField: 'institution_substr' };
 
   // Tier 8: Sector
-  if (nSector === nq) return { ...item, _score: 320, _matchField: 'sector_exact' };
-  if (nSector.includes(nq)) return { ...item, _score: 300, _matchField: 'sector_substr' };
+  if (nSector === nq || jSector === jQ) return { ...item, _score: 320, _matchField: 'sector_exact' };
+  if (nSector.includes(nq) || jSector.includes(jQ)) return { ...item, _score: 300, _matchField: 'sector_substr' };
 
   // Tier 9: Keywords
   for (const kw of nKeywords) {
-    if (kw === nq)          return { ...item, _score: 220, _matchField: 'keyword_exact' };
-    if (kw.startsWith(nq)) return { ...item, _score: 200, _matchField: 'keyword_prefix' };
-    if (kw.includes(nq))   return { ...item, _score: 160, _matchField: 'keyword_substr' };
+    const jKw = kw.replace(/\s+/g, '');
+    if (kw === nq || jKw === jQ)          return { ...item, _score: 220, _matchField: 'keyword_exact' };
+    if (kw.startsWith(nq) || jKw.startsWith(jQ)) return { ...item, _score: 200, _matchField: 'keyword_prefix' };
+    if (kw.includes(nq) || jKw.includes(jQ))   return { ...item, _score: 160, _matchField: 'keyword_substr' };
   }
 
   // Tier 10: Problem Solved
   if (wordBoundary.test(nProblem)) return { ...item, _score: 130, _matchField: 'problem_word' };
-  if (nProblem.includes(nq))       return { ...item, _score: 110, _matchField: 'problem_substr' };
+  if (nProblem.includes(nq) || jProblem.includes(jQ)) return { ...item, _score: 110, _matchField: 'problem_substr' };
 
   // Tier 11: Technology Type
-  if (nType.includes(nq)) return { ...item, _score: 95, _matchField: 'type_substr' };
+  if (nType.includes(nq) || jType.includes(jQ)) return { ...item, _score: 95, _matchField: 'type_substr' };
 
   return null;
 }
