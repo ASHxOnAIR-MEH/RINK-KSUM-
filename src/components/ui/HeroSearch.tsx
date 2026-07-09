@@ -280,10 +280,10 @@ export default function HeroSearch() {
           animation: vision-enter 500ms cubic-bezier(.22,1,.36,1) both;
         }
 
-        /* Subtle breathing glow — only changes glow opacity */
+        /* Subtle breathing glow — yellow ambient */
         @keyframes vision-breathe {
-          0%,100% { box-shadow: 0 18px 45px rgba(0,0,0,.22), 0 0 30px rgba(37,99,235,.10); }
-          50%      { box-shadow: 0 18px 45px rgba(0,0,0,.22), 0 0 36px rgba(37,99,235,.18); }
+          0%,100% { box-shadow: 0 18px 45px rgba(0,0,0,.18), 0 0 28px rgba(244,180,0,.10); }
+          50%      { box-shadow: 0 18px 45px rgba(0,0,0,.18), 0 0 36px rgba(244,180,0,.20); }
         }
         .vision-bar {
           animation: vision-breathe 8s ease-in-out infinite;
@@ -297,15 +297,15 @@ export default function HeroSearch() {
         }
         .vision-bar.is-focused {
           animation: none;
-          border-color: #3B82F6 !important;
+          border-color: #F4B400 !important;
           box-shadow:
-            0 18px 45px rgba(0,0,0,.22),
-            0 0 0 5px rgba(59,130,246,.15) !important;
+            0 18px 45px rgba(0,0,0,.18),
+            0 0 0 5px rgba(244,180,0,.18) !important;
         }
 
         /* Input text/placeholder */
         .vision-input {
-          caret-color: #2563EB;
+          caret-color: #F4B400;
           color: #111827;
           font-weight: 600;
           letter-spacing: 0.2px;
@@ -320,8 +320,8 @@ export default function HeroSearch() {
         .vision-input:focus { outline: none; }
 
         /* Search icon */
-        .vision-icon-idle    { color: #475569; transition: color 200ms, transform 200ms; }
-        .vision-icon-focused { color: #2563EB; transform: rotate(8deg); transition: color 200ms, transform 200ms; }
+        .vision-icon-idle    { color: #B45309; transition: color 200ms, transform 200ms; }
+        .vision-icon-focused { color: #E8A400; transform: rotate(8deg); transition: color 200ms, transform 200ms; }
 
         /* Clear button */
         .vision-clear {
@@ -330,7 +330,7 @@ export default function HeroSearch() {
           border-radius: 50%;
           padding: 6px;
         }
-        .vision-clear:hover { color: #1E40AF; background: rgba(37,99,235,.08); }
+        .vision-clear:hover { color: #92400E; background: rgba(244,180,0,.12); }
 
         /* Search button */
         .vision-btn {
@@ -354,7 +354,7 @@ export default function HeroSearch() {
         }
         .vision-btn:focus-visible {
           outline: none;
-          box-shadow: 0 0 0 4px rgba(37,99,235,.20) !important;
+          box-shadow: 0 0 0 4px rgba(244,180,0,.35) !important;
         }
         .vision-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
@@ -390,7 +390,7 @@ export default function HeroSearch() {
               background: 'rgba(255,255,255,0.92)',
               backdropFilter: 'blur(22px)',
               WebkitBackdropFilter: 'blur(22px)',
-              border: '1px solid rgba(255,255,255,0.45)',
+              border: focused ? '1px solid #F4B400' : '1px solid rgba(255,255,255,0.55)',
               zIndex: 10,
               overflow: 'hidden',
             }}
@@ -437,7 +437,9 @@ export default function HeroSearch() {
             {/* Divider */}
             <div
               className="flex-shrink-0 self-stretch"
-              style={{ width: 1, background: 'rgba(37,99,235,0.12)', margin: '14px 0' }}
+              style={{
+                width: 1, background: 'rgba(244,180,0,0.25)', margin: '14px 0'
+              }}
               aria-hidden
             />
 
@@ -481,7 +483,7 @@ export default function HeroSearch() {
                 background: 'rgba(255,255,255,0.94)',
                 backdropFilter: 'blur(20px)',
                 WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(37,99,235,0.08)',
+                border: '1px solid rgba(244,180,0,0.12)',
                 boxShadow: '0 20px 50px rgba(0,0,0,0.18)',
                 zIndex: 50,
                 maxHeight: 520,
