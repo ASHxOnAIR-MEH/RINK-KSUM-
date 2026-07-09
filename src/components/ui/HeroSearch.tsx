@@ -10,7 +10,7 @@ import { precisionSearch, type ScoredItem } from '@/lib/searchEngine';
    Constants
 ───────────────────────────────────────────────────────────────── */
 const PLACEHOLDERS = [
-  'Search technologies, sectors, or institutions…',
+  'Search Technologies, Problems, Institutions, Sectors or Technology ID…',
   'Try "cancer screening" or "kidney diagnostics"…',
   'Search by Technology ID e.g. RINK-8DA73B…',
   'Explore food processing innovations…',
@@ -18,7 +18,7 @@ const PLACEHOLDERS = [
 ];
 
 /* ─────────────────────────────────────────────────────────────────
-   Highlight helper
+   Highlight helper — unchanged
 ───────────────────────────────────────────────────────────────── */
 function Highlight({ text, query }: { text: string; query: string }) {
   if (!query.trim() || !text) return <>{text}</>;
@@ -30,7 +30,7 @@ function Highlight({ text, query }: { text: string; query: string }) {
       <>
         {parts.map((part, i) =>
           regex.test(part) ? (
-            <mark key={i} style={{ background: 'transparent', color: '#60A5FA', fontWeight: 700 }}>
+            <mark key={i} style={{ background: 'transparent', color: '#2563EB', fontWeight: 700 }}>
               {part}
             </mark>
           ) : (
@@ -45,30 +45,30 @@ function Highlight({ text, query }: { text: string; query: string }) {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   IP Status badge colour
+   IP Status badge colour — unchanged
 ───────────────────────────────────────────────────────────────── */
 function ipColor(status: string): string {
   const s = status.toLowerCase();
   if (s.includes('patent') && !s.includes('pending') && !s.includes('not')) return '#10B981';
   if (s.includes('filed') || s.includes('pending')) return '#F59E0B';
   if (s.includes('published')) return '#3B82F6';
-  return 'rgba(255,255,255,0.30)';
+  return '#94A3B8';
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Skeleton row
+   Skeleton row — upgraded to light theme
 ───────────────────────────────────────────────────────────────── */
 function SkeletonRow() {
   return (
-    <div className="flex flex-col gap-2 px-5 py-4 border-b border-white/[0.05]">
-      <div className="h-3.5 rounded-full animate-pulse" style={{ background: 'rgba(255,255,255,0.08)', width: '68%' }} />
-      <div className="h-2.5 rounded-full animate-pulse" style={{ background: 'rgba(255,255,255,0.05)', width: '44%' }} />
+    <div className="flex flex-col gap-2 px-5 py-4 border-b border-slate-100">
+      <div className="h-3.5 rounded-full animate-pulse" style={{ background: '#e8edf5', width: '68%' }} />
+      <div className="h-2.5 rounded-full animate-pulse" style={{ background: '#f0f4fb', width: '44%' }} />
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Suggestion card
+   Suggestion card — upgraded to light glass theme
 ───────────────────────────────────────────────────────────────── */
 function SuggestionCard({
   item,
@@ -87,36 +87,38 @@ function SuggestionCard({
       role="option"
       aria-selected={isActive}
       onMouseEnter={onHover}
-      className="flex flex-col gap-1.5 px-5 py-3.5 border-b border-white/[0.05] last:border-b-0 transition-colors duration-100"
-      style={{ background: isActive ? 'rgba(37,99,235,0.14)' : 'transparent' }}
+      className="flex flex-col gap-1.5 px-5 py-3.5 border-b border-slate-100 last:border-b-0 transition-colors duration-200"
+      style={{
+        background: isActive ? 'rgba(37,99,235,0.06)' : 'transparent',
+      }}
     >
       {/* Name */}
-      <div className="font-semibold text-white text-sm leading-snug line-clamp-1">
+      <div className="font-semibold text-[#111827] text-sm leading-snug line-clamp-1">
         <Highlight text={item.name} query={query} />
       </div>
 
       {/* Meta */}
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <span className="inline-flex items-center gap-1 text-[11px]" style={{ color: 'rgba(255,255,255,0.52)' }}>
+        <span className="inline-flex items-center gap-1 text-[11px] text-slate-500">
           <Building2 style={{ width: 10, height: 10 }} />
           <Highlight text={item.institution} query={query} />
         </span>
-        <span className="inline-flex items-center gap-1 text-[11px]" style={{ color: 'rgba(255,255,255,0.52)' }}>
+        <span className="inline-flex items-center gap-1 text-[11px] text-slate-500">
           <Layers style={{ width: 10, height: 10 }} />
           <Highlight text={item.sector} query={query} />
         </span>
-        <span className="inline-flex items-center gap-1 text-[11px]" style={{ color: 'rgba(255,255,255,0.35)' }}>
+        <span className="inline-flex items-center gap-1 text-[11px] text-slate-400">
           <Hash style={{ width: 10, height: 10 }} />
           {item.id}
         </span>
       </div>
 
-      {/* Badges row — TRL and IP status only */}
+      {/* Badges */}
       <div className="flex flex-wrap gap-1.5">
         {item.trl && item.trl !== 'TRL Not Available' && (
           <span
             className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-            style={{ background: 'rgba(59,130,246,0.15)', color: '#60A5FA', border: '1px solid rgba(59,130,246,0.25)' }}
+            style={{ background: 'rgba(37,99,235,0.08)', color: '#1D4ED8', border: '1px solid rgba(37,99,235,0.15)' }}
           >
             {item.trl}
           </span>
@@ -125,7 +127,7 @@ function SuggestionCard({
           <span
             className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
             style={{
-              background: `${ipColor(item.ip_status)}18`,
+              background: `${ipColor(item.ip_status)}14`,
               color: ipColor(item.ip_status),
               border: `1px solid ${ipColor(item.ip_status)}30`,
             }}
@@ -136,7 +138,7 @@ function SuggestionCard({
         {item.technology_type && item.technology_type !== 'Not Specified' && (
           <span
             className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full"
-            style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.40)', border: '1px solid rgba(255,255,255,0.08)' }}
+            style={{ background: '#f1f5f9', color: '#64748b', border: '1px solid #e2e8f0' }}
           >
             <Cpu style={{ width: 9, height: 9 }} />
             {item.technology_type}
@@ -151,26 +153,26 @@ function SuggestionCard({
    Main component
 ───────────────────────────────────────────────────────────────── */
 export default function HeroSearch() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery]               = useState('');
   const [placeholderIdx, setPlaceholderIdx] = useState(0);
-  const [focused, setFocused] = useState(false);
-  const [activeIdx, setActiveIdx] = useState(-1);
+  const [focused, setFocused]           = useState(false);
+  const [activeIdx, setActiveIdx]       = useState(-1);
 
-  // Index state
-  const [index, setIndex] = useState<SearchIndexItem[]>([]);
+  // Index state — unchanged
+  const [index, setIndex]               = useState<SearchIndexItem[]>([]);
   const [indexLoading, setIndexLoading] = useState(true);
 
-  // Results
-  const [suggestions, setSuggestions] = useState<ScoredItem[]>([]);
-  const [searching, setSearching] = useState(false);
-  const [showDrop, setShowDrop] = useState(false);
+  // Results — unchanged
+  const [suggestions, setSuggestions]   = useState<ScoredItem[]>([]);
+  const [searching, setSearching]       = useState(false);
+  const [showDrop, setShowDrop]         = useState(false);
 
-  const [btnHovered, setBtnHovered] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [btnHovered, setBtnHovered]     = useState(false);
+  const inputRef    = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  /* ── Load index once ── */
+  /* ── Load index once — unchanged ── */
   useEffect(() => {
     fetch('/api/search-index')
       .then(r => r.json())
@@ -179,14 +181,14 @@ export default function HeroSearch() {
       .finally(() => setIndexLoading(false));
   }, []);
 
-  /* ── Rotate placeholder ── */
+  /* ── Rotate placeholder — unchanged ── */
   useEffect(() => {
     if (focused || query) return;
     const id = setInterval(() => setPlaceholderIdx(i => (i + 1) % PLACEHOLDERS.length), 4200);
     return () => clearInterval(id);
   }, [focused, query]);
 
-  /* ── Live search with 200ms debounce ── */
+  /* ── Live search with 200ms debounce — unchanged ── */
   const runSearch = useCallback(async (q: string) => {
     if (!q.trim()) {
       setSuggestions([]);
@@ -213,7 +215,7 @@ export default function HeroSearch() {
     return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
   }, [query, runSearch]);
 
-  /* ── Click-outside to close ── */
+  /* ── Click-outside to close — unchanged ── */
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -225,7 +227,7 @@ export default function HeroSearch() {
     return () => document.removeEventListener('mousedown', onClickOutside);
   }, []);
 
-  /* ── Keyboard navigation ── */
+  /* ── Keyboard navigation — unchanged ── */
   function handleKeyDown(e: React.KeyboardEvent) {
     if (!showDrop) {
       if (e.key === 'Enter' && query.trim()) {
@@ -262,99 +264,146 @@ export default function HeroSearch() {
   }
 
   const dropVisible = showDrop && focused && query.trim().length > 0;
-  const noResults = !searching && !indexLoading && suggestions.length === 0 && query.trim().length >= 2;
-  const isLoading = searching || (indexLoading && query.trim().length > 0);
+  const noResults   = !searching && !indexLoading && suggestions.length === 0 && query.trim().length >= 2;
+  const isLoading   = searching || (indexLoading && query.trim().length > 0);
 
   return (
     <>
+      {/* ── VisionOS Glass Styles ───────────────────────────── */}
       <style>{`
-        @keyframes hero-breathe-glow {
-          0%,100% { opacity:.12; transform:scale(1);    box-shadow:0 0 18px 4px rgba(37,99,235,.28); }
-          50%      { opacity:.24; transform:scale(1.02); box-shadow:0 0 28px 8px rgba(37,99,235,.36); }
+        /* Entrance fade-up */
+        @keyframes vision-enter {
+          from { opacity: 0; transform: translateY(12px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
-        .hero-glow-ring {
-          position:absolute; inset:-5px; border-radius:34px;
-          pointer-events:none; z-index:0;
-          animation:hero-breathe-glow 8s ease-in-out infinite;
-          border:1px solid rgba(37,99,235,.28);
+        .vision-search-wrap {
+          animation: vision-enter 500ms cubic-bezier(.22,1,.36,1) both;
         }
-        .hero-glow-ring.focused {
-          animation:none; opacity:1;
-          box-shadow:0 0 0 4px rgba(37,99,235,.18);
-          border-color:#2563EB;
+
+        /* Subtle breathing glow — only changes glow opacity */
+        @keyframes vision-breathe {
+          0%,100% { box-shadow: 0 18px 45px rgba(0,0,0,.22), 0 0 30px rgba(37,99,235,.10); }
+          50%      { box-shadow: 0 18px 45px rgba(0,0,0,.22), 0 0 36px rgba(37,99,235,.18); }
         }
-        @keyframes drop-in {
-          from{opacity:0;transform:translateY(-6px) scale(.99);}
-          to  {opacity:1;transform:translateY(0)   scale(1);}
+        .vision-bar {
+          animation: vision-breathe 8s ease-in-out infinite;
+          transition:
+            border-color 200ms ease,
+            box-shadow 200ms ease,
+            transform 250ms ease;
         }
-        .hero-drop-in { animation:drop-in 160ms ease-out both; }
-        .hero-search-bar:hover:not(:focus-within){
-          transform:translateY(-2px);
-          box-shadow:0 22px 55px rgba(0,0,0,.36) !important;
-        }
-        input.hero-input{ caret-color:#F4B400; color:#fff; font-weight:500; }
-        input.hero-input::placeholder{ color:rgba(255,255,255,.72); font-weight:500; letter-spacing:.2px; transition:opacity 300ms; }
-        input.hero-input:focus::placeholder{ opacity:.28; }
-        .search-icon-idle   { color:rgba(255,255,255,.65); transition:color 250ms,transform 250ms; }
-        .search-icon-focused{ color:#2563EB; transform:rotate(8deg); transition:color 250ms,transform 250ms; }
-        @keyframes btn-icon-pulse {
-          0%   { transform: scale(1); }
-          50%  { transform: scale(1.15); }
-          100% { transform: scale(1); }
-        }
-        .hero-btn {
-          cursor: pointer;
-          transition: transform 250ms ease, filter 250ms ease, box-shadow 250ms ease;
-        }
-        .hero-btn:hover {
-          filter: brightness(1.05);
+        .vision-bar:hover:not(:focus-within) {
           transform: translateY(-2px);
-          box-shadow: 0 18px 40px rgba(212,160,23,.35) !important;
         }
-        .hero-btn:active {
-          transform: translateY(1px);
+        .vision-bar.is-focused {
+          animation: none;
+          border-color: #3B82F6 !important;
+          box-shadow:
+            0 18px 45px rgba(0,0,0,.22),
+            0 0 0 5px rgba(59,130,246,.15) !important;
+        }
+
+        /* Input text/placeholder */
+        .vision-input {
+          caret-color: #2563EB;
+          color: #111827;
+          font-weight: 600;
+          letter-spacing: 0.2px;
+          background: transparent;
+        }
+        .vision-input::placeholder {
+          color: #6B7280;
+          font-weight: 500;
+          transition: opacity 300ms;
+        }
+        .vision-input:focus::placeholder { opacity: 0.45; }
+        .vision-input:focus { outline: none; }
+
+        /* Search icon */
+        .vision-icon-idle    { color: #475569; transition: color 200ms, transform 200ms; }
+        .vision-icon-focused { color: #2563EB; transform: rotate(8deg); transition: color 200ms, transform 200ms; }
+
+        /* Clear button */
+        .vision-clear {
+          color: #94A3B8;
+          transition: color 200ms, background 200ms;
+          border-radius: 50%;
+          padding: 6px;
+        }
+        .vision-clear:hover { color: #1E40AF; background: rgba(37,99,235,.08); }
+
+        /* Search button */
+        .vision-btn {
+          cursor: pointer;
+          background: #F4B400;
+          color: #082B63;
+          font-weight: 700;
+          border-radius: 28px;
+          transition: background 250ms ease, transform 250ms ease, box-shadow 250ms ease;
+          box-shadow: 0 8px 20px rgba(244,180,0,.30);
+        }
+        .vision-btn:hover:not(:disabled) {
+          background: #E8A400;
+          transform: translateY(-2px);
+          box-shadow: 0 12px 28px rgba(244,180,0,.38);
+        }
+        .vision-btn:active:not(:disabled) {
+          background: #D89A00;
+          transform: translateY(0);
           transition-duration: 150ms;
         }
-        .hero-btn:focus-visible {
+        .vision-btn:focus-visible {
           outline: none;
-          box-shadow: 0 0 0 4px rgba(37,99,235,.18) !important;
+          box-shadow: 0 0 0 4px rgba(37,99,235,.20) !important;
         }
-        .hero-btn:disabled { cursor: not-allowed; }
-        .btn-icon-pulse {
-          animation: btn-icon-pulse 300ms ease both;
+        .vision-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+        /* Dropdown entrance */
+        @keyframes drop-in {
+          from { opacity: 0; transform: translateY(-8px) scale(.99); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
         }
+        .vision-drop { animation: drop-in 160ms cubic-bezier(.22,1,.36,1) both; }
+
+        /* Dropdown scrollbar */
+        .vision-drop::-webkit-scrollbar { width: 4px; }
+        .vision-drop::-webkit-scrollbar-track { background: transparent; }
+        .vision-drop::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
       `}</style>
 
-      <div ref={containerRef} className="w-full flex flex-col items-center" style={{ position: 'relative' }}>
-        <div className="w-full max-w-[920px]" style={{ position: 'relative' }}>
+      <div
+        ref={containerRef}
+        className="vision-search-wrap w-full flex flex-col items-center"
+        style={{ position: 'relative' }}
+      >
+        <div
+          className="w-[95%] sm:w-[90%] md:w-[72%]"
+          style={{ position: 'relative' }}
+        >
 
-          {/* Breathing glow ring */}
-          <div className={`hero-glow-ring ${focused ? 'focused' : ''}`} aria-hidden />
-
-          {/* ── Search bar ── */}
+          {/* ── VisionOS Floating Glass Search Bar ── */}
           <div
-            className="hero-search-bar relative flex items-center w-full transition-all duration-300 ease-out"
+            className={`vision-bar relative flex items-center w-full ${focused ? 'is-focused' : ''}`}
             style={{
-              height: 72,
-              borderRadius: 28,
-              background: 'rgba(12,22,45,0.84)',
-              backdropFilter: 'blur(18px)',
-              WebkitBackdropFilter: 'blur(18px)',
-              border: focused ? '1px solid #2563EB' : '1px solid rgba(255,255,255,0.11)',
-              boxShadow: focused
-                ? '0 15px 45px rgba(0,0,0,.30), 0 0 0 4px rgba(37,99,235,.15)'
-                : '0 15px 45px rgba(0,0,0,.28)',
+              height: 74,
+              borderRadius: 32,
+              background: 'rgba(255,255,255,0.92)',
+              backdropFilter: 'blur(22px)',
+              WebkitBackdropFilter: 'blur(22px)',
+              border: '1px solid rgba(255,255,255,0.45)',
               zIndex: 10,
               overflow: 'hidden',
             }}
           >
-            <span className="pl-5 md:pl-6 flex-shrink-0">
+            {/* Search icon */}
+            <span className="pl-5 md:pl-6 flex-shrink-0" aria-hidden>
               <Search
-                className={focused ? 'search-icon-focused' : 'search-icon-idle'}
+                className={focused ? 'vision-icon-focused' : 'vision-icon-idle'}
                 style={{ width: 22, height: 22 }}
               />
             </span>
 
+            {/* Input — all logic untouched */}
             <input
               ref={inputRef}
               type="text"
@@ -366,76 +415,80 @@ export default function HeroSearch() {
               }}
               onKeyDown={handleKeyDown}
               placeholder={PLACEHOLDERS[placeholderIdx]}
-              aria-label="Search technologies"
+              aria-label="Search technologies, problems, institutions, sectors or technology ID"
               aria-autocomplete="list"
               aria-expanded={dropVisible}
-              className="hero-input w-full h-full py-4 px-4 bg-transparent text-base md:text-lg focus:outline-none font-sans min-w-0"
+              role="combobox"
+              className="vision-input w-full h-full py-4 px-4 text-base md:text-[17px] min-w-0 font-sans"
             />
 
+            {/* Clear button */}
             {query && (
-              <button type="button" onClick={clearSearch} aria-label="Clear"
-                className="flex-shrink-0 p-2.5 mr-1 rounded-full transition-all hover:bg-white/10"
-                style={{ color: 'rgba(255,255,255,.45)' }}>
+              <button
+                type="button"
+                onClick={clearSearch}
+                aria-label="Clear search"
+                className="vision-clear flex-shrink-0 mr-1"
+              >
                 <X style={{ width: 15, height: 15 }} />
               </button>
             )}
 
+            {/* Divider */}
+            <div
+              className="flex-shrink-0 self-stretch"
+              style={{ width: 1, background: 'rgba(37,99,235,0.12)', margin: '14px 0' }}
+              aria-hidden
+            />
+
+            {/* Search button */}
             <button
               type="button"
-              onClick={() => { if (query.trim()) window.location.href = `/technologies?q=${encodeURIComponent(query.trim())}`; }}
+              onClick={() => {
+                if (query.trim()) window.location.href = `/technologies?q=${encodeURIComponent(query.trim())}`;
+              }}
               onMouseEnter={() => setBtnHovered(true)}
               onMouseLeave={() => setBtnHovered(false)}
               disabled={!query.trim()}
               aria-label="Search technologies"
-              className="hero-btn flex-shrink-0 h-full disabled:opacity-50 flex items-center gap-[10px]"
+              className="vision-btn flex-shrink-0 flex items-center gap-2.5"
               style={{
-                background: 'linear-gradient(180deg,#F5C242 0%,#E8B320 45%,#D49A00 100%)',
-                color: '#0F172A',
-                borderLeft: '1px solid rgba(255,255,255,0.12)',
-                borderRadius: '0 28px 28px 0',
+                height: 50,
                 minWidth: 120,
-                paddingLeft: 24,
-                paddingRight: 28,
-                fontWeight: 600,
-                fontSize: 18,
+                margin: '0 10px',
+                paddingLeft: 22,
+                paddingRight: 24,
+                fontSize: 15,
                 letterSpacing: '0.3px',
-                boxShadow: '0 12px 30px rgba(212,160,23,.28)',
               }}
             >
               <Search
-                className={btnHovered ? 'btn-icon-pulse' : ''}
-                style={{
-                  width: 20,
-                  height: 20,
-                  color: focused ? '#1D4ED8' : '#0F172A',
-                  transition: 'color 250ms ease',
-                  flexShrink: 0,
-                }}
+                style={{ width: 17, height: 17, flexShrink: 0, color: '#082B63' }}
                 aria-hidden
               />
               Search
             </button>
           </div>
 
-          {/* ── Dropdown ── */}
+          {/* ── Suggestions Dropdown ── */}
           {dropVisible && (
             <div
               role="listbox"
-              className="hero-drop-in absolute left-0 right-0 mt-3 overflow-hidden"
+              aria-label="Search suggestions"
+              className="vision-drop absolute left-0 right-0 mt-3 overflow-y-auto"
               style={{
-                borderRadius: 20,
-                background: 'rgba(8,16,36,0.96)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                border: '1px solid rgba(255,255,255,0.09)',
-                boxShadow: '0 28px 64px rgba(0,0,0,.50)',
+                borderRadius: 24,
+                background: 'rgba(255,255,255,0.94)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: '1px solid rgba(37,99,235,0.08)',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.18)',
                 zIndex: 50,
                 maxHeight: 520,
-                overflowY: 'auto',
               }}
             >
               {/* Loading skeletons */}
-              {isLoading && [1,2,3].map(i => <SkeletonRow key={i} />)}
+              {isLoading && [1, 2, 3].map(i => <SkeletonRow key={i} />)}
 
               {/* Results */}
               {!isLoading && suggestions.map((item, idx) => (
@@ -451,12 +504,14 @@ export default function HeroSearch() {
               {/* Empty state */}
               {noResults && (
                 <div className="flex flex-col items-center gap-3 py-8 px-5 text-center">
-                  <p className="text-sm" style={{ color: 'rgba(255,255,255,.50)' }}>
-                    No matching technologies found for <span className="text-white font-semibold">&ldquo;{query}&rdquo;</span>.
+                  <p className="text-sm text-slate-500">
+                    No matching technologies found for{' '}
+                    <span className="text-slate-800 font-semibold">&ldquo;{query}&rdquo;</span>.
                   </p>
-                  <Link href="/technologies"
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold transition-opacity hover:opacity-75"
-                    style={{ color: '#2563EB' }}>
+                  <Link
+                    href="/technologies"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#2563EB] transition-opacity hover:opacity-75"
+                  >
                     Browse All Technologies <ArrowRight style={{ width: 14, height: 14 }} />
                   </Link>
                 </div>
@@ -464,21 +519,24 @@ export default function HeroSearch() {
 
               {/* Footer */}
               {suggestions.length > 0 && !isLoading && (
-                <div className="flex items-center justify-between px-5 py-3"
-                  style={{ borderTop: '1px solid rgba(255,255,255,.06)' }}>
-                  <span className="text-[11px]" style={{ color: 'rgba(255,255,255,.30)' }}>
+                <div
+                  className="flex items-center justify-between px-5 py-3"
+                  style={{ borderTop: '1px solid rgba(15,23,42,0.06)' }}
+                >
+                  <span className="text-[11px] text-slate-400">
                     {suggestions.length} result{suggestions.length !== 1 ? 's' : ''} &nbsp;·&nbsp; ↑↓ navigate &nbsp;·&nbsp; ↵ open
                   </span>
                   <Link
                     href={`/technologies?q=${encodeURIComponent(query.trim())}`}
-                    className="inline-flex items-center gap-1 text-[11px] font-semibold transition-opacity hover:opacity-75"
-                    style={{ color: '#F5B400' }}>
+                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#F4B400] transition-opacity hover:opacity-80"
+                  >
                     See all results <ArrowRight style={{ width: 11, height: 11 }} />
                   </Link>
                 </div>
               )}
             </div>
           )}
+
         </div>
       </div>
     </>
