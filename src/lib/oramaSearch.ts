@@ -120,26 +120,47 @@ export async function oramaSearch(
     };
   }
 
-  // Orama full-text search with boosting
-  const oramaResults = await search(db, {
-    term: q,
-    tolerance: 2, // typo tolerance
+  // 1. Exact ID Match Override (Priority 1)
+  const qLower = q.toLowerCase();
+  const exactIdMatch = techs.find(t => t.id.toLowerCase() === qLower);
+  if (exactIdMatch) {
+    return {
+      results: [{ technology: exactIdMatch, score: 1000 }],
+      query: q,
+      totalFound: 1,
+      elapsed: Date.now() - startTime,
+    };
+  }
+
+  // 2. Remove Stop Words
+  const STOP_WORDS = new Set(['the', 'and', 'for', 'of', 'with', 'using', 'based', 'system', 'method', 'technology']);
+  const cleanTokens = q.split(/\s+/).filter(w => !STOP_WORDS.has(w.toLowerCase()));
+  const cleanQuery = cleanTokens.length > 0 ? cleanTokens.join(' ') : q;
+
+  // 3. Search Configuration with User-Defined Weights
+  const searchConfig = {
+    term: cleanQuery,
     boost: {
-      technology_name: 5,
-      technology_id: 4,
-      keywords: 4,
-      problem_solved: 3,
-      applications: 3,
-      technology_type: 2,
-      institution: 2,
-      primary_sector: 2,
-      secondary_sector: 1.5,
-      description: 1,
-      trl: 0.5,
-      patent_status: 0.5,
+      technology_id: 100,
+      technology_name: 90,
+      keywords: 80,
+      problem_solved: 70,
+      description: 60,
+      applications: 50,
+      institution: 40,
+      primary_sector: 35,
+      technology_type: 30,
     },
     limit: 100,
-  });
+  };
+
+  // 4. First Pass: Exact Matches Only (Tolerance: 0)
+  let oramaResults = await search(db, { ...searchConfig, tolerance: 0 });
+
+  // 5. Fallback Pass: Fuzzy Matching (Tolerance: 1) only if exact matches yield nothing
+  if (oramaResults.hits.length === 0) {
+    oramaResults = await search(db, { ...searchConfig, tolerance: 1 });
+  }
 
   // Map Orama hits back to Technology objects
   let results: OramaSearchResult[] = [];
