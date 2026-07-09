@@ -330,8 +330,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
                 <div>
-                  <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">More from {tech.sector}</div>
-                  <h2 className="text-2xl font-bold text-gray-900 font-heading">Related Technologies</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 font-heading">More from {tech.sector}</h2>
                 </div>
                 <Link href={`/sectors/${tech.sector_slug}`}
                   className="inline-flex items-center gap-1 text-sm font-semibold text-[#0A2164] hover:underline">
