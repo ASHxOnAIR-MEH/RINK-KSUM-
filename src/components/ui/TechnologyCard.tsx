@@ -127,11 +127,8 @@ export default function TechnologyCard({ technology, compact = false, featured =
         }}
       >
 
-        {/* ── IMAGE AREA (≈45% of card height) ─────────────────── */}
-        <div
-          className="relative w-full flex-shrink-0 overflow-hidden"
-          style={{ height: 188 }}
-        >
+        {/* ── IMAGE AREA ────────────────────────────────────────── */}
+        <div className="relative aspect-[16/9] w-full overflow-hidden flex-shrink-0 bg-gray-50 border-b border-gray-100">
           {hasImage ? (
             <>
               {/* Skeleton shimmer — visible while image loads */}
@@ -170,60 +167,73 @@ export default function TechnologyCard({ technology, compact = false, featured =
                 loading="lazy"
                 decoding="async"
               />
+
+              {/* Light gradient overlay for badge readability */}
+              <div
+                className="absolute inset-0 pointer-events-none z-[1]"
+                style={{
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 60%)',
+                }}
+              />
             </>
           ) : (
             /* Premium sector illustration placeholder */
-            <div
-              className="absolute inset-0 w-full h-full flex items-center justify-center"
-              style={{ background: `linear-gradient(135deg, ${SECTOR_ACCENTS[technology.sector_slug] || '#0A2164'}18 0%, ${SECTOR_ACCENTS[technology.sector_slug] || '#0A2164'}08 100%)` }}
-            >
-              <div className="w-full h-full opacity-[0.18]">
-                <SectorIllustration slug={technology.sector_slug} accentColor={SECTOR_ACCENTS[technology.sector_slug] || '#1b60bb'} />
-              </div>
-              {/* Subtle label for no-image state */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span
-                  className="text-[11px] font-semibold uppercase tracking-widest"
-                  style={{ color: SECTOR_ACCENTS[technology.sector_slug] || '#1b60bb', opacity: 0.5 }}
-                >
-                  {technology.sector}
-                </span>
-              </div>
+            <div className="absolute inset-0 w-full h-full opacity-25 z-0">
+              <SectorIllustration slug={technology.sector_slug} accentColor={SECTOR_ACCENTS[technology.sector_slug] || '#0A2164'} />
+              <div
+                className="absolute inset-0 pointer-events-none z-[1]"
+                style={{
+                  background: 'linear-gradient(to top, rgba(17,24,39,0.5) 0%, transparent 60%)',
+                }}
+              />
             </div>
           )}
 
-          {/* Bottom gradient for text legibility over image */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{ background: 'linear-gradient(to top, rgba(5,10,24,0.55) 0%, rgba(5,10,24,0.1) 50%, transparent 100%)' }}
-          />
-
-          {/* ── Sector badge — bottom-left over image ─────────── */}
+          {/* ── Sector pill ─────────── */}
           <div className="absolute bottom-3 left-3 z-10">
-            <span
-              className="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-sm"
-              style={{
-                background: 'rgba(255,255,255,0.88)',
-                color: '#1e293b',
-                border: '1px solid rgba(255,255,255,0.6)',
-              }}
-            >
+            <span className="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-white/90 text-gray-800 border border-gray-200 backdrop-blur-sm uppercase tracking-wider shadow-sm">
               {technology.sector}
             </span>
           </div>
 
-          {/* ── ★ Featured pill — top-right ───────────────────── */}
+          {/* ── ★ Featured ribbon — vertical bookmark ───────────────────── */}
           {featured && (
-            <div className="absolute top-3 right-3 z-10">
+            <div
+              className="absolute top-0 left-4 z-10 flex flex-col items-center justify-start shadow-md transition-transform duration-300 group-hover:translate-y-1"
+              style={{
+                width: 30,
+                height: '58%',
+                background: 'linear-gradient(180deg, #F59E0B 0%, #D97706 80%, #B45309 100%)',
+                clipPath: 'polygon(0 0, 100% 0, 100% 88%, 50% 100%, 0 88%)',
+              }}
+            >
+              {/* Star at top */}
               <span
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold shadow-md"
                 style={{
-                  background: '#F5B301',
-                  color: '#422006',
-                  boxShadow: '0 2px 8px rgba(245,179,1,0.35)',
+                  fontSize: 13,
+                  color: '#7C2D12',
+                  marginTop: 7,
+                  lineHeight: 1,
+                  filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.15))',
                 }}
               >
-                ★ Featured
+                ★
+              </span>
+              {/* Vertical text */}
+              <span
+                style={{
+                  writingMode: 'vertical-rl',
+                  textOrientation: 'mixed',
+                  transform: 'rotate(180deg)',
+                  fontSize: 8,
+                  fontWeight: 800,
+                  color: '#7C2D12',
+                  letterSpacing: '0.12em',
+                  marginTop: 6,
+                  textTransform: 'uppercase',
+                }}
+              >
+                Featured
               </span>
             </div>
           )}

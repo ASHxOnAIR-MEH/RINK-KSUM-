@@ -153,8 +153,7 @@ export default function FeaturedCarousel({ technologies }: Props) {
             {tripled.map((tech, idx) => (
               <div
                 key={`${tech.id}-${idx}`}
-                className="flex-shrink-0"
-                style={{ width: 295, height: 450 }}
+                className="flex-shrink-0 w-[240px] xs:w-[260px] sm:w-[280px] md:w-[320px] relative h-[360px] sm:h-[380px] md:h-[420px]"
                 onMouseEnter={pause}
                 onMouseLeave={resume}
               >
