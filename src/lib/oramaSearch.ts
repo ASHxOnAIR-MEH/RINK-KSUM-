@@ -26,6 +26,29 @@ const SCHEMA = {
   ip_status: 'string' as const,
 };
 
+// ── Normalization ────────────────────────────────────────────
+function normalizeText(text: string): string {
+  if (!text) return '';
+  // 1 & 2. Lowercase / ignore capitalization
+  let normalized = text.toLowerCase();
+  // 3 & 4. Ignore punctuation & hyphens (replace with space)
+  normalized = normalized.replace(/[^\w\s]/g, ' ');
+  // 5. Ignore multiple spaces
+  normalized = normalized.replace(/\s+/g, ' ').trim();
+
+  // 6. Treat compound words and spaced words as equivalent
+  // Append joined variations directly to the index text
+  const words = normalized.split(' ');
+  const joinedPairs = [];
+  for (let i = 0; i < words.length - 1; i++) {
+    joinedPairs.push(words[i] + words[i + 1]);
+  }
+  const fullyJoined = words.join('');
+
+  // Example: "waste water management" -> "waste water management wastewater watermanagement wastewatermanagement"
+  return `${normalized} ${joinedPairs.join(' ')} ${fullyJoined}`.trim();
+}
+
 // ── Singleton index ──────────────────────────────────────────
 let _oramaDB: Awaited<ReturnType<typeof create>> | null = null;
 let _indexedTechs: Technology[] = [];
@@ -46,16 +69,16 @@ async function getIndex() {
   for (const tech of techs) {
     await insert(db, {
       technology_id: tech.id,
-      technology_name: tech.name,
-      institution: tech.institution,
-      primary_sector: tech.sector,
+      technology_name: normalizeText(tech.name),
+      institution: normalizeText(tech.institution),
+      primary_sector: normalizeText(tech.sector),
       secondary_sector: '', // populated from secondary_sector if available
-      technology_type: tech.technology_type,
-      problem_solved: tech.problem_solved,
-      description: tech.description,
-      applications: tech.applications.join(', '),
-      startup_potential: tech.startup_potential,
-      keywords: tech.keywords.join(', '),
+      technology_type: normalizeText(tech.technology_type),
+      problem_solved: normalizeText(tech.problem_solved),
+      description: normalizeText(tech.description),
+      applications: normalizeText(tech.applications.join(', ')),
+      startup_potential: normalizeText(tech.startup_potential),
+      keywords: normalizeText(tech.keywords.join(', ')),
       trl: tech.trl,
       patent_status: tech.patent_status,
       ip_status: tech.ip_status,
@@ -132,10 +155,17 @@ export async function oramaSearch(
     };
   }
 
-  // 2. Remove Stop Words
+  // 2. Remove Stop Words and normalize query
   const STOP_WORDS = new Set(['the', 'and', 'for', 'of', 'with', 'using', 'based', 'system', 'method', 'technology']);
-  const cleanTokens = q.split(/\s+/).filter(w => !STOP_WORDS.has(w.toLowerCase()));
-  const cleanQuery = cleanTokens.length > 0 ? cleanTokens.join(' ') : q;
+  const cleanTokens = q.toLowerCase()
+    .replace(/[^\w\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(w => !STOP_WORDS.has(w));
+
+  const cleanQuery = cleanTokens.join(' ');
+  const joinedQuery = cleanTokens.join(''); // e.g. "sea weed" -> "seaweed"
 
   // 3. Search Configuration with User-Defined Weights
   const searchConfig = {
@@ -157,7 +187,23 @@ export async function oramaSearch(
   // 4. First Pass: Exact Matches Only (Tolerance: 0)
   let oramaResults = await search(db, { ...searchConfig, tolerance: 0 });
 
-  // 5. Fallback Pass: Fuzzy Matching (Tolerance: 1) only if exact matches yield nothing
+  // 5. Concurrent Pass: if user typed multiple words, also search the joined version (e.g. "seaweed")
+  if (cleanTokens.length > 1 && joinedQuery) {
+    const joinedResults = await search(db, { ...searchConfig, term: joinedQuery, tolerance: 0 });
+    
+    // Merge hits safely (avoiding duplicates)
+    const seen = new Set(oramaResults.hits.map(h => h.id));
+    for (const hit of joinedResults.hits) {
+      if (!seen.has(hit.id)) {
+        oramaResults.hits.push(hit);
+        seen.add(hit.id);
+      }
+    }
+    // Sort combined hits by score descending
+    oramaResults.hits.sort((a, b) => b.score - a.score);
+  }
+
+  // 6. Fallback Pass: Fuzzy Matching (Tolerance: 1) only if exact matches yield nothing
   if (oramaResults.hits.length === 0) {
     oramaResults = await search(db, { ...searchConfig, tolerance: 1 });
   }
