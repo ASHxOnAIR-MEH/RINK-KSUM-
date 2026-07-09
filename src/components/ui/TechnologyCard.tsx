@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Technology } from '@/types';
 import Link from 'next/link';
-import { Building2, ArrowRight, FlaskConical, ShieldCheck, CheckCircle } from 'lucide-react';
+import { Building2, ArrowRight, FlaskConical, ShieldCheck, CheckCircle, Star } from 'lucide-react';
 import { SectorIllustration, SECTOR_ACCENTS } from './SectorCard';
 import { motion, useReducedMotion } from 'framer-motion';
 
@@ -207,23 +207,23 @@ export default function TechnologyCard({ technology, compact = false, featured =
                 clipPath: 'polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%)',
               }}
             >
-              {/* Check Circle Icon */}
-              <CheckCircle 
-                style={{ width: 22, height: 22, color: '#FFFFFF', marginTop: 10, strokeWidth: 2.5 }}
+              {/* Star Icon */}
+              <Star 
+                style={{ width: 18, height: 18, color: '#FFFFFF', marginTop: 10, strokeWidth: 3, fill: '#FFFFFF' }}
               />
               {/* Text */}
               <span
                 className="text-center leading-[1.1]"
                 style={{
-                  fontSize: 10,
-                  fontWeight: 800,
+                  fontSize: 9,
+                  fontWeight: 900,
                   color: '#FFFFFF',
-                  letterSpacing: '0.05em',
+                  letterSpacing: '0.02em',
                   marginTop: 6,
                   textTransform: 'uppercase',
                 }}
               >
-                FEA<br/>TURED
+                FEATURED
               </span>
             </div>
           )}
