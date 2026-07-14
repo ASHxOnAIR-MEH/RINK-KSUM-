@@ -285,7 +285,21 @@ export default function TechListClient({
                   </select>
                 </div>
 
-
+                <div className="filter-group">
+                  <label htmlFor="filter-potential" className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                    Featured
+                  </label>
+                  <select
+                    id="filter-potential"
+                    value={filters.potential}
+                    onChange={e => applyFilter('potential', e.target.value)}
+                    className="w-full text-sm border border-border rounded-lg px-3 py-2 text-text-primary bg-card focus:outline-none focus:border-accent-secondary focus:ring-1 focus:ring-accent-secondary/20"
+                  >
+                    <option value="">All Technologies</option>
+                    <option value="featured">Featured Technologies</option>
+                    <option value="non-featured">Non-Featured Technologies</option>
+                  </select>
+                </div>
               </div>
             </div>
           )}
