@@ -3,6 +3,43 @@ import { RawTechnology, RawInstitutionDetail } from '@/types/raw';
 import { CDN_HOST } from './config';
 
 // ── Slug helpers ─────────────────────────────────────────────
+const HTML_ENTITIES: Record<string, string> = {
+  '&amp;':  '&',
+  '&lt;':   '<',
+  '&gt;':   '>',
+  '&quot;': '"',
+  '&#39;':  "'",
+  '&#x27;': "'",
+  '&#x2F;': '/',
+  '&#x60;': '`',
+  '&apos;': "'",
+  '&nbsp;': ' ',
+  '&ndash;': '–',
+  '&mdash;': '—',
+  '&rsquo;': '\u2019',
+  '&lsquo;': '\u2018',
+  '&rdquo;': '\u201D',
+  '&ldquo;': '\u201C',
+};
+
+/**
+ * Decodes HTML entities in a string.
+ * Handles both named entities (&amp;) and numeric entities (&#39; / &#x27;).
+ */
+export function decodeHtml(s: string | null | undefined): string {
+  if (!s) return '';
+  let out = s;
+  // Named entities
+  for (const [entity, char] of Object.entries(HTML_ENTITIES)) {
+    out = out.split(entity).join(char);
+  }
+  // Decimal numeric entities: &#NNN;
+  out = out.replace(/&#(\d+);/g, (_, num) => String.fromCharCode(parseInt(num, 10)));
+  // Hex numeric entities: &#xNNN;
+  out = out.replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+  return out;
+}
+
 export function toSlug(text: string): string {
   return text
     .toLowerCase()
@@ -15,6 +52,7 @@ export function toSlug(text: string): string {
 // ── Google Drive URL converter ────────────────────────────────
 // Converts any Google Drive sharing URL into an embeddable <img> src.
 // Primary: lh3.googleusercontent.com/d/FILE_ID  (CORS-safe, no auth required)
+// Secondary: drive.google.com/uc?export=view&id=FILE_ID
 // Fallback: drive.google.com/thumbnail?id=FILE_ID&sz=w800
 export function toDriveEmbedUrl(url: string | null | undefined): string {
   if (!url || url === 'Not Specified' || url === 'NA' || url.trim() === '') return '';
@@ -29,6 +67,9 @@ export function toDriveEmbedUrl(url: string | null | undefined): string {
   // Already a lh3 URL — use as-is
   if (trimmed.includes('lh3.googleusercontent.com')) return trimmed;
 
+  // Already a uc?export URL — use as-is
+  if (trimmed.includes('drive.google.com/uc')) return trimmed;
+
   // Already a thumbnail URL — use as-is
   if (trimmed.includes('drive.google.com/thumbnail')) return trimmed;
 
@@ -38,12 +79,12 @@ export function toDriveEmbedUrl(url: string | null | undefined): string {
   //   drive.google.com/open?id=FILE_ID
   const fileMatch = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (fileMatch) {
-    return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
+    return `https://drive.google.com/uc?export=view&id=${fileMatch[1]}`;
   }
 
   const idMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
   if (idMatch) {
-    return `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
+    return `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
   }
 
   // Skip folder or drive links — they don't contain a file ID
@@ -129,19 +170,21 @@ export function getValFromObj(obj: Record<string, any>, possibleKeys: string[], 
 // ── Mapper: RawTechnology -> Technology ───────────────────────
 export function mapTechnology(raw: RawTechnology): Technology | null {
   const getVal = (keys: string[], fallback: string = '') => getValFromObj(raw, keys, fallback);
+  // Wrapper that also decodes HTML entities in every text field
+  const getText = (keys: string[], fallback: string = '') => decodeHtml(getVal(keys, fallback));
 
-  const id = getVal(['technologyid', 'id']);
-  const name = getVal(['technologyname', 'name']);
+  const id = getText(['technologyid', 'id']);
+  const name = getText(['technologyname', 'name']);
 
   if (!id || !name || id === 'Technology ID') return null;
 
-  const institution = getVal(['institution']) || 'Unknown Institution';
-  const sector = getVal(['primarysector', 'primary_sector', 'sector']) || 'General';
+  const institution = getText(['institution']) || 'Unknown Institution';
+  const sector = getText(['primarysector', 'primary_sector', 'sector']) || 'General';
   
-  const phone = getVal(['phone', 'contactno', 'contactphone', 'mobile'], '')
+  const phone = getText(['phone', 'contactno', 'contactphone', 'mobile'], '')
     .replace(/[\r\n]+/g, '')
     .trim();
-  const email = getVal(['email', 'contactemail']);
+  const email = getText(['email', 'contactemail']);
   const imageUrl = getVal(['imageurl', 'image', 'photourl', 'embedurl', 'imagelink', 'imgurl', 'q']);
 
   const startupPotentialRaw = getVal(['startuppotential', 'potential'], 'Not Specified');
@@ -156,33 +199,33 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
     startupPotentialNormalized === 'emerging' ? 'Medium' :
     'Not Specified';
 
-  const keywordsRaw = getVal(['keywords', 'tags']);
+  const keywordsRaw = getText(['keywords', 'tags']);
   const keywords = keywordsRaw
     ? keywordsRaw.split(/[,;]/).map((k: string) => k.trim()).filter(Boolean)
     : [];
 
-  const applicationsRaw = getVal(['applications', 'usecases']);
+  const applicationsRaw = getText(['applications', 'usecases']);
   const applications = normalizeApplications(applicationsRaw);
 
   const sectorSlug = toSlug(sector);
   const institutionSlug = toSlug(institution);
   const embedUrl = toDriveEmbedUrl(imageUrl);
 
-  const trlVal = getVal(['trl', 'trllevel']);
+  const trlVal = getText(['trl', 'trllevel']);
   const trl = trlVal && trlVal !== 'Not Specified' && trlVal !== 'NA' ? trlVal : 'TRL Not Available';
 
-  const patentVal = getVal(['patentstatus', 'patent']);
+  const patentVal = getText(['patentstatus', 'patent']);
   const patent_status = patentVal && patentVal !== 'Not Specified' && patentVal !== 'NA' ? patentVal : 'Patent Status Not Available';
 
-  const ipStatusVal = getVal(['ipstatusforfrontend', 'ipstatus', 'ipstatusfrontend'], '');
+  const ipStatusVal = getText(['ipstatusforfrontend', 'ipstatus', 'ipstatusfrontend'], '');
   const ip_status = ipStatusVal && ipStatusVal !== 'Not Specified' && ipStatusVal !== 'NA' ? ipStatusVal : 'Not Available';
 
-  const commVal = getVal(['commercializationstatus', 'commercialization', 'status']);
+  const commVal = getText(['commercializationstatus', 'commercialization', 'status']);
   const commercialization_status = commVal && commVal !== 'Not Specified' && commVal !== 'NA' ? commVal : 'Commercialization Status Not Available';
 
   const techImage = getVal(['technologyimage', 'technologyphotourl', 'techimage', 'technologyimageurl']);
   const instImage = getVal(['institutionimage', 'institutionlogo', 'logo', 'institutionlogourl']);
-  const lastUpdated = getVal(['lastupdated', 'updated', 'lastupdateddate']);
+  const lastUpdated = getText(['lastupdated', 'updated', 'lastupdateddate']);
 
   const techImageEmbedUrl = techImage ? toDriveEmbedUrl(techImage) : '';
   const instImageEmbedUrl = instImage ? toDriveEmbedUrl(instImage) : '';
@@ -194,9 +237,9 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
     institution_slug: institutionSlug,
     sector,
     sector_slug: sectorSlug,
-    technology_type: getVal(['technologytype', 'type'], 'Not Specified'),
-    problem_solved: getVal(['problemsolved', 'problem'], 'Information being updated'),
-    description: getVal(['description', 'desc'], 'Information being updated'),
+    technology_type: getText(['technologytype', 'type'], 'Not Specified'),
+    problem_solved: getText(['problemsolved', 'problem'], 'Information being updated'),
+    description: getText(['description', 'desc'], 'Information being updated'),
     applications: applications.length ? applications : ['Information being updated'],
     startup_potential: startupPotentialCanonical,
     startup_potential_score: potentialScore(startupPotentialCanonical),
@@ -204,13 +247,13 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
     patent_status,
     ip_status,
     commercialization_status,
-    contact_person: getVal(['contactperson', 'contact'], 'Contact Institution'),
+    contact_person: getText(['contactperson', 'contact'], 'Contact Institution'),
     phone,
     email,
     keywords,
     image_url: imageUrl,
     image_embed_url: embedUrl,
-    institution_website: getVal(['institutionwebsite', 'website', 'url']),
+    institution_website: getText(['institutionwebsite', 'website', 'url']),
     featured: startupPotentialNormalized === 'high' || startupPotentialNormalized === 'featured' || startupPotentialNormalized === 'very high',
     technology_image: techImage,
     technology_image_embed_url: techImageEmbedUrl,
@@ -223,8 +266,9 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
 // ── Mapper: RawInstitutionDetail -> InstitutionDetailRow ──────
 export function mapInstitutionDetail(raw: RawInstitutionDetail) {
   const getVal = (keys: string[], fallback = '') => getValFromObj(raw, keys, fallback);
+  const getText = (keys: string[], fallback = '') => decodeHtml(getVal(keys, fallback));
 
-  const name = getVal(['institutionname', 'name', 'institution']);
+  const name = getText(['institutionname', 'name', 'institution']);
   if (!name) return null;
 
   const logoRaw = getVal(['institutionlogourl', 'institutionlogo', 'logo', 'logourl', 'institutionimage', 'image']);
@@ -235,9 +279,9 @@ export function mapInstitutionDetail(raw: RawInstitutionDetail) {
     slug: toSlug(name),
     logo_url: logoRaw,
     logo_embed_url: logoEmbed,
-    address: getVal(['address', 'location', 'institutionaddress']),
-    website: getVal(['locationwebsitelink', 'website', 'officialwebsite', 'url', 'institutionwebsite']),
-    contact_email: getVal(['email', 'contactemail']),
-    contact_phone: getVal(['phone', 'contactphone']),
+    address: getText(['address', 'location', 'institutionaddress']),
+    website: getText(['locationwebsitelink', 'website', 'officialwebsite', 'url', 'institutionwebsite']),
+    contact_email: getText(['email', 'contactemail']),
+    contact_phone: getText(['phone', 'contactphone']),
   };
 }
