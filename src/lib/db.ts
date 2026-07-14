@@ -14,16 +14,29 @@ import {
 
 // ── Search helper ─────────────────────────────────────────────
 function matchesSearch(tech: Technology, query: string): boolean {
-  const q = query.toLowerCase();
+  // Normalize: lowercase, strip punctuation/hyphens, collapse spaces
+  const normalizeQ = (s: string) =>
+    s.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+
+  const q = normalizeQ(query);
+  // Also test the fully-joined form: "waste water" → "wastewater"
+  const jQ = q.replace(/\s+/g, '');
+
+  const hit = (field: string) => {
+    const nf = normalizeQ(field);
+    const jf = nf.replace(/\s+/g, '');
+    return nf.includes(q) || jf.includes(jQ) || nf.includes(jQ) || jf.includes(q);
+  };
+
   return (
-    tech.name.toLowerCase().includes(q) ||
-    tech.description.toLowerCase().includes(q) ||
-    tech.problem_solved.toLowerCase().includes(q) ||
-    tech.institution.toLowerCase().includes(q) ||
-    tech.sector.toLowerCase().includes(q) ||
-    tech.technology_type.toLowerCase().includes(q) ||
-    tech.keywords.some(k => k.toLowerCase().includes(q)) ||
-    tech.applications.some(a => a.toLowerCase().includes(q))
+    hit(tech.name) ||
+    hit(tech.description) ||
+    hit(tech.problem_solved) ||
+    hit(tech.institution) ||
+    hit(tech.sector) ||
+    hit(tech.technology_type) ||
+    tech.keywords.some(k => hit(k)) ||
+    tech.applications.some(a => hit(a))
   );
 }
 
