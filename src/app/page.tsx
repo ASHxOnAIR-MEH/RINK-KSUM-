@@ -45,7 +45,7 @@ export default async function HomePage() {
         {/* Research particles */}
         <ResearchParticles />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-28 lg:py-32 flex flex-col items-center text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-24 md:py-36 lg:py-44 flex flex-col items-center text-center">
           {/* Portal identity heading */}
           <div
             className="text-[11px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.25em] mb-8"

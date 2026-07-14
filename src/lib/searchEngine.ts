@@ -26,7 +26,7 @@ import type { SearchIndexItem } from '@/types';
 
 // ── Constants ─────────────────────────────────────────────────────
 const MIN_SCORE = 80;
-const MAX_RESULTS = 8;
+const MAX_RESULTS = 12;
 
 // ── Lazy-loaded Orama (avoid bundling in SSR) ─────────────────────
 let _create: ((schema: Record<string, string>) => Promise<AnyOrama>) | null = null;
