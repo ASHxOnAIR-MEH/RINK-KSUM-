@@ -235,6 +235,9 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
   const trlVal = getText(['trl', 'trllevel']);
   const trl = trlVal && trlVal !== 'Not Specified' && trlVal !== 'NA' ? trlVal : 'TRL Not Available';
 
+  const actualTrlVal = getText(['atrl', 'a-trl', 'actualtrl', 'actual-trl']);
+  const actual_trl = actualTrlVal && actualTrlVal !== 'Not Specified' && actualTrlVal !== 'NA' ? actualTrlVal : 'Not Specified';
+
   const patentVal = getText(['patentstatus', 'patent']);
   const patent_status = patentVal && patentVal !== 'Not Specified' && patentVal !== 'NA' ? patentVal : 'Patent Status Not Available';
 
@@ -265,6 +268,7 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
     startup_potential: startupPotentialCanonical,
     startup_potential_score: potentialScore(startupPotentialCanonical),
     trl,
+    actual_trl,
     patent_status,
     ip_status,
     commercialization_status,

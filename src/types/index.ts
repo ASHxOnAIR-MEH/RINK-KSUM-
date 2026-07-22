@@ -17,6 +17,7 @@ export interface Technology {
   startup_potential: StartupPotential; // High / Medium / Low
   startup_potential_score: number;     // 5 / 3 / 2 for star display
   trl: string;              // TRL (sourced directly or fallback)
+  actual_trl: string;       // Actual precise TRL level (1-9)
   patent_status: string;    // Patent Status — COMPLETE legal text (e.g. "GRANTED (Patent No: 394501)")
   ip_status: string;        // IP Status for frontend — normalized value (Patented/Published/Filed/Patent Pending/Not Patented/Not Available)
   commercialization_status: string; // Commercialization Status (sourced directly or fallback)
