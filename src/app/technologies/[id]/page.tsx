@@ -206,7 +206,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                           <Lightbulb className="w-5 h-5 text-blue-600" />
                         </div>
                         <h2 className="font-serif text-lg font-bold text-blue-900 tracking-tight">
-                          Problem Being Solved
+                          Why It Matters
                         </h2>
                       </div>
                       <p className="text-slate-700 leading-relaxed font-sans text-[15px]">
