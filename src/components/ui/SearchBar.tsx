@@ -61,15 +61,14 @@ export default function SearchBar({ size = 'md', defaultValue = '', autoFocus = 
       setOpen(false);
       return;
     }
-    const ql = q.toLowerCase();
-    const matched = allItems.filter(item =>
-      item.name.toLowerCase().includes(ql) ||
-      item.institution.toLowerCase().includes(ql) ||
-      item.sector.toLowerCase().includes(ql) ||
-      item.keywords.some(k => k.toLowerCase().includes(ql)) ||
-      item.applications.some(a => a.toLowerCase().includes(ql)) ||
-      item.problem_solved.toLowerCase().includes(ql)
-    ).slice(0, 7);
+    const ql = q.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+    const qlJoined = ql.replace(/\s+/g, '');
+    const matched = allItems.filter(item => {
+      const nf = item.name.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+      const jf = nf.replace(/\s+/g, '');
+      // Name-only matching, with joined-word support ("wastewater" ↔ "waste water")
+      return nf.includes(ql) || jf.includes(qlJoined) || nf.includes(qlJoined) || jf.includes(ql);
+    }).slice(0, 7);
 
     setSuggestions(matched);
     setOpen(matched.length > 0);
@@ -141,7 +140,7 @@ export default function SearchBar({ size = 'md', defaultValue = '', autoFocus = 
           onChange={e => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           onFocus={() => { if (suggestions.length > 0) setOpen(true); }}
-          placeholder="Search technologies, sectors, institutions, applications..."
+          placeholder="Search by Technology Name..."
           autoFocus={autoFocus}
           className={`search-input ${inputPadding} pr-24`}
           autoComplete="off"

@@ -28,16 +28,9 @@ function matchesSearch(tech: Technology, query: string): boolean {
     return nf.includes(q) || jf.includes(jQ) || nf.includes(jQ) || jf.includes(q);
   };
 
-  return (
-    hit(tech.name) ||
-    hit(tech.description) ||
-    hit(tech.problem_solved) ||
-    hit(tech.institution) ||
-    hit(tech.sector) ||
-    hit(tech.technology_type) ||
-    tech.keywords.some(k => hit(k)) ||
-    tech.applications.some(a => hit(a))
-  );
+  // Search ONLY against technology name.
+  // Institution, sector, keywords, applications, etc. are handled by dedicated filters.
+  return hit(tech.name);
 }
 
 // ── Technologies ──────────────────────────────────────────────
