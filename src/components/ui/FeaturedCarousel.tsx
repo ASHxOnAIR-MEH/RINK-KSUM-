@@ -167,28 +167,42 @@ export default function FeaturedCarousel({ technologies }: Props) {
         <div
           className="absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center justify-center px-4"
           style={{
-            height: 160,
+            height: 180,
             background: '#ffffff',
             borderTopLeftRadius: '3rem',
             borderTopRightRadius: '3rem',
             boxShadow: '0 -6px 32px rgba(0,0,0,0.10)',
           }}
         >
-          <p className="text-[#1b60bb] text-[16px] md:text-[20px] font-medium text-center mb-4 leading-snug">
+          <p className="text-[#1b60bb] text-[16px] md:text-[20px] font-medium text-center mb-5 leading-snug">
             Ready to Discover Commercially Viable Technologies?
           </p>
-          <Link
-            href="/technologies"
-            id="browse-all-featured-cta"
-            className="group/btn inline-flex items-center gap-2 bg-[#1b60bb] hover:bg-[#0d4a9a] text-white px-6 py-2.5 rounded-full font-semibold text-sm shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
-          >
-            Browse All Technologies
-            <ArrowUpRight
-              size={16}
-              strokeWidth={2.5}
-              className="transition-transform duration-300 group-hover/btn:translate-x-[2px] group-hover/btn:-translate-y-[2px]"
-            />
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <Link
+              href="/technologies"
+              id="browse-all-technologies-cta"
+              className="group/btn inline-flex items-center gap-2 bg-[#1b60bb] hover:bg-[#0d4a9a] text-white px-6 py-2.5 rounded-full font-semibold text-sm shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+            >
+              Browse All Technologies
+              <ArrowUpRight
+                size={16}
+                strokeWidth={2.5}
+                className="transition-transform duration-300 group-hover/btn:translate-x-[2px] group-hover/btn:-translate-y-[2px]"
+              />
+            </Link>
+            <Link
+              href="/technologies?potential=featured"
+              id="browse-featured-cta"
+              className="group/btn2 inline-flex items-center gap-2 bg-[#F4B400] hover:bg-[#E8A400] text-[#082B63] px-6 py-2.5 rounded-full font-semibold text-sm shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+            >
+              Browse All Featured Technologies
+              <ArrowUpRight
+                size={16}
+                strokeWidth={2.5}
+                className="transition-transform duration-300 group-hover/btn2:translate-x-[2px] group-hover/btn2:-translate-y-[2px]"
+              />
+            </Link>
+          </div>
         </div>
 
       </div>

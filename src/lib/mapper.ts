@@ -46,7 +46,28 @@ export function toSlug(text: string): string {
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
-    .trim();
+}
+
+/**
+ * Converts text to Title Case (first letter capital, rest small).
+ * Example: "VIRGIN COCONUT OIL" -> "Virgin Coconut Oil"
+ */
+export function toTitleCase(text: string): string {
+  if (!text) return '';
+  
+  const smallWords = /^(a|an|and|as|at|but|by|en|for|if|in|nor|of|on|or|per|the|to|via|vs)$/i;
+  
+  return text
+    .toLowerCase()
+    .split(/\s+/)
+    .map((word, index, arr) => {
+      // Always capitalize the first and last word, otherwise check small words list
+      if (index === 0 || index === arr.length - 1 || !smallWords.test(word)) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }
+      return word;
+    })
+    .join(' ');
 }
 
 // ── Google Drive URL converter ────────────────────────────────
@@ -174,7 +195,7 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
   const getText = (keys: string[], fallback: string = '') => decodeHtml(getVal(keys, fallback));
 
   const id = getText(['technologyid', 'id']);
-  const name = getText(['technologyname', 'name']);
+  const name = toTitleCase(getText(['technologyname', 'name']));
 
   if (!id || !name || id === 'Technology ID') return null;
 
@@ -214,6 +235,9 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
   const trlVal = getText(['trl', 'trllevel']);
   const trl = trlVal && trlVal !== 'Not Specified' && trlVal !== 'NA' ? trlVal : 'TRL Not Available';
 
+  const actualTrlVal = getText(['atrl', 'a-trl', 'actualtrl', 'actual-trl', 'column1']);
+  const actual_trl = actualTrlVal && actualTrlVal !== 'Not Specified' && actualTrlVal !== 'NA' ? actualTrlVal : 'Not Specified';
+
   const patentVal = getText(['patentstatus', 'patent']);
   const patent_status = patentVal && patentVal !== 'Not Specified' && patentVal !== 'NA' ? patentVal : 'Patent Status Not Available';
 
@@ -244,6 +268,7 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
     startup_potential: startupPotentialCanonical,
     startup_potential_score: potentialScore(startupPotentialCanonical),
     trl,
+    actual_trl,
     patent_status,
     ip_status,
     commercialization_status,

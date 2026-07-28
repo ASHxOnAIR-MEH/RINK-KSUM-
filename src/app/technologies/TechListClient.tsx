@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Technology, SearchResult, Sector, Institution } from '@/types';
 import TechnologyCard from '@/components/ui/TechnologyCard';
@@ -103,11 +103,31 @@ export default function TechListClient({
 
   const activeFilterCount = Object.values(filters).filter(v => v !== '').length;
 
+  // ── Scroll-to-search on navigation from homepage ───────────
+  const searchSectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Only scroll if the user arrived with a query (i.e. from a homepage search)
+    if (!initialFilters.q) return;
+
+    // rAF ensures the browser has painted the full layout before we scroll
+    const raf = requestAnimationFrame(() => {
+      searchSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Focus the search input after the scroll settles
+      const inputEl = document.getElementById('rink-search-input') as HTMLInputElement | null;
+      if (inputEl) {
+        setTimeout(() => inputEl.focus({ preventScroll: true }), 350);
+      }
+    });
+    return () => cancelAnimationFrame(raf);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount only
+
   return (
     <div className="min-h-screen bg-background">
 
-      {/* Header */}
-      <div className="bg-card border-b border-border">
+      {/* Header — anchor for scroll-to-search from homepage */}
+      <div id="tech-search-section" ref={searchSectionRef} className="bg-card border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           <div className="flex flex-col md:flex-row md:items-center gap-4">
             <div className="flex-1">
@@ -265,7 +285,21 @@ export default function TechListClient({
                   </select>
                 </div>
 
-
+                <div className="filter-group">
+                  <label htmlFor="filter-potential" className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                    Featured
+                  </label>
+                  <select
+                    id="filter-potential"
+                    value={filters.potential}
+                    onChange={e => applyFilter('potential', e.target.value)}
+                    className="w-full text-sm border border-border rounded-lg px-3 py-2 text-text-primary bg-card focus:outline-none focus:border-accent-secondary focus:ring-1 focus:ring-accent-secondary/20"
+                  >
+                    <option value="">All Technologies</option>
+                    <option value="featured">Featured Technologies</option>
+                    <option value="non-featured">Non-Featured Technologies</option>
+                  </select>
+                </div>
               </div>
             </div>
           )}

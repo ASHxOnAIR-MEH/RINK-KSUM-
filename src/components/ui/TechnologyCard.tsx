@@ -40,11 +40,11 @@ export default function TechnologyCard({ technology, compact = false, featured =
     return clean;
   };
 
-  const trlVal    = sanitize(technology.trl);
+  const trlVal    = sanitize(technology.actual_trl);
   const ipVal     = sanitize(technology.ip_status);
   const trlDisplay = trlVal
     ? (trlVal.toUpperCase().startsWith('TRL') ? trlVal : `TRL ${trlVal}`)
-    : '';
+    : 'TRL: Not Specified';
 
   // Short description: prefer problem_solved, fallback to description
   const shortDesc = sanitize(technology.problem_solved) || sanitize(technology.description) || '';

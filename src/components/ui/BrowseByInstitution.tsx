@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import type { Institution } from '@/types';
 import InstitutionSearchGrid from './InstitutionSearchGrid';
 
@@ -18,15 +17,6 @@ export default function BrowseByInstitution({ institutions }: Props) {
         {/* ── Institution Search + Filtered Grid ── */}
         <InstitutionSearchGrid institutions={institutions} />
 
-        {/* ── View all link ── */}
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/institutions"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#1B4D9B] hover:text-[#0A2164] transition-colors"
-          >
-            View all institutions →
-          </Link>
-        </div>
       </div>
     </section>
   );

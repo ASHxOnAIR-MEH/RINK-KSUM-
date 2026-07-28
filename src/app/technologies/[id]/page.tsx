@@ -88,7 +88,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
     tech.technology_image ||
     null;
 
-  const trlLevel = parseTRL(tech.trl);
+  const trlLevel = parseTRL(tech.actual_trl);
   const trlLabel = getTRLLabel(trlLevel);
 
   const hasDesc = !!clean(tech.description);
@@ -266,7 +266,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                           </div>
                         </div>
                       ) : (
-                        <div className="text-sm text-slate-500 font-sans italic">Will be updated soon</div>
+                        <div className="text-sm text-slate-500 font-sans italic">TRL: Not Specified</div>
                       )}
                     </div>
 
