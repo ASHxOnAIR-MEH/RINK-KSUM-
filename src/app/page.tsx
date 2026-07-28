@@ -102,8 +102,8 @@ export default async function HomePage() {
             ))}
           </div>
 
-          <Link href="/sectors" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#1B4D9B] hover:text-[#153E7C] transition-colors font-sans" id="all-sectors-link">
-            Browse all {sectors.length} sectors <ArrowRight className="w-3.5 h-3.5" />
+          <Link href="/technologies" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#1B4D9B] hover:text-[#153E7C] transition-colors font-sans" id="all-sectors-link">
+            Browse all technologies <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       </section>

@@ -130,9 +130,9 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
             <nav className="flex items-center gap-1.5 text-xs text-slate-500 flex-wrap mb-8">
               <Link href="/" className="hover:text-[#0A2164] transition-colors">Home</Link>
               <ChevronRight className="w-3 h-3 text-slate-300" />
-              <Link href="/technologies" className="hover:text-[#0A2164] transition-colors">Technologies</Link>
+              <Link href="/technologies" className="hover:text-[#0A2164] transition-colors">Browse Technologies</Link>
               <ChevronRight className="w-3 h-3 text-slate-300" />
-              <Link href={`/sectors/${tech.sector_slug}`} className="hover:text-[#0A2164] transition-colors">{tech.sector}</Link>
+              <Link href={`/technologies?sector=${tech.sector_slug}`} className="hover:text-[#0A2164] transition-colors">{tech.sector}</Link>
               <ChevronRight className="w-3 h-3 text-slate-300" />
               <span className="text-slate-900 font-medium truncate max-w-[200px] sm:max-w-sm">{tech.name}</span>
             </nav>
@@ -327,7 +327,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 font-heading">More from {tech.sector}</h2>
                 </div>
-                <Link href={`/sectors/${tech.sector_slug}`}
+                <Link href={`/technologies?sector=${tech.sector_slug}`}
                   className="inline-flex items-center gap-1 text-sm font-semibold text-[#0A2164] hover:underline">
                   View all <ArrowRight className="w-4 h-4" />
                 </Link>
