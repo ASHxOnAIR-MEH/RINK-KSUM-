@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ChevronRight, ExternalLink, ArrowRight, FileText, Microscope, Lightbulb, Building2 } from 'lucide-react';
 import TechImage from '@/components/ui/TechImage';
 
-const GOOGLE_FORM_URL =
+const DEFAULT_GOOGLE_FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSfJlFIqrK5Dzd5R-Voh19OvhUKxj7OzEqeW8XIdjJMNKxc8Eg/viewform';
 
 // ── Helpers ───────────────────────────────────────────────────
@@ -107,7 +107,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
       <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
         <div className="bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-4 pt-3 pb-5">
           <a
-            href={GOOGLE_FORM_URL}
+            href={tech.pre_fill_form_link || DEFAULT_GOOGLE_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 w-full py-3.5 rounded-md bg-[#0A2164] text-white font-semibold text-sm"
@@ -304,7 +304,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                         Submit an Expression of Interest (EOI) through RINK to explore technology transfer, licensing, startup creation, and commercialization opportunities related to this technology.
                       </p>
                       <a
-                        href={GOOGLE_FORM_URL}
+                        href={tech.pre_fill_form_link || DEFAULT_GOOGLE_FORM_URL}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-[#F5B400] hover:bg-yellow-400 text-slate-900 font-bold text-sm transition-all duration-200 hover:shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-0.5"

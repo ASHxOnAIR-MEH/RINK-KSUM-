@@ -28,6 +28,7 @@ export interface Technology {
   image_url: string;        // Image URL (Google Drive or other)
   image_embed_url: string;  // Converted embed URL for <img>
   institution_website: string; // Institution Website
+  pre_fill_form_link?: string; // Pre-filled Google Form URL
   // Derived / computed
   featured: boolean;        // High/Very High/Featured startup potential = featured
   technology_image?: string;

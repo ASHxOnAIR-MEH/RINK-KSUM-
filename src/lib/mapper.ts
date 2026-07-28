@@ -253,6 +253,7 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
 
   const techImageEmbedUrl = techImage ? toDriveEmbedUrl(techImage) : '';
   const instImageEmbedUrl = instImage ? toDriveEmbedUrl(instImage) : '';
+  const preFillFormLink = getVal(['pre_fill_form_link', 'prefillformlink', 'formlink']);
 
   return {
     id,
@@ -284,7 +285,8 @@ export function mapTechnology(raw: RawTechnology): Technology | null {
     technology_image_embed_url: techImageEmbedUrl,
     institution_image: instImage,
     institution_image_embed_url: instImageEmbedUrl,
-    last_updated: lastUpdated
+    last_updated: lastUpdated,
+    pre_fill_form_link: preFillFormLink
   };
 }
 
