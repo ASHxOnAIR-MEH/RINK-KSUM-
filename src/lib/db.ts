@@ -11,26 +11,13 @@ import {
 import {
   fetchAllTechnologies, fetchSectors, fetchMergedInstitutions
 } from '@/lib/sheets';
+import { hybridSearch } from '@/lib/search-engine';
 
-// ── Search helper ─────────────────────────────────────────────
+// ── Search helper (delegated to hybrid engine) ────────────────
+// Kept as a thin wrapper so any future callers that reference matchesSearch still compile.
 function matchesSearch(tech: Technology, query: string): boolean {
-  // Normalize: lowercase, strip punctuation/hyphens, collapse spaces
-  const normalizeQ = (s: string) =>
-    s.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
-
-  const q = normalizeQ(query);
-  // Also test the fully-joined form: "waste water" → "wastewater"
-  const jQ = q.replace(/\s+/g, '');
-
-  const hit = (field: string) => {
-    const nf = normalizeQ(field);
-    const jf = nf.replace(/\s+/g, '');
-    return nf.includes(q) || jf.includes(jQ) || nf.includes(jQ) || jf.includes(q);
-  };
-
-  // Search ONLY against technology name.
-  // Institution, sector, keywords, applications, etc. are handled by dedicated filters.
-  return hit(tech.name);
+  // Simple fallback — the main path now goes through hybridSearch() in searchTechnologies()
+  return tech.name.toLowerCase().includes(query.toLowerCase().trim());
 }
 
 // ── Technologies ──────────────────────────────────────────────
@@ -87,41 +74,98 @@ export async function searchTechnologies(
   page = 1,
   perPage = 12
 ): Promise<SearchResult> {
-  let results = await fetchAllTechnologies();
+  let allTechs = await fetchAllTechnologies();
 
-  if (filters.query?.trim()) {
-    results = results.filter(t => matchesSearch(t, filters.query!));
-  }
+  // ── Build lightweight search index items for the engine ──
+  const indexItems: SearchIndexItem[] = allTechs.map(t => ({
+    id: t.id,
+    name: t.name,
+    institution: t.institution,
+    institution_slug: t.institution_slug,
+    sector: t.sector,
+    sector_slug: t.sector_slug,
+    technology_type: t.technology_type,
+    startup_potential: t.startup_potential,
+    ip_status: t.ip_status,
+    trl: t.trl,
+    keywords: t.keywords,
+    applications: t.applications,
+    problem_solved: t.problem_solved,
+    description: t.description,
+  }));
+
+  // ── Apply hard filters first (sector, institution, TRL, etc.) ──
+  // These always narrow the dataset regardless of query.
   if (filters.sector) {
-    results = results.filter(t => t.sector_slug === filters.sector);
+    allTechs = allTechs.filter(t => t.sector_slug === filters.sector);
   }
   if (filters.institution) {
-    results = results.filter(t => t.institution_slug === filters.institution);
+    allTechs = allTechs.filter(t => t.institution_slug === filters.institution);
   }
   if (filters.trl) {
-    results = results.filter(t =>
+    allTechs = allTechs.filter(t =>
       t.trl.toLowerCase() === filters.trl!.toLowerCase()
     );
   }
   if (filters.patent_status) {
-    // Filter by the normalized IP status (frontend column), NOT the legal patent_status text
-    results = results.filter(t =>
+    allTechs = allTechs.filter(t =>
       t.ip_status.toLowerCase() === filters.patent_status!.toLowerCase()
     );
   }
   if (filters.startup_potential) {
-    results = results.filter(t => t.startup_potential === filters.startup_potential);
+    allTechs = allTechs.filter(t => t.startup_potential === filters.startup_potential);
   }
   if (filters.featured) {
     if (filters.featured === 'featured') {
-      results = results.filter(t => (t.startup_potential || '').toLowerCase() === 'high');
+      allTechs = allTechs.filter(t => (t.startup_potential || '').toLowerCase() === 'high');
     } else if (filters.featured === 'non-featured') {
-      results = results.filter(t => (t.startup_potential || '').toLowerCase() !== 'high');
+      allTechs = allTechs.filter(t => (t.startup_potential || '').toLowerCase() !== 'high');
     }
   }
 
-  const total = results.length;
-  const paginated = results.slice((page - 1) * perPage, page * perPage);
+  // ── Apply hybrid search engine if query is present ──
+  if (filters.query?.trim()) {
+    // Rebuild index from filtered set
+    const filteredIndex: SearchIndexItem[] = allTechs.map(t => ({
+      id: t.id,
+      name: t.name,
+      institution: t.institution,
+      institution_slug: t.institution_slug,
+      sector: t.sector,
+      sector_slug: t.sector_slug,
+      technology_type: t.technology_type,
+      startup_potential: t.startup_potential,
+      ip_status: t.ip_status,
+      trl: t.trl,
+      keywords: t.keywords,
+      applications: t.applications,
+      problem_solved: t.problem_solved,
+      description: t.description,
+    }));
+
+    const { primary, related, queryInfo } = hybridSearch(filteredIndex, filters.query);
+
+    // Map scored IDs back to full Technology objects
+    const techById = new Map(allTechs.map(t => [t.id, t]));
+    const primaryTechs = primary.map(r => techById.get(r.id)).filter(Boolean) as Technology[];
+    const relatedTechs = related.map(r => techById.get(r.id)).filter(Boolean) as Technology[];
+
+    const total = primaryTechs.length;
+    const paginated = primaryTechs.slice((page - 1) * perPage, page * perPage);
+
+    return {
+      technologies: paginated,
+      total,
+      page,
+      per_page: perPage,
+      related: relatedTechs,
+      queryInfo,
+    };
+  }
+
+  // ── No query — return all filtered results ──
+  const total = allTechs.length;
+  const paginated = allTechs.slice((page - 1) * perPage, page * perPage);
 
   return { technologies: paginated, total, page, per_page: perPage };
 }

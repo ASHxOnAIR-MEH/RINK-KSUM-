@@ -7,7 +7,7 @@ import TechnologyCard from '@/components/ui/TechnologyCard';
 import SearchBar from '@/components/ui/SearchBar';
 import {
   Filter, X, ChevronLeft, ChevronRight, SlidersHorizontal,
-  LayoutGrid, List, Loader2
+  LayoutGrid, List, Loader2, Search, Lightbulb
 } from 'lucide-react';
 
 interface InitialFilters {
@@ -98,7 +98,7 @@ export default function TechListClient({
   }
 
   const hasActiveFilters = Object.values(filters).some(v => v !== '');
-  const { technologies, total, page, per_page } = initialResult;
+  const { technologies, total, page, per_page, related = [], queryInfo } = initialResult;
   const totalPages = Math.ceil(total / per_page);
 
   const activeFilterCount = Object.values(filters).filter(v => v !== '').length;
@@ -315,13 +315,30 @@ export default function TechListClient({
             {!isPending && technologies.length === 0 && (
               <div className="text-center py-16">
                 <div className="w-16 h-16 rounded-full bg-card-secondary flex items-center justify-center mx-auto mb-4">
-                  <Filter className="w-7 h-7 text-text-secondary" />
+                  <Search className="w-7 h-7 text-text-secondary" />
                 </div>
-                <h3 className="font-heading font-bold text-heading mb-2">No technologies found</h3>
-                <p className="text-text-secondary text-sm mb-4">Try adjusting your filters or search terms</p>
-                <button onClick={clearFilters} className="btn-primary">
-                  Clear All Filters
-                </button>
+                {filters.q ? (
+                  <>
+                    <h3 className="font-heading font-bold text-heading mb-1">
+                      No technologies found for
+                    </h3>
+                    <p className="text-accent-secondary font-semibold text-lg mb-3">&ldquo;{filters.q}&rdquo;</p>
+                    <p className="text-text-secondary text-sm mb-6">
+                      Try different keywords, check the spelling, or use the filters on the left.
+                    </p>
+                    <button onClick={clearFilters} className="btn-primary">
+                      Clear All Filters
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <h3 className="font-heading font-bold text-heading mb-2">No technologies found</h3>
+                    <p className="text-text-secondary text-sm mb-4">Try adjusting your filters</p>
+                    <button onClick={clearFilters} className="btn-primary">
+                      Clear All Filters
+                    </button>
+                  </>
+                )}
               </div>
             )}
 
@@ -336,6 +353,31 @@ export default function TechListClient({
                     <TechnologyCard key={tech.id} technology={tech} compact={viewMode === 'list'} />
                   ))}
                 </div>
+
+                {/* Related Technologies Section */}
+                {!isPending && related.length > 0 && filters.q && (
+                  <div className="mt-10">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Lightbulb className="w-4 h-4 text-amber-500" />
+                      <h2 className="text-base font-semibold text-heading">
+                        Related Technologies
+                      </h2>
+                      <span className="text-xs text-text-secondary ml-1">({related.length})</span>
+                    </div>
+                    <p className="text-xs text-text-secondary mb-5">
+                      These technologies partially match your search for &ldquo;<strong>{filters.q}</strong>&rdquo;.
+                    </p>
+                    <div className={`opacity-75 ${
+                      viewMode === 'grid'
+                        ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'
+                        : 'flex flex-col gap-3'
+                    }`}>
+                      {related.slice(0, 8).map((tech: Technology) => (
+                        <TechnologyCard key={tech.id} technology={tech} compact={viewMode === 'list'} />
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Pagination */}
                 {totalPages > 1 && (

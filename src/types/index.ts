@@ -88,6 +88,14 @@ export interface SearchResult {
   total: number;
   page: number;
   per_page: number;
+  /** Technologies that scored 40–79 (related but not primary). Only present when a query was active. */
+  related?: Technology[];
+  /** Metadata about how the query was resolved */
+  queryInfo?: {
+    normalized: string;
+    synonymsUsed: string[];
+    matchMode: 'exact' | 'fuzzy' | 'synonym' | 'none';
+  };
 }
 
 export interface SearchIndexItem {
