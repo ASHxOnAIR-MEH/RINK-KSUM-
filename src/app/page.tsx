@@ -29,11 +29,13 @@ export default async function HomePage() {
       {/* ══════════════════════════════════════════════════════════
           HERO — Search-first experience
       ══════════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden">
-        {/* Background cover image */}
+      {/* NOTE: overflow-hidden intentionally removed — the search dropdown
+           must be able to float beyond this section boundary.            */}
+      <section className="relative">
+        {/* Background cover image — clips itself via absolute inset-0 */}
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/hero-bg.png')" }}
+          style={{ backgroundImage: "url('/images/hero-bg.png')", overflow: 'hidden' }}
           aria-hidden
         />
         {/* Dark overlay */}

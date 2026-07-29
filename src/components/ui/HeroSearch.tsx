@@ -360,10 +360,12 @@ export default function HeroSearch() {
 
         /* Dropdown entrance */
         @keyframes drop-in {
-          from { opacity: 0; transform: translateY(-8px) scale(.99); }
+          from { opacity: 0; transform: translateY(-6px) scale(.99); }
           to   { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .vision-drop { animation: drop-in 160ms cubic-bezier(.22,1,.36,1) both; }
+        .vision-drop {
+          animation: drop-in 180ms cubic-bezier(.22,1,.36,1) both;
+        }
 
         /* Dropdown scrollbar */
         .vision-drop::-webkit-scrollbar { width: 4px; }
@@ -376,9 +378,10 @@ export default function HeroSearch() {
         className="vision-search-wrap w-full flex flex-col items-center"
         style={{ position: 'relative' }}
       >
+        {/* Width-matched inner wrapper — dropdown anchors to THIS div */}
         <div
           className="w-[95%] sm:w-[90%] md:w-[72%]"
-          style={{ position: 'relative' }}
+          style={{ position: 'relative', zIndex: 9999 }}
         >
 
           {/* ── VisionOS Floating Glass Search Bar ── */}
@@ -472,21 +475,24 @@ export default function HeroSearch() {
             </button>
           </div>
 
-          {/* ── Suggestions Dropdown ── */}
+          {/* ── Suggestions Dropdown — floats above all page content ── */}
           {dropVisible && (
             <div
               role="listbox"
               aria-label="Search suggestions"
               className="vision-drop absolute left-0 right-0 mt-3 overflow-y-auto"
               style={{
-                borderRadius: 24,
-                background: 'rgba(255,255,255,0.94)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(244,180,0,0.12)',
-                boxShadow: '0 20px 50px rgba(0,0,0,0.18)',
-                zIndex: 50,
-                maxHeight: 520,
+                top: '100%',
+                borderRadius: 20,
+                background: 'rgba(255,255,255,0.97)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                border: '1px solid rgba(244,180,0,0.15)',
+                boxShadow: '0 24px 60px rgba(0,0,0,0.22), 0 4px 16px rgba(0,0,0,0.10)',
+                // High z-index ensures it floats above the metrics section and
+                // all other page content regardless of parent stacking context.
+                zIndex: 9999,
+                maxHeight: 'min(480px, 60vh)',
               }}
             >
               {/* Loading skeletons */}
