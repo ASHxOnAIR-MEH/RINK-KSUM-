@@ -279,7 +279,7 @@ export default async function TechnologyDetailPage({ params }: { params: Promise
                     {/* Partner Institution */}
                     <div className="p-5 border-b border-slate-100">
                       <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                        Partner Institution
+                        Institution
                       </div>
                       <Link
                         href={`/institutions/${tech.institution_slug}`}
