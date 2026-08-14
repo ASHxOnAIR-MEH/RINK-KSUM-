@@ -6,6 +6,7 @@ import HeroMetrics from '@/components/ui/HeroMetrics';
 import BrowseByInstitution from '@/components/ui/BrowseByInstitution';
 import ResearchParticles from '@/components/ui/ResearchParticles';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 
 export const metadata = {
@@ -33,24 +34,27 @@ export default async function HomePage() {
            must be able to float beyond this section boundary.            */}
       <section className="relative">
         {/*
-          ── Hero Background Image ───────────────────────────────────────────
-          Using a real <img> (not CSS background-image) so that:
-          1. The browser preload scanner can discover it immediately.
-          2. Next.js image optimization pipeline can serve AVIF/WebP.
-          3. fetchpriority="high" tells the browser to load this before
-             below-the-fold resources (directly improves LCP).
-          The dark overlay gradient is stacked on top via z-index.
+          ── Hero Background Image ─────────────────────────────────────────────────
+          Using next/image with priority so the browser:
+          • Receives an AVIF or WebP version automatically (~80-90% smaller)
+          • Gets a responsive srcset (mobile gets a ~640px image, not 1920px)
+          • Sees fetchpriority="high" added by Next.js automatically
+          • Does NOT block the main thread (no decoding="sync")
+          The source file /images/hero-bg.png is unchanged — Next.js converts
+          and caches the optimized version on first request.
         */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/hero-bg.png"
-          alt=""
-          aria-hidden="true"
-          fetchPriority="high"
-          decoding="sync"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-          style={{ zIndex: 0 }}
-        />
+        <div className="absolute inset-0" style={{ zIndex: 0 }}>
+          <Image
+            src="/images/hero-bg.png"
+            alt=""
+            aria-hidden="true"
+            fill
+            priority
+            quality={80}
+            sizes="(max-width: 640px) 640px, (max-width: 1024px) 1024px, 1920px"
+            className="object-cover object-center"
+          />
+        </div>
         {/* Dark overlay */}
         <div
           className="absolute inset-0 hero-breathe"

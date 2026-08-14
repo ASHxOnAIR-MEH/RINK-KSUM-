@@ -5,11 +5,11 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
 // ── Fonts via next/font/google ──────────────────────────────────────────────
-// next/font: zero render-blocking, self-hosted by Vercel, font-display:swap
-// Only load weights actually used — removed unused 300 weight.
+// next/font: zero render-blocking, self-hosted by Vercel, font-display:swap.
+// ALL original weights preserved to avoid any visual regression.
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['300', '400', '500', '600', '700', '800'],
   display: 'swap',
   variable: '--font-plus-jakarta',
   preload: true,
@@ -20,8 +20,7 @@ const playfairDisplay = Playfair_Display({
   weight: ['500', '600', '700', '800'],
   display: 'swap',
   variable: '--font-playfair',
-  // Playfair is only used on hero headings/tech detail titles — not preloaded
-  // globally; browser will fetch it when needed.
+  // Playfair is only used on hero headings/tech detail titles
   preload: false,
 });
 
@@ -56,20 +55,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${plusJakartaSans.variable} ${playfairDisplay.variable}`}>
       <head>
         {/*
-          ── LCP Preload: hero background ──────────────────────────────────
-          Preload only the actual LCP resource (hero-bg.png).
-          Do NOT preload everything — that defeats the purpose.
-          The browser will discover and fetch the PNG before CSS paints it.
+          ── NOTE: No manual image preload here ──────────────────────────────
+          The hero uses next/image with priority={true}, which automatically
+          injects a <link rel="preload"> for the OPTIMIZED image format
+          (AVIF/WebP) at the correct responsive size. A manual PNG preload
+          would defeat this by pre-fetching the raw 1.52 MB PNG.
         */}
-        <link
-          rel="preload"
-          href="/images/hero-bg.png"
-          as="image"
-          fetchPriority="high"
-        />
-        {/*
-          ── DNS prefetch for Google APIs (used by search-index API, Drive) ─
-        */}
+        {/* DNS prefetch for Google APIs used in the data pipeline */}
         <link rel="dns-prefetch" href="https://www.googleapis.com" />
         <link rel="dns-prefetch" href="https://drive.google.com" />
       </head>

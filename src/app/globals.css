@@ -211,9 +211,10 @@
   --color-border:       var(--border);
   --color-border-dark:  var(--border-card-hover);
 
-  /* Fonts — reference the CSS variables injected by next/font/google in layout.tsx */
+  /* Fonts — reference CSS variables injected by next/font/google in layout.tsx.
+     Order matches original: Plus Jakarta Sans primary, Playfair as fallback. */
   --font-sans:    var(--font-plus-jakarta), 'Inter', system-ui, sans-serif;
-  --font-heading: var(--font-playfair), var(--font-plus-jakarta), Georgia, serif;
+  --font-heading: var(--font-plus-jakarta), var(--font-playfair), Georgia, serif;
 
   /* Shadows */
   --shadow-card:       var(--shadow-card);
@@ -803,33 +804,26 @@ img {
   object-fit: cover;
 }
 
-/* ── Comprehensive prefers-reduced-motion ── */
+/* ── prefers-reduced-motion — targeted (not overly broad) ── */
 @media (prefers-reduced-motion: reduce) {
-  /* Disable ALL animations except visibility-critical ones */
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  /* Explicitly stop infinite loops */
+  /* Stop infinite CSS animation loops only */
   .hero-breathe,
   .hero-search-breathe,
   .research-particle,
   .vision-breathe,
   .vision-drop {
     animation: none !important;
+    transition: none !important;
+  }
+
+  /* Disable scroll animation for users who prefer reduced motion.
+     Use html selector specifically — not * which is too aggressive. */
+  html {
+    scroll-behavior: auto !important;
   }
 }
 
-/* ── Font rendering ── */
-/* Ensures system fonts render during swap period without invisible flash */
-body {
-  font-display: swap;
-}
+
 
 /* ── Scrollbar performance ── */
 /* Thin scrollbars reduce paint area on Windows */
