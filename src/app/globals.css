@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@500;600;700;800;900&display=swap");
+/* Fonts are loaded via next/font/google in layout.tsx (zero render-blocking). */
+
 @import "tailwindcss";
 
 /* ============================================================
@@ -210,9 +211,9 @@
   --color-border:       var(--border);
   --color-border-dark:  var(--border-card-hover);
 
-  /* Fonts */
-  --font-sans:    'Plus Jakarta Sans', 'Inter', sans-serif;
-  --font-heading: 'Plus Jakarta Sans', 'Playfair Display', Georgia, serif;
+  /* Fonts — reference the CSS variables injected by next/font/google in layout.tsx */
+  --font-sans:    var(--font-plus-jakarta), 'Inter', system-ui, sans-serif;
+  --font-heading: var(--font-playfair), var(--font-plus-jakarta), Georgia, serif;
 
   /* Shadows */
   --shadow-card:       var(--shadow-card);
@@ -244,6 +245,8 @@ body {
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent layout shift from font loading */
+  font-synthesis: none;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -761,3 +764,80 @@ input::placeholder, textarea::placeholder { color: var(--text-secondary) !import
   filter: none !important;
   mix-blend-mode: normal !important;
 }
+
+/* ════════════════════════════════════════════════════════════════
+   PERFORMANCE OPTIMIZATIONS
+   Improve rendering performance, reduce paint/layout costs,
+   and ensure GPU-composited animations only.
+════════════════════════════════════════════════════════════════ */
+
+/* ── GPU promotion for known animated elements ── */
+.hero-breathe,
+.hero-search-breathe,
+.research-particle,
+.vision-bar,
+.vision-btn {
+  will-change: transform;
+}
+
+/* ── CSS containment: isolate layout/paint for card grids ── */
+.card,
+[id^="tech-card-"],
+[id^="sector-card-"],
+[id^="inst-card-"] {
+  contain: layout style;
+}
+
+/* ── Image rendering optimizations ── */
+img {
+  /* Prevent images from causing layout shift */
+  max-width: 100%;
+  height: auto;
+}
+
+/* Technology card images: prevent jank during load */
+[id^="tech-card-"] img,
+.technology-card img {
+  /* Reserve space to avoid CLS */
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* ── Comprehensive prefers-reduced-motion ── */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable ALL animations except visibility-critical ones */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Explicitly stop infinite loops */
+  .hero-breathe,
+  .hero-search-breathe,
+  .research-particle,
+  .vision-breathe,
+  .vision-drop {
+    animation: none !important;
+  }
+}
+
+/* ── Font rendering ── */
+/* Ensures system fonts render during swap period without invisible flash */
+body {
+  font-display: swap;
+}
+
+/* ── Scrollbar performance ── */
+/* Thin scrollbars reduce paint area on Windows */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(15, 23, 42, 0.2) transparent;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(15, 23, 42, 0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(15, 23, 42, 0.35); }

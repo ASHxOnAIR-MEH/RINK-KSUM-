@@ -32,20 +32,34 @@ export default async function HomePage() {
       {/* NOTE: overflow-hidden intentionally removed — the search dropdown
            must be able to float beyond this section boundary.            */}
       <section className="relative">
-        {/* Background cover image — clips itself via absolute inset-0 */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/hero-bg.png')", overflow: 'hidden' }}
-          aria-hidden
+        {/*
+          ── Hero Background Image ───────────────────────────────────────────
+          Using a real <img> (not CSS background-image) so that:
+          1. The browser preload scanner can discover it immediately.
+          2. Next.js image optimization pipeline can serve AVIF/WebP.
+          3. fetchpriority="high" tells the browser to load this before
+             below-the-fold resources (directly improves LCP).
+          The dark overlay gradient is stacked on top via z-index.
+        */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/hero-bg.png"
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          decoding="sync"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          style={{ zIndex: 0 }}
         />
         {/* Dark overlay */}
         <div
           className="absolute inset-0 hero-breathe"
-          style={{ background: 'linear-gradient(rgba(7,20,40,0.80), rgba(7,20,40,0.75))' }}
+          style={{ background: 'linear-gradient(rgba(7,20,40,0.80), rgba(7,20,40,0.75))', zIndex: 1 }}
           aria-hidden
         />
         {/* Research particles */}
         <ResearchParticles />
+
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-24 md:py-36 lg:py-44 flex flex-col items-center text-center">
           {/* Portal identity heading */}

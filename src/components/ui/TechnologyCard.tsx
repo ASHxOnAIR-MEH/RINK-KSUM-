@@ -76,6 +76,9 @@ export default function TechnologyCard({ technology, compact = false, featured =
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
                   loading="lazy"
+                  decoding="async"
+                  width={80}
+                  height={80}
                 />
               ) : (
                 <div className="w-full h-full opacity-30">

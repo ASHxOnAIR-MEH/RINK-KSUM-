@@ -60,7 +60,11 @@ const ELEMENTS = [
 
 export default function ResearchParticles() {
   return (
-    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none" aria-hidden>
+    <div
+      className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none"
+      aria-hidden="true"
+      style={{ contain: 'strict' }}
+    >
       {/* Network connection lines */}
       <svg className="absolute inset-0 w-full h-full text-[#60A5FA]" style={{ opacity: 0.08 }} fill="none" preserveAspectRatio="none" viewBox="0 0 1200 600">
         <path d="M80 120 L320 220 L520 100 L760 260 L1040 140" stroke="currentColor" strokeWidth="1" strokeDasharray="4 6" />
